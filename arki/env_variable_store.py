@@ -22,6 +22,27 @@ def write_file(env_variables, filename=ENV_STORE_FILE):
             c_file.write(f"{k}={v}\n")
 
 
+def check_env_valid(env_variables, input):
+    """Check if the given env name exists.
+    """
+    if input.isdigit():
+        target_index = int(input)
+        if target_index >= len(env_variables):
+            print(f"Profile index {input} not found")
+            return None
+
+        index = 0
+        for k, v in env_variables.items():
+            if index == target_index:
+                break
+            index+=1
+        return k
+    elif input in env_variables.keys():
+        return input
+    else:
+        print(f"Environment variable {input} not found in {ENV_STORE_FILE}")
+        return None
+
 @click.command()
 @click.option("--add", "-a", required=False, help="Add new environment variable. TEXT: name=value")
 @click.option("--export", "-e", required=False, help="Export environment variable. TEXT: name")
@@ -56,15 +77,17 @@ def main(add, export):
                 print(f"{k} added")
 
         elif export:
-            if export in env_variables.keys():
-                print_export_env(env_dict={export: env_variables[export]})
+            env_name = check_env_valid(env_variables, export)
+            if env_name:
+                print_export_env(env_dict={env_name: env_variables[env_name]})
             else:
-                print(f"Environment variable {export} not found in {ENV_STORE_FILE}")
                 sys.exit(1)
 
         else:
+            index = 0
             for k, v in env_variables.items():
-                print(f"{i}: {k}")
+                print(f"{index}: {k} = {v}")
+                index+=1
 
     except Exception as e:
         print(f"Error: {e}")

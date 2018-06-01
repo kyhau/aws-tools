@@ -6,9 +6,9 @@
 
 ## Some helper functions
 
-1. **`a_env`**: Support saving and retrieving environment variables.
-1. **`a_profile`**: Look up AWS profile and access key and print the export commands to console.
-
+1. **`arki`**: Show all tools
+1. **`aws_profile`**: Look up AWS profile and access key and print the export commands to console.
+1. **`env_store`**: Support saving and retrieving environment variables.
 
 ## Build
 
