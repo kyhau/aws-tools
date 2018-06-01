@@ -1,0 +1,25 @@
+language: python
+sudo: false
+
+matrix:
+    include:
+    - python: 3.6
+      env: TOXENV=py36
+    - python: 3.6
+      env: TOXENV=py3-cover,coverage
+    - python: nightly
+      env: TOXENV=py37
+    allow_failures:
+    - env: TOXENV=py37
+
+before_install:
+    - python -m pip install --upgrade setuptools pip virtualenv
+
+# command to install dependencies
+install:
+    - pip install -r requirements-build.txt
+
+# command to run tests
+script:
+    - tox
+    - python setup.py bdist_wheel --universal

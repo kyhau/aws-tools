@@ -1,0 +1,4 @@
+# This file should only be used to resolve dependencies that pip cannot successfully resolve by itself.
+# Once pip is smart enough to do that itself, it should no longer be required.
+# See https://github.com/pypa/pip/issues/988
+# and https://pip.pypa.io/en/stable/user_guide/#constraints-files
