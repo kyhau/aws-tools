@@ -4,20 +4,26 @@
 [![codecov](https://codecov.io/gh/kyhau/arki/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/arki)
 
 
+## Some helper functions
+
+1. **`a_env`**: Support saving and retrieving environment variables.
+1. **`a_profile`**: Look up AWS profile and access key and print the export commands to console.
+
+
 ## Build
 
 *Linux*
 
 ```
-virtualenv env
-. env/bin/activate
+virtualenv -p python3.6 env_36
+. env_36/bin/activate
 pip install -e .
 ```
 
 *Windows*
 ```
-virtualenv env
-env\Scripts\activate
+virtualenv -P C:\Python36\python.exe env_36_win
+env_36_win\Scripts\activate
 pip install -e .
 ```
 

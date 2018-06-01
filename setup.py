@@ -17,11 +17,21 @@ __summary__ = "This package creates a framework for python packages to be built.
 __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
-    "boto3"
+    "boto3==1.7.30",
+    "click==6.7",
+    "docker-py==1.10.6"
 ]
 
 with open(os.path.join(base_dir, "README.md")) as f:
     long_description = f.read()
+
+entry_points = {
+    "console_scripts": [
+        "a_profile = arki.aws.profiles:main",
+        "a_env = arki.env_variable_store:main",
+    ],
+    "gui_scripts": []
+}
 
 setup(
     name=__title__,
@@ -41,4 +51,5 @@ setup(
     # include_package_data = True,
     # or the explicit inclusion, eg:
     # package_data = { "package_name": ["data.file1", "data.file2" , ...] }
+    entry_points=entry_points,
 )
