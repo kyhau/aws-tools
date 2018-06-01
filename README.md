@@ -1,7 +1,7 @@
-# python-repo-template
+# arki
 
-[![Build Status](https://travis-ci.org/kyhau/python-repo-template.svg?branch=master)](https://travis-ci.org/kyhau/python-repo-template)
-[![codecov](https://codecov.io/gh/kyhau/python-repo-template/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/python-repo-template)
+[![Build Status](https://travis-ci.org/kyhau/arki.svg?branch=master)](https://travis-ci.org/kyhau/arki)
+[![codecov](https://codecov.io/gh/kyhau/arki/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/arki)
 
 This is a template repository that you can use to quickly create a python application that can be built, tested, and released as an internal python module.
 
@@ -12,7 +12,7 @@ This is a template repository that you can use to quickly create a python applic
 mkdir new_repo_name
 cd new_repo_name
 git init
-git pull https://github.com/kyhau/python-repo-template
+git pull https://github.com/kyhau/arki
 ```
 
 ## Build
@@ -41,8 +41,6 @@ tox -r
 ```
 
 ## Building Wheels
-
-If the library is py2/py3 compatible then remove the `bdist_wheel` lines in tox.ini and use this bdist_wheel line in test.sh/test.bat instead
 
 ```
 python setup.py bdist_wheel --universal
