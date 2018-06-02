@@ -18,6 +18,11 @@
 virtualenv -p python3.6 env_36
 . env_36/bin/activate
 pip install -e .
+
+// OR
+
+python3.6 -m pip install -e . --user
+
 ```
 
 *Windows*
@@ -25,6 +30,11 @@ pip install -e .
 virtualenv -P C:\Python36\python.exe env_36_win
 env_36_win\Scripts\activate
 pip install -e .
+
+// OR
+
+C:\Python36\python.exe -m pip install -e .
+
 ```
 
 ## Tox Tests and Build the Wheels

@@ -13,13 +13,13 @@ __email__ = "virtualda@gmail.com"
 
 __title__ = "arki"
 __version__ = "0.1.0.dev0"
-__summary__ = "This package creates a framework for python packages to be built."
+__summary__ = "This package includes some simple scripts for setting up local development environment."
 __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
     "boto3==1.7.30",
     "click==6.7",
-    "docker-py==1.10.6"
+    #"docker-py==1.10.6"
 ]
 
 with open(os.path.join(base_dir, "README.md")) as f:
@@ -30,6 +30,7 @@ entry_points = {
         "arki = arki:show_all_console_scripts",
         "aws_profile = arki.aws.profiles:main",
         "env_store = arki.env_variable_store:main",
+        "venv = arki.virtualenv:create",
     ]
 }
 

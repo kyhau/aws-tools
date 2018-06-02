@@ -63,9 +63,15 @@ def check_profile_valid(input):
 
 
 @click.command()
-@click.option("--export_key", "-e", required=False, help="Export ACCESS KEY. The profile name or its index returned from running `profiles`.")
-@click.option("--export_profile", "-p", required=False, help="Export PROFILE. The profile name or its index returned from running `profiles`.")
+@click.option("--export_key", "-e", required=False, help="Print the command to export ACCESS KEY. Valid values: The profile name or its index returned from running `aws_profiles`.")
+@click.option("--export_profile", "-p", required=False, help="Print the command to export AWS_PROFILE. Valida values: The profile name or its index returned from running `aws_profiles`.")
 def main(export_key, export_profile):
+    """
+    aws_profile returns the list of profiles specified in ~/.aws/config.
+    And you can use -e or -p to print the command to export the ACCESS KEY or AWS_PROFILE
+    environment variables, by specifying the profile name (e.g. aws_profile -e my_profile_1) or
+    the index of the profile printed from running `aws_profile` (e.g. aws_profile -e 1).
+    """
     try:
         if not export_key and not export_profile:
             profile_list = profiles()

@@ -1,12 +1,11 @@
 """
-This utility script adds/updates user_home/.arki/env_store.ini
+This utility script adds/updates <user_home>/.arki/env_store.ini
 """
 import click
 from collections import OrderedDict
 from os.path import expanduser, exists, join
 from os import makedirs
 import sys
-
 from arki.system import print_export_env
 
 
@@ -45,9 +44,15 @@ def check_env_valid(env_variables, input):
 
 @click.command()
 @click.option("--add", "-a", required=False, help="Add new environment variable. TEXT: name=value")
-@click.option("--export", "-e", required=False, help="Export environment variable. TEXT: name")
+@click.option("--export", "-e", required=False, help="Print the command to export a environment variable. Valid values: The name or its index returned from running `env_store`.")
 def main(add, export):
-    """Manage environment variable store.
+    """
+    env_store returns the list of environment variables stored in ~/.arki/env_store.ini.
+    Use -a to add new variable. Use -e to print the command to export it as environment variable,
+    by specifying the variable name (e.g. env_store -e TEST_MODE) or the index of the variables
+    printed from running `env_store` (e.g. env_store -e 1).
+    All environment variables are stored in plain text. Do not use this script to store secrets or
+    credentials.
     """
     try:
         makedirs(ENV_STORE_ROOT, 0o755, exist_ok=True)
