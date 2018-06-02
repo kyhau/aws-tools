@@ -27,7 +27,7 @@ with open(os.path.join(base_dir, "README.md")) as f:
 
 entry_points = {
     "console_scripts": [
-        "arki = arki:show_all_console_scripts",
+        "arki = arki:main",
         "aws_profile = arki.aws.profiles:main",
         "env_store = arki.env_variable_store:main",
         "venv = arki.virtualenv:create",

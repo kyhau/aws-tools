@@ -68,7 +68,8 @@ def check_profile_valid(input):
 def main(export_key, export_profile):
     """
     aws_profile returns the list of profiles specified in ~/.aws/config.
-    And you can use -e or -p to print the command to export the ACCESS KEY or AWS_PROFILE
+
+    Use -e or -p to print the command to export the ACCESS KEY or AWS_PROFILE
     environment variables, by specifying the profile name (e.g. aws_profile -e my_profile_1) or
     the index of the profile printed from running `aws_profile` (e.g. aws_profile -e 1).
     """

@@ -13,10 +13,13 @@ CMD_STR = "virtualenv -p {} {}"
 @click.option("--name", "-n", required=False, help="Name of the virtualenv name. Default: e.g. env_36 (Linux), env_36_win (Windows)")
 def create(python_version, name):
     """
-    Create virtualenv of the specified Python version (PYTHON_VERSION, e.g. 2.7, 3.4, 3.6) to the current platform
-    (Linux or Windows). If --name is not specified, the name is env_(version_digit_only) on Linux, or
+    Create virtualenv of the specified Python version (PYTHON_VERSION, e.g. 2.7, 3.4, 3.6) to the
+    current platform (Linux or Windows).
+
+    If --name is not specified, the name is env_(version_digit_only) on Linux, or
     env_(version_digit_only)_win on Windows."
     """
+
     ret_code = 0
     try:
         version_digit_only = python_version.replace(".","")
