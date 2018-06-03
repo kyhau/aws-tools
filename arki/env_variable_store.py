@@ -3,11 +3,13 @@ This utility script adds/updates <user_home>/.arki/env_store.ini
 """
 import click
 from collections import OrderedDict
+import logging
 from os.path import exists, join
 from os import makedirs
 import sys
-from arki import ARKI_LOCAL_STORE_ROOT
+from arki.configs import ARKI_LOCAL_STORE_ROOT
 from arki.system import print_export_env
+from arki import init_logging
 
 
 ENV_STORE_FILE = join(ARKI_LOCAL_STORE_ROOT, "env_store.ini")
@@ -27,7 +29,7 @@ def check_env_valid(env_variables, input):
     if input.isdigit():
         target_index = int(input)
         if target_index >= len(env_variables):
-            print(f"Profile index {input} not found")
+            logging.error(f"Profile index {input} not found")
             return None
 
         index = 0
@@ -39,7 +41,7 @@ def check_env_valid(env_variables, input):
     elif input in env_variables.keys():
         return input
     else:
-        print(f"Environment variable {input} not found in {ENV_STORE_FILE}")
+        logging.error(f"Environment variable {input} not found in {ENV_STORE_FILE}")
         return None
 
 
@@ -59,8 +61,9 @@ def main(add, export):
     All environment variables are stored in plain text. Do not use this script to store secrets or
     credentials.
     """
-
     try:
+        init_logging()
+
         makedirs(ARKI_LOCAL_STORE_ROOT, 0o755, exist_ok=True)
 
         env_variables = OrderedDict()
@@ -77,15 +80,15 @@ def main(add, export):
 
             if k in env_variables.keys():
                 if v == env_variables[k]:
-                    print(f"{k} already exists")
+                    logging.info(f"{k} already exists")
                 else:
                     env_variables[k] = v
                     write_file(env_variables)
-                    print(f"{k} updated")
+                    logging.info(f"{k} updated")
             else:
                 env_variables[k] = v
                 write_file(env_variables)
-                print(f"{k} added")
+                logging.info(f"{k} added")
 
         elif export:
             env_name = check_env_valid(env_variables, export)
@@ -97,11 +100,11 @@ def main(add, export):
         else:
             index = 0
             for k, v in env_variables.items():
-                print(f"{index}: {k} = {v}")
+                logging.info(f"{index}: {k} = {v}")
                 index+=1
 
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(e)
         sys.exit(1)
 
     sys.exit(0)

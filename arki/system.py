@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -43,8 +44,8 @@ def run_command(command):
     :param command: command string
     :return: return code (0 means all good)
     """
-    print(command)
+    logging.info(command)
     ret_code = os.system(command)
 
-    print(f"Command return code: {ret_code}")
+    logging.info(f"Command return code: {ret_code}")
     return ret_code

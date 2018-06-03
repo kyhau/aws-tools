@@ -1,14 +1,9 @@
 import click
-import configparser
-from os.path import expanduser, exists, join
-from os import makedirs
+import logging
 import pkg_resources
 
 
-ARKI_LOCAL_STORE_ROOT = join(expanduser("~"), ".arki")
-ARKI_INI_FILE = join(ARKI_LOCAL_STORE_ROOT, "arki.ini")
-
-makedirs(ARKI_LOCAL_STORE_ROOT, 0o755, exist_ok=True)
+PACKAGE_NAME = "Arki"
 
 
 def print_all_console_scripts(package_name):
@@ -16,7 +11,7 @@ def print_all_console_scripts(package_name):
     Print all console scripts of a package.
     :param package_name: the name of a package installed.
     """
-    print("Console scripts in arki:")
+    print(f"Console scripts in {PACKAGE_NAME}:")
     print("------------------------")
     entrypoints = (
         ep for ep in pkg_resources.iter_entry_points("console_scripts")
@@ -27,21 +22,24 @@ def print_all_console_scripts(package_name):
     return entrypoints
 
 
-def read_ini(ini_file=ARKI_INI_FILE):
-    if exists(ARKI_INI_FILE):
-        config = configparser.ConfigParser()
-        config.read(ini_file)
-        return config
-    return {}
+def init_logging(log_level=logging.INFO, show_time=False):
+    """
+    Initialise basic logging to console.
+    :param log_level: logging level. Default: INFO
+    """
+    log_time = "%(asctime)s " if show_time else ""
 
-
-def write_ini(config, ini_file=ARKI_INI_FILE):
-    with open(ini_file, "w") as configfile:
-        config.write(configfile)
+    logging.basicConfig(
+        level=log_level,
+        format=f"{log_time}%(levelname)-8s {PACKAGE_NAME}: %(message)s",
+    )
+    logging.getLogger("botocore").setLevel(logging.CRITICAL)
+    logging.getLogger("boto3").setLevel(logging.CRITICAL)
+    logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
 
 @click.command()
-def main(package_name="arki"):
+def main(package_name=PACKAGE_NAME):
     """
     `arki` prints all console scripts of the arki package.
     """

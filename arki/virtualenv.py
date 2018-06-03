@@ -2,11 +2,14 @@
 This utility script creates virtualenv of a Python version to the current platform.
 """
 import click
+import logging
 import sys
 from arki import system
+from arki import init_logging
 
 
 CMD_STR = "virtualenv -p {} {}"
+
 
 @click.command()
 @click.argument("python_version", required=True)
@@ -19,6 +22,8 @@ def create(python_version, name):
     If --name is not specified, the name is env_(version_digit_only) on Linux, or
     env_(version_digit_only)_win on Windows."
     """
+
+    init_logging()
 
     ret_code = 0
     try:
@@ -56,7 +61,7 @@ def create(python_version, name):
             print("----------------------------------")
 
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(e)
         ret_code = 1
 
     sys.exit(ret_code)

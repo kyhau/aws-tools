@@ -19,7 +19,7 @@ __uri__ = "https://github.com/kyhau/arki"
 __requirements__ = [
     "boto3==1.7.30",
     "click==6.7",
-    #"docker-py==1.10.6"
+    "docker-py==1.10.6"
 ]
 
 with open(os.path.join(base_dir, "README.md")) as f:
@@ -29,6 +29,8 @@ entry_points = {
     "console_scripts": [
         "arki = arki:main",
         "aws_profile = arki.aws.profiles:main",
+        "deploy_apig = arki.aws.deploy_apig:main",
+        #"aws_cloudwatch = arki.aws.cloudwatch:main",
         "env_store = arki.env_variable_store:main",
         "venv = arki.virtualenv:create",
     ]
