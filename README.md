@@ -9,6 +9,8 @@
 1. **`arki`**: Show all tools
 1. **`aws_profile`**: Look up AWS profile and access key and print the export commands to console.
 1. **`env_store`**: Support saving and retrieving environment variables.
+1. **`venv`**: Create `virtualenv` of a Python version on the current platform (Linux or Windows).
+1. **`deploy_apig`**: Update a swagger file to AWS and make a stage deployment.
 
 ## Build
 
