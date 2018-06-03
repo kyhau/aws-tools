@@ -4,6 +4,7 @@
 - **`arki`**: Show all tools
 - **`aws_profile`**: Look up AWS profile and access key and print the export commands to console.
 - **`aws_apig_deploy`**: Update a swagger file to AWS and make a stage deployment.
+- **`aws_ddb`**: Show all DynamoDB tables, info of a table, scan items, delete items
 - **`aws_lambda_permissions_to_apig`**: Add Lambda Permissions for API Gateway resources.
 - **`env_store`**: Support saving and retrieving some environment variables in a local file.
 - **`venv`**: Create `virtualenv` of a Python version on the current platform (Linux or Windows).
