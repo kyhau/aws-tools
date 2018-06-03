@@ -22,7 +22,11 @@ def check_response(resp):
     """
     ret = resp["ResponseMetadata"]["HTTPStatusCode"] in HTTPS_OK_CODES
     if ret is False:
-        logging.error("Response:\n{}".format(json.dumps(resp, cls=DefaultEncoder, sort_keys=True, indent=2)))
-    else:
-        logging.info("Succeeded")
+        logging.error(f"Response:\n{json.dumps(resp, cls=DefaultEncoder, sort_keys=True, indent=2)}")
     return ret
+
+
+def print_json(json_data):
+    """Print json data nicely
+    """
+    print(json.dumps(json_data, cls=DefaultEncoder, sort_keys=True, indent=2))

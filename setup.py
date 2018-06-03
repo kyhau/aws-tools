@@ -8,7 +8,7 @@ if os.environ.get("BUILD_LIB") == "1":
 
 base_dir = os.path.dirname(__file__)
 
-__author__ = "Kay Hau"
+__author__ = "kyhau"
 __email__ = "virtualda@gmail.com"
 
 __title__ = "arki"
@@ -30,6 +30,7 @@ entry_points = {
         "arki = arki:main",
         "aws_profile = arki.aws.profiles:main",
         "aws_apig_deploy = arki.aws.apig_deploy:main",
+        "aws_ddb = arki.aws.dynamodb:main",
         "aws_lambda_permissions_to_apig = arki.aws.lambda_permissions:lambda_permissions_to_apig",
         #"aws_cloudwatch = arki.aws.cloudwatch:main",
         "env_store = arki.env_variable_store:main",
