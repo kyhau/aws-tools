@@ -10,6 +10,8 @@
 1. **`aws_profile`**: Look up AWS profile and access key and print the export commands to console.
 1. **`aws_apig_deploy`**: Update a swagger file to AWS and make a stage deployment.
 1. **`aws_ddb`**: Show all DynamoDB tables, info of a table, scan items, delete items
+1. **`aws_ecs_list_task_definitions`**: Show/filter registered task definitions
+1. **`aws_ecs_register_task_definition`**: Register task definitions
 1. **`aws_lambda_permissions_to_apig`**: Add Lambda Permissions for API Gateway resources.
 1. **`env_store`**: Support saving and retrieving environment variables.
 1. **`venv`**: Create `virtualenv` of a Python version on the current platform (Linux or Windows).
