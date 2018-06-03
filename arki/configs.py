@@ -7,9 +7,30 @@ from arki import PACKAGE_NAME
 
 
 ARKI_LOCAL_STORE_ROOT = join(expanduser("~"), ".arki")
+ARKI_LOCAL_INI = join(ARKI_LOCAL_STORE_ROOT, "arki.ini")
 
 
 makedirs(ARKI_LOCAL_STORE_ROOT, 0o755, exist_ok=True)
+
+
+def update_ini(ini_file=ARKI_LOCAL_INI, config_updates=None):
+    if not exists(ini_file):
+        with open(ini_file, "w") as f:
+            f.write(f"# {PACKAGE_NAME} Configurations\n\n")
+            logging.info(f"{ini_file} created")
+
+    config = configparser.ConfigParser()
+    config.read(ini_file)
+
+    for c in config_updates:
+        section, option, value = c
+
+        if section not in config.sections():
+            config.add_section(section)
+        config.set(section, option, value)
+
+    with open(ini_file, "w") as configfile:
+        config.write(configfile)
 
 
 def create_ini_template(ini_file, module, config_dict, allow_overriding_default=False):
@@ -73,19 +94,6 @@ def read_configs(ini_file, config_dict, section_list=None):
         raise Exception("Missing mandatory settings in INI file. Aborted")
 
     return ret
-
-
-def read_ini(ini_file):
-    if exists(ini_file):
-        config = configparser.ConfigParser()
-        config.read(ini_file)
-        return config
-    return None
-
-
-def write_ini(config, ini_file):
-    with open(ini_file, "w") as configfile:
-        config.write(configfile)
 
 
 def process_multi_lines_config(values_str):
