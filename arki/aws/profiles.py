@@ -1,8 +1,9 @@
 import click
+import logging
 from os.path import expanduser, join
 import sys
-
 from arki.system import print_export_env
+from arki import init_logging
 
 
 AWS_CONFIG_FILE = join(join(expanduser("~"), ".aws"), "config")
@@ -74,6 +75,8 @@ def main(export_key, export_profile):
     the index of the profile printed from running `aws_profile` (e.g. aws_profile -e 1).
     """
     try:
+        init_logging()
+
         if not export_key and not export_profile:
             profile_list = profiles()
             for i in range(0, len(profile_list)):
@@ -91,7 +94,7 @@ def main(export_key, export_profile):
                     print_export_env(env_dict={"AWS_PROFILE": profile_name})
 
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(e)
         sys.exit(1)
 
     sys.exit(0)

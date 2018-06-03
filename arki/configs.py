@@ -3,6 +3,8 @@ import logging
 from os.path import basename, expanduser, exists, join
 from os import makedirs
 import re
+from arki import PACKAGE_NAME
+
 
 ARKI_LOCAL_STORE_ROOT = join(expanduser("~"), ".arki")
 
@@ -17,14 +19,13 @@ def create_ini_template(ini_file, module, config_dict, allow_overriding_default=
     :param module: __file__ of the caller file
     :param config_dict: default settings
     :param allow_overriding_default: True if allowing other section to override the default section
-    :return: 0 if succeeded
+    :raise Exception: if file already exists
     """
     if exists(ini_file):
-        logging.error(f"{ini_file} already exists. Aborted")
-        return 1
+        raise Exception(f"{ini_file} already exists. Aborted")
 
     lines = [
-        f"# Arki {basename(module).split('.')[0]} Configurations\n\n",
+        f"# {PACKAGE_NAME} {basename(module).split('.')[0]} Configurations\n\n",
         "[default]\n"
     ]
     lines.extend([
@@ -39,12 +40,14 @@ def create_ini_template(ini_file, module, config_dict, allow_overriding_default=
         f.writelines(lines)
         logging.info(f"{ini_file} created")
 
-    return 0
-
 
 def read_configs(ini_file, config_dict, section_list=None):
-    """Retrieve settings from the ini file
     """
+    Retrieve settings from the ini file. Also check if any mandatory setting is missing.
+    """
+    if not exists(ini_file):
+        raise Exception(f"Configuration file not found: {ini_file}.")
+
     config = configparser.ConfigParser()
     config.read(ini_file)
 
@@ -63,7 +66,7 @@ def read_configs(ini_file, config_dict, section_list=None):
 
     passed = True
     for k, v in config_dict.items():
-        if v.get("required", False) is True and k not in ret.get(k):
+        if v.get("required", False) is True and ret.get(k) is None:
             logging.error(f"Missing setting: {k}")
             passed = False
     if not passed:

@@ -23,10 +23,9 @@ def create(python_version, name):
     env_(version_digit_only)_win on Windows."
     """
 
-    init_logging()
-
-    ret_code = 0
     try:
+        init_logging()
+
         version_digit_only = python_version.replace(".","")
 
         if system.is_linux():
@@ -62,6 +61,6 @@ def create(python_version, name):
 
     except Exception as e:
         logging.error(e)
-        ret_code = 1
+        sys.exit(1)
 
-    sys.exit(ret_code)
+    sys.exit(0)

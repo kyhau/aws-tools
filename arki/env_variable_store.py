@@ -29,8 +29,7 @@ def check_env_valid(env_variables, input):
     if input.isdigit():
         target_index = int(input)
         if target_index >= len(env_variables):
-            logging.error(f"Profile index {input} not found")
-            return None
+            raise Exception(f"Profile index {input} not found")
 
         index = 0
         for k, v in env_variables.items():
@@ -38,11 +37,12 @@ def check_env_valid(env_variables, input):
                 break
             index+=1
         return k
+
     elif input in env_variables.keys():
         return input
+
     else:
-        logging.error(f"Environment variable {input} not found in {ENV_STORE_FILE}")
-        return None
+        raise Exception(f"Environment variable {input} not found in {ENV_STORE_FILE}")
 
 
 @click.command()
@@ -61,6 +61,7 @@ def main(add, export):
     All environment variables are stored in plain text. Do not use this script to store secrets or
     credentials.
     """
+
     try:
         init_logging()
 
@@ -92,10 +93,7 @@ def main(add, export):
 
         elif export:
             env_name = check_env_valid(env_variables, export)
-            if env_name:
-                print_export_env(env_dict={env_name: env_variables[env_name]})
-            else:
-                sys.exit(1)
+            print_export_env(env_dict={env_name: env_variables[env_name]})
 
         else:
             index = 0

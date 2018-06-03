@@ -29,7 +29,8 @@ entry_points = {
     "console_scripts": [
         "arki = arki:main",
         "aws_profile = arki.aws.profiles:main",
-        "deploy_apig = arki.aws.deploy_apig:main",
+        "aws_apig_deploy = arki.aws.apig_deploy:main",
+        "aws_lambda_permissions_to_apig = arki.aws.lambda_permissions:lambda_permissions_to_apig",
         #"aws_cloudwatch = arki.aws.cloudwatch:main",
         "env_store = arki.env_variable_store:main",
         "venv = arki.virtualenv:create",
