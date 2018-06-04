@@ -98,7 +98,7 @@ def main(add, export):
         else:
             index = 0
             for k, v in env_variables.items():
-                logging.info(f"{index}: {k} = {v}")
+                print(f"{index}: {k} = {v}")
                 index+=1
 
     except Exception as e:

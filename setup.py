@@ -12,14 +12,15 @@ __author__ = "kyhau"
 __email__ = "virtualda@gmail.com"
 
 __title__ = "arki"
-__version__ = "0.1.0.dev0"
+__version__ = "0.1.0"
 __summary__ = "This package includes some simple scripts for setting up local development environment."
 __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
     "boto3==1.7.30",
     "click==6.7",
-    "docker-py==1.10.6"
+    "docker==3.3.0",
+    "pypiwin32==220; sys_platform == 'win32' and python_version >= '3.6'"
 ]
 
 with open(os.path.join(base_dir, "README.md")) as f:
@@ -34,6 +35,8 @@ entry_points = {
         "aws_ecs_list_task_definitions = arki.aws.ecs:main",
         "aws_ecs_register_task_definition = arki.aws.ecs_register_task_definition:main",
         "aws_lambda_permissions_to_apig = arki.aws.lambda_permissions:lambda_permissions_to_apig",
+        "dockerc = arki.docker:find_non_running_containers",
+        "dockeri = arki.docker:find_dangling_images",
         #"aws_cloudwatch = arki.aws.cloudwatch:main",
         "env_store = arki.env_variable_store:main",
         "venv = arki.virtualenv:create",

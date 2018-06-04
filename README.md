@@ -13,6 +13,8 @@
 1. **`aws_ecs_list_task_definitions`**: Show/filter registered task definitions
 1. **`aws_ecs_register_task_definition`**: Register task definitions
 1. **`aws_lambda_permissions_to_apig`**: Add Lambda Permissions for API Gateway resources.
+1. **`dockerc`**: Find and remove non-running containers.
+1. **`dockeri`**: Find and remove dangling images.
 1. **`env_store`**: Support saving and retrieving environment variables.
 1. **`venv`**: Create `virtualenv` of a Python version on the current platform (Linux or Windows).
 
@@ -27,7 +29,7 @@ pip install -e .
 
 // OR
 
-python3.6 -m pip install -e . --user
+python3.6 -m pip install --user -e .
 
 ```
 

@@ -15,7 +15,7 @@ def print_all_console_scripts(package_name):
     print("------------------------")
     entrypoints = (
         ep for ep in pkg_resources.iter_entry_points("console_scripts")
-        if ep.module_name.startswith(package_name)
+        if ep.module_name.startswith(package_name.lower())
     )
     for i in entrypoints:
         print(str(i).split("=")[0])

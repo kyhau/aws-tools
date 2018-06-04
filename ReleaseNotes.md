@@ -8,5 +8,7 @@
 - **`aws_ecs_list_task_definitions`**: Show/filter registered task definitions
 - **`aws_ecs_register_task_definition`**: Register task definitions
 - **`aws_lambda_permissions_to_apig`**: Add Lambda Permissions for API Gateway resources.
+- **`dockerc`**: Find and remove non-running containers.
+- **`dockeri`**: Find and remove dangling images.
 - **`env_store`**: Support saving and retrieving some environment variables in a local file.
 - **`venv`**: Create `virtualenv` of a Python version on the current platform (Linux or Windows).
