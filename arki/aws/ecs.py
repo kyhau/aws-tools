@@ -19,18 +19,26 @@ def list_task_definitions(aws_profile, family_name):
     else:
         resp = client.list_task_definitions(familyPrefix=family_name, status="ACTIVE", sort="DESC")
 
+    print("Task Definition ARNs:")
+    print("---------------------")
+    cnt = 0
     for arn in resp["taskDefinitionArns"]:
-        print("################################################################################")
-        print("Task Definition - {}".format(arn))
-        resp = client.describe_task_definition(taskDefinition=arn)
-        print(json.dumps(resp["taskDefinition"], sort_keys=True, indent=2))
+        print(f"{cnt}: {arn}")
+        cnt += 1
+
+
+def task_definition(aws_profile, arn):
+    client = boto3.Session(profile_name=aws_profile).client("ecs")
+    resp = client.describe_task_definition(taskDefinition=arn)
+    print(json.dumps(resp["taskDefinition"], sort_keys=True, indent=2))
 
 
 @click.command()
 @click.argument("ini_file", required=False)
 @click.option("--init", "-i", is_flag=True, help="Set up new configuration")
 @click.option("--family", "-f", required=False, help="Filtered by family name (ake task definition name")
-def main(ini_file, init, family):
+@click.option("--detail", "-d", required=False, help="ARN of the task definition to show more details")
+def main(ini_file, init, family, detail):
     """
     ECS
 
@@ -54,8 +62,10 @@ def main(ini_file, init, family):
                 settings = read_configs(ini_file=ini_file, config_dict=DEFAULT_CONFIGS)
                 profile_name = settings["aws.profile"]
 
-            list_task_definitions(aws_profile=profile_name, family_name=family)
-
+            if detail:
+                task_definition(aws_profile=profile_name, arn=detail)
+            else:
+                list_task_definitions(aws_profile=profile_name, family_name=family)
 
     except Exception as e:
         logging.error(e)
