@@ -16,6 +16,9 @@ DEFAULT_CONFIGS = {
     "aws.apigateway.swaggeryaml": {"required": True},
     "aws.apigateway.cacheclusterenabled": {"default": True},
     "aws.apigateway.cacheclustersize": {"default": 0},
+    "aws.apigateway.datatraceenabled": {"default": True},
+    "aws.apigateway.logginglevel": {"default": "ERROR"},
+    "aws.apigateway.metricsenabled": {"default": True},
     "aws.apigateway.stagevariables": {"multilines": True},
 }
 
@@ -66,6 +69,26 @@ def create_deployment(apig_client, rest_api_id, stage_name, stage_variables_dict
     return check_response(resp)
 
 
+def update_stage_logging(apig_client, rest_api_id, stage_name, data_trace_enabled, log_level, metrics_enabled):
+    """Update logging settings of a stage
+    """
+    logging.info(f"Update stage [{stage_name}] logging settings...")
+
+    resp = apig_client.update_stage(
+        restApiId=rest_api_id,
+        stageName=stage_name,
+        patchOperations=[
+            # Set Log level: OFF, ERROR, or INFO
+            {"op": "replace", "path": "/*/*/logging/loglevel", "value": log_level},
+            # Enable full request/response logging for all resources/methods in an API's stage
+            {"op": "replace", "path": "/*/*/logging/dataTrace", "value": data_trace_enabled},
+            # Enable CloudWatch metric
+            {"op": "replace", "path": "/*/*/metrics/enabled", "value": metrics_enabled},
+        ]
+    )
+    return check_response(resp)
+
+
 @click.command()
 @click.argument("ini_file", required=True)
 @click.option("--init", "-i", is_flag=True, help="Set up new configuration")
@@ -106,6 +129,10 @@ def main(ini_file, init, deploy):
             stage_variables_dict = settings.get("aws.apigateway.stagevariables", {})
             cache_cluster_size = settings.get("aws.apigateway.cacheclustersize", 0)
 
+            log_level = settings["aws.apigateway.logginglevel"]
+            data_trace_enabled = settings["aws.apigateway.datatraceenabled"]
+            metrics_enabled = settings["aws.apigateway.metricsenabled"]
+
             # Put the rest api to AWS
             if put_rest_api(apig_client, rest_api_id, swagger_file_yaml) is False:
                 raise Exception("Failed to reimport the api swagger file. Aborted")
@@ -120,6 +147,15 @@ def main(ini_file, init, deploy):
                     cache_cluster_enabled=cache_cluster_enabled,
                     cache_cluster_size=cache_cluster_size
                 )
+                if ret:
+                    ret = update_stage_logging(
+                        apig_client=apig_client,
+                        rest_api_id=rest_api_id,
+                        stage_name=deploy,
+                        data_trace_enabled=data_trace_enabled,
+                        log_level=log_level,
+                        metrics_enabled=metrics_enabled
+                    )
                 if ret and cache_cluster_enabled:
                     ret = flush_cache(apig_client, rest_api_id, deploy)
                     if ret is False:
