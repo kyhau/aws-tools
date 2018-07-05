@@ -17,9 +17,10 @@ __summary__ = "This package includes some simple scripts for setting up local de
 __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
-    "boto3==1.7.30",
+    "boto3==1.7.50",
     "click==6.7",
-    "docker==3.3.0",
+    "docker==3.4.1",
+    "warrant==0.6.1",
     "pypiwin32==220; sys_platform == 'win32' and python_version >= '3.6'"
 ]
 
@@ -29,12 +30,13 @@ with open(os.path.join(base_dir, "README.md")) as f:
 entry_points = {
     "console_scripts": [
         "arki = arki:main",
-        "aws_profile = arki.aws.profiles:main",
         "aws_apig_deploy = arki.aws.apig_deploy:main",
+        "aws_cognito = arki.aws.cognito:main",
         "aws_ddb = arki.aws.dynamodb:main",
         "aws_ecs_list_task_definitions = arki.aws.ecs:main",
         "aws_ecs_register_task_definition = arki.aws.ecs_register_task_definition:main",
         "aws_lambda_permissions_to_apig = arki.aws.lambda_permissions:lambda_permissions_to_apig",
+        "aws_profile = arki.aws.profiles:main",
         "dockerc = arki.docker:find_non_running_containers",
         "dockeri = arki.docker:find_dangling_images",
         #"aws_cloudwatch = arki.aws.cloudwatch:main",

@@ -46,7 +46,7 @@ def create_ini_template(ini_file, module, config_dict, allow_overriding_default=
         raise Exception(f"{ini_file} already exists. Aborted")
 
     lines = [
-        f"# {PACKAGE_NAME} {basename(module).split('.')[0]} Configurations\n\n",
+        f"# {PACKAGE_NAME} {basename(module).split('.')[0]} configurations\n\n",
         "[default]\n"
     ]
     lines.extend([

@@ -12,6 +12,7 @@ from arki.system import print_export_env
 from arki import init_logging
 
 
+# Default configuration file location
 ENV_STORE_FILE = join(ARKI_LOCAL_STORE_ROOT, "env_store.ini")
 
 
