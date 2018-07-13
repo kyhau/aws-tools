@@ -1,7 +1,6 @@
 import boto3
 import click
 import logging
-from os import environ
 from os.path import join
 import sys
 from warrant import Cognito
@@ -9,20 +8,11 @@ from arki.configs import ARKI_LOCAL_STORE_ROOT, create_ini_template, read_config
 from arki import init_logging
 
 
-# Use warrant that requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY (otherwise use `default` profile)
-ENV_AWS_ACCESS_KEY_ID = "AWS_ACCESS_KEY_ID"
-ENV_AWS_SECRET_ACCESS_KEY = "AWS_SECRET_ACCESS_KEY"
-for v in [ENV_AWS_ACCESS_KEY_ID, ENV_AWS_SECRET_ACCESS_KEY]:
-    if v not in environ:
-        logging.error(f"Environment variable {v} not set. Aborted.")
-        sys.exit(1)
-
-
 # Default configuration file location
 ENV_STORE_FILE = join(ARKI_LOCAL_STORE_ROOT, "cognito.ini")
 
-
 DEFAULT_CONFIGS = {
+    "aws.profile": {"required": True},
     "aws.cognito.userpool.appclientid": {"required": True},
     "aws.cognito.userpool.id": {"required": True},
     "aws.cognito.userpool.region": {"required": True, "default": "ap-southeast-2"},
@@ -30,6 +20,16 @@ DEFAULT_CONFIGS = {
 
 
 def authenticate(userpool_id, userpool_appclientid, username, userpass):
+    """
+    Authenticate a user and return id_token, refresh_token, access_token.
+
+    :param userpool_id: Userpool ID
+    :param userpool_appclientid: Userpool applcation client ID
+    :param username: Cognito user login
+    :param userpass: Cognito user password
+    :return: id_token, refresh_token, access_token
+    """
+
     user = Cognito(userpool_id, userpool_appclientid, username=username)
     user.authenticate(password=userpass)
     return {
@@ -39,10 +39,10 @@ def authenticate(userpool_id, userpool_appclientid, username, userpass):
     }
 
 
-def list_all_users(userpool_id):
-    client = boto3.client("cognito-idp")
+def list_all_users(aws_profile, userpool_id):
+    client = boto3.Session(profile_name=aws_profile).client("cognito-idp")
 
-    # MaxLimit is 60
+    # Max Limit=60
     resp = client.list_users(UserPoolId=userpool_id)
     user_list = resp["Users"]
     page_token = resp.get("PaginationToken")
@@ -119,7 +119,8 @@ def main(ini_file, init, section, tokens, list_users):
                     print(f"{token_name}:\n{token}\n")
 
             if list_users:
-                user_list = list_all_users(userpool_id)
+                profile = settings["aws.profile"]
+                user_list = list_all_users(profile, userpool_id)
                 print_users(user_list)
 
     except Exception as e:
