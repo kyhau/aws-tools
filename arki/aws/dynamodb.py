@@ -1,14 +1,18 @@
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
+from boto3.dynamodb.conditions import Attr
 import click
 import decimal
 import json
 import logging
+from os.path import join
 import sys
-from arki.aws import check_response, print_json
-from arki.configs import create_ini_template, read_configs
+from arki.aws import print_json
+from arki.configs import ARKI_LOCAL_STORE_ROOT, create_ini_template, read_configs, get_configs_sections
 from arki import init_logging
 
+
+# Default configuration file location
+ENV_STORE_FILE = join(ARKI_LOCAL_STORE_ROOT, "ddb.ini")
 
 DEFAULT_CONFIGS = {
     "aws.profile": {"required": True},
@@ -26,18 +30,15 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 
-def list_tables(aws_profile):
-    #paginator = client.get_paginator("list_tables")
-
+def list_all_tables(aws_profile):
     client = boto3.Session(profile_name=aws_profile).client("dynamodb")
-    resp = client.list_tables()
+    paginator = client.get_paginator("list_tables")
 
-    if check_response(resp):
-        cnt = 1
-        for table_name in resp["TableNames"]:
-            print(f"{cnt}: {table_name}")
-            cnt+=1
-        print("-------------------------")
+    # Limit is 100
+    tables = []
+    for page in paginator.paginate():
+        tables.extend(page["TableNames"])
+    return tables
 
 
 def describe_table(aws_profile, table_name):
@@ -97,13 +98,21 @@ def delete_items(aws_profile, table_name, field_name, field_value):
 
 
 @click.command()
-@click.argument("ini_file", required=False)
+@click.argument("ini_file", required=False, default=ENV_STORE_FILE)
 @click.option("--init", "-i", is_flag=True, help="Set up new configuration")
-@click.option("--table", "-t", help="Table name")
-@click.option("--scan", "-s", is_flag=True, help="Set up new configuration")
-def main(ini_file, init, table, scan):
+@click.option("--profile", "-p", help="The profile (section) to be used in the .ini file")
+@click.option("--list_tables", "-l", is_flag=True, help="Return all records of the given table name")
+@click.option("--describe_table", "-d", help="Describe the table of the given table name")
+@click.option("--scan_table", "-s", help="Return all records of the given table name")
+def main(ini_file, init, profile, list_tables, describe_table, scan_table):
     """
-    Reimport the API Swagger template to AWS.
+    aws_ddb prints all profiles (sections) defined in the .ini file, if any.
+
+    Use --list_tables to print all DynamoDB Tables that the given credentials have accessed to.
+
+    Use --describe_table TABLE_NAME to describe the given table (e.g. number of items etc.).
+
+    Use --scan_table TABLE_NAME to return all records of the given table name.
 
     Use --init to create a `ini_file` with the default template to start.
     """
@@ -120,25 +129,33 @@ def main(ini_file, init, table, scan):
             )
 
         else:
-            profile_name=None
-            if ini_file:
-                settings = read_configs(ini_file=ini_file, config_dict=DEFAULT_CONFIGS)
-                profile_name = settings["aws.profile"]
+            settings = read_configs(
+                ini_file=ini_file,
+                config_dict=DEFAULT_CONFIGS,
+                section_list=[profile] if profile else None
+            )
+            aws_profile = settings.get("aws.profile")
 
-            if table:
-                if scan:
-                    for item in scan_table(
-                        aws_profile=profile_name,
-                        table_name=table,
-                    ):
-                        print(item)
-                else:
-                    table_info = describe_table(aws_profile=profile_name, table_name=table)
-                    print_json(table_info)
+            if list_tables:
+                tables = list_all_tables(aws_profile=aws_profile)
+                cnt = 1
+                for table_name in tables:
+                    print(f"{cnt}: {table_name}")
+                    cnt+=1
+
+            elif describe_table:
+                table_info = describe_table(aws_profile=aws_profile, table_name=describe_table)
+                print_json(table_info)
+
+            elif scan_table:
+                for item in scan_table(aws_profile=aws_profile, table_name=scan_table):
+                    print(item)
 
             else:
-                list_tables(aws_profile=profile_name)
-
+                print(f"Profiles in {ENV_STORE_FILE}\n-------------------------")
+                sections = get_configs_sections(ini_file)
+                for s in sections:
+                    print(s)
 
     except Exception as e:
         logging.error(e)
