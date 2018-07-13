@@ -29,6 +29,7 @@ def create(python_version, name):
         version_digit_only = python_version.replace(".","")
 
         if system.is_linux():
+            # Create virtual env on Linux machine
             venv_name = name if name else f"env_{version_digit_only}"
 
             create_cmd = CMD_STR.format(
@@ -39,6 +40,7 @@ def create(python_version, name):
             activate_cmd = f". {venv_name}/bin/activate"
 
         elif system.is_windows():
+            # Create virtual env on Windows machine
             venv_name = name if name else f"env_{version_digit_only}_win"
 
             create_cmd = CMD_STR.format(

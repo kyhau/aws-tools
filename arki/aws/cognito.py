@@ -1,3 +1,4 @@
+import boto3
 import click
 import logging
 from os import environ
@@ -36,6 +37,43 @@ def authenticate(userpool_id, userpool_appclientid, username, userpass):
         "id_token": user.id_token,
         "refresh_token": user.refresh_token,
     }
+
+
+def list_all_users(userpool_id):
+    client = boto3.client("cognito-idp")
+
+    # MaxLimit is 60
+    resp = client.list_users(UserPoolId=userpool_id)
+    user_list = resp["Users"]
+    page_token = resp.get("PaginationToken")
+
+    while page_token:
+        resp = client.list_users(UserPoolId=userpool_id, PaginationToken=page_token)
+        user_list.extend(resp["Users"])
+        page_token = resp.get("PaginationToken")
+
+    return user_list
+
+
+def print_users(user_list):
+    lines = ["# Username, Enabled, UserStatus, UserCreateDate, UserLastModifiedDate, given_name, family_name"]
+
+    for u in user_list:
+        data = [
+            u["Username"],
+            "Enabled" if u["Enabled"] is True else "Disabled",
+            u["UserStatus"],
+            u["UserCreateDate"].strftime("%Y-%m-%d-%H:%M"),
+            u["UserLastModifiedDate"].strftime("%Y-%m-%d-%H:%M"),
+        ]
+        for a in u["Attributes"]:
+            if a["Name"] in ["given_name", "family_name"]:
+                data.append(a["Value"])
+        lines.append(f'{", ".join(data)}')
+
+    for line in lines:
+        print(line)
+    print(f"Total users: {len(user_list)}")
 
 
 @click.command()
@@ -81,10 +119,8 @@ def main(ini_file, init, section, tokens, list_users):
                     print(f"{token_name}:\n{token}\n")
 
             if list_users:
-                users = Cognito(userpool_id, userpool_appclientid).get_users()
-                for user in users:
-                    print(user.email)
-                print(f"Total: {len(users)}")
+                user_list = list_all_users(userpool_id)
+                print_users(user_list)
 
     except Exception as e:
         logging.error(e)
