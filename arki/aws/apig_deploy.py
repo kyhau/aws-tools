@@ -6,7 +6,7 @@ import logging
 import sys
 import yaml
 from arki.aws import check_response
-from arki.configs import create_ini_template, read_configs
+from arki.configs import create_ini_template, read_configs, tokenize_multiline_values
 from arki import init_logging
 
 
@@ -21,6 +21,12 @@ DEFAULT_CONFIGS = {
     "aws.apigateway.metricsenabled": {"default": True},
     "aws.apigateway.stagevariables": {"multilines": True},
 }
+
+
+def retrieve_apig_environments(settings):
+    """Retrieve environment variables to be set for a stage
+    """
+    return tokenize_multiline_values(settings, "aws.apigateway.stagevariables")
 
 
 def put_rest_api(apig_client, rest_api_id, swagger_file_yaml):
@@ -126,7 +132,7 @@ def main(ini_file, init, deploy):
             rest_api_id = settings["aws.apigateway.restapiid"]
             swagger_file_yaml = settings["aws.apigateway.swaggeryaml"]
             cache_cluster_enabled = settings.get("aws.apigateway.cacheclusterenabled", False)
-            stage_variables_dict = settings.get("aws.apigateway.stagevariables", {})
+            stage_variables_dict = retrieve_apig_environments(settings)
             cache_cluster_size = settings.get("aws.apigateway.cacheclustersize", 0)
 
             log_level = settings["aws.apigateway.logginglevel"]
