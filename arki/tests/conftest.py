@@ -12,10 +12,11 @@ import socket
 import tempfile
 
 
-logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
+def setup_logging():
+    logging.getLogger().setLevel(logging.DEBUG)
+    logging.getLogger("botocore").setLevel(logging.CRITICAL)
+    logging.getLogger("boto3").setLevel(logging.CRITICAL)
+    logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
 
 @pytest.fixture(scope="session")
@@ -32,6 +33,8 @@ def unittest_workspace(unittest_id):
     :param unittest_id: id of the unit test
     :return: workspace path and name
     """
+    setup_logging()
+
     dir_name = join(tempfile.gettempdir(), f"{unittest_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}")
     makedirs(dir_name)
 
@@ -66,11 +69,11 @@ aws.lambda.environment =
 aws.lambda.timeout = 90
     """
 
-    ini_file = create_sample_ini_file(unittest_workspace, "test1.ini", context)
+    ini_file = write_file(unittest_workspace, "test1.ini", context)
     return ini_file, default_configs
 
 
-def create_sample_ini_file(unittest_workspace, filename, context):
+def write_file(unittest_workspace, filename, context):
     """Create sample ini file
     """
     ini_file = join(unittest_workspace, filename)

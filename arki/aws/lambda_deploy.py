@@ -46,8 +46,7 @@ def prepare_func_configuration_args(settings, description):
     # Retrieve lambda environment variables in dict form
     env_vars = retrieve_lambda_environments(settings)
     if len(env_vars) > 0:
-        func_configuration_args["Environment"] = env_vars
-
+        func_configuration_args["Environment"] = {"Variables": env_vars}
     return func_configuration_args
 
 
@@ -91,7 +90,7 @@ def _lambda_deploy(settings, zipfile, description):
 @click.argument("ini_file", required=True)
 @click.option("--init", "-i", is_flag=True, help="Set up new configuration")
 @click.option("--zipfile", "-z", required=True, help="Zip file of the lambda function code")
-@click.option("--alias", "-z", required=True, help="Alias of the deployment")
+@click.option("--alias", "-a", required=True, help="Alias of the deployment")
 @click.option("--description", "-d", required=True, help="Description of the deployment")
 def lambda_deploy(ini_file, init, zipfile, alias, description):
     """
