@@ -53,26 +53,27 @@ def sample_configs_1(unittest_workspace):
         "aws.lambda.environment": {"multilines": True},
     }
 
-    lines = [
-        "[default]",
-        "aws.lambda.runtime = python3.6",
-        "aws.lambda.timeout = 60",
-        "aws.lambda.kmskey.arn =",
-        "aws.lambda.environment =",
-        "  x1: v1",
-        "  x2: v2",
-        "[dev]",
-        "aws.lambda.timeout = 90",
-    ]
-    ini_file = create_sample_ini_file(unittest_workspace, "test1.ini", lines)
+    context = """
+[default]
+aws.lambda.runtime = python3.6
+aws.lambda.timeout = 60
+aws.lambda.kmskey.arn =
+aws.lambda.environment =
+  x1: v1
+  x2: v2
+
+[dev]
+aws.lambda.timeout = 90
+    """
+
+    ini_file = create_sample_ini_file(unittest_workspace, "test1.ini", context)
     return ini_file, default_configs
 
 
-def create_sample_ini_file(unittest_workspace, filename, lines):
+def create_sample_ini_file(unittest_workspace, filename, context):
     """Create sample ini file
     """
     ini_file = join(unittest_workspace, filename)
     with open(ini_file, "w") as f:
-        for line in lines:
-            f.write(f"{line}\n")
+        f.write(context)
     return ini_file
