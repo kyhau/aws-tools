@@ -63,6 +63,8 @@ def create_ini_template(ini_file, module, config_dict, allow_overriding_default=
 
 
 def get_configs_sections(ini_file):
+    """Return list of the sections in the .ini file
+    """
     if not exists(ini_file):
         raise Exception(f"Configuration file not found: {ini_file}.")
 
@@ -72,8 +74,7 @@ def get_configs_sections(ini_file):
 
 
 def read_configs(ini_file, config_dict, section_list=None):
-    """
-    Retrieve settings from the ini file. Also check if any mandatory setting is missing.
+    """Retrieve settings from the ini file. Also check if any mandatory setting is missing.
     """
     if not exists(ini_file):
         raise Exception(f"Configuration file not found: {ini_file}.")
