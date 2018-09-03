@@ -1,6 +1,4 @@
-import boto3
 from click.testing import CliRunner
-from moto import mock_lambda
 from os import makedirs
 from os.path import join
 import pytest
@@ -9,7 +7,6 @@ from zipfile import ZipFile
 from arki.aws.lambda_deploy import (
     DEFAULT_CONFIGS,
     lambda_deploy,
-    prepare_func_configuration_args
 )
 from arki.configs import read_configs
 from arki.tests.conftest import write_file
@@ -19,7 +16,6 @@ from arki.tests.conftest import write_file
 def sample_lambda_deploy_ini(unittest_workspace):
     context = """
 [default]
-aws.profile = 
 aws.lambda.name = DummyFunction
 aws.lambda.handler = DummyFunction.lambda_handler
 aws.lambda.region = ap-southeast-2
@@ -64,34 +60,51 @@ def lambda_handler(event, context):
 
 
 @pytest.fixture
-def mock_sample_lambda(dummy_lambda_zip, sample_lambda_deploy_ini):
-    """Mock lambda service with moto
-    """
-    with mock_lambda():
-        client = boto3.client("lambda")
-
-        with open(dummy_lambda_zip, mode="rb") as fh:
-            byte_stream = fh.read()
-
-        settings = read_configs(
-            ini_file=sample_lambda_deploy_ini,
-            config_dict=DEFAULT_CONFIGS,
-            section_list=["dev"]
-        )
-
-        args = prepare_func_configuration_args(settings, "Unit test init DummyLambda")
-        args["Code"] = { "ZipFile": byte_stream}
-
-        ret = client.create_function(**args)
-
-        import json
-        json.dumps(ret)
-
-        yield client
+def mock_sample_settings(sample_lambda_deploy_ini):
+    return read_configs(
+        ini_file=sample_lambda_deploy_ini,
+        config_dict=DEFAULT_CONFIGS,
+        section_list=["dev"]
+    )
 
 
+@pytest.fixture
+def mock_lambda_update_function_code(mock_boto3_client):
+    update_function_code = mock_boto3_client("lambda", "ap-southeast-2").update_function_code
+    update_function_code.return_value = {
+        "ResponseMetadata": {"HTTPStatusCode": 200},
+        "Version": "dummy-version-123",
+        "RevisionId": "dummy-rid-123"
+    }
+    return update_function_code
 
-def todo_test_lambda_deploy_failed(mock_sample_lambda, sample_lambda_deploy_ini, dummy_lambda_zip):
+
+@pytest.fixture
+def mock_lambda_update_function_configuration(mock_boto3_client):
+    update_function_configuration = mock_boto3_client("lambda", "ap-southeast-2").update_function_configuration
+    update_function_configuration.return_value = {
+        "ResponseMetadata": {"HTTPStatusCode": 200},
+        "Version": "dummy-version-123",
+        "RevisionId": "dummy-rid-123"
+    }
+    return update_function_configuration
+
+
+@pytest.fixture
+def mock_lambda_update_alias(mock_boto3_client):
+    update_alias = mock_boto3_client("lambda", "ap-southeast-2").update_alias
+    update_alias.return_value = {
+        "ResponseMetadata": {"HTTPStatusCode": 200},
+        "FunctionVersion": "dummy-version-123",
+        "AliasArn": "dummy-alias-arn"
+    }
+    return update_alias
+
+
+def test_lambda_deploy_passed(
+        sample_lambda_deploy_ini, dummy_lambda_zip,
+        mock_lambda_update_function_code, mock_lambda_update_function_configuration, mock_lambda_update_alias
+):
     args = [
         "-z", dummy_lambda_zip,
         "-a", "dev",
@@ -100,5 +113,5 @@ def todo_test_lambda_deploy_failed(mock_sample_lambda, sample_lambda_deploy_ini,
     ]
     runner = CliRunner()
     result = runner.invoke(lambda_deploy, args)
-    assert result.exit_code == 1
+    assert result.exit_code == 0
 

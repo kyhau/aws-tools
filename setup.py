@@ -17,7 +17,7 @@ __summary__ = "This package includes some simple scripts for setting up local de
 __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
-    "boto3==1.8.2",
+    "boto3==1.8.6",
     "click==6.7",
     "docker==3.4.1",
     "warrant==0.6.1",

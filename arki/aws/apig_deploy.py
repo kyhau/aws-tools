@@ -127,7 +127,11 @@ def main(ini_file, init, deploy):
                 section_list=[deploy] if deploy else None
             )
 
-            apig_client = boto3.Session(profile_name=settings["aws.profile"]).client("apigateway")
+            profile_name = settings.get("aws.profile")
+            if profile_name is not None:
+                boto3.setup_default_session(profile_name=profile_name)
+
+            apig_client = boto3.client("apigateway")
 
             rest_api_id = settings["aws.apigateway.restapiid"]
             swagger_file_yaml = settings["aws.apigateway.swaggeryaml"]

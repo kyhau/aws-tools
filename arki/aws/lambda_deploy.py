@@ -8,7 +8,7 @@ from arki import init_logging
 
 
 DEFAULT_CONFIGS = {
-    "aws.profile": {"required": True},
+    "aws.profile": {"required": False},
     "aws.lambda.name": {"required": True},
     "aws.lambda.runtime": {"required": True},
     "aws.lambda.handler": {"required": True},
@@ -61,7 +61,11 @@ def _lambda_deploy(settings, zipfile, description):
     with open(zipfile, mode="rb") as fh:
         byte_stream = fh.read()
 
-    client = boto3.Session(profile_name=settings["aws.profile"]).client("lambda")
+    profile_name = settings.get("aws.profile")
+    if profile_name is not None:
+        boto3.setup_default_session(profile_name=profile_name)
+
+    client = boto3.client("lambda", settings["aws.lambda.region"])
 
     resp = client.update_function_code(
         FunctionName=lambda_function,

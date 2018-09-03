@@ -18,17 +18,16 @@ DEFAULT_CONFIGS = {
 }
 
 
-def add_lambda_permissions(aws_profile, lambda_function, lambda_aliases, resource_arns):
+def add_lambda_permissions(lambda_function, lambda_aliases, resource_arns):
     """
     Add lambda permission for all api gateway resources (routes) to access the lambda function
 
-    :param aws_profile: AWS profile name
     :param lambda_function: Name of the Lambda function
     :param lambda_aliases: List of Lambda aliases
     :param apig_resource_arns: List of ARNs of AWS resources
     """
 
-    lambda_client = boto3.Session(profile_name=aws_profile).client("lambda")
+    lambda_client = boto3.client("lambda")
 
     for lambda_alias in lambda_aliases:
         for (arn, statement_id) in resource_arns:
@@ -47,18 +46,17 @@ def add_lambda_permissions(aws_profile, lambda_function, lambda_aliases, resourc
                 logging.warning(str(e))
 
 
-def get_apig_resource_arns(aws_profile, apig_id, apig_region, apig_account_id):
+def get_apig_resource_arns(apig_id, apig_region, apig_account_id):
     """
     Return list of (resource-path-arns, statement-id)
 
-    :param aws_profile: AWS profile name
     :param apig_id: API Gateway ID (aka restapiid)
     :param apig_region: API Gateway region
     :param apig_account_id: AWS account ID of the API Gateway
-    :return:
+    :return: list of (resource-path-arns, statement-id)
     """
 
-    apig_client = boto3.Session(profile_name=aws_profile).client("apigateway")
+    apig_client = boto3.client("apigateway")
 
     resp = apig_client.get_resources(restApiId=apig_id, limit=50)
     if check_response(resp) is False:
@@ -100,15 +98,15 @@ def lambda_permissions_to_apig(ini_file, init):
         else:
             settings = read_configs(ini_file=ini_file, config_dict=DEFAULT_CONFIGS)
 
+            boto3.setup_default_session(profile_name=settings["aws.profile"])
+
             arn_list = get_apig_resource_arns(
-                aws_profile=settings["aws.profile"],
                 apig_id=settings["aws.apigateway.restapiid"],
                 apig_region=settings["aws.apigateway.region"],
                 apig_account_id=settings["aws.apigateway.accountid"]
             )
 
             add_lambda_permissions(
-                aws_profile=settings["aws.profile"],
                 lambda_function=settings["aws.lambda.name"],
                 lambda_aliases=settings.get("aws.lambda.aliases", [None]),
                 resource_arns=arn_list

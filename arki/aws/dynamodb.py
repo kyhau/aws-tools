@@ -30,8 +30,7 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 
-def list_ddb_tables(aws_profile):
-    client = boto3.Session(profile_name=aws_profile).client("dynamodb")
+def list_ddb_tables(client):
     paginator = client.get_paginator("list_tables")
 
     # Limit is 100
@@ -41,14 +40,14 @@ def list_ddb_tables(aws_profile):
     return tables
 
 
-def describe_ddb_table(aws_profile, table_name):
-    return boto3.Session(profile_name=aws_profile).client("dynamodb").describe_table(TableName=table_name)["Table"]
+def describe_ddb_table(client, table_name):
+    return client.describe_table(TableName=table_name)["Table"]
 
 
-def list_items_with_pagination(aws_profile, table_name, field_name=None, field_value=None):
+def list_items_with_pagination(client, table_name, field_name=None, field_value=None):
     """Scan and return all items
     """
-    paginator = boto3.Session(profile_name=aws_profile).client("dynamodb").get_paginator("scan")
+    paginator = client.get_paginator("scan")
 
     operation_params = {"TableName": table_name,}
     if field_name and field_value:
@@ -63,11 +62,9 @@ def list_items_with_pagination(aws_profile, table_name, field_name=None, field_v
         yield page["Items"]
 
 
-def scan_ddb_table(aws_profile, table_name, field_name=None, field_value=None):
+def scan_ddb_table(table, field_name=None, field_value=None):
     """Scan and return all items
     """
-    table = boto3.Session(profile_name=aws_profile).resource("dynamodb").Table(table_name)
-
     if field_value and field_value:
         resp = table.scan(FilterExpression=Attr(field_name).eq(field_value))
         items = resp["Items"]
@@ -86,13 +83,13 @@ def scan_ddb_table(aws_profile, table_name, field_name=None, field_value=None):
     return items
 
 
-def delete_items(aws_profile, table_name, field_name, field_value):
-    keys = describe_ddb_table(aws_profile=aws_profile, table_name=table_name)["KeySchema"]
+def delete_items(client, table_name, field_name, field_value):
+    keys = describe_ddb_table(client, table_name=table_name)["KeySchema"]
     key1 = keys[0]["AttributeName"]
 
-    table = boto3.Session(profile_name=aws_profile).resource("dynamodb").Table(table_name)
+    table = boto3.resource("dynamodb").Table(table_name)
 
-    for item in scan_ddb_table(aws_profile, table_name, field_name, field_value):
+    for item in scan_ddb_table(table, field_name, field_value):
         logging.debug(f"Deleting item with key({key1}): {item[key1]}...")
         table.delete_item(Key={key1: item[key1]})
 
@@ -134,21 +131,23 @@ def main(ini_file, init, profile, list_tables, describe_table, scan_table):
                 config_dict=DEFAULT_CONFIGS,
                 section_list=[profile] if profile else None
             )
-            aws_profile = settings.get("aws.profile")
+            boto3.setup_default_session(profile_name=settings["aws.profile"])
+            client = boto3.client("dynamodb")
 
             if list_tables:
-                tables = list_ddb_tables(aws_profile=aws_profile)
+                tables = list_ddb_tables(client)
                 cnt = 1
                 for table_name in tables:
                     print(f"{cnt}: {table_name}")
                     cnt+=1
 
             elif describe_table:
-                table_info = describe_ddb_table(aws_profile=aws_profile, table_name=describe_table)
+                table_info = describe_ddb_table(client, table_name=describe_table)
                 print_json(table_info)
 
             elif scan_table:
-                for item in scan_ddb_table(aws_profile=aws_profile, table_name=scan_table):
+                table = boto3.resource("dynamodb").Table(scan_table)
+                for item in scan_ddb_table(table):
                     print(item)
 
             else:

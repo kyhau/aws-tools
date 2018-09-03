@@ -11,12 +11,8 @@ from shutil import rmtree
 import socket
 import tempfile
 
-
-def setup_logging():
-    logging.getLogger().setLevel(logging.DEBUG)
-    logging.getLogger("botocore").setLevel(logging.CRITICAL)
-    logging.getLogger("boto3").setLevel(logging.CRITICAL)
-    logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
+from arki import init_logging
+init_logging(log_level=logging.DEBUG)
 
 
 @pytest.fixture(scope="session")
@@ -33,18 +29,22 @@ def unittest_workspace(unittest_id):
     :param unittest_id: id of the unit test
     :return: workspace path and name
     """
-    setup_logging()
-
     dir_name = join(tempfile.gettempdir(), f"{unittest_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}")
-    makedirs(dir_name)
+    makedirs(dir_name, exist_ok=True)
 
     yield dir_name
 
     try:
         if exists(dir_name):
             rmtree(dir_name)
+            logging.debug(f"Removing workspace {dir_name}")
     except Exception as e:
-        print("Failed to delete {}".format(dir_name))
+        logging.error("Failed to delete {}".format(dir_name))
+
+
+@pytest.fixture
+def mock_boto3_client(mocker):
+    return mocker.patch("boto3.client", autospec=True)
 
 
 @pytest.fixture
