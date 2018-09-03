@@ -33,6 +33,7 @@ def init_logging(log_level=logging.INFO, show_time=False):
         level=log_level,
         format=f"{log_time}%(levelname)-8s {PACKAGE_NAME}: %(message)s",
     )
+    logging.getLogger().setLevel(log_level)
     logging.getLogger("botocore").setLevel(logging.CRITICAL)
     logging.getLogger("boto3").setLevel(logging.CRITICAL)
     logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)

@@ -17,7 +17,7 @@ __summary__ = "This package includes some simple scripts for setting up local de
 __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
-    "boto3==1.7.50",
+    "boto3==1.8.6",
     "click==6.7",
     "docker==3.4.1",
     "warrant==0.6.1",
@@ -35,6 +35,7 @@ entry_points = {
         "aws_ddb = arki.aws.dynamodb:main",
         "aws_ecs_list_task_definitions = arki.aws.ecs:main",
         "aws_ecs_register_task_definition = arki.aws.ecs_register_task_definition:main",
+        "aws_lambda_deploy = arki.aws.lambda_deploy:main",
         "aws_lambda_permissions_to_apig = arki.aws.lambda_permissions:lambda_permissions_to_apig",
         "aws_profile = arki.aws.profiles:main",
         "dockerc = arki.docker:find_non_running_containers",

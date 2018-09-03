@@ -59,14 +59,13 @@ def register_task_definition(ini_file, init, image, cpu, memory, ecs_task_role, 
             )
 
         else:
-            profile_name=None
             if ini_file:
                 settings = read_configs(ini_file=ini_file, config_dict=DEFAULT_CONFIGS)
-                profile_name = settings["aws.profile"]
+                boto3.setup_default_session(profile_name=settings["aws.profile"])
 
             family_name = get_family_name(image)
 
-            resp = boto3.Session(profile_name=profile_name).client("ecs").register_task_definition(
+            resp = boto3.client("ecs").register_task_definition(
                 family=family_name,
                 taskRoleArn=ecs_task_role,
                 executionRoleArn=ecs_execution_role,

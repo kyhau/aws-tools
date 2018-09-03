@@ -12,8 +12,8 @@ DEFAULT_CONFIGS = {
 }
 
 
-def list_task_definitions(aws_profile, family_name):
-    client = boto3.Session(profile_name=aws_profile).client("ecs")
+def list_task_definitions(family_name):
+    client = boto3.client("ecs")
     if family_name is None:
         resp = client.list_task_definitions(status="ACTIVE", sort="DESC")
     else:
@@ -27,8 +27,8 @@ def list_task_definitions(aws_profile, family_name):
         cnt += 1
 
 
-def task_definition(aws_profile, arn):
-    client = boto3.Session(profile_name=aws_profile).client("ecs")
+def task_definition(arn):
+    client = boto3.client("ecs")
     resp = client.describe_task_definition(taskDefinition=arn)
     print(json.dumps(resp["taskDefinition"], sort_keys=True, indent=2))
 
@@ -57,15 +57,14 @@ def main(ini_file, init, family, detail):
             )
 
         else:
-            profile_name=None
             if ini_file:
                 settings = read_configs(ini_file=ini_file, config_dict=DEFAULT_CONFIGS)
-                profile_name = settings["aws.profile"]
+                boto3.setup_default_session(profile_name=settings["aws.profile"])
 
             if detail:
-                task_definition(aws_profile=profile_name, arn=detail)
+                task_definition(arn=detail)
             else:
-                list_task_definitions(aws_profile=profile_name, family_name=family)
+                list_task_definitions(family_name=family)
 
     except Exception as e:
         logging.error(e)

@@ -39,8 +39,14 @@ def authenticate(userpool_id, userpool_appclientid, username, userpass):
     }
 
 
-def list_all_users(aws_profile, userpool_id):
-    client = boto3.Session(profile_name=aws_profile).client("cognito-idp")
+def list_all_users(userpool_id):
+    """
+    List all users
+
+    :param userpool_id: Userpool ID
+    :return: List of users
+    """
+    client = boto3.client("cognito-idp")
 
     # Max Limit=60
     resp = client.list_users(UserPoolId=userpool_id)
@@ -119,8 +125,8 @@ def main(ini_file, init, section, tokens, list_users):
                     print(f"{token_name}:\n{token}\n")
 
             if list_users:
-                profile = settings["aws.profile"]
-                user_list = list_all_users(profile, userpool_id)
+                boto3.setup_default_session(profile_name=settings["aws.profile"])
+                user_list = list_all_users(userpool_id)
                 print_users(user_list)
 
     except Exception as e:

@@ -63,6 +63,8 @@ def create_ini_template(ini_file, module, config_dict, allow_overriding_default=
 
 
 def get_configs_sections(ini_file):
+    """Return list of the sections in the .ini file
+    """
     if not exists(ini_file):
         raise Exception(f"Configuration file not found: {ini_file}.")
 
@@ -72,8 +74,7 @@ def get_configs_sections(ini_file):
 
 
 def read_configs(ini_file, config_dict, section_list=None):
-    """
-    Retrieve settings from the ini file. Also check if any mandatory setting is missing.
+    """Retrieve settings from the ini file. Also check if any mandatory setting is missing.
     """
     if not exists(ini_file):
         raise Exception(f"Configuration file not found: {ini_file}.")
@@ -90,7 +91,10 @@ def read_configs(ini_file, config_dict, section_list=None):
         for option in config.options(section):
             val = config.get(section, option)
             if option in config_dict.keys() and config_dict[option].get("multilines") is True:
-                ret[option] = process_multi_lines_config(val)
+                ret[option] = [
+                    n.strip() for n in re.split(";|, |\n", config.get(section, option)) \
+                    if n.strip() and not n.strip().startswith("#") # ignore commented line
+                ]
             else:
                 ret[option] = val
 
@@ -105,16 +109,11 @@ def read_configs(ini_file, config_dict, section_list=None):
     return ret
 
 
-def process_multi_lines_config(values_str):
-    """Return list of values of multi-lines config
+def tokenize_multiline_values(settings, config_name, delimiter=":"):
+    """Retrieve environment variables to be set for a stage
     """
-    try:
-        return [
-            n.strip() for n in re.split(';| |, |\*|\n', values_str) \
-            #ignore commented line
-            if n.strip() and not n.strip().startswith('#')
-        ]
-    except Exception as e:
-        logging.error(e)
-    return []
-
+    env_vars = {}
+    for env_var in settings.get(config_name, []):
+        v = env_var.split(delimiter)
+        env_vars[v[0].strip()] = v[1].strip()
+    return env_vars
