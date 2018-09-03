@@ -3,8 +3,7 @@ import click
 import json
 import logging
 import sys
-from arki.configs import create_ini_template, read_configs
-from arki import init_logging
+from arki.aws.base_helper import BaseHelper
 
 
 DEFAULT_CONFIGS = {
@@ -46,21 +45,11 @@ def main(ini_file, init, family, detail):
     """
 
     try:
-        init_logging()
+        helper = BaseHelper(DEFAULT_CONFIGS, ini_file)
 
         if init:
-            create_ini_template(
-                ini_file=ini_file,
-                module=__file__,
-                config_dict=DEFAULT_CONFIGS,
-                allow_overriding_default=True
-            )
-
+            helper._create_ini_template(module=__file__, allow_overriding_default=True)
         else:
-            if ini_file:
-                settings = read_configs(ini_file=ini_file, config_dict=DEFAULT_CONFIGS)
-                boto3.setup_default_session(profile_name=settings["aws.profile"])
-
             if detail:
                 task_definition(arn=detail)
             else:

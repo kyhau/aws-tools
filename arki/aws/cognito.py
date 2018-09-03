@@ -4,8 +4,8 @@ import logging
 from os.path import join
 import sys
 from warrant import Cognito
-from arki.configs import ARKI_LOCAL_STORE_ROOT, create_ini_template, read_configs
-from arki import init_logging
+from arki.aws.base_helper import BaseHelper
+from arki.configs import ARKI_LOCAL_STORE_ROOT
 
 
 # Default configuration file location
@@ -29,7 +29,6 @@ def authenticate(userpool_id, userpool_appclientid, username, userpass):
     :param userpass: Cognito user password
     :return: id_token, refresh_token, access_token
     """
-
     user = Cognito(userpool_id, userpool_appclientid, username=username)
     user.authenticate(password=userpass)
     return {
@@ -96,24 +95,13 @@ def main(ini_file, init, section, tokens, list_users):
     """
 
     try:
-        init_logging()
+        helper = BaseHelper(DEFAULT_CONFIGS, ini_file, stage_section=section)
 
         if init:
-            create_ini_template(
-                ini_file=ini_file,
-                module=__file__,
-                config_dict=DEFAULT_CONFIGS,
-                allow_overriding_default=True
-            )
-
+            helper._create_ini_template(module=__file__, allow_overriding_default=True)
         else:
-            settings = read_configs(
-                ini_file=ini_file,
-                config_dict=DEFAULT_CONFIGS,
-                section_list=[section] if section else None
-            )
-            userpool_id = settings["aws.cognito.userpool.id"]
-            userpool_appclientid = settings["aws.cognito.userpool.appclientid"]
+            userpool_id = helper.settings["aws.cognito.userpool.id"]
+            userpool_appclientid = helper.settings["aws.cognito.userpool.appclientid"]
 
             if tokens:
                 data = tokens.split(":")
@@ -125,7 +113,6 @@ def main(ini_file, init, section, tokens, list_users):
                     print(f"{token_name}:\n{token}\n")
 
             if list_users:
-                boto3.setup_default_session(profile_name=settings["aws.profile"])
                 user_list = list_all_users(userpool_id)
                 print_users(user_list)
 

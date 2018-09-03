@@ -4,8 +4,7 @@ import logging
 import re
 import sys
 from arki.aws import check_response
-from arki.configs import create_ini_template, read_configs
-from arki import init_logging
+from arki.aws.base_helper import BaseHelper
 
 
 DEFAULT_CONFIGS = {
@@ -86,29 +85,20 @@ def lambda_permissions_to_apig(ini_file, init):
     """
 
     try:
-        init_logging()
+        helper = BaseHelper(DEFAULT_CONFIGS, ini_file)
 
         if init:
-            create_ini_template(
-                ini_file=ini_file,
-                module=__file__,
-                config_dict=DEFAULT_CONFIGS
-            )
-
+            helper._create_ini_template(module=__file__, allow_overriding_default=False)
         else:
-            settings = read_configs(ini_file=ini_file, config_dict=DEFAULT_CONFIGS)
-
-            boto3.setup_default_session(profile_name=settings["aws.profile"])
-
             arn_list = get_apig_resource_arns(
-                apig_id=settings["aws.apigateway.restapiid"],
-                apig_region=settings["aws.apigateway.region"],
-                apig_account_id=settings["aws.apigateway.accountid"]
+                apig_id=helper.settings["aws.apigateway.restapiid"],
+                apig_region=helper.settings["aws.apigateway.region"],
+                apig_account_id=helper.settings["aws.apigateway.accountid"]
             )
 
             add_lambda_permissions(
-                lambda_function=settings["aws.lambda.name"],
-                lambda_aliases=settings.get("aws.lambda.aliases", [None]),
+                lambda_function=helper.settings["aws.lambda.name"],
+                lambda_aliases=helper.settings.get("aws.lambda.aliases", [None]),
                 resource_arns=arn_list
             )
 

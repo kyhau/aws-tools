@@ -33,7 +33,7 @@ def update_ini(ini_file=ARKI_LOCAL_INI, config_updates=None):
         config.write(configfile)
 
 
-def create_ini_template(ini_file, module, config_dict, allow_overriding_default=False):
+def create_ini_template(ini_file, module, config_dict, allow_overriding_default=True):
     """
     Create ini template for the given module
     :param ini_file: file name of the .ini file

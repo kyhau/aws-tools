@@ -7,8 +7,8 @@ import logging
 from os.path import join
 import sys
 from arki.aws import print_json
-from arki.configs import ARKI_LOCAL_STORE_ROOT, create_ini_template, read_configs, get_configs_sections
-from arki import init_logging
+from arki.aws.base_helper import BaseHelper
+from arki.configs import ARKI_LOCAL_STORE_ROOT, get_configs_sections
 
 
 # Default configuration file location
@@ -115,23 +115,11 @@ def main(ini_file, init, profile, list_tables, describe_table, scan_table):
     """
 
     try:
-        init_logging()
+        helper = BaseHelper(DEFAULT_CONFIGS, ini_file, stage_section=profile)
 
         if init:
-            create_ini_template(
-                ini_file=ini_file,
-                module=__file__,
-                config_dict=DEFAULT_CONFIGS,
-                allow_overriding_default=True
-            )
-
+            helper._create_ini_template(module=__file__, allow_overriding_default=True)
         else:
-            settings = read_configs(
-                ini_file=ini_file,
-                config_dict=DEFAULT_CONFIGS,
-                section_list=[profile] if profile else None
-            )
-            boto3.setup_default_session(profile_name=settings["aws.profile"])
             client = boto3.client("dynamodb")
 
             if list_tables:

@@ -12,7 +12,7 @@ __author__ = "kyhau"
 __email__ = "virtualda@gmail.com"
 
 __title__ = "arki"
-__version__ = "0.1.0"
+__version__ = "0.2.0.dev0"
 __summary__ = "This package includes some simple scripts for setting up local development environment."
 __uri__ = "https://github.com/kyhau/arki"
 

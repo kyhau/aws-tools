@@ -6,8 +6,8 @@ import logging
 import sys
 import yaml
 from arki.aws import check_response
-from arki.configs import create_ini_template, read_configs, tokenize_multiline_values
-from arki import init_logging
+from arki.aws.base_helper import BaseHelper
+from arki.configs import tokenize_multiline_values
 
 
 DEFAULT_CONFIGS = {
@@ -110,38 +110,23 @@ def main(ini_file, init, deploy):
     """
 
     try:
-        init_logging()
+        helper = BaseHelper(DEFAULT_CONFIGS, ini_file, stage_section=deploy)
+
 
         if init:
-            create_ini_template(
-                ini_file=ini_file,
-                module=__file__,
-                config_dict=DEFAULT_CONFIGS,
-                allow_overriding_default=True
-            )
-
+            helper._create_ini_template(module=__file__, allow_overriding_default=True)
         else:
-            settings = read_configs(
-                ini_file=ini_file,
-                config_dict=DEFAULT_CONFIGS,
-                section_list=[deploy] if deploy else None
-            )
-
-            profile_name = settings.get("aws.profile")
-            if profile_name is not None:
-                boto3.setup_default_session(profile_name=profile_name)
-
             apig_client = boto3.client("apigateway")
 
-            rest_api_id = settings["aws.apigateway.restapiid"]
-            swagger_file_yaml = settings["aws.apigateway.swaggeryaml"]
-            cache_cluster_enabled = settings.get("aws.apigateway.cacheclusterenabled", False)
-            stage_variables_dict = retrieve_apig_environments(settings)
-            cache_cluster_size = settings.get("aws.apigateway.cacheclustersize", 0)
+            rest_api_id = helper.settings["aws.apigateway.restapiid"]
+            swagger_file_yaml = helper.settings["aws.apigateway.swaggeryaml"]
+            cache_cluster_enabled = helper.settings.get("aws.apigateway.cacheclusterenabled", False)
+            stage_variables_dict = retrieve_apig_environments(helper.settings)
+            cache_cluster_size = helper.settings.get("aws.apigateway.cacheclustersize", 0)
 
-            log_level = settings["aws.apigateway.logginglevel"]
-            data_trace_enabled = settings["aws.apigateway.datatraceenabled"]
-            metrics_enabled = settings["aws.apigateway.metricsenabled"]
+            log_level = helper.settings["aws.apigateway.logginglevel"]
+            data_trace_enabled = helper.settings["aws.apigateway.datatraceenabled"]
+            metrics_enabled = helper.settings["aws.apigateway.metricsenabled"]
 
             # Put the rest api to AWS
             if put_rest_api(apig_client, rest_api_id, swagger_file_yaml) is False:

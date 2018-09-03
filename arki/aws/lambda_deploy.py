@@ -3,8 +3,8 @@ import click
 import logging
 import sys
 from arki.aws import check_response
-from arki.configs import create_ini_template, read_configs, tokenize_multiline_values
-from arki import init_logging
+from arki.aws.base_helper import BaseHelper
+from arki.configs import tokenize_multiline_values
 
 
 DEFAULT_CONFIGS = {
@@ -102,25 +102,13 @@ def lambda_deploy(ini_file, init, zipfile, alias, description):
     """
 
     try:
-        init_logging()
+        helper = BaseHelper(DEFAULT_CONFIGS, ini_file, stage_section=alias)
 
         if init:
-            create_ini_template(
-                ini_file=ini_file,
-                module=__file__,
-                config_dict=DEFAULT_CONFIGS,
-                allow_overriding_default=True
-            )
-
+            helper._create_ini_template(module=__file__, allow_overriding_default=True)
         else:
-            settings = read_configs(
-                ini_file=ini_file,
-                config_dict=DEFAULT_CONFIGS,
-                section_list=[alias] if alias else None
-            )
-
             _lambda_deploy(
-                settings=settings,
+                settings=helper.settings,
                 zipfile=zipfile,
                 description=description
             )
