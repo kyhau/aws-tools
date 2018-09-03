@@ -115,3 +115,21 @@ def test_lambda_deploy_passed(
     result = runner.invoke(lambda_deploy, args)
     assert result.exit_code == 0
 
+    mock_lambda_update_function_configuration.assert_any_call(
+        Description="Unit test description",
+        Environment={"Variables": {"x1": "v1", "x2": "v2"}},
+        FunctionName="DummyFunction",
+        Handler="DummyFunction.lambda_handler",
+        MemorySize=2048,
+        Role="arn:aws:iam::111111111111:role/DummyFunction-Lambda-ExecuteRole",
+        Runtime="python3.6",
+        Timeout=60
+    )
+
+    mock_lambda_update_alias.assert_any_call(
+        FunctionName="DummyFunction",
+        Name="DEV",
+        FunctionVersion="dummy-version-123",
+        Description="Unit test description",
+    )
+
