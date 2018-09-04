@@ -39,7 +39,7 @@ def prepare_func_configuration_args(settings, description):
         "Timeout": int(settings["aws.lambda.timeout"]),
     }
 
-    kms_key_arn = settings["aws.lambda.kmskey.arn"]
+    kms_key_arn = settings.get("aws.lambda.kmskey.arn")
     if kms_key_arn:
         func_configuration_args["KMSKeyArn"] = kms_key_arn
 
