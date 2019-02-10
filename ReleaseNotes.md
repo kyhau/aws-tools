@@ -1,3 +1,9 @@
+0.2.0 - 2019-xx-xx
+==================
+
+- Changed to use `toml` as the default configuration file format.
+- Changed to use `functools.wraps` for initialising/retrieving settings.
+
 0.1.0 - 2018-07-05
 ==================
 

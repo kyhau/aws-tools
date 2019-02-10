@@ -22,7 +22,7 @@ def print_all_console_scripts(package_name):
     return entrypoints
 
 
-def init_logging(log_level=logging.INFO, show_time=False):
+def init_logging(log_level=logging.DEBUG, show_time=False):
     """
     Initialise basic logging to console.
     :param log_level: logging level. Default: INFO

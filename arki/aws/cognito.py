@@ -1,15 +1,17 @@
 import boto3
 import click
 import logging
-from os.path import join
-import sys
+from os.path import basename
 from warrant import Cognito
-from arki.aws.base_helper import BaseHelper
-from arki.configs import ARKI_LOCAL_STORE_ROOT
+from arki.configs import (
+    init_wrapper,
+    default_config_file_path,
+)
 
+APP_NAME = basename(__file__).split('.')[0]
 
 # Default configuration file location
-ENV_STORE_FILE = join(ARKI_LOCAL_STORE_ROOT, "cognito.ini")
+DEFAULT_CONFIG_FILE = default_config_file_path(f"{APP_NAME}.toml")
 
 DEFAULT_CONFIGS = {
     "aws.profile": {"required": True},
@@ -81,43 +83,50 @@ def print_users(user_list):
     print(f"Total users: {len(user_list)}")
 
 
-@click.command()
-@click.argument("ini_file", required=False, default=ENV_STORE_FILE)
-@click.option("--init", "-i", is_flag=True, help="Set up new configuration")
-@click.option("--section", "-s", required=False, default="prod", help="Choices: [dev, prod], default=prod")
-@click.option("--tokens", "-t", required=False, help="Return tokens for user_id:user_password")
-@click.option("--list_users", "-l", is_flag=True, help="List all users of a Cognito user pool specified with `section`")
-def main(ini_file, init, section, tokens, list_users):
-    """
-    aws_cognito supports getting tokens for a Cognito user and list all users of a User Pool.
-
-    Use --init to create a `ini_file` with the default template to start.
-    """
-
+@init_wrapper
+def process(*args, **kwargs):
     try:
-        helper = BaseHelper(DEFAULT_CONFIGS, ini_file, stage_section=section)
+        settings = kwargs.get("_arki_settings")
+        tokens = kwargs.get("tokens")
+        list_users = kwargs.get("list_users")
 
-        if init:
-            helper._create_ini_template(module=__file__, allow_overriding_default=True)
-        else:
-            userpool_id = helper.settings["aws.cognito.userpool.id"]
-            userpool_appclientid = helper.settings["aws.cognito.userpool.appclientid"]
+        userpool_id = settings["aws.cognito.userpool.id"]
+        userpool_appclientid = settings["aws.cognito.userpool.appclientid"]
 
-            if tokens:
-                data = tokens.split(":")
-                uname = data[0].strip().lower()
-                upass = data[1].strip()
+        if tokens:
+            data = tokens.split(":")
+            uname = data[0].strip().lower()
+            upass = data[1].strip()
 
-                ret_tokens = authenticate(userpool_id, userpool_appclientid, uname, upass)
-                for token_name, token in ret_tokens.items():
-                    print(f"{token_name}:\n{token}\n")
+            ret_tokens = authenticate(userpool_id, userpool_appclientid, uname, upass)
+            for token_name, token in ret_tokens.items():
+                print(f"{token_name}:\n{token}\n")
 
-            if list_users:
-                user_list = list_all_users(userpool_id)
-                print_users(user_list)
+        if list_users:
+            user_list = list_all_users(userpool_id)
+            print_users(user_list)
 
     except Exception as e:
         logging.error(e)
-        sys.exit(1)
+        return 1
 
-    sys.exit(0)
+    return 0
+
+
+@click.command()
+@click.argument("config_file", required=False, default=DEFAULT_CONFIG_FILE)
+@click.option("--config_section", "-s", required=False, default=APP_NAME, help=f"E.g. {APP_NAME}.staging")
+@click.option("--tokens", "-t", required=False, help="Return tokens for user_id:user_password")
+@click.option("--list_users", "-l", is_flag=True, help="List all users of a Cognito user pool specified with `section`")
+def main(config_file, config_section, tokens, list_users):
+    """
+    aws_cognito supports getting tokens for a Cognito user and list all users of a User Pool.
+    """
+    process(
+        app_name=APP_NAME,
+        config_file=config_file,
+        default_configs=DEFAULT_CONFIGS,
+        config_section=config_section,
+        tokens=tokens,
+        list_users=list_users,
+    )
