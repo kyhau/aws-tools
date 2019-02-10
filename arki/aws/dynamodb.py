@@ -4,15 +4,18 @@ import click
 import decimal
 import json
 import logging
-from os.path import join
-import sys
+from os.path import basename
 from arki.aws import print_json
-from arki.aws.base_helper import BaseHelper
-from arki.configs import ARKI_LOCAL_STORE_ROOT, get_configs_sections
+from arki.configs import (
+    init_wrapper,
+    default_config_file_path,
+)
 
+
+APP_NAME = basename(__file__).split('.')[0]
 
 # Default configuration file location
-ENV_STORE_FILE = join(ARKI_LOCAL_STORE_ROOT, "ddb.ini")
+DEFAULT_CONFIG_FILE = default_config_file_path(f"{APP_NAME}.toml")
 
 DEFAULT_CONFIGS = {
     "aws.profile": {"required": True},
@@ -94,16 +97,55 @@ def delete_items(client, table_name, field_name, field_value):
         table.delete_item(Key={key1: item[key1]})
 
 
+@init_wrapper
+def process(*args, **kwargs):
+    try:
+        config_file = kwargs.get("config_file")
+        configs = kwargs.get("_arki_configs")
+        settings = kwargs.get("_arki_settings")
+        list_tables = kwargs.get("list_tables")
+        describe_table = kwargs.get("describe_table")
+        scan_table = kwargs.get("scan_table")
+
+        client = boto3.client("dynamodb")
+
+        if list_tables:
+            tables = list_ddb_tables(client)
+            cnt = 1
+            for table_name in tables:
+                print(f"{cnt}: {table_name}")
+                cnt += 1
+
+        elif describe_table:
+            table_info = describe_ddb_table(client, table_name=describe_table)
+            print_json(table_info)
+
+        elif scan_table:
+            table = boto3.resource("dynamodb").Table(scan_table)
+            for item in scan_ddb_table(table):
+                print(item)
+
+        else:
+            print(f"Profiles in {config_file}\n-------------------------")
+            for s in configs.keys():
+                print(s)
+
+    except Exception as e:
+        logging.error(e)
+        return 1
+
+    return 0
+
+
 @click.command()
-@click.argument("ini_file", required=False, default=ENV_STORE_FILE)
-@click.option("--init", "-i", is_flag=True, help="Set up new configuration")
-@click.option("--profile", "-p", help="The profile (section) to be used in the .ini file")
+@click.argument("config_file", required=False, default=DEFAULT_CONFIG_FILE)
+@click.option("--config_section", "-s", required=False, default=APP_NAME, help=f"E.g. {APP_NAME}.staging")
 @click.option("--list_tables", "-l", is_flag=True, help="Return all records of the given table name")
 @click.option("--describe_table", "-d", help="Describe the table of the given table name")
 @click.option("--scan_table", "-s", help="Return all records of the given table name")
-def main(ini_file, init, profile, list_tables, describe_table, scan_table):
+def main(config_file, config_section, list_tables, describe_table, scan_table):
     """
-    aws_ddb prints all profiles (sections) defined in the .ini file, if any.
+    aws_ddb prints all profiles (sections) defined in the toml file, if any.
 
     Use --list_tables to print all DynamoDB Tables that the given credentials have accessed to.
 
@@ -114,38 +156,12 @@ def main(ini_file, init, profile, list_tables, describe_table, scan_table):
     Use --init to create a `ini_file` with the default template to start.
     """
 
-    try:
-        helper = BaseHelper(DEFAULT_CONFIGS, ini_file, stage_section=profile)
-
-        if init:
-            helper._create_ini_template(module=__file__, allow_overriding_default=True)
-        else:
-            client = boto3.client("dynamodb")
-
-            if list_tables:
-                tables = list_ddb_tables(client)
-                cnt = 1
-                for table_name in tables:
-                    print(f"{cnt}: {table_name}")
-                    cnt+=1
-
-            elif describe_table:
-                table_info = describe_ddb_table(client, table_name=describe_table)
-                print_json(table_info)
-
-            elif scan_table:
-                table = boto3.resource("dynamodb").Table(scan_table)
-                for item in scan_ddb_table(table):
-                    print(item)
-
-            else:
-                print(f"Profiles in {ENV_STORE_FILE}\n-------------------------")
-                sections = get_configs_sections(ini_file)
-                for s in sections:
-                    print(s)
-
-    except Exception as e:
-        logging.error(e)
-        sys.exit(1)
-
-    sys.exit(0)
+    process(
+        app_name=APP_NAME,
+        config_file=config_file,
+        default_configs=DEFAULT_CONFIGS,
+        config_section=config_section,
+        list_tables=list_tables,
+        describe_table=describe_table,
+        scan_table=scan_table,
+    )

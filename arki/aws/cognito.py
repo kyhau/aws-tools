@@ -115,7 +115,7 @@ def process(*args, **kwargs):
 
 @click.command()
 @click.argument("config_file", required=False, default=DEFAULT_CONFIG_FILE)
-@click.option("--config_section", "-s", required=False, default="cognito", help="E.g. cognito, cognito.dev; default=cognito")
+@click.option("--config_section", "-s", required=False, default=APP_NAME, help=f"E.g. {APP_NAME}.staging")
 @click.option("--tokens", "-t", required=False, help="Return tokens for user_id:user_password")
 @click.option("--list_users", "-l", is_flag=True, help="List all users of a Cognito user pool specified with `section`")
 def main(config_file, config_section, tokens, list_users):

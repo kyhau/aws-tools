@@ -1,11 +1,19 @@
 import boto3
 import click
 import logging
+from os.path import basename
 import re
-import sys
-from arki.aws import check_response
-from arki.aws.base_helper import BaseHelper
 
+from arki.aws import check_response
+from arki.configs import (
+    init_wrapper,
+    default_config_file_path,
+)
+
+APP_NAME = basename(__file__).split('.')[0]
+
+# Default configuration file location
+DEFAULT_CONFIG_FILE = default_config_file_path(f"{APP_NAME}.toml")
 
 DEFAULT_CONFIGS = {
     "aws.profile": {"required": True},
@@ -74,36 +82,39 @@ def get_apig_resource_arns(apig_id, apig_region, apig_account_id):
     return arn_list
 
 
-@click.command()
-@click.argument("ini_file", required=True)
-@click.option("--init", "-i", is_flag=True, help="Set up new configuration")
-def lambda_permissions_to_apig(ini_file, init):
-    """
-    Add Lambda Permissions to a API Gateway.
-
-    Use --init to create a `ini_file` with the default template to start.
-    """
-
+@init_wrapper
+def process(*args, **kwargs):
     try:
-        helper = BaseHelper(DEFAULT_CONFIGS, ini_file)
+        settings = kwargs.get("_arki_settings")
 
-        if init:
-            helper._create_ini_template(module=__file__, allow_overriding_default=False)
-        else:
-            arn_list = get_apig_resource_arns(
-                apig_id=helper.settings["aws.apigateway.restapiid"],
-                apig_region=helper.settings["aws.apigateway.region"],
-                apig_account_id=helper.settings["aws.apigateway.accountid"]
-            )
+        arn_list = get_apig_resource_arns(
+            apig_id=settings["aws.apigateway.restapiid"],
+            apig_region=settings["aws.apigateway.region"],
+            apig_account_id=settings["aws.apigateway.accountid"]
+        )
 
-            add_lambda_permissions(
-                lambda_function=helper.settings["aws.lambda.name"],
-                lambda_aliases=helper.settings.get("aws.lambda.aliases", [None]),
-                resource_arns=arn_list
-            )
-
+        add_lambda_permissions(
+            lambda_function=settings["aws.lambda.name"],
+            lambda_aliases=settings.get("aws.lambda.aliases", [None]),
+            resource_arns=arn_list
+        )
     except Exception as e:
         logging.error(e)
-        sys.exit(1)
+        return 1
 
-    sys.exit(0)
+    return 0
+
+
+@click.command()
+@click.argument("config_file", required=False, default=DEFAULT_CONFIG_FILE)
+@click.option("--config_section", "-s", required=False, default=APP_NAME, help=f"E.g. {APP_NAME}.staging")
+def lambda_permissions_to_apig(config_file, config_section):
+    """
+    Add Lambda Permissions to a API Gateway.
+    """
+    process(
+        app_name=APP_NAME,
+        config_file=config_file,
+        default_configs=DEFAULT_CONFIGS,
+        config_section=config_section,
+    )

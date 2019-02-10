@@ -15,7 +15,7 @@ from arki import (
 
 
 ARKI_LOCAL_STORE_ROOT = join(expanduser("~"), ".arki")
-ARKI_LOCAL_INI = join(ARKI_LOCAL_STORE_ROOT, "arki.ini")
+ARKI_LOCAL_INI = join(ARKI_LOCAL_STORE_ROOT, "arki.toml")
 
 makedirs(ARKI_LOCAL_STORE_ROOT, 0o755, exist_ok=True)
 
@@ -107,6 +107,7 @@ def init_wrapper(func):
                 logging.debug(f"Set up default aws profile section: {profile_name}")
                 boto3.setup_default_session(profile_name=profile_name)
 
+            kwargs["_arki_configs"] = helper.configs
             kwargs["_arki_settings"] = settings
 
             logging.debug("Start running actual function")

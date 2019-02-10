@@ -3,12 +3,18 @@ import click
 import io
 import json
 import logging
-import sys
+from os.path import basename
 import yaml
 from arki.aws import check_response
-from arki.aws.base_helper import BaseHelper
-from arki.configs import tokenize_multiline_values
+from arki.configs import (
+    init_wrapper,
+    default_config_file_path,
+)
 
+APP_NAME = basename(__file__).split('.')[0]
+
+# Default configuration file location
+DEFAULT_CONFIG_FILE = default_config_file_path(f"{APP_NAME}.toml")
 
 DEFAULT_CONFIGS = {
     "aws.profile": {"required": True},
@@ -21,12 +27,6 @@ DEFAULT_CONFIGS = {
     "aws.apigateway.metricsenabled": {"default": True},
     "aws.apigateway.stagevariables": {"multilines": True},
 }
-
-
-def retrieve_apig_environments(settings):
-    """Retrieve environment variables to be set for a stage
-    """
-    return tokenize_multiline_values(settings, "aws.apigateway.stagevariables")
 
 
 def put_rest_api(apig_client, rest_api_id, swagger_file_yaml):
@@ -95,71 +95,76 @@ def update_stage_logging(apig_client, rest_api_id, stage_name, data_trace_enable
     return check_response(resp)
 
 
+@init_wrapper
+def process(*args, **kwargs):
+    try:
+        settings = kwargs.get("_arki_settings")
+        deploy = kwargs.get("deploy")
+
+        apig_client = boto3.client("apigateway")
+
+        rest_api_id = settings["aws.apigateway.restapiid"]
+        swagger_file_yaml = settings["aws.apigateway.swaggeryaml"]
+        cache_cluster_enabled = settings.get("aws.apigateway.cacheclusterenabled", False)
+        stage_variables_dict = settings.get("aws.apigateway.stagevariables", {})
+        cache_cluster_size = settings.get("aws.apigateway.cacheclustersize", 0)
+
+        log_level = settings["aws.apigateway.logginglevel"]
+        data_trace_enabled = settings["aws.apigateway.datatraceenabled"]
+        metrics_enabled = settings["aws.apigateway.metricsenabled"]
+
+        # Put the rest api to AWS
+        if put_rest_api(apig_client, rest_api_id, swagger_file_yaml) is False:
+            raise Exception("Failed to reimport the api swagger file. Aborted")
+
+        if deploy:
+            # Create a deployment for the given stage
+            ret = create_deployment(
+                apig_client=apig_client,
+                rest_api_id=rest_api_id,
+                stage_name=deploy,
+                stage_variables_dict=stage_variables_dict,
+                cache_cluster_enabled=cache_cluster_enabled,
+                cache_cluster_size=cache_cluster_size
+            )
+            if ret:
+                ret = update_stage_logging(
+                    apig_client=apig_client,
+                    rest_api_id=rest_api_id,
+                    stage_name=deploy,
+                    data_trace_enabled=data_trace_enabled,
+                    log_level=log_level,
+                    metrics_enabled=metrics_enabled
+                )
+            if ret and cache_cluster_enabled:
+                ret = flush_cache(apig_client, rest_api_id, deploy)
+                if ret is False:
+                    raise Exception("Failed to flush cache.")
+            else:
+                raise Exception("Failed to create deployment stage. Aborted")
+
+    except Exception as e:
+        logging.error(e)
+        return 1
+
+    return 0
+
+
 @click.command()
-@click.argument("ini_file", required=True)
-@click.option("--init", "-i", is_flag=True, help="Set up new configuration")
-@click.option("--deploy", "-d", required=False, help="Deploy the current rest api to a stage. Choices: [dev, staging, v1]")
-def main(ini_file, init, deploy):
+@click.argument("config_file", required=False, default=DEFAULT_CONFIG_FILE)
+@click.option("--config_section", "-s", required=False, default=APP_NAME, help=f"E.g. {APP_NAME}.staging")
+@click.option("--deploy", "-d", required=False, help="Deploy the current rest api to a stage. Choices: [test, staging, v1]")
+def main(config_file, config_section, deploy):
     """
     Reimport the API Swagger template to AWS.
-
-    Use --init to create a `ini_file` with the default template to start.
 
     If `deploy` is specified, the program will instead deploy the current REST
     api to the specified stage.
     """
-
-    try:
-        helper = BaseHelper(DEFAULT_CONFIGS, ini_file, stage_section=deploy)
-
-
-        if init:
-            helper._create_ini_template(module=__file__, allow_overriding_default=True)
-        else:
-            apig_client = boto3.client("apigateway")
-
-            rest_api_id = helper.settings["aws.apigateway.restapiid"]
-            swagger_file_yaml = helper.settings["aws.apigateway.swaggeryaml"]
-            cache_cluster_enabled = helper.settings.get("aws.apigateway.cacheclusterenabled", False)
-            stage_variables_dict = retrieve_apig_environments(helper.settings)
-            cache_cluster_size = helper.settings.get("aws.apigateway.cacheclustersize", 0)
-
-            log_level = helper.settings["aws.apigateway.logginglevel"]
-            data_trace_enabled = helper.settings["aws.apigateway.datatraceenabled"]
-            metrics_enabled = helper.settings["aws.apigateway.metricsenabled"]
-
-            # Put the rest api to AWS
-            if put_rest_api(apig_client, rest_api_id, swagger_file_yaml) is False:
-                raise Exception("Failed to reimport the api swagger file. Aborted")
-
-            if deploy:
-                # Create a deployment for the given stage
-                ret = create_deployment(
-                    apig_client=apig_client,
-                    rest_api_id=rest_api_id,
-                    stage_name=deploy,
-                    stage_variables_dict=stage_variables_dict,
-                    cache_cluster_enabled=cache_cluster_enabled,
-                    cache_cluster_size=cache_cluster_size
-                )
-                if ret:
-                    ret = update_stage_logging(
-                        apig_client=apig_client,
-                        rest_api_id=rest_api_id,
-                        stage_name=deploy,
-                        data_trace_enabled=data_trace_enabled,
-                        log_level=log_level,
-                        metrics_enabled=metrics_enabled
-                    )
-                if ret and cache_cluster_enabled:
-                    ret = flush_cache(apig_client, rest_api_id, deploy)
-                    if ret is False:
-                        raise Exception("Failed to flush cache.")
-                else:
-                    raise Exception("Failed to create deployment stage. Aborted")
-
-    except Exception as e:
-        logging.error(e)
-        sys.exit(1)
-
-    sys.exit(0)
+    process(
+        app_name=APP_NAME,
+        config_file=config_file,
+        default_configs=DEFAULT_CONFIGS,
+        config_section=config_section,
+        deployt=deploy,
+    )
