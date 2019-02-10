@@ -81,10 +81,12 @@ class ConfigsHelper():
 
 
 def init_wrapper(func):
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         init_logging()
-        logging.debug(args, kwargs)
+        logging.debug("At wrapper")
+        logging.debug(kwargs)
 
         config_file = kwargs.get("config_file", kwargs.get("default_config_file"))
         default_configs = kwargs.get("default_configs")
@@ -102,8 +104,8 @@ def init_wrapper(func):
 
             settings = helper.settings(config_sections=[config_section])
 
-            profile_name = settings["aws.profile"]
-            if profile_name is not None:
+            profile_name = settings.get("aws.profile")
+            if profile_name:
                 logging.debug(f"Set up default aws profile section: {profile_name}")
                 boto3.setup_default_session(profile_name=profile_name)
 
@@ -114,7 +116,9 @@ def init_wrapper(func):
             return_code = func(*args, **kwargs)
 
         except Exception as e:
-            print(e)
+            import traceback
+            traceback.print_stack()
+            logging.error(e)
             return_code = 1
 
         sys.exit(return_code)

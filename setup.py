@@ -18,7 +18,7 @@ __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
     "boto3==1.9.91",
-    "click==6.7",
+    "click==7.0",
     "docker==3.5.1",
     "pypiwin32==220; sys_platform == 'win32' and python_version >= '3.6'",
     "toml==0.10.0",

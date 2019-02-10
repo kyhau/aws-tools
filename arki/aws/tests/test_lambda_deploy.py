@@ -4,40 +4,34 @@ from os.path import join
 import pytest
 from zipfile import ZipFile
 
-from arki.aws.lambda_deploy import (
-    DEFAULT_CONFIGS,
-    lambda_deploy,
-)
-from arki.configs import read_configs
+from arki.aws.lambda_deploy import lambda_deploy
 from arki.tests.conftest import write_file
 
 
 @pytest.fixture
-def sample_lambda_deploy_ini(unittest_workspace):
+def sample_lambda_deploy_toml(unittest_workspace):
     context = """
-[default]
-aws.lambda.name = DummyFunction
-aws.lambda.handler = DummyFunction.lambda_handler
-aws.lambda.region = ap-southeast-2
-aws.lambda.role.arn = arn:aws:iam::111111111111:role/DummyFunction-Lambda-ExecuteRole
-aws.lambda.runtime = python3.6
-aws.lambda.memory = 2048
-aws.lambda.timeout = 60
-aws.lambda.kmskey.arn =
-aws.lambda.environment =
-  x1: v1
-  x2: v2
+[DummyFunction]
+'aws.lambda.name' = 'DummyFunction'
+'aws.lambda.handler' = 'DummyFunction.lambda_handler'
+'aws.lambda.region' = 'ap-southeast-2'
+'aws.lambda.role.arn' = 'arn:aws:iam::111111111111:role/DummyFunction-Lambda-ExecuteRole'
+'aws.lambda.runtime' = 'python3.6'
+'aws.lambda.memory' = 2048
+'aws.lambda.timeout' = 60
+'aws.lambda.kmskey.arn' = ''
+'aws.lambda.environment' = {'x1' = 'v1', 'x2' = 'v2'}
 
-[dev]
-aws.lambda.alias = DEV
+[DummyFunction.dev]
+'aws.lambda.alias' = 'DEV'
 
-[staging]
-aws.lambda.alias = STAGING
+[DummyFunction.staging]
+'aws.lambda.alias' = 'STAGING'
 
-[v1]
-aws.lambda.alias = V1
+[DummyFunction.v1]
+'aws.lambda.alias' = 'V1'
     """
-    return write_file(unittest_workspace, "test_lambda_deploy_1.ini", context)
+    return write_file(unittest_workspace, "test_lambda_deploy_1.toml", context)
 
 
 @pytest.fixture(scope="session")
@@ -57,15 +51,6 @@ def lambda_handler(event, context):
         fz.write(func_file, arcname="lambda_function.py")
 
     return func_zip
-
-
-@pytest.fixture
-def mock_sample_settings(sample_lambda_deploy_ini):
-    return read_configs(
-        ini_file=sample_lambda_deploy_ini,
-        config_dict=DEFAULT_CONFIGS,
-        section_list=["dev"]
-    )
 
 
 @pytest.fixture
@@ -102,15 +87,21 @@ def mock_lambda_update_alias(mock_boto3_client):
 
 
 def test_lambda_deploy_passed(
-        sample_lambda_deploy_ini, dummy_lambda_zip,
-        mock_lambda_update_function_code, mock_lambda_update_function_configuration, mock_lambda_update_alias
+        sample_lambda_deploy_toml,
+        dummy_lambda_zip,
+        mock_lambda_update_function_code,
+        mock_lambda_update_function_configuration,
+        mock_lambda_update_alias
 ):
     args = [
         "-z", dummy_lambda_zip,
-        "-a", "dev",
         "-d", "Unit test description",
-        sample_lambda_deploy_ini,
+        "-s", "DummyFunction.dev",
+        sample_lambda_deploy_toml,
     ]
+
+    print("CgeckPtasdad khdakjndkadhahfkajd")
+
     runner = CliRunner()
     result = runner.invoke(lambda_deploy, args)
     assert result.exit_code == 0

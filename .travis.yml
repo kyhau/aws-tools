@@ -17,7 +17,7 @@ before_install:
 
 # command to install dependencies
 install:
-    - pip install -r requirements-build.txt
+    - pip install -U -r requirements-build.txt
 
 # command to run tests
 script:

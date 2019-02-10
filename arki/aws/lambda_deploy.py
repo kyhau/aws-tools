@@ -36,8 +36,8 @@ def prepare_func_configuration_args(settings, description):
         "Handler": settings["aws.lambda.handler"],
         "Role": settings["aws.lambda.role.arn"],
         "Runtime": settings["aws.lambda.runtime"],
-        "MemorySize": int(settings["aws.lambda.memory"]),
-        "Timeout": int(settings["aws.lambda.timeout"]),
+        "MemorySize": settings["aws.lambda.memory"],
+        "Timeout": settings["aws.lambda.timeout"],
     }
 
     kms_key_arn = settings.get("aws.lambda.kmskey.arn")
@@ -54,10 +54,10 @@ def prepare_func_configuration_args(settings, description):
 def _lambda_deploy(settings, zipfile, description):
 
     lambda_function = settings["aws.lambda.name"]
-    lambda_alias = settings["aws.lambda.alias"]
+    lambda_alias = settings.get("aws.lambda.alias")
     func_configuration_args = prepare_func_configuration_args(settings, description)
 
-    logging.info(f"Deploying to {lambda_alias}: {func_configuration_args}")
+    logging.info(f"Deploying (alias={lambda_alias}): {func_configuration_args}")
 
     with open(zipfile, mode="rb") as fh:
         byte_stream = fh.read()
@@ -81,18 +81,22 @@ def _lambda_deploy(settings, zipfile, description):
     check_response(resp)
     logging.info(f"Updated function config: Version={resp['Version']}, RevisionId={resp['RevisionId']}")
 
-    resp = client.update_alias(
-        FunctionName=lambda_function,
-        Name=lambda_alias,
-        FunctionVersion=version,
-        Description=description,
-    )
-    check_response(resp)
-    logging.info(f"Updated alias on Version={resp['FunctionVersion']}: AliasArn={resp['AliasArn']}")
+    if lambda_alias:
+        resp = client.update_alias(
+            FunctionName=lambda_function,
+            Name=lambda_alias,
+            FunctionVersion=version,
+            Description=description,
+        )
+        check_response(resp)
+        logging.info(f"Updated alias on Version={resp['FunctionVersion']}: AliasArn={resp['AliasArn']}")
 
 
 @init_wrapper
 def process(*args, **kwargs):
+    logging.debug("At process")
+    logging.debug(kwargs)
+
     try:
         settings = kwargs.get("_arki_settings")
         zipfile = kwargs.get("zipfile")
