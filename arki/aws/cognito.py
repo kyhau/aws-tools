@@ -8,9 +8,10 @@ from arki.configs import (
     default_config_file_path,
 )
 
+APP_NAME = basename(__file__).split('.')[0]
 
 # Default configuration file location
-DEFAULT_CONFIG_FILE = default_config_file_path("cognito.ini")
+DEFAULT_CONFIG_FILE = default_config_file_path(f"{APP_NAME}.toml")
 
 DEFAULT_CONFIGS = {
     "aws.profile": {"required": True},
@@ -122,7 +123,7 @@ def main(config_file, config_section, tokens, list_users):
     aws_cognito supports getting tokens for a Cognito user and list all users of a User Pool.
     """
     process(
-        module=basename(__file__).split('.')[0],
+        app_name=APP_NAME,
         config_file=config_file,
         default_configs=DEFAULT_CONFIGS,
         config_section=config_section,

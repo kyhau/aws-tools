@@ -25,8 +25,8 @@ def default_config_file_path(filename):
 
 
 class ConfigsHelper():
-    def __init__(self, module, default_configs, config_file):
-        self.module = module
+    def __init__(self, app_name, default_configs, config_file):
+        self.app_name = app_name
         self.default_configs = default_configs
         self.config_file = config_file
         self.configs = {}
@@ -57,7 +57,7 @@ class ConfigsHelper():
 
     def create_ini_template(self, allow_overriding_default=True):
         """
-        Create ini template for the given module
+        Create ini template for the given app_name
 
         :param allow_overriding_default: True if allowing other section to override the default section
         :raise Exception: if file already exists
@@ -65,15 +65,15 @@ class ConfigsHelper():
         if exists(self.config_file):
             raise Exception(f"{self.config_file} already exists. Aborted")
 
-        self.configs[self.module] = {
+        self.configs[self.app_name] = {
             k : v.get("default") if v.get("default") is not None else ""
             for k, v in self.default_configs.items()
         }
 
         if allow_overriding_default:
             # Add other section to override those in [default] (e.g. for staging)
-            self.configs[self.module]["test"] = {}
-            self.configs[self.module]["prod"] = {}
+            self.configs[self.app_name]["test"] = {}
+            self.configs[self.app_name]["prod"] = {}
 
         with open(self.config_file, "w") as f:
             toml.dump(self.configs, f)
@@ -90,11 +90,11 @@ def init_wrapper(func):
         default_configs = kwargs.get("default_configs")
         config_section = kwargs.get("config_section")
         allow_overriding_default = kwargs.get("allow_overriding_default", True)
-        module = kwargs.get("module")
+        app_name = kwargs.get("app_name")
         return_code = 0
 
         try:
-            helper = ConfigsHelper(module, default_configs, config_file)
+            helper = ConfigsHelper(app_name, default_configs, config_file)
             if exists(config_file):
                 helper.load_configs()
             else:
@@ -141,11 +141,11 @@ def update_ini(ini_file=ARKI_LOCAL_INI, config_updates=None):
         config.write(configfile)
 
 
-def create_ini_template(ini_file, module, config_dict, allow_overriding_default=True):
+def create_ini_template(ini_file, app_name, config_dict, allow_overriding_default=True):
     """
-    Create ini template for the given module
+    Create ini template for the given app_name
     :param ini_file: file name of the .ini file
-    :param module: __file__ of the caller file
+    :param app_name: __file__ of the caller file
     :param config_dict: default settings
     :param allow_overriding_default: True if allowing other section to override the default section
     :raise Exception: if file already exists
@@ -154,7 +154,7 @@ def create_ini_template(ini_file, module, config_dict, allow_overriding_default=
         raise Exception(f"{ini_file} already exists. Aborted")
 
     lines = [
-        f"# {PACKAGE_NAME} {basename(module).split('.')[0]} configurations\n\n",
+        f"# {PACKAGE_NAME} {basename(app_name).split('.')[0]} configurations\n\n",
         "[default]\n"
     ]
     lines.extend([
