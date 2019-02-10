@@ -1,16 +1,124 @@
+import boto3
 import configparser
+from functools import wraps
 import logging
 from os.path import basename, expanduser, exists, join
 from os import makedirs
 import re
-from arki import PACKAGE_NAME
+import sys
+import toml
+
+from arki import (
+    init_logging,
+    PACKAGE_NAME,
+)
 
 
 ARKI_LOCAL_STORE_ROOT = join(expanduser("~"), ".arki")
 ARKI_LOCAL_INI = join(ARKI_LOCAL_STORE_ROOT, "arki.ini")
 
-
 makedirs(ARKI_LOCAL_STORE_ROOT, 0o755, exist_ok=True)
+
+
+def default_config_file_path(filename):
+    return join(ARKI_LOCAL_STORE_ROOT, filename)
+
+
+class ConfigsHelper():
+    def __init__(self, module, default_configs, config_file):
+        self.module = module
+        self.default_configs = default_configs
+        self.config_file = config_file
+        self.configs = {}
+
+    def settings(self, config_sections):
+        ret = {}
+
+        for curr_section in config_sections:
+            levels = curr_section.split(".")
+            curr_section_block = self.configs
+            for i in levels:
+                if i not in curr_section_block:
+                    raise Exception(f"Section '{i}' not found. Aborted")
+                curr_section_block = curr_section_block[i]
+                ret.update(curr_section_block)
+
+        passed = True
+        for k, v in self.default_configs.items():
+            if v.get("required", False) is True and ret.get(k) is None:
+                logging.error(f"Missing setting: {k}")
+                passed = False
+        if not passed:
+            raise Exception("Missing mandatory settings in config file. Aborted")
+        return ret
+
+    def load_configs(self):
+        self.configs = toml.load(self.config_file)
+
+    def create_ini_template(self, allow_overriding_default=True):
+        """
+        Create ini template for the given module
+
+        :param allow_overriding_default: True if allowing other section to override the default section
+        :raise Exception: if file already exists
+        """
+        if exists(self.config_file):
+            raise Exception(f"{self.config_file} already exists. Aborted")
+
+        self.configs[self.module] = {
+            k : v.get("default") if v.get("default") is not None else ""
+            for k, v in self.default_configs.items()
+        }
+
+        if allow_overriding_default:
+            # Add other section to override those in [default] (e.g. for staging)
+            self.configs[self.module]["test"] = {}
+            self.configs[self.module]["prod"] = {}
+
+        with open(self.config_file, "w") as f:
+            toml.dump(self.configs, f)
+            logging.info(f"{self.config_file} created")
+
+
+def init_wrapper(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        init_logging()
+        logging.debug(args, kwargs)
+
+        config_file = kwargs.get("config_file", kwargs.get("default_config_file"))
+        default_configs = kwargs.get("default_configs")
+        config_section = kwargs.get("config_section")
+        allow_overriding_default = kwargs.get("allow_overriding_default", True)
+        module = kwargs.get("module")
+        return_code = 0
+
+        try:
+            helper = ConfigsHelper(module, default_configs, config_file)
+            if exists(config_file):
+                helper.load_configs()
+            else:
+                helper.create_ini_template(allow_overriding_default)
+
+            settings = helper.settings(config_sections=[config_section])
+
+            profile_name = settings["aws.profile"]
+            if profile_name is not None:
+                logging.debug(f"Set up default aws profile section: {profile_name}")
+                boto3.setup_default_session(profile_name=profile_name)
+
+            kwargs["_arki_settings"] = settings
+
+            logging.debug("Start running actual function")
+            return_code = func(*args, **kwargs)
+
+        except Exception as e:
+            print(e)
+            return_code = 1
+
+        sys.exit(return_code)
+
+    return wrapper
 
 
 def update_ini(ini_file=ARKI_LOCAL_INI, config_updates=None):
