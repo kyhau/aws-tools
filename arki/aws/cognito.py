@@ -130,5 +130,3 @@ def main(config_file, config_section, tokens, list_users):
         tokens=tokens,
         list_users=list_users,
     )
-
-main()
