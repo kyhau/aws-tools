@@ -33,7 +33,6 @@ def find_non_running_containers(remove):
             logging.info("Removed non-running images")
 
 
-
 @click.command()
 @click.option("--remove", "-r", is_flag=True, help="Remove dangling images")
 def find_dangling_images(remove):
