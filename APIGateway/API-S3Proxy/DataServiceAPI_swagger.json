@@ -1,0 +1,305 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Data Service at https://api.example.com/dataservice",
+    "version": "2016-10-13T23:04:43Z",
+    "title": "DataService",
+    "contact": {
+      "email": "admin@example.com"
+    }
+  },
+  "host": "todo_apig_id.execute-api.ap-southeast-2.amazonaws.com",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/item": {
+      "get": {
+        "summary": "Retrieve a file from the datastore.",
+        "description": "Retrieve a file from the datastore.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "File name with full destination path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "content-type": {
+                "type": "string"
+              },
+              "Content-Type": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "sigv4": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "credentials": "arn:aws:iam::123456789012:role/DataService-ApigAwsProxyRole",
+          "responses": {
+            "4\\d{2}": {
+              "statusCode": "400"
+            },
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.content-type": "integration.response.header.content-type",
+                "method.response.header.Content-Type": "integration.response.header.Content-Type"
+              }
+            },
+            "5\\d{2}": {
+              "statusCode": "500"
+            }
+          },
+          "requestParameters": {
+            "integration.request.path.key": "method.request.querystring.key"
+          },
+          "uri": "arn:aws:apigateway:ap-southeast-2:s3:path/${stageVariables.bucket}/{key}",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "aws"
+        }
+      },
+      "head": {
+        "summary": "Test if a file exists in the datastore.",
+        "description": "Test if a file exists in the datastore.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "File name with full destination path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Content-Length": {
+                "type": "string"
+              },
+              "Content-Type": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "sigv4": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "credentials": "arn:aws:iam::123456789012:role/DataService-ApigAwsProxyRole",
+          "responses": {
+            "4\\d{2}": {
+              "statusCode": "400"
+            },
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Content-Type": "integration.response.header.Content-Type",
+                "method.response.header.Content-Length": "integration.response.header.Content-Length"
+              }
+            },
+            "5\\d{2}": {
+              "statusCode": "500"
+            }
+          },
+          "requestParameters": {
+            "integration.request.path.key": "method.request.querystring.key"
+          },
+          "uri": "arn:aws:apigateway:ap-southeast-2:s3:path/${stageVariables.bucket}/{key}",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "HEAD",
+          "type": "aws"
+        }
+      },
+      "put": {
+        "summary": "Add a file to the datastore.",
+        "description": "Add a file to the datastore.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "File name with full destination path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Content-Length": {
+                "type": "string"
+              },
+              "Content-Type": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "sigv4": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "credentials": "arn:aws:iam::123456789012:role/DataService-ApigAwsProxyRole",
+          "responses": {
+            "4\\d{2}": {
+              "statusCode": "400"
+            },
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Content-Type": "integration.response.header.Content-Type",
+                "method.response.header.Content-Length": "integration.response.header.Content-Length"
+              }
+            },
+            "5\\d{2}": {
+              "statusCode": "500"
+            }
+          },
+          "requestParameters": {
+            "integration.request.path.key": "method.request.querystring.key",
+            "integration.request.header.x-amz-acl": "'authenticated-read'",
+            "integration.request.header.Expect": "'100-continue'"
+          },
+          "uri": "arn:aws:apigateway:ap-southeast-2:s3:path/${stageVariables.bucket}/{key}",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "PUT",
+          "type": "aws"
+        }
+      },
+      "delete": {
+        "summary": "Delete a file from the datastore.",
+        "description": "Delete a file from the datastore.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "File name with full destination path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Content-Length": {
+                "type": "string"
+              },
+              "Content-Type": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "sigv4": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "credentials": "arn:aws:iam::123456789012:role/DataService-ApigAwsProxyRole",
+          "responses": {
+            "4\\d{2}": {
+              "statusCode": "400"
+            },
+            "default": {
+              "statusCode": "200"
+            },
+            "5\\d{2}": {
+              "statusCode": "500"
+            }
+          },
+          "requestParameters": {
+            "integration.request.path.key": "method.request.querystring.key"
+          },
+          "uri": "arn:aws:apigateway:ap-southeast-2:s3:path/${stageVariables.bucket}/{key}",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "DELETE",
+          "type": "aws"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "sigv4": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "query",
+      "x-amazon-apigateway-authtype": "awsSigv4"
+    }
+  },
+  "definitions": {
+    "Empty": {
+      "type": "object",
+      "title": "Empty Schema",
+      "properties": {}
+    }
+  }
+}

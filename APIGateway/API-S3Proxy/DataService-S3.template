@@ -1,0 +1,86 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Create S3 for Data Service",
+
+  "Parameters": {
+    "ApigAwsExecutionRoleName": {
+      "Description": "The name of the apig-aws execution role. If you don't specify a name.",
+      "Type": "String",
+      "Default": "DataService-ApigAwsProxyRole"
+    },
+    "BucketName": {
+      "Description": "The name of the S3 bucket to be created.",
+      "Type": "String",
+      "Default": "data-service"
+    },
+    "Stage": {
+      "Description": "Specify the stage of the Data Service the infrastructure is built to support.",
+      "Type": "String",
+      "AllowedValues": ["Stage", "Prod"],
+      "Default": "Stage"
+    }
+  },
+
+  "Conditions": {
+    "IsProduction": {"Fn::Equals": ["Prod", {"Ref": "Stage"}]}
+  },
+
+  "Resources": {
+
+    "S3BucketLogs": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketName": {"Fn::Join": ["-", [{"Ref": "BucketName"}, "logs"]]},
+        "VersioningConfiguration": {"Status": "Suspended" }
+      }
+    },
+    "S3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "DependsOn": ["S3BucketLogs"],
+      "Properties": {
+        "BucketName": {"Ref":"BucketName"},
+        "AccessControl": "BucketOwnerFullControl",
+        "LoggingConfiguration": {"DestinationBucketName": {"Ref": "S3BucketLogs" }},
+        "VersioningConfiguration": {"Status": {"Fn::If": ["IsProduction", "Enabled", "Suspended"]} }
+      },
+      "DeletionPolicy": "Retain"
+    },
+    "ManagedPolicyS3ReadWriteDelete": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["S3Bucket"],
+      "Properties": {
+        "Description": "Managed Policy for accessing S3 bucket (read/write/delete)",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["s3:ListAllMyBuckets"],
+              "Resource": "arn:aws:s3:::*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:ListBucket",
+                "s3:GetBucketLocation"
+              ],
+              "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "BucketName" }]]}
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:Put*",
+                "s3:GetObject",
+                "s3:DeleteObject"
+              ],
+              "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "BucketName" }, "/*" ]]}
+            }
+          ]
+        },
+        "Roles": [{"Ref": "ApigAwsExecutionRoleName"}]
+      }
+    }
+  }
+}
