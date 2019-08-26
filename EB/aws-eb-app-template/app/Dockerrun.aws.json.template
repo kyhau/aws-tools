@@ -1,0 +1,18 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Authentication": {
+    "Bucket": "sample-service-configs",
+    "Key": ".dockercfg"
+  },
+  "Image": {
+    "Name": "$SAMPLE_SERVICE_STAGE_TAG",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "8080"
+    }
+  ],
+  "Volumes": [],
+  "Command": "pserve $CONFIG_FILE --reload"
+}

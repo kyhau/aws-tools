@@ -1,0 +1,18 @@
+branch-defaults:
+  default:
+    environment: SampleService-v1
+    group_suffix: null
+global:
+  application_name: SampleService
+  branch: null
+  default_ec2_keyname: todo-my-sampleservice-key
+  default_platform: Docker 17.06.2-ce
+  default_region: ap-southeast-2
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: todo-my-eb-deploy
+  repository: null
+  sc: null
+  workspace_type: Application

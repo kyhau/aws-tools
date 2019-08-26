@@ -1,0 +1,52 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Grant the entire API Gateway service proper permissions to read and write logs to CloudWatch for your account. You need to do this once.",
+
+  "Parameters": {
+    "AwsAccountName": {
+      "Description": "The AWS account name or prefix.",
+      "Type": "String"
+    }
+  },
+
+  "Resources": {
+    "ApigAccount": {
+      "Type" : "AWS::ApiGateway::Account",
+      "DependsOn": "ApigCloudWatchLogRole",
+      "Properties" : {
+        "CloudWatchRoleArn": {"Fn::GetAtt": ["ApigCloudWatchLogRole", "Arn"]}
+      }
+    },
+    "ApigCloudWatchLogRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {"Fn::Join": ["-", [{"Ref": "AwsAccountName"}, "CloudWatchLogRole"]]},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": ["apigateway.amazonaws.com"]
+            },
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "ManagedPolicyArns":[
+          "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+        ]
+      }
+    }
+  },
+
+  "Outputs": {
+    "ApigCloudWatchLogRoleName": {
+      "Description": "The name of the Api Gateway CloudWatch Log Role",
+      "Value": {"Ref":"ApigCloudWatchLogRole"}
+    },
+    "ApigCloudWatchLogRoleArn": {
+      "Description": "The ARN of the Api Gateway CloudWatch Log Role",
+      "Value": {"Fn::GetAtt": ["ApigCloudWatchLogRole", "Arn"]}
+    }
+  }
+}

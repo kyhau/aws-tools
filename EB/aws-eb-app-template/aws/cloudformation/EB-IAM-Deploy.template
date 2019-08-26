@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create IAM managed policies for managing EB deployment.
+Parameters:
+  InternalGroup:
+    Description: Existing IAM Group for running tests and doing deployment.
+    Type: String
+Resources:
+  EbDeployPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for updating and deploying EB.
+      ManagedPolicyName: BN-FondService-EbDeploy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - autoscaling:*
+              - cloudformation:*
+              - cloudwatch:*
+              - ec2:*
+              - ecs:*
+              - elasticbeanstalk:*
+              - elasticloadbalancing:*
+              - iam:PassRole
+              - logs:*
+              - s3:*
+              - sns:*
+              - sqs:*
+            Resource: '*'
+      Groups:
+        - !Ref 'InternalGroup'
+Outputs:
+  EbDeployPolicy:
+    Value: !Ref 'EbDeployPolicy'

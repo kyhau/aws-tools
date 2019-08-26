@@ -1,4 +1,0 @@
-
-docker run --expose 8080 --rm docker.biarrinetworks.com/services/fond_service:dev gunicorn --paste config/development.ini
-
-docker run --expose 8080 --rm docker.biarrinetworks.com/services/fond_service:dev cat /opt/apps/fond_service/fond_service/__revision__.py

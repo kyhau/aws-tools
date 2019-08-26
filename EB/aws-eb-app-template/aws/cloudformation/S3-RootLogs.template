@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create S3 bucket for logging
+Parameters:
+  RootLogName:
+    Description: The name of the S3 bucket to be created for logging.
+    Type: String
+  RootLogBillingTag:
+    Description: The value of the Billing tag to be added to the S3 bucket.
+    Type: String
+Resources:
+  S3BucketLogs:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: LogDeliveryWrite
+      BucketName: !Ref 'RootLogName'
+      Tags:
+        - Key: Billing
+          Value: !Ref 'RootLogBillingTag'
+Outputs:
+  S3BucketLogsName:
+    Value: !Ref 'S3BucketLogs'
+    Description: Name of the root bucket.
