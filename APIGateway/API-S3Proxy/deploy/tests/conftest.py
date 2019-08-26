@@ -22,7 +22,7 @@ ENV_STAGE = 'api_stage'
 
 
 SETTINGS = {
-    'api_json_file': join(dirname(dirname(dirname(dirname(realpath(__file__))))), 'api', 'DataServiceAPI_swagger.json'),
+    'api_json_file': join(dirname(dirname(dirname(dirname(realpath(__file__))))), 'DataServiceAPI_swagger.json'),
     'aws_region': 'ap-southeast-2',
     'ini_file': join(dirname(dirname(realpath(__file__))), 'aws.ini'),
     'api_stage': 'stage'
