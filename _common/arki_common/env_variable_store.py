@@ -7,9 +7,10 @@ import logging
 from os.path import exists, join
 from os import makedirs
 import sys
-from arki.configs import ARKI_LOCAL_STORE_ROOT
-from arki.system import print_export_env
-from arki import init_logging
+
+from arki_common.configs import ARKI_LOCAL_STORE_ROOT
+from arki_common.system import print_export_env
+from arki_common import init_logging
 
 
 # Default configuration file location

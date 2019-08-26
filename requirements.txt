@@ -1,1 +1,10 @@
+virtualenv~=16.4
+pip~=19.0
 boto3~=1.9
+boto3~=1.9
+click~=7
+docker==3.7
+pyyaml~=5.1
+#pypiwin32==220
+toml~=0.10
+warrant~=0.6

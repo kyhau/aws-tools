@@ -11,7 +11,8 @@ from shutil import rmtree
 import socket
 import tempfile
 
-from arki import init_logging
+from arki_common import init_logging
+
 init_logging(log_level=logging.DEBUG)
 
 

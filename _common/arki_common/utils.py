@@ -18,6 +18,12 @@ class DefaultEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
+def print_json(json_data):
+    """Print json data nicely
+    """
+    print(json.dumps(json_data, cls=DefaultEncoder, sort_keys=True, indent=2))
+
+
 def check_response(resp):
     """Check response and log message if needed
     """
@@ -25,9 +31,3 @@ def check_response(resp):
     if ret is False:
         logging.error(f"Response:\n{json.dumps(resp, cls=DefaultEncoder, sort_keys=True, indent=2)}")
     return ret
-
-
-def print_json(json_data):
-    """Print json data nicely
-    """
-    print(json.dumps(json_data, cls=DefaultEncoder, sort_keys=True, indent=2))

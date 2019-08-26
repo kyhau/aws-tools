@@ -8,7 +8,7 @@ import re
 import sys
 import toml
 
-from arki import (
+from arki_common import (
     init_logging,
     PACKAGE_NAME,
 )

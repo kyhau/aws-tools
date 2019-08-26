@@ -1,7 +1,8 @@
 import click
 import docker
 import logging
-from arki import init_logging
+
+from arki_common import init_logging
 
 
 init_logging()

@@ -1,4 +1,4 @@
-from arki.configs import (
+from arki_common.configs import (
     get_configs_sections,
     read_configs,
     tokenize_multiline_values
