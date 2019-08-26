@@ -64,7 +64,7 @@ function missed_var_error {
 cd ${APP_DIR}
 virtualenv -p ${PYTHON_VERSION} env_container
 . env_container/bin/activate
-python -m pip install -e .
+python -m pip install --no-use-pep517 -e .
 
 # Default APP_VERSION is the version in the repo
 APP_VERSION=`python -c "import pkg_resources; print(pkg_resources.get_distribution('${APP_NAME}').version)"`
@@ -94,12 +94,12 @@ if [[ "$DO_EB_DEPLOY" = true ]] || [[ "$DO_EB_CONFIG_UPDATE" = true ]] ; then
   cd ${SCRIPT_DIR}
   virtualenv -p ${PYTHON_VERSION} env_eb_update
   . env_eb_update/bin/activate
-  python -m pip install -r requirements-deploy.txt
+  python -m pip install --no-use-pep517 -r requirements-deploy.txt
   deactivate    # env_eb_update
 fi
-if [[ ! -z ${DEPLOY_IMAGE_TAG} ]]; then
-  VERSION_TAG=${DEPLOY_IMAGE_TAG}
-  STAGE_TAG=${DEPLOY_IMAGE_TAG}
+if [[ -n ${DEPLOY_IMAGE_TAG} ]]; then
+  VERSION_TAG="${DOCKER_REPO}:${DEPLOY_IMAGE_TAG}"
+  STAGE_TAG="${DOCKER_REPO}:${DEPLOY_IMAGE_TAG}"
 fi
 
 ####################################################################################################
@@ -118,6 +118,7 @@ if [[ "$DO_DOCKER_BUILD" = true ]] ; then
 
   echo "CHECK_POINT: Start the image tests using a container"
 
+  # TODO: change this to test your image
   # Sanity check to make sure gunicorn can be called. We call it with no arguments
   # and expect to receive the error message "No application module specified"
   docker run --rm "${DEV_TAG}" pserve 2>&1 | grep "No application module specified"
@@ -184,7 +185,11 @@ if [[ "$DO_EB_DEPLOY" = true ]] ; then
   time eb deploy --region $EB_REGION $EB_ENV_NAME
 
   # Cleanup local images
-  docker rmi ${VERSION_TAG} ${STAGE_TAG}
+  if [[ ${VERSION_TAG} != ${STAGE_TAG} ]]; then
+    docker rmi ${VERSION_TAG} ${STAGE_TAG}
+  else
+    docker rmi ${VERSION_TAG}
+  fi
 
   deactivate    # env_eb_update
 fi
