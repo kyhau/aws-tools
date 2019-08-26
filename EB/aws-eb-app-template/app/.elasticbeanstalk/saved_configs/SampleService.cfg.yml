@@ -1,0 +1,74 @@
+EnvironmentConfigurationMetadata:
+  Description: Configuration created from the EB CLI using "eb config save".
+Platform:
+  PlatformArn: arn:aws:elasticbeanstalk:ap-southeast-2::platform/Docker running on 64bit Amazon Linux/2.12.10
+OptionSettings:
+  aws:elasticbeanstalk:command:
+    BatchSize: '30'
+    BatchSizeType: Percentage
+    DeploymentPolicy: Rolling
+  AWSEBLoadBalancer.aws:elb:listener:443:
+    InstancePort: '80'
+    SSLCertificateId: arn:aws:iam::todo_account_id:server-certificate/todo_cert_name
+    ListenerProtocol: HTTPS
+  aws:elasticbeanstalk:application:
+    Application Healthcheck URL: ''
+  aws:autoscaling:trigger:
+    BreachDuration: 5
+    LowerBreachScaleIncrement: -1
+    UpperBreachScaleIncrement: 1
+    Statistic: Maximum
+    LowerThreshold: 20
+    MeasureName: CPUUtilization
+    Period: 5
+    EvaluationPeriods: 1
+    UpperThreshold: 50
+    Unit: Percent
+  aws:ec2:vpc:
+    Subnets: subnet-todo
+    VPCId: vpc-todo
+    ELBSubnets: subnet-todo
+    ELBScheme: public
+    AssociatePublicIpAddress: true
+  aws:autoscaling:asg:
+    MaxSize: '2'
+  aws:elasticbeanstalk:managedactions:
+    ManagedActionsEnabled: true
+    PreferredStartTime: SUN:18:00
+  aws:autoscaling:updatepolicy:rollingupdate:
+    RollingUpdateType: Health
+    RollingUpdateEnabled: true
+  aws:elasticbeanstalk:managedactions:platformupdate:
+    UpdateLevel: minor
+  aws:elasticbeanstalk:sns:topics:
+    Notification Endpoint: ''
+  aws:elb:policies:
+    ConnectionSettingIdleTimeout: 300
+    ConnectionDrainingEnabled: true
+    ConnectionDrainingTimeout: '20'
+  aws:elasticbeanstalk:hostmanager:
+    LogPublicationControl: true
+  aws:elasticbeanstalk:cloudwatch:logs:
+    RetentionInDays: '180'
+    DeleteOnTerminate: false
+    StreamLogs: true
+  aws:elb:loadbalancer:
+    CrossZone: true
+  aws:elasticbeanstalk:environment:
+    ServiceRole: aws-elasticbeanstalk-service-role
+    EnvironmentType: LoadBalanced
+  aws:elasticbeanstalk:healthreporting:system:
+    SystemType: enhanced
+    HealthCheckSuccessThreshold: Ok
+  aws:autoscaling:launchconfiguration:
+    SecurityGroups: sg-todo
+    IamInstanceProfile: aws-elasticbeanstalk-ec2-role
+    InstanceType: t2.medium
+    EC2KeyName: my-sampleservice-key
+    MonitoringInterval: 1
+EnvironmentTier:
+  Type: Standard
+  Name: WebServer
+AWSConfigurationTemplateVersion: 1.1.0.0
+Tags:
+  Billing: SampleService

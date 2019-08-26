@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create IAM managed policy for allowing CloudWatch logging from EB.
+Parameters:
+  EbEc2InstanceRole:
+    Description: Role name of the existing IAM EC2 instance role that manages EC2
+      instances.
+    Type: String
+    Default: aws-elasticbeanstalk-ec2-role
+Resources:
+  EbCloudWatchPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for allowing CloudWatch logging from EB.
+      ManagedPolicyName: EB-CloudWatch
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:GetLogEvents
+              - logs:PutLogEvents
+              - logs:DescribeLogGroups
+              - logs:DescribeLogStreams
+              - logs:PutRetentionPolicy
+            Resource: '*'
+      Roles:
+        - !Ref 'EbEc2InstanceRole'
+Outputs:
+  EbCloudWatchPolicy:
+    Value: !Ref 'EbCloudWatchPolicy'

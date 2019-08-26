@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create a Group and Managed Policy for using SES.
+
+Parameters:
+  GroupName:
+    Description: Name of the Group for sending emails.
+    Type: String
+    Default: SendEmail
+
+Resources:
+  SendEmailGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Ref 'GroupName'
+
+  SesSendEmailPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    DependsOn: SendEmailGroup
+    Properties:
+      Description: Managed Policy for sending email with SES
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+              - ses:SendRawEmail
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+      Groups:
+        - !Ref 'GroupName'

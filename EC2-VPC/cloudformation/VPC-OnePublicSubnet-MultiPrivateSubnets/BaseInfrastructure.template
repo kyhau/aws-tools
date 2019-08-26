@@ -1,0 +1,297 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Create base infrastructure for a VPC with one public subnet for hosting an OpenVPN server serving resources in other private subnets.",
+
+  "Parameters": {
+    "NewVpcName": {
+      "Description": "Region tag to be used for tagging related sources (e.g. 10-99-My-VPC).",
+      "Type": "String"
+    },
+    "NewVpcCidrFirst2Parts": {
+      "Description": "The first 2 parts of the CIDR (e.g. 10.99) to be assigned to the VPC.",
+      "Type": "String",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})",
+      "ConstraintDescription": "must be in the form x.x",
+      "MinLength": "3",
+      "MaxLength": "7",
+      "Default": "10.99"
+    },
+    "NewVpcSubnetZone": {
+      "Type": "String",
+      "Description": "The Availability Zone of the default subnet.",
+      "Default": "ap-southeast-2"
+    },
+    "VpnInstanceName": {
+      "Description": "EC2 Name of the OpenVPN server.",
+      "Type": "String",
+      "Default": "openvpn-sy"
+    },
+    "VpnHostName": {
+      "Description": "Hostname of the EC2 instance (will be written into /etc/hostname).",
+      "Type": "String",
+      "Default": "openvpn-sy"
+    },
+    "OpenVpnAmi": {
+      "Description": "The AMI for VPN for Syd ami-4d6e7c2e for Sgp ami-3ab63d59",
+      "Type": "AWS::EC2::Image::Id"
+    },
+    "InstanceType": {
+      "Description": "VPN instance type",
+      "Type": "String",
+      "AllowedValues": ["t1.micro", "t2.nano", "t2.micro", "t2.small", "t2.medium", "t2.large"],
+      "ConstraintDescription": "must be a valid EC2 instance type.",
+      "Default": "t2.medium"
+    },
+    "VolumeType": {
+      "Description": "The volume type. This can be gp2 for General Purpose SSD, or standard for Magnetic volume (add io1 for Provisioned IOPS SSD, st1 for Throughput Optimized HDD, sc1 for Cold HDD, if needed).",
+      "Type": "String",
+      "AllowedValues": ["standard", "gp2"],
+      "Default": "standard"
+    },
+    "VolumeSize": {
+      "Description": "The size of the volume, in gibibytes (GiBs).",
+      "Type": "Number",
+      "Default": "8"
+    },
+    "DeleteOnTermination": {
+      "Description": "Delete on termination.",
+      "Type": "String",
+      "AllowedValues": ["true", "false"],
+      "Default": "false"
+    },
+    "KeyName": {
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+    },
+    "ServiceTag": {
+      "Description": "Value of the tag Service",
+      "Type": "String",
+      "Default": "openvpn"
+    },
+    "FqdnHostname": {
+      "Description" : "openvpn-sy.example.com , will be the hostname of VPN",
+      "Type" : "String",
+      "Default": "openvpn-sy"
+    }
+  },
+
+  "Resources": {
+    "MainVpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": {"Fn::Join": ["", [{"Ref": "NewVpcCidrFirst2Parts"}, ".0.0/16"]]},
+        "InstanceTenancy": "default",
+        "EnableDnsSupport": "true",
+        "EnableDnsHostnames": "true",
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Ref": "NewVpcName"}}
+        ]
+      }
+    },
+    "PublicSubnetVpn": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": {"Fn::Join": ["", [{"Ref": "NewVpcCidrFirst2Parts"}, ".0.0/20"]]},
+        "AvailabilityZone": {"Ref": "NewVpcSubnetZone"},
+        "VpcId": {"Ref": "MainVpc"},
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Fn::Join": ["-", [{"Ref": "NewVpcName"}, {"Ref": "NewVpcSubnetZone"}]]}}
+        ]
+      }
+    },
+    "PublicSubnetAclVPN": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {"Ref": "PublicNetworkAcl"},
+        "SubnetId": {"Ref": "PublicSubnetVpn"}
+      }
+    },
+    "VpcInternetGateway": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Ref": "NewVpcName"}}
+        ]
+      }
+    },
+    "RegionGatewayAttachment1": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {"Ref": "MainVpc"},
+        "InternetGatewayId": {"Ref": "VpcInternetGateway"}
+      }
+    },
+    "RegionDopt": {
+      "Type": "AWS::EC2::DHCPOptions",
+      "Properties": {
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Ref": "NewVpcName"}}
+        ],
+        "DomainName": {"Fn::Join": ["", [{"Ref": "AWS::Region"}, ".compute.internal"]]},
+        "DomainNameServers": ["AmazonProvidedDNS"]
+      }
+    },
+    "RegionVpcDhcpOptionsAssociation1": {
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties": {
+        "VpcId": {"Ref": "MainVpc"},
+        "DhcpOptionsId": {"Ref": "RegionDopt"}
+      }
+    },
+    "PublicNetworkAcl": {
+      "Type": "AWS::EC2::NetworkAcl",
+      "Properties": {
+        "VpcId": {"Ref": "MainVpc"},
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Ref": "NewVpcName"}}
+        ]
+      }
+    },
+    "PublicNetworkAclEntry1": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": "true",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {"Ref": "PublicNetworkAcl"}
+      }
+    },
+    "PublicNetworkAclEntry2": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {"Ref": "PublicNetworkAcl"}
+      }
+    },
+    "PublicRouteTable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {"Ref": "MainVpc"},
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Ref": "NewVpcName"}}
+        ]
+      }
+    },
+    "PublicRouteIgw": {
+      "Type": "AWS::EC2::Route",
+      "DependsOn": "RegionGatewayAttachment1",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {"Ref": "PublicRouteTable"},
+        "GatewayId": {"Ref": "VpcInternetGateway"}
+      }
+    },
+    "PublicSubnetRouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {"Ref": "PublicRouteTable"},
+        "SubnetId": {"Ref": "PublicSubnetVpn"}
+      }
+    },
+    "VpnSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "VpcId": {"Ref": "MainVpc"},
+        "GroupDescription": "Security group for OpenVPN Server",
+        "SecurityGroupIngress": [
+          {"IpProtocol": "icmp", "FromPort": "0", "ToPort": "-1", "CidrIp": "0.0.0.0/0"},
+          {"IpProtocol": "icmp", "FromPort": "8", "ToPort": "-1", "CidrIp": "0.0.0.0/0"},
+          {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Fn::Join": ["", [{"Ref": "NewVpcCidrFirst2Parts"}, ".0.0/20"]]}},
+          {"IpProtocol": "tcp", "FromPort": "443", "ToPort": "443", "CidrIp": "0.0.0.0/0"},
+          {"IpProtocol": "tcp", "FromPort": "943", "ToPort": "943", "CidrIp": "0.0.0.0/0"},
+          {"IpProtocol": "udp", "FromPort": "1194", "ToPort": "1194", "CidrIp": "0.0.0.0/0"}
+        ],
+        "SecurityGroupEgress": [{"IpProtocol": "-1", "CidrIp": "0.0.0.0/0"}],
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Fn::Join": ["-", ["openvpn", {"Ref": "NewVpcName"}]]}}
+        ]
+      }
+    },
+    "VpnInstance": {
+      "Type": "AWS::EC2::Instance",
+      "DependsOn": ["VpnSecurityGroup","PublicSubnetVpn"],
+      "Metadata": {"Comment": "EC2"},
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": {"Ref": "OpenVpnAmi"},
+        "InstanceType": {"Ref": "InstanceType"},
+        "KeyName": {"Ref": "KeyName"},
+        "Monitoring": "false",
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": ["", [
+              "#!/bin/bash -xe\n",
+              "sudo hostname ", {"Ref": "VpnHostName"}, "\n",
+              "sed -i '1i 127.0.0.1 ", {"Ref": "VpnHostName"}, " ' /etc/hosts\n",
+              "echo ", {"Ref": "VpnHostName"}, " > /etc/hostname\n",
+              "hostname -F /etc/hostname\n",
+              "cp /usr/local/openvpn_as/etc/db/config.db /usr/local/openvpn_as/etc/db/config.db.bak\n",
+              "/usr/local/openvpn_as/scripts/sqlite3 /usr/local/openvpn_as/etc/db/config.db .dump > /usr/local/openvpn_as/scripts/configdb.txt\n",
+              "sed -i 's/openvpnexample/", {"Ref": "FqdnHostname"},"/g' /usr/local/openvpn_as/scripts/configdb.txt\n",
+              "sudo rm /usr/local/openvpn_as/etc/db/config.db\n",
+              "sudo /usr/local/openvpn_as/scripts/sqlite3 < /usr/local/openvpn_as/scripts/configdb.txt /usr/local/openvpn_as/etc/db/config.db\nreboot\n"
+            ]]
+          }
+        },
+        "BlockDeviceMappings": [{
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "VolumeType": {"Ref": "VolumeType"},
+            "VolumeSize": {"Ref": "VolumeSize"},
+            "DeleteOnTermination": {"Ref": "DeleteOnTermination"}
+          }
+        }],
+        "NetworkInterfaces": [{
+          "AssociatePublicIpAddress": "true",
+          "DeleteOnTermination": "true",
+          "Description": "Primary network interface",
+          "DeviceIndex": 0,
+          "GroupSet": [{"Ref": "VpnSecurityGroup"}],
+          "SubnetId": {"Ref": "PublicSubnetVpn"}
+        }],
+        "SourceDestCheck": "false",
+        "Tags": [
+          {"Key": "Application", "Value": {"Ref": "AWS::StackName"}},
+          {"Key": "Name", "Value": {"Ref": "VpnInstanceName"}},
+          {"Key": "Service", "Value": {"Ref": "ServiceTag"}}
+        ]
+      }
+    },
+    "IpAddress": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": ["VpnInstance"],
+      "Properties": {
+        "Domain": "vpc",
+        "InstanceId": {"Ref": "VpnInstance"}
+      }
+    },
+    "NatGatewayEip": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "NATGateway": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {"Fn::GetAtt": ["NatGatewayEip", "AllocationId"]},
+        "SubnetId": {"Ref": "PublicSubnetVpn"}
+      }
+    }
+  }
+}

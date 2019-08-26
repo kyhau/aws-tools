@@ -1,0 +1,12 @@
+.ebextensions
+.ebignore
+.elasticbeanstalk
+
+.gitignore
+
+.coverage
+coverage*.xml
+junit*.xml
+*egg-info
+.tox
+tox.ini

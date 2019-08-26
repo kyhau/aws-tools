@@ -1,0 +1,8 @@
+# If no .ebignore is present, but a .gitignore is, the EB CLI will ignore files
+# specified in the .gitignore. If an .ebignore file is present, the EB CLI will
+# not read the .gitignore.
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/saved_configs
+!.elasticbeanstalk/*.global.yml

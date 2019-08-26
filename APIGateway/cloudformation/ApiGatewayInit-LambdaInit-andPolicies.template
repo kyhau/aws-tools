@@ -1,0 +1,260 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Create API Gateway and Lambda function with dummy content, create Managed Policies for CI to update and deploy the API Gateway and the Lambda function.",
+
+  "Parameters": {
+    "ApigName": {
+      "Description": "Name of the API to create",
+      "Type": "String",
+      "Default": "TodoService"
+    },
+    "ApigExecutionRoleName": {
+      "Description": "The name of the API Gateway execution role. This is referenced in the swagger.json.",
+      "Type": "String",
+      "Default": "TodoService-ApigAwsProxyRole"
+    },
+    "LambdaFunctionName": {
+      "Description": "Name of the Lambda function to be created or updated.",
+      "Type": "String",
+      "Default": "TodoServiceFunction"
+    },
+    "LambdaExecuteRoleName": {
+      "Description": "Name of the Role for executing the Lambda function.",
+      "Type": "String",
+      "Default": "TodoService-Lambda-ExecuteRole"
+    },
+    "LambdaExecuteTodoProdDynamoDBPolicyArn": {
+      "Description": "ARN of the policy for accessing DynamoDB tables (TodoProd*) .",
+      "Type": "String",
+      "Default": "arn:aws:iam::todo-aws-acc-id:policy/TodoProd-DynamoDB-RW"
+    },
+    "LambdaExecuteTodoTestDynamoDBPolicyArn": {
+      "Description": "ARN of the policy for accessing DynamoDB tables (TodoTest*) .",
+      "Type": "String",
+      "Default": "arn:aws:iam::todo-aws-acc-id:policy/TodoTest-DynamoDB-RW"
+    },
+    "InternalGroupCI": {
+      "Description": "Existing IAM Group for CI to run tests and do deployment.",
+      "Type": "String",
+      "Default": "CI-TodoService"
+    },
+    "InternalGroupDev": {
+      "Description": "Existing IAM Group for developers to run tests and update resources.",
+      "Type": "String",
+      "Default": "DEV-TodoService"
+    }
+  },
+
+  "Resources": {
+    "RestApi": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": {"Ref":"ApigName"},
+        "Description": {"Fn::Join": [" ", [{"Ref":"ApigName"}, "API"]]},
+        "FailOnWarnings": true
+      }
+    },
+    "ApigInvokeLambdaPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "DependsOn": "TodoServiceFunction",
+      "Properties": {
+        "Action": "lambda:invokeFunction",
+        "FunctionName": {"Fn::GetAtt": ["TodoServiceFunction", "Arn"]},
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {"Fn::Join": ["", ["arn:aws:execute-api:", {"Ref":"AWS::Region"}, ":", {"Ref":"AWS::AccountId"}, ":", {"Ref":"RestApi"}, "/*"]]}
+      }
+    },
+    "ApigExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {"Ref":"ApigExecutionRoleName"},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": ["apigateway.amazonaws.com"]},
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AWSLambdaInvocation-DynamoDB"]
+      }
+    },
+
+    "ApigInvokePolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "Managed Policy for invoking (prod/dev/etc) the API.",
+        "ManagedPolicyName": {"Fn::Join": ["-", [{"Ref":"ApigName"}, "ApigInvoke"]]},
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Action": ["execute-api:Invoke"],
+            "Resource": [{"Fn::Join": ["", ["arn:aws:execute-api:*:*:", {"Ref":"RestApi"}, "/*"]]}]
+          }]
+        },
+        "Groups": [
+          {"Ref":"InternalGroupCI"},
+          {"Ref":"InternalGroupDev"}
+        ],
+        "Roles": [
+          {"Ref":"ApigExecutionRoleName"}
+        ]
+      }
+    },
+
+    "ApigDeployPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "Managed Policy for updating and deploying API Gateway.",
+        "ManagedPolicyName": {"Fn::Join": ["-", [{"Ref":"ApigName"}, "ApigDeploy"]]},
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["apigateway:*"],
+              "Resource": [
+                {"Fn::Join": ["", ["arn:aws:apigateway:", {"Ref":"AWS::Region"}, "::/restapis/", {"Ref":"RestApi"}]]},
+                {"Fn::Join": ["", ["arn:aws:apigateway:", {"Ref":"AWS::Region"}, "::/restapis/", {"Ref":"RestApi"}, "/*"]]}
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["iam:PassRole"],
+              "Resource": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref":"AWS::AccountId"}, ":role/", {"Ref":"ApigExecutionRoleName"}]]}
+            }
+         ]
+        },
+        "Groups": [{"Ref":"InternalGroupCI"}]
+      }
+    },
+
+    "ApigDevTestPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "Managed Policy for development to run unit tests.",
+        "ManagedPolicyName": {"Fn::Join": ["-", [{"Ref":"ApigName"}, "ApigDevTesting"]]},
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["apigateway:*"],
+              "Resource": [
+                {"Fn::Join": ["", ["arn:aws:apigateway:", {"Ref":"AWS::Region"}, "::/restapis/", {"Ref":"RestApi"}, "/resources"]]},
+                {"Fn::Join": ["", ["arn:aws:apigateway:", {"Ref":"AWS::Region"}, "::/restapis/", {"Ref":"RestApi"}, "/resources/*"]]}
+              ]
+            }
+         ]
+        },
+        "Groups": [{"Ref":"InternalGroupDev"}]
+      }
+    },
+
+    "TodoServiceFunction": {
+      "Type": "AWS::Lambda::Function",
+      "DependsOn": "LambdaExecutionRole",
+      "Properties": {
+        "FunctionName": {"Ref":"LambdaFunctionName"},
+        "Runtime": "python3.6",
+        "Handler": "TodoServiceFunction.lambda_handler",
+        "MemorySize": 128,
+        "Timeout": 30,
+        "Role": {"Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
+        "Code": {
+          "ZipFile":  {"Fn::Join": ["", [
+            "def lambda_handler(event, context):",
+            "   # This function will be updated through CI/CD",
+            "   return 'Hello from Lambda!'"
+          ]]}
+        },
+        "Tags": [{"Key": "Billing", "Value": "TodoService"}]
+      }
+    },
+
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {"Ref":"LambdaExecuteRoleName"},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{"Effect": "Allow", "Principal": {"Service": ["lambda.amazonaws.com"]}, "Action": ["sts:AssumeRole"]}]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": {"Fn::Join": ["-", [{"Ref":"LambdaExecuteRoleName"}, "Logging"]]},
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [{"Effect": "Allow", "Action": ["logs:*"], "Resource": "arn:aws:logs:*:*:*"}]
+            }
+          }
+        ],
+        "ManagedPolicyArns":[
+          {"Ref":"LambdaExecuteTodoProdDynamoDBPolicyArn"},
+          {"Ref":"LambdaExecuteTodoTestDynamoDBPolicyArn"}
+        ]
+      }
+    },
+
+    "LambdaManagedPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["LambdaExecutionRole"],
+      "Properties": {
+        "Description": "Managed Policy for creating/updating the specified lambda function",
+        "ManagedPolicyName": {"Fn::Join": ["-", [{"Ref":"ApigName"}, "LambdaExecute"]]},
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:GetFunction",
+                "lambda:CreateFunction",
+                "lambda:UpdateFunctionCode",
+                "lambda:UpdateFunctionConfiguration",
+                "lambda:CreateAlias",
+                "lambda:DeleteAlias",
+                "lambda:GetAlias",
+                "lambda:UpdateAlias",
+                "lambda:PublishVersion"
+              ],
+              "Resource": [{"Fn::Join": [":", ["arn:aws:lambda", {"Ref":"AWS::Region"}, {"Ref":"AWS::AccountId"}, "function", {"Ref":"LambdaFunctionName"}]]}]
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["iam:Passrole"],
+              "Resource": {"Fn::Join":  ["", ["arn:aws:iam::", {"Ref":"AWS::AccountId"}, ":role/", {"Ref":"LambdaExecuteRoleName"}]]}
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["lambda:InvokeFunction"],
+              "Resource": [{"Fn::Join": [":", ["arn:aws:lambda", {"Ref":"AWS::Region"}, {"Ref":"AWS::AccountId"}, "function", {"Ref":"LambdaFunctionName"}]]}]
+            }
+          ]
+        },
+        "Groups": [{"Ref":"InternalGroupCI"}],
+        "Roles": [{"Ref":"LambdaExecutionRole"}]
+      }
+    }
+  },
+
+  "Outputs": {
+    "ApigId": {
+      "Value": {"Ref":"RestApi"}
+    },
+    "ApigRootResourceId": {
+      "Value": {"Fn::GetAtt": ["RestApi", "RootResourceId"]}
+    },
+    "LambdaFunctionName": {
+      "Description": "Lambda function name",
+      "Value": {"Ref":"TodoServiceFunction"}
+    },
+    "LambdaFunctionArn": {
+      "Description": "The ARN of the Lambda function",
+      "Value": {"Fn::GetAtt": ["TodoServiceFunction", "Arn"]}
+    }
+  }
+}

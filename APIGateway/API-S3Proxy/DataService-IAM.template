@@ -1,0 +1,176 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Create IAM roles, groups, policies and credentials for DataService.",
+
+  "Parameters": {
+    "ApigExecutionRoleName": {
+      "Description": "The name of the API Gateway execution role. This is referenced in the DataServiceAPI_swagger.json.",
+      "Type": "String",
+      "Default": "DataService-ApigAwsProxyRole"
+    },
+    "ApigID": {
+      "Description": "The ID of the API Gateway of DataService. This is referenced in the DataServiceAPI_swagger.json.",
+      "Type": "String",
+      "Default": "todo_apig_id"
+    },
+    "ApigProdUser": {
+      "Description": "IAM user to be created for using the (prod) DataService API.",
+      "Type": "String"
+    },
+    "ApigStageUser": {
+      "Description": "Existing IAM user to invoke the (prod/stage) DataService API.",
+      "Type": "String"
+    },
+    "IamGroupDeploy": {
+      "Description": "Existing IAM Group responsible for CI and deployment.",
+      "Type": "String"
+    }
+  },
+
+  "Resources": {
+    "ApigProdInvokeGroup": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {"GroupName": "DataService-ApigProdInvoke"}
+    },
+    "ApigProdInvokePolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["ApigProdInvokeGroup"],
+      "Properties": {
+        "Description": "Managed Policy for invoking (prod) DataService API.",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Action": ["execute-api:Invoke"],
+            "Resource": [{"Fn::Join": ["", ["arn:aws:execute-api:*:*:", {"Ref": "ApigID"}, "/prod/*"]]}]
+          }]
+        },
+        "Groups": [{"Ref": "ApigProdInvokeGroup"}]
+      }
+    },
+    "ApigProdInvokeUser": {
+      "Type": "AWS::IAM::User",
+      "DependsOn": ["ApigProdInvokeGroup"],
+      "Properties": {
+        "UserName": {"Ref": "ApigProdUser"},
+        "Groups": [{"Ref": "ApigProdInvokeGroup"}]
+      }
+    },
+    "ApigProdInvokeUserAccessKey": {
+      "Type": "AWS::IAM::AccessKey",
+      "DependsOn": ["ApigProdInvokeUser"],
+      "Properties": {"UserName": {"Ref": "ApigProdInvokeUser"}}
+    },
+
+    "ApigCIInvokeGroup": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {"GroupName": "DataService-ApigCIInvoke"}
+    },
+    "ApigCIInvokePolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["ApigCIInvokeGroup"],
+      "Properties": {
+        "Description": "Managed Policy for invoking (prod/stage/etc) DataService API.",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Action": ["execute-api:Invoke"],
+            "Resource": [{"Fn::Join": ["", ["arn:aws:execute-api:*:*:", {"Ref": "ApigID"}, "/*/*"]]}]
+          }]
+        },
+        "Groups": [{"Ref": "ApigCIInvokeGroup"}]
+      }
+    },
+    "ApigCIInvokeUser": {
+      "Type": "AWS::IAM::User",
+      "DependsOn": ["ApigCIInvokeGroup"],
+      "Properties": {
+        "UserName": {"Ref": "ApigStageUser"},
+        "Groups": [{"Ref": "ApigCIInvokeGroup"}]
+      }
+    },
+    "ApigCIInvokeUserAccessKey": {
+      "Type": "AWS::IAM::AccessKey",
+      "DependsOn": ["ApigCIInvokeUser"],
+      "Properties": {"UserName": {"Ref": "ApigCIInvokeUser"}}
+    },
+
+    "ApigExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {"Ref": "ApigExecutionRoleName"},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": ["apigateway.amazonaws.com"]},
+            "Action": "sts:AssumeRole"
+          }]
+        }
+      }
+    },
+
+    "ApigDeployProdPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "Managed Policy for managing the Prod stage of the API Gateway.",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["apigateway:*"],
+              "Resource": [{"Fn::Join": ["", ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, "::/restapis/", {"Ref": "ApigID"}, "/stages/prod/*"]]}]
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["iam:PassRole"],
+              "Resource": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":role/", {"Ref": "ApigExecutionRoleName"}]]}
+            }
+         ]
+        },
+        "Groups": [{"Ref": "IamGroupDeploy"}]
+      }
+    },
+
+    "ApigDeployCIPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "Managed Policy for managing the CI stages (non Prod) of the API Gateway.",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["apigateway:*"],
+              "Resource": [{"Fn::Join": ["", ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, "::/restapis/", {"Ref": "ApigID"}, "/stages/stage/*"]]}]
+            },
+            {
+              "Effect":"Allow",
+              "Action": ["iam:PassRole"],
+              "Resource": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":role/", {"Ref": "ApigExecutionRoleName"}]]}
+            }
+         ]
+        },
+        "Groups": [{"Ref": "IamGroupDeploy"}]
+      }
+    }
+  },
+
+  "Outputs": {
+    "IamUserAccessKey": {
+      "Value": {"Ref": "ApigProdInvokeUserAccessKey"}
+    },
+    "IamUserSecretKey": {
+      "Value": {"Fn::GetAtt": [ "ApigProdInvokeUserAccessKey", "SecretAccessKey"]}
+    },
+    "IamUserProjectServiceAccessKey": {
+      "Value": {"Ref": "ApigCIInvokeUserAccessKey"}
+    },
+    "IamUserProjectServiceSecretKey": {
+      "Value": {"Fn::GetAtt": [ "ApigCIInvokeUserAccessKey", "SecretAccessKey"]}
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Creating CloudFront Web Distribution with S3 using Custom Origin.",
+
+  "Parameters": {
+    "BucketRootLogName": {
+      "Description": "The name of the existing S3 bucket for logging (see S3-RootLogs.template).",
+      "Type": "String",
+      "Default": "my-app-root-logs"
+    },
+    "CloudFrontPriceClass": {
+      "Description": "The price class that corresponds with the maximum price that you want to pay for CloudFront service.",
+      "Type": "String",
+      "AllowedValues": ["PriceClass_100", "PriceClass_200", "PriceClass_All"],
+      "Default": "PriceClass_100"
+    },
+    "DefaultTTL": {
+      "Description": "The default time in seconds that objects stay in CloudFront caches before CloudFront forwards another request to your custom origin to determine whether the object has been updated.",
+      "Type": "String",
+      "Default": "3600"
+    },
+    "DeployGroup": {
+      "Description": "Existing IAM Group for CI to run tests and do deployment",
+      "Type": "String"
+    },
+    "ErrorDoc": {
+      "Description": "The file name of the error document (e.g. error.html).",
+      "Type": "String",
+      "Default": "index.html"
+    },
+    "IAMCertificateId": {
+      "Description": "Custom SSL certificate to use with CloudFront distribution.",
+      "Type": "String"
+    },
+    "IndexDoc": {
+      "Description": "The file name of the index document (e.g. index.html).",
+      "Type": "String",
+      "Default": "index.html"
+    },
+    "MaxTTL": {
+      "Description": "The maximum time in seconds that objects stay in CloudFront caches before CloudFront forwards another request to your custom origin to determine whether the object has been updated.",
+      "Type": "String",
+      "Default": "86400"
+    },
+    "MinTTL": {
+      "Description": "The minimum amount of time that you want objects to stay in the cache before CloudFront queries your origin to see whether the object has been updated.",
+      "Type": "String",
+      "Default": "0"
+    },
+    "StageName": {
+      "Description": "Stage name of the site. See Mappings defined in the template for the bucket name and the website url.",
+      "Type": "String",
+      "AllowedValues": ["stage", "prod"],
+      "Default": "stage"
+    }
+  },
+
+  "Mappings": {
+    "StageMap": {
+      "prod": {
+        "BillingTag": "PROD",
+        "CloudFrontAlias1": "api-prod.example.com",
+        "CloudFrontAlias2": "api.example.com",
+        "CloudFrontOAI": "",
+        "CloudFrontCUI": "",
+        "SubBucketName": "api-prod",
+        "RootBucketName": "api-prod-example-com"
+      },
+      "stage": {
+        "BillingTag": "STAGE",
+        "CloudFrontAlias1": "api-stage.example.com",
+        "CloudFrontAlias2": "",
+        "CloudFrontOAI": "",
+        "CloudFrontCUI": "",
+        "SubBucketName": "api-stage",
+        "RootBucketName": "api-stage-example-com"
+      }
+    }
+  },
+
+  "Conditions": {
+    "IsProduction": {"Fn::Equals": ["prod", {"Ref":"StageName"}]},
+    "UseCustomSSLCertificate": {
+      "Fn::Not": [{"Fn::Equals": [{"Ref":"IAMCertificateId"}, ""]}]
+    }
+  },
+
+  "Resources": {
+    "RootBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]},
+        "AccessControl": "PublicRead",
+        "WebsiteConfiguration": {
+          "IndexDocument": {"Ref":"IndexDoc"},
+          "ErrorDocument": {"Ref":"ErrorDoc"}
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {"Ref": "BucketRootLogName"},
+          "LogFilePrefix": {"Fn::Join": ["/", [{"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "SubBucketName"]}, "s3"]]}
+        },
+        "VersioningConfiguration": {"Status": "Suspended"},
+        "Tags": [{"Key": "Billing", "Value": {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "BillingTag"]}}]
+      },
+      "DeletionPolicy": "Delete"
+    },
+
+    "StaticSiteBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "DependsOn": ["RootBucket"],
+      "Properties": {
+        "Bucket": {"Ref":"RootBucket"},
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Sid": "PublicReadGetObject",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": "s3:GetObject",
+              "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]}, "/*"]]}
+            },
+            {
+              "Sid": "CloudFrontOriginAccess",
+              "Action": ["s3:GetObject"],
+              "Effect": "Allow",
+              "Principal": {"CanonicalUser": {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "CloudFrontCUI"]}},
+              "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]}, "/*"]]}
+            }
+          ]
+        }
+      }
+    },
+    "DeployPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["RootBucket"],
+      "Properties": {
+        "Description": "Managed Policy for deployment (S3 and CloudFront)",
+        "PolicyDocument" : {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": ["s3:ListBucket"],
+              "Effect": "Allow",
+              "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]}]]}
+            },
+            {
+              "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject", "S3:ListObjects"],
+              "Effect": "Allow",
+              "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]}, "/*"]]}
+            },
+            {
+              "Action": ["CloudFront:CreateInvalidation"],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ]
+        },
+        "Groups" : [
+          {"Ref":"DeployGroup"}
+        ]
+      }
+    },
+
+    "CloudFront": {
+      "Type": "AWS::CloudFront::Distribution",
+      "DependsOn": ["RootBucket"],
+      "Properties": {
+        "DistributionConfig": {
+          "Aliases": {
+            "Fn::If": ["IsProduction",
+              [{"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "CloudFrontAlias1"]}, {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "CloudFrontAlias2"]}],
+              [{"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "CloudFrontAlias1"]}]
+            ]
+          },
+          "DefaultCacheBehavior": {
+            "TargetOriginId": {"Fn::Join": ["-", ["S3", {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]}]]},
+            "ViewerProtocolPolicy": "redirect-to-https",
+            "AllowedMethods": ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"],
+            "ForwardedValues": {"QueryString": false},
+            "MinTTL": {"Ref":"MinTTL"},
+            "MaxTTL": {"Ref":"MaxTTL"},
+            "DefaultTTL": {"Ref":"DefaultTTL"},
+            "Compress": "true"
+          },
+          "DefaultRootObject": {"Ref":"IndexDoc"},
+          "Enabled": true,
+          "Logging": {
+            "IncludeCookies": "false",
+            "Bucket": {"Fn::Join": ["", [{"Ref": "BucketRootLogName"}, ".s3.amazonaws.com"]]},
+            "Prefix": {"Fn::Join": ["/", [{"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "SubBucketName"]}, "cf"]]}
+          },
+          "Origins": [{
+            "DomainName": {"Fn::Join": ["", [{"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]}, ".s3-website-", {"Ref": "AWS::Region"}, ".amazonaws.com"]]},
+            "Id": {"Fn::Join": ["-", ["S3", {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "RootBucketName"]}]]},
+            "CustomOriginConfig": {
+              "OriginProtocolPolicy": "http-only"
+            }
+          }],
+          "HttpVersion": "http2",
+          "PriceClass": {"Ref":"CloudFrontPriceClass"},
+          "ViewerCertificate": {
+            "CloudFrontDefaultCertificate": {"Ref":"AWS::NoValue"},
+            "IamCertificateId": {
+              "Fn::If": ["UseCustomSSLCertificate", {"Ref":"IAMCertificateId"}, {"Ref":"AWS::NoValue"}]
+            },
+            "MinimumProtocolVersion": {
+              "Fn::If": ["UseCustomSSLCertificate", "TLSv1", {"Ref":"AWS::NoValue"}]
+            },
+            "SslSupportMethod": {
+              "Fn::If": ["UseCustomSSLCertificate", "sni-only", {"Ref":"AWS::NoValue"}]
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "Outputs": {
+    "CloudFrontDistributionID": {
+      "Value": {"Ref": "CloudFront"},
+      "Description": "CloudFront distribution ID"
+    },
+    "CloudFrontURL": {
+      "Value": {"Fn::GetAtt": ["CloudFront", "DomainName"]},
+      "Description": "URL for CloudFront distribution"
+    },
+    "RootBucketUrl": {
+      "Value": {"Fn::GetAtt": ["RootBucket", "WebsiteURL"]},
+      "Description": "URL for website hosted on S3"
+    }
+  }
+}

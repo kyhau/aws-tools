@@ -1,0 +1,19 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Create IAM Group to be used for creating and managing the infrastructure",
+
+  "Parameters": {
+    "IamGroupName": {
+      "Description": "IAM Group to be used for creating and managing the infrastructure to be built",
+      "Type": "String"
+    }
+  },
+
+  "Resources": {
+    "IamGroup": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {"GroupName": {"Ref": "IamGroupName"}}
+    }
+  }
+}
