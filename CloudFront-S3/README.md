@@ -22,7 +22,7 @@ See also [Using Amazon S3 Origins and Custom Origins for Web Distributions](
   http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
 
 
-1. Use S3 with static website hosting for storing static content of [fond_ui](https://bitbucket.org/example/fond_ui).
+1. Use S3 with static website hosting for storing static content.
 1. Use CloudFront and Route53 for supporting https requests and defining custom (api) domain. 
 1. Upload example.com SSL certificate to AWS Certificate Manager (ACM).
 

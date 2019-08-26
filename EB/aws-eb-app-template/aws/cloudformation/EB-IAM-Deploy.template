@@ -9,7 +9,7 @@ Resources:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       Description: Managed Policy for updating and deploying EB.
-      ManagedPolicyName: BN-FondService-EbDeploy
+      ManagedPolicyName: EbDeploy
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
