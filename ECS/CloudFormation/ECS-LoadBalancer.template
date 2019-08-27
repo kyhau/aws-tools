@@ -1,0 +1,97 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "This template deploys an Application Load Balancer that exposes our various ECS services. We create them it a seperate nested template, so it can be referenced by all of the other nested templates.",
+
+  "Parameters": {
+    "EnvironmentName": {
+      "Description": "The name of the cluster environment",
+      "Type": "String"
+    },
+    "VPC": {
+      "Description": "The VPC ID of the VPC the Application Load Balancer should be deployed to",
+      "Type": "String"
+    },
+    "PublicSubnets": {
+      "Description": "List of subnet-ID of the subnets the Application Load Balancer should be deployed to (e.g. subnet-xxxxxxx,subnet-xxxxxxx)",
+      "Type": "CommaDelimitedList"
+    },
+    "ElbPort" : {
+      "Type" : "String",
+      "Description" : "Optional - Security Group port to open on ELB - port 80 will be open by default",
+      "Default" : "80"
+    },
+    "BillingTag": {
+      "Description": "The billing tag",
+      "Type": "String"
+    },,
+  },
+
+  "Resources": {
+    "LoadBalancerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "VpcId": {"Ref": "VPC"},
+        "GroupDescription": "ELB allowed ports, for accessing to the load balancer that sits in front of ECS",
+        "SecurityGroupIngress": [
+          {"CidrIp": "0.0.0.0/0", "IpProtocol": -1, "Description": "All traffic"}
+        ],
+        "Tags": [
+          {"Key": "Name", "Value": {"Fn::Join": ["-", [{"Ref": "EnvironmentName"}, "Alb"]]}},
+          {"Key": "Billing", "Value": {"Ref": "BillingTag"}}
+        ]
+      }
+    },
+    "LoadBalancer": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "Name": {"Ref": "EnvironmentName"},
+        "Subnets": {"Ref": "PublicSubnets"},
+        "SecurityGroups": [{"Ref": "LoadBalancerSecurityGroup"}],
+        "Tags": [
+          {"Key": "Name", "Value": {"Ref": "EnvironmentName"}},
+          {"Key": "Billing", "Value": {"Ref": "BillingTag"}}
+        ]
+      }
+    },
+    "LoadBalancerListener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "LoadBalancerArn": {"Ref": "LoadBalancer"},
+        "Port": {"Ref": "ElbPort"},
+        "Protocol": "HTTP",
+        "DefaultActions": [
+          {"Type": "forward", "TargetGroupArn": {"Ref": "DefaultTargetGroup"}}
+        ]
+      }
+    },
+    "DefaultTargetGroup": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "Name": {"Fn::Join": ["-", [{"Ref": "EnvironmentName"}, "Default"]]},
+        "VpcId": {"Ref": "VPC"},
+        "Port": {"Ref": "ElbPort"},
+        "Protocol": "HTTP"
+      }
+    }
+  },
+
+  "Outputs": {
+    "LoadBalancer": {
+      "Description": "A reference to the Application Load Balancer",
+      "Value": {"Ref": "LoadBalancer"}
+    },
+    "LoadBalancerUrl": {
+      "Description": "The URL of the ALB",
+      "Value": {"Fn::GetAtt": ["LoadBalancer", "DNSName"]}
+    },
+    "LoadBalancerListener": {
+      "Description": "A reference to a port 80 listener",
+      "Value": {"Ref": "LoadBalancerListener"}
+    },
+    "LoadBalancerSecurityGroup": {
+      "Description": "A reference to the security group for load balancer",
+      "Value": {"Ref": "LoadBalancerSecurityGroup"}
+    }
+  }
+}

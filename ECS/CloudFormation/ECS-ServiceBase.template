@@ -1,0 +1,156 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "This template deploys Target Group, Listener Rule, CloudWatchLogsGroup, execution roles and policies.",
+
+  "Parameters": {
+    "EnvironmentName": {
+      "Description": "The name of the cluster environment",
+      "Type": "String"
+    },
+    "VPC": {
+      "Description": "The ID of the VPC that the ECS cluster is deployed to",
+      "Type": "String"
+    },
+    "Path": {
+      "Description": "The path to register with the Application Load Balancer",
+      "Type": "String",
+      "Default": "/"
+    },
+    "Port" : {
+      "Type" : "String",
+      "Description" : "The port on which the targets receive traffic",
+      "Default" : "80"
+    }
+  },
+  
+  "Resources": {
+    "CloudWatchLogsGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": {"Fn::Join": ["", ["ECS/", {"Ref": "EnvironmentName"}]]},
+        "RetentionInDays": 365
+      }
+    },
+    "EcsLoadBalancerRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "Path": "/",
+        "RoleName": {"Fn::Join": ["-", [{"Ref": "EnvironmentName"}, "ECSLoadBalancerRole"]]},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": ["ecs.amazonaws.com"]
+            },
+            "Action": ["sts:AssumeRole"]
+          }
+        },
+        "Policies": [
+          {
+            "PolicyName": {"Fn::Join": ["-", [{"Ref": "EnvironmentName"}, "ECSLoadBalancerRole-Policy"]]},
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:AuthorizeSecurityGroupIngress",
+                    "ec2:Describe*",
+                    "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                    "elasticloadbalancing:Describe*",
+                    "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                    "elasticloadbalancing:DeregisterTargets",
+                    "elasticloadbalancing:DescribeTargetGroups",
+                    "elasticloadbalancing:DescribeTargetHealth",
+                    "elasticloadbalancing:RegisterTargets"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "EcsTaskExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "Path": "/",
+        "RoleName": {"Fn::Join": ["-", [{"Ref": "EnvironmentName"}, "ECSTaskExecutionRole"]]},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": ["ecs-tasks.amazonaws.com"]
+            },
+            "Action": ["sts:AssumeRole"]
+          }
+        },
+        "Policies": [
+          {
+            "PolicyName": {"Fn::Join": ["-", [{"Ref": "EnvironmentName"}, "ECSTaskExecutionRole-Policy"]]},
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ecr:GetAuthorizationToken",
+                    "ecr:BatchCheckLayerAvailability",
+                    "ecr:GetDownloadUrlForLayer",
+                    "ecr:BatchGetImage",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "EcsTaskRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "Path": "/",
+        "RoleName": {"Fn::Join": ["-", [{"Ref": "EnvironmentName"}, "ECSTaskRole"]]},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": ["ecs-tasks.amazonaws.com"]
+            },
+            "Action": ["sts:AssumeRole"]
+          }
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+        ]
+      }
+    }
+  },
+
+  "Outputs": {
+    "EcsLoadBalancerRole": {
+      "Description": "A reference to ECS Load Balancer role",
+      "Value": {"Fn::GetAtt": ["EcsLoadBalancerRole", "Arn"]}
+    },
+    "EcsTaskRole": {
+      "Description": "A reference to ECS Task role",
+      "Value": {"Fn::GetAtt": ["EcsTaskRole", "Arn"]}
+    },
+    "EcsTaskExecutionRole": {
+      "Description": "A reference to ECS execution role",
+      "Value": {"Fn::GetAtt": ["EcsTaskExecutionRole", "Arn"]}
+    },
+    "CloudWatchLogsGroup": {
+      "Description": "A reference to the CloudWatchLogsGroup",
+      "Value": {"Ref": "CloudWatchLogsGroup"}
+    }
+  }
+}

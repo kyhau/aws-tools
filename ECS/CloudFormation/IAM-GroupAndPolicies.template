@@ -1,0 +1,161 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Create IAM Groups for Deploy and developers to run tests and do deployment for  components",
+
+  "Parameters": {
+    "IamGroupNameDeploy": {
+      "Description": "IAM Group for deployment",
+      "Type": "String"
+    },
+    "IamGroupNameDev": {
+      "Description": "IAM Group for development",
+      "Type": "String"
+    },
+    "ECSTaskExecutionRole": {
+      "Description": "ARN of the ECS Task Execution Role",
+      "Type": "String"
+    }
+  },
+
+  "Resources": {
+    "IamGroupDeploy": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {"GroupName": {"Ref": "IamGroupNameDeploy"}}
+    },
+    "IamGroupDev": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {"GroupName": {"Ref": "IamGroupNameDev"}}
+    },
+
+    "IamPolicyDeployTasks": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["IamGroupDeploy"],
+      "Properties": {
+        "Groups": [{"Ref": "IamGroupNameDeploy"}],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "cloudformation:CreateStack",
+                "cloudformation:UpdateStack",
+                "cloudformation:CreateChangeSet",
+                "cloudformation:ContinueUpdateRollback",
+                "cloudformation:DescribeStacks",
+                "cloudformation:CreateUploadBucket",
+                "cloudformation:ListStacks",
+                "cloudformation:ValidateTemplate"
+              ],
+              "Resource": "arn:aws:cloudformation:*:*:stack/*/*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ecr:CreateRepository",
+                "ecr:DescribeRepositories",
+                "ecr:GetAuthorizationToken",
+                "ecr:CompleteLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:BatchCheckLayerAvailability"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ecs:RegisterTaskDefinition"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameters"
+              ],
+              "Resource": "arn:aws:ssm:ap-southeast-2:*:parameter/aws/service/ecs/optimized-ami/amazon-linux-2/recommended*"
+            }
+          ]
+        }
+      }
+    },
+    "EcsTaskExecutionPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["IamGroupDeploy", "IamGroupDev"],
+      "Properties": {
+        "Groups": [
+          {"Ref":"IamGroupDeploy"},
+          {"Ref":"IamGroupDev"}
+        ],
+        "Description": "Managed Policy for executing (e.g. run, start, stop) tasks",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ecs:Describe*",
+                "ecs:List*",
+                "ecs:RunTask",
+                "ecs:StartTask",
+                "ecs:StopTask",
+                "ecs:Submit*"
+              ],
+              "Resource": "*",
+              "Condition": {"ArnLike": {"ecs:cluster": "arn:aws:ecs:*:*:cluster/*"}}
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ecs:Describe*",
+                "ecs:List*"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["iam:PassRole"],
+              "Resource": [
+                {"Ref":  "ECSTaskExecutionRole"},
+              ]
+            }
+          ]
+        }
+      }
+    },
+
+    "IamPolicyReadLogs": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "DependsOn": ["IamGroupDeploy", "IamGroupDev"],
+      "Properties": {
+        "Groups": [
+          {"Ref": "IamGroupNameDebugging"}
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:GetLogEvents",
+                "logs:FilterLogEvents"
+              ],
+              "Resource": [
+                "arn:aws:logs:*:*:log-group:*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "logs:TestMetricFilter",
+              "Resource": "*"
+            }
+          ]
+        }
+      }
+    }
+
+  }
+}

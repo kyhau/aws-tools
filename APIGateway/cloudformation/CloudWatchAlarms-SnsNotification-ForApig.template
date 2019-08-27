@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This template deploys additional CloudWatch Alarms and SNS email notifications for a API Gateway.
+
+Parameters:
+  ApiGatewayAlarmEmail:
+    Description: Email address to notify if there are any API Gateway operational issues
+    Type: String
+  ApiGatewayName:
+    Description: Name of the API Gateway
+    Type: String
+  ApiGatewayStage:
+    Description: The stage of the API Gateway
+    Type: String
+
+Resources:
+  ApiGatewayAlarmSnsTopic:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      Subscription:
+        - Endpoint: !Ref ApiGatewayAlarmEmail
+          Protocol: email
+
+  ApiGateway4XXErrorAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    DependsOn:
+      - ApiGatewayAlarmSnsTopic
+    Properties:
+      AlarmActions:
+        - !Ref ApiGatewayAlarmSnsTopic
+      AlarmDescription: When API Gateway 4XX error occurs it will be notified through SNS
+      AlarmName: !Join [ "/", [ !Ref ApiGatewayName, "ApiGatway", !Ref ApiGatewayStage, "4XXError" ] ]
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: ApiName
+          Value: !Ref ApiGatewayName
+        - Name: Stage
+          Value: !Ref ApiGatewayStage
+      EvaluationPeriods: 1
+      MetricName: 4XXError
+      Namespace: AWS/ApiGateway
+      Period: 300
+      Statistic: Sum
+      Threshold: 0
+      TreatMissingData: notBreaching
+
+  ApiGateway5XXErrorAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    DependsOn:
+      - ApiGatewayAlarmSnsTopic
+    Properties:
+      AlarmActions:
+        - !Ref ApiGatewayAlarmSnsTopic
+      AlarmDescription: When API Gateway 5XX error occurs it will be notified through SNS
+      AlarmName: !Join [ "/", [ !Ref ApiGatewayName, "ApiGatway", !Ref ApiGatewayStage, "5XXError" ] ]
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: ApiName
+          Value: !Ref ApiGatewayName
+        - Name: Stage
+          Value: !Ref ApiGatewayStage
+      EvaluationPeriods: 1
+      MetricName: 5XXError
+      Namespace: AWS/ApiGateway
+      Period: 300
+      Statistic: Sum
+      Threshold: 0
+      TreatMissingData: notBreaching
+
+Outputs:
+  ApiGatewayAlarmSnsTopicArn:
+    Description: A reference to SNS Notification ARN of API Gateway error activities
+    Value: !Ref ApiGatewayAlarmSnsTopic

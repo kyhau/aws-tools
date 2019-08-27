@@ -1,0 +1,589 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "This template deploys an ECS cluster to the provided VPC and subnets using an Auto Scaling Group.",
+
+  "Parameters": {
+    "InstanceType": {
+      "Description": "Which instance type should we use to build the ECS cluster?",
+      "Type": "String",
+      "Default": "t2.large"
+    },
+    "ClusterSize": {
+      "Description": "How many ECS hosts do you want to initially deploy?",
+      "Type": "Number",
+      "Default": 2
+    },
+    "ClusterSizeMax": {
+      "Description": "How many max ECS hosts do you want to deploy when required?",
+      "Type": "Number",
+      "Default": 20
+    },
+    "ClusterAutoScalingHighCPUValue": {
+      "Description": "The value indicating high CPU Utilization % for the Auto Scaling (scale-out) policies to action accordingly",
+      "Type": "Number",
+      "Default": 65
+    },
+    "ClusterAutoScalingHighMemoryValue": {
+      "Description": "The value indicating high Memory Utilization % for the Auto Scaling (scale-out) policies to action accordingly",
+      "Type": "Number",
+      "Default": 70
+    },
+    "ClusterAutoScalingLowCPUValue": {
+      "Description": "The value indicating low CPU Utilization % for the Auto Scaling (scale-in) policies to action accordingly",
+      "Type": "Number",
+      "Default": 30
+    },
+    "EcsOptimizedAmi": {
+      "Description": "Amazon ECS-optimized AMI",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+      "Default": "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
+    },
+    "EcsInstanceVolumeSize": {
+      "Description": "The size of the volume of the EC2, in gibibytes (GiBs).",
+      "Type": "Number",
+      "Default": "100"
+    },
+    "KeyName": {
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
+      "Type": "String"
+    },
+    "VPC": {
+      "Description": "The VPC ID of the VPC the security groups should be deployed to (e.g. vpc-xxxxxxxx)",
+      "Type": "String"
+    },
+    "PrivateSubnets": {
+      "Description": "List of subnet-ID of the subnets this ECS cluster should be deployed to (e.g. subnet-xxxxxxx,subnet-xxxxxxx)",
+      "Type": "CommaDelimitedList"
+    },
+    "BastionHostSecurityGroup": {
+      "Description": "Bastion Host Security Group (e.g. sg-xxxxxxxx)",
+      "Type": "String"
+    },
+    "NotificationEmail": {
+      "Description": "Email address the SNS notification about auto scaling activities to be sent to",
+      "Type": "String",
+    },
+    "Stage": {
+      "Description": "Deployment stage.",
+      "Type": "String",
+      "AllowedValues": ["prod", "staging", "dev"],
+      "Default": "dev"
+    }
+  },
+
+  "Mappings": {
+    "StageMap": {
+      "prod": {
+        "AlbSecurityGroup": "TODO-sg",
+        "EnvironmentName": "TODO-ClusterName",
+        "BillingTag": "TODO-ClusterName"
+      },
+      "staging": {
+        "AlbSecurityGroup": "TODO-sg",
+        "EnvironmentName": "TODO-ClusterName-Staging",
+        "BillingTag": "TODO-ClusterName-Staging"
+      },
+      "dev": {
+        "AlbSecurityGroup": "TODO-sg",
+        "EnvironmentName": "TODO-ClusterName-Dev",
+        "BillingTag": "TODO-ClusterName-Dev"
+      }
+    }
+  },
+
+  "Resources": {
+    "ECSCluster": {
+      "Type": "AWS::ECS::Cluster",
+      "Properties": {
+        "ClusterName": {"Fn::Join": ["-", [{"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "EnvironmentName"]}, "Cluster"]]}
+      }
+    },
+    "ECSRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "Path": "/",
+        "RoleName": {"Fn::Join": ["-", ["BN", {"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "EnvironmentName"]}, "ECSRole"]]},
+        "AssumeRolePolicyDocument": {
+          "Version" : "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "ec2.amazonaws.com"
+            },
+            "Action": ["sts:AssumeRole"]
+          }]
+        },
+        "Policies": [{
+          "PolicyName": {"Fn::Join": ["-", ["BN", {"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "EnvironmentName"]}, "ECSRole-Policy"]]},
+          "PolicyDocument": {
+            "Version" : "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "ecs:CreateCluster",
+                "ecs:DeregisterContainerInstance",
+                "ecs:DiscoverPollEndpoint",
+                "ecs:Poll",
+                "ecs:RegisterContainerInstance",
+                "ecs:StartTelemetrySession",
+                "ecs:Submit*",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetAuthorizationToken",
+                "ssm:DescribeAssociation",
+                "ssm:GetDeployablePatchSnapshotForInstance",
+                "ssm:GetDocument",
+                "ssm:GetManifest",
+                "ssm:GetParameters",
+                "ssm:ListAssociations",
+                "ssm:ListInstanceAssociations",
+                "ssm:PutInventory",
+                "ssm:PutComplianceItems",
+                "ssm:PutConfigurePackageResult",
+                "ssm:UpdateAssociationStatus",
+                "ssm:UpdateInstanceAssociationStatus",
+                "ssm:UpdateInstanceInformation",
+                "ec2messages:AcknowledgeMessage",
+                "ec2messages:DeleteMessage",
+                "ec2messages:FailMessage",
+                "ec2messages:GetEndpoint",
+                "ec2messages:GetMessages",
+                "ec2messages:SendReply",
+                "cloudwatch:PutMetricData",
+                "ec2:DescribeInstanceStatus",
+                "ds:CreateComputer",
+                "ds:DescribeDirectories",
+                "logs:Create*",
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:AbortMultipartUpload",
+                "s3:ListMultipartUploadParts",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Resource": "*"
+            }]}
+          }
+        ]
+      }
+    },
+    "ECSInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "DependsOn": ["ECSRole"],
+      "Properties": {
+        "Path": "/",
+        "Roles": [{"Ref": "ECSRole"}]
+      }
+    },
+    "ECSHostSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "VpcId": {"Ref": "VPC"},
+        "GroupDescription": "Access to the ECS hosts and the tasks/containers that run on them",
+        "SecurityGroupIngress": [
+          {
+            "SourceSecurityGroupId": {"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "AlbSecurityGroup"]},
+            "IpProtocol": -1
+          },
+          {
+            "SourceSecurityGroupId": {"Ref": "BastionHostSecurityGroup"},
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22"
+          }
+        ],
+        "Tags": [
+          {"Key": "Name", "Value":  {"Fn::Join": ["-", [{"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "EnvironmentName"]}, "ECS-Host"]]}},
+          {"Key": "Billing", "Value": {"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "BillingTag"]}}
+        ]
+      }
+    },
+    "ECSLaunchConfiguration": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "DependsOn": ["ECSInstanceProfile"],
+      "Properties": {
+        "BlockDeviceMappings": [{
+          "DeviceName": "/dev/xvda",
+          "Ebs": {
+            "VolumeType": "gp2",
+            "VolumeSize": {"Ref": "EcsInstanceVolumeSize"}
+          }
+        }],
+        "EbsOptimized": "false",
+        "IamInstanceProfile": {"Ref": "ECSInstanceProfile"},
+        "ImageId": {"Ref": "EcsOptimizedAmi"},
+        "InstanceType": {"Ref": "InstanceType"},
+        "KeyName": { "Ref": "KeyName" },
+        "SecurityGroups": [{"Ref": "ECSHostSecurityGroup"}],
+        "UserData": { "Fn::Base64": { "Fn::Join": ["", [
+          "#!/bin/bash -x\n",
+          "yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm\n",
+          "yum install -y aws-cfn-bootstrap hibagent\n",
+          "/opt/aws/bin/cfn-init -v --region ", {"Ref": "AWS::Region"}, " --stack ", {"Ref": "AWS::StackName"}, " --resource ECSLaunchConfiguration\n",
+          "/opt/aws/bin/cfn-signal -e $? --region ", {"Ref": "AWS::Region"}, " --stack ", {"Ref": "AWS::StackName"}, " --resource ECSAutoScalingGroup\n",
+          "/usr/bin/enable-ec2-spot-hibernation\n"
+        ]]}}
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Init": {
+          "config": {
+            "packages": {
+              "yum": {
+                "awslogs": []
+              }
+            },
+            "files": {
+              "/etc/ecs/ecs.config": {
+                "content": {"Fn::Join" : ["", [
+                  "ECS_CLUSTER=", {"Ref": "ECSCluster"}, "\n",
+                  "ECS_ENGINE_TASK_CLEANUP_WAIT_DURATION=30m\n",
+                  "ECS_CONTAINER_STOP_TIMEOUT=30s\n",
+                  "ECS_CONTAINER_START_TIMEOUT=5m\n",
+                  "ECS_IMAGE_CLEANUP_INTERVAL=24h\n",
+                  "ECS_IMAGE_MINIMUM_CLEANUP_AGE=168h\n",
+                  "ECS_NUM_IMAGES_DELETE_PER_CYCLE=10\n",
+                  "ECS_IMAGE_PULL_BEHAVIOR=default\n"
+                ]]}
+              },
+              "/etc/cfn/cfn-hup.conf": {
+                "mode": "000400",
+                "owner": "root",
+                "group": "root",
+                "content": {"Fn::Sub": "[main]\nstack=${AWS::StackId}\nregion=${AWS::Region}\n"}
+              },
+              "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
+                "content": {"Fn::Join" : ["", [
+                  "[cfn-auto-reloader-hook]\n",
+                  "triggers=post.update\n",
+                  "path=Resources.ECSLaunchConfiguration.Metadata.AWS::CloudFormation::Init\n",
+                  "action=cfn-init -v --region ", {"Ref": "AWS::Region"},
+                  " --stack ", {"Ref": "AWS::StackName"}, " --resource ECSLaunchConfiguration\n"
+                ]]}
+              },
+              "/etc/awslogs/awscli.conf": {
+                "content": {"Fn::Sub": "[plugins]\ncwlogs = cwlogs\n[default]\nregion = ${AWS::Region}\n"}
+              },
+              "/etc/awslogs/awslogs.conf": {
+                "content": {"Fn::Join" : ["", [
+                  "[general]\n",
+                  "state_file = /var/lib/awslogs/agent-state\n",
+                  "[/var/log/dmesg]\n",
+                  "file = /var/log/dmesg\n",
+                  "log_group_name = ", "/aws/ecs/", {"Ref": "ECSCluster"}, "\n",
+                  "log_stream_name = /var/log/dmesg\n",
+                  "datetime_format = %Y-%m-%dT%H:%M:%SZ\n",
+                  "[/var/log/messages]\n",
+                  "file = /var/log/messages\n",
+                  "log_group_name = ", "/aws/ecs/", {"Ref": "ECSCluster"}, "\n",
+                  "log_stream_name = /var/log/messages\n",
+                  "datetime_format = %Y-%m-%dT%H:%M:%SZ\n",
+                  "[/var/log/ecs/ecs-init.log]\n",
+                  "file = /var/log/ecs/ecs-init.log\n",
+                  "log_group_name = ", "/aws/ecs/", {"Ref": "ECSCluster"}, "\n",
+                  "log_stream_name = /var/log/ecs/ecs-init.log\n",
+                  "datetime_format = %Y-%m-%dT%H:%M:%SZ\n",
+                  "[/var/log/ecs/ecs-agent.log]\n",
+                  "file = /var/log/ecs/ecs-agent.log.*\n",
+                  "log_group_name = ", "/aws/ecs/", {"Ref": "ECSCluster"}, "\n",
+                  "log_stream_name = /var/log/ecs/ecs-agent.log\n",
+                  "datetime_format = %Y-%m-%dT%H:%M:%SZ\n",
+                  "[/var/log/ecs/audit.log]\n",
+                  "file = /var/log/ecs/audit.log.*\n",
+                  "log_group_name = ", "/aws/ecs/", {"Ref": "ECSCluster"}, "\n",
+                  "log_stream_name = /var/log/ecs/audit.log\n",
+                  "datetime_format = %Y-%m-%dT%H:%M:%SZ\n"
+                ]]}
+              }
+            },
+            "services": {
+              "sysvinit": {
+                "cfn-hup": {
+                  "enabled": true,
+                  "ensureRunning": true,
+                  "files": [
+                    "/etc/cfn/cfn-hup.conf",
+                    "/etc/cfn/hooks.d/cfn-auto-reloader.conf"
+                  ]
+                },
+                "awslogsd": {
+                  "enabled": true,
+                  "ensureRunning": true,
+                  "files": [
+                    "/etc/awslogs/awslogs.conf",
+                    "/etc/awslogs/awscli.conf"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "SnsNotificationTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "Subscription": [{
+         "Endpoint": {"Ref": "NotificationEmail"},
+         "Protocol": "email"
+        }]
+      }
+    },
+    "ECSAutoScalingGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "DependsOn": ["ECSLaunchConfiguration", "SnsNotificationTopic"],
+      "Properties": {
+        "VPCZoneIdentifier": {"Ref": "PrivateSubnets"},
+        "LaunchConfigurationName": {"Ref": "ECSLaunchConfiguration"},
+        "DesiredCapacity": {"Ref": "ClusterSize"},
+        "MinSize": {"Ref": "ClusterSize"},
+        "MaxSize": {"Ref": "ClusterSizeMax"},
+        "TerminationPolicies": [
+          "OldestInstance",
+          "OldestLaunchConfiguration"
+        ],
+        "MetricsCollection": [{
+          "Granularity": "1Minute",
+          "Metrics": [
+            "GroupMinSize",
+            "GroupMaxSize",
+            "GroupDesiredCapacity",
+            "GroupInServiceInstances",
+            "GroupPendingInstances",
+            "GroupStandbyInstances",
+            "GroupTerminatingInstances",
+            "GroupTotalInstances"
+          ]
+        }],
+        "NotificationConfigurations": [{
+          "TopicARN": { "Ref": "SnsNotificationTopic" },
+          "NotificationTypes": [
+            "autoscaling:EC2_INSTANCE_LAUNCH",
+            "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
+            "autoscaling:EC2_INSTANCE_TERMINATE",
+            "autoscaling:EC2_INSTANCE_TERMINATE_ERROR"
+          ]
+        }],
+        "Tags": [
+          {"Key": "Name", "Value": {"Fn::Join": ["-", [{"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "EnvironmentName"]}, "ECS-Host"]]}, "PropagateAtLaunch": true},
+          {"Key": "Billing", "Value": {"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "BillingTag"]}, "PropagateAtLaunch": true}
+        ]
+      },
+      "CreationPolicy": {
+        "ResourceSignal": {"Timeout": "PT15M"}
+      },
+      "UpdatePolicy": {
+        "AutoScalingRollingUpdate": {
+          "MinInstancesInService": 1,
+          "MaxBatchSize": 2,
+          "PauseTime": "PT15M",
+          "SuspendProcesses": [
+            "HealthCheck",
+            "ReplaceUnhealthy",
+            "AZRebalance",
+            "AlarmNotification",
+            "ScheduledActions"
+          ],
+          "WaitOnResourceSignals": true
+        }
+      }
+    },
+
+    "ScheduledActionDown": {
+      "Type": "AWS::AutoScaling::ScheduledAction",
+      "Properties": {
+        "AutoScalingGroupName": {"Ref": "ECSAutoScalingGroup"},
+        "DesiredCapacity": "1",
+        "MinSize": "1",
+        "Recurrence": "0 0 * * SAT"
+      }
+    },
+    "ScheduledActionUp": {
+      "Type": "AWS::AutoScaling::ScheduledAction",
+      "Properties": {
+        "AutoScalingGroupName": {"Ref": "ECSAutoScalingGroup"},
+        "DesiredCapacity":{"Ref": "ClusterSize"},
+        "MinSize": {"Ref": "ClusterSize"},
+        "Recurrence": "0 23 * * SUN"
+      }
+    },
+
+    "StepScalingScaleOutPolicyOnCPUUtilization": {
+      "Type": "AWS::AutoScaling::ScalingPolicy",
+      "Properties": {
+        "AdjustmentType": "ChangeInCapacity",
+        "AutoScalingGroupName": {"Ref": "ECSAutoScalingGroup"},
+        "EstimatedInstanceWarmup": 300,
+        "MetricAggregationType": "Maximum",
+        "PolicyType": "StepScaling",
+        "StepAdjustments": [{
+          "MetricIntervalLowerBound": 0,
+          "ScalingAdjustment": 1
+        }]
+      }
+    },
+    "StepScalingScaleOutPolicyOnMemoryUtilization": {
+      "Type": "AWS::AutoScaling::ScalingPolicy",
+      "Properties": {
+        "AdjustmentType": "ChangeInCapacity",
+        "AutoScalingGroupName": {"Ref": "ECSAutoScalingGroup"},
+        "EstimatedInstanceWarmup": 300,
+        "MetricAggregationType": "Maximum",
+        "PolicyType": "StepScaling",
+        "StepAdjustments": [{
+          "MetricIntervalLowerBound": 0,
+          "ScalingAdjustment": 1
+        }]
+      }
+    },
+    "StepScalingScaleInPolicyOnCPUUtilization": {
+      "Type": "AWS::AutoScaling::ScalingPolicy",
+      "Properties": {
+        "AdjustmentType": "ChangeInCapacity",
+        "AutoScalingGroupName": {"Ref": "ECSAutoScalingGroup"},
+        "MetricAggregationType": "Average",
+        "PolicyType": "StepScaling",
+        "StepAdjustments": [{
+          "MetricIntervalUpperBound": 0,
+          "ScalingAdjustment": -1
+        }]
+      }
+    },
+
+    "AutoScalingHighEcsCpuAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmActions": [
+          {"Ref": "StepScalingScaleOutPolicyOnCPUUtilization"},
+          {"Ref": "SnsNotificationTopic"}
+        ],
+        "AlarmDescription": {"Fn::Join": [" ",
+          ["Containers CPU Utilization High", {"Ref": "ClusterAutoScalingHighCPUValue"}]
+        ]},
+        "AlarmName": {"Fn::Join": ["/", ["TODO-ClusterName", {"Ref": "ECSCluster"}, "CPUUtilizationHigh"]]},
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [{
+           "Name": "ClusterName",
+           "Value": {"Ref": "ECSCluster"}
+         }],
+        "EvaluationPeriods": 1,
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/ECS",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": {"Ref": "ClusterAutoScalingHighCPUValue"},
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "AutoScalingHighEcsMemoryAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmActions": [
+          {"Ref": "StepScalingScaleOutPolicyOnMemoryUtilization"},
+          {"Ref": "SnsNotificationTopic"}
+        ],
+        "AlarmDescription": {"Fn::Join": [" ",
+          ["Containers Memory Utilization High", {"Ref": "ClusterAutoScalingHighMemoryValue"}]
+        ]},
+        "AlarmName": {"Fn::Join": ["/", ["TODO-ClusterName", {"Ref": "ECSCluster"}, "MemoryUtilizationHigh"]]},
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [{
+           "Name": "ClusterName",
+           "Value": {"Ref": "ECSCluster"}
+         }],
+        "EvaluationPeriods": 1,
+        "MetricName": "MemoryUtilization",
+        "Namespace": "AWS/ECS",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": {"Ref": "ClusterAutoScalingHighMemoryValue"},
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "AutoScalingLowEcsCpuAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmActions": [
+          {"Ref": "StepScalingScaleInPolicyOnCPUUtilization"}
+        ],
+        "AlarmDescription": {"Fn::Join": [" ",
+          ["Containers CPU Utilization Low", {"Ref": "ClusterAutoScalingLowCPUValue"}]
+        ]},
+        "AlarmName": {"Fn::Join": ["/", ["TODO-ClusterName", {"Ref": "ECSCluster"}, "CPUUtilizationLow"]]},
+        "ComparisonOperator": "LessThanOrEqualToThreshold",
+        "Dimensions": [{
+           "Name": "ClusterName",
+           "Value": {"Ref": "ECSCluster"}
+         }],
+        "EvaluationPeriods": 1,
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/ECS",
+        "Period": 600,
+        "Statistic": "Average",
+        "Threshold": {"Ref": "ClusterAutoScalingLowCPUValue"},
+        "TreatMissingData": "notBreaching"
+      }
+    },
+
+    "ECSServiceAutoScalingRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "Path": "/",
+        "RoleName": {"Fn::Join": ["-", ["BN", {"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "EnvironmentName"]}, "ECSAutoScalingRole"]]},
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": ["application-autoscaling.amazonaws.com"]
+            },
+            "Action": ["sts:AssumeRole"]
+          }
+        },
+        "Policies": [
+          {
+            "PolicyName": {"Fn::Join": ["-", ["BN", {"Fn::FindInMap": ["StageMap", {"Ref":"Stage"}, "EnvironmentName"]}, "ECSAutoScalingRole-Policy"]]},
+            "PolicyDocument": {
+              "Version" : "2012-10-17",
+              "Statement": {
+                "Effect": "Allow",
+                "Action": [
+                  "application-autoscaling:*",
+                  "cloudwatch:DescribeAlarms",
+                  "cloudwatch:PutMetricAlarm",
+                  "cloudwatch:GetMetricStatistics",
+                  "ecs:DescribeServices",
+                  "ecs:UpdateService"
+                ],
+                "Resource": "*"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+
+  "Outputs": {
+    "Cluster": {
+      "Description": "A reference to the ECS cluster",
+      "Value": {"Ref": "ECSCluster"}
+    },
+    "ECSServiceAutoScalingRole": {
+      "Description": "A reference to ECS service auto scaling role",
+      "Value": {"Fn::GetAtt": ["ECSServiceAutoScalingRole", "Arn"]}
+    },
+    "ECSAutoScalingGroupName": {
+      "Description": "A reference to ECS AutoScaling Group Name",
+      "Value": {"Ref": "ECSAutoScalingGroup"}
+    },
+    "ECSAutoScalingGroupSnsTopicArn": {
+      "Description": "A reference to SNS Notification ARN of ECS AutoScaling Group activities",
+      "Value": {"Ref": "SnsNotificationTopic"}
+    }
+  }
+}
