@@ -1,20 +1,21 @@
 # Sample repo template for creating ElasticBeanstalk app
 
-This repo contains templates for building/deploying an EB application.
-- [app/.ebextensions/](app/.ebextensions)
-- [app/.elasticbeanstalk/](app/.elasticbeanstalk)
-- [app/sample_service/](app/sample_service)
-- [app/.dockerignore](app/.dockerignore)
-- [app/.ebignore](app/.ebignore)
-- [app/.gitignore](app/.gitignore)
-- [app/Dockerfile](app/Dockerfile)
-- [aws/cloudformation/EB-CloudWatchPolicy.template ](aws/cloudformation/EB-CloudWatchPolicy.template)
-- [aws/cloudformation/EB-IAM-Deploy.template](aws/cloudformation/EB-IAM-Deploy.template)
-- [aws/cloudformation/S3-Configs.template](aws/cloudformation/S3-Configs.template)
-- [aws/cloudformation/S3-RootLogs.template](aws/cloudformation/S3-RootLogs.template)
-- [deploy/eb_deployment_helper.sh](deploy/eb_deployment_helper.sh)
-- [deploy/requirements-deploy.txt](deploy/requirements-deploy.txt)
-- [deploy/setup_aws_profile.py](deploy/setup_aws_profile.py)
+This repo contains templates in [aws-eb-app-template/](aws-eb-app-template) for building/deploying an EB application.
+- [app/.ebextensions/](aws-eb-app-template/app/.ebextensions)
+- [app/.elasticbeanstalk/](aws-eb-app-template/app/.elasticbeanstalk)
+- [app/sample_service/](aws-eb-app-template/app/sample_service)
+- [app/.dockerignore](aws-eb-app-template/app/.dockerignore)
+- [app/.ebignore](aws-eb-app-template/app/.ebignore)
+- [app/.gitignore](aws-eb-app-template/app/.gitignore)
+- [app/Dockerfile.base](aws-eb-app-template/app/Dockerfile.base)
+- [app/Dockerrun.aws.json.template](aws-eb-app-template/app/Dockerrun.aws.json.template)
+- [aws/cloudformation/EB-CloudWatchPolicy.template ](aws-eb-app-template/aws/cloudformation/EB-CloudWatchPolicy.template)
+- [aws/cloudformation/EB-IAM-Deploy.template](aws-eb-app-template/aws/cloudformation/EB-IAM-Deploy.template)
+- [aws/cloudformation/S3-Configs.template](aws-eb-app-template/aws/cloudformation/S3-Configs.template)
+- [aws/cloudformation/S3-RootLogs.template](aws-eb-app-template/aws/cloudformation/S3-RootLogs.template)
+- [deploy/eb_deployment_helper.sh](aws-eb-app-template/deploy/eb_deployment_helper.sh)
+- [deploy/requirements-deploy.txt](aws-eb-app-template/deploy/requirements-deploy.txt)
+
 
 ## Initialise EB Application and generate .elasticbeanstalk and .gitignore
 Only need to do it once
@@ -78,6 +79,16 @@ See also [EB CLI Reference: `eb config`](http://docs.aws.amazon.com/elasticbeans
            $ cd deploy
            $ ./eb_deployment_helper.sh --eb-config-update --eb-env [EB_ENV_NAME]
 
+
+## Quick local packaging
+
+```
+docker build -t local/my_app .
+docker run -d -p 8080:8080 local/my_app:latest
+zip -r app.zip my_app env setup.py *.ini Dockerfile Dockerrun.aws.json constraints.txt MANIFEST.in
+
+aws elasticbeanstalk list-available-solution-stacks
+```
 
 ## To ssh to the EC2 using EB CLI
 
