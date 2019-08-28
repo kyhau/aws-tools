@@ -1,3 +1,9 @@
 aws-shell
 aws-sam-cli
 awsebcli
+
+# Local AWS cloud stack - https://github.com/localstack/localstack
+#localstack
+
+# LocalStack AWS CLI - https://github.com/localstack/awscli-local
+#awscli-local
