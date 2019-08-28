@@ -1,10 +1,26 @@
-# Elastic Beanstalk
+# Sample repo template for creating ElasticBeanstalk app
+
+This repo contains templates in [](aws-eb-app-template) for building/deploying an EB application.
+- [app/.ebextensions/](app/.ebextensions)
+- [app/.elasticbeanstalk/](app/.elasticbeanstalk)
+- [app/sample_service/](app/sample_service)
+- [app/.dockerignore](app/.dockerignore)
+- [app/.ebignore](app/.ebignore)
+- [app/.gitignore](app/.gitignore)
+- [app/Dockerfile.base](app/Dockerfile.base)
+- [app/Dockerrun.aws.json.template](app/Dockerrun.aws.json.template)
+- [aws/cloudformation/EB-CloudWatchPolicy.template ](aws/cloudformation/EB-CloudWatchPolicy.template)
+- [aws/cloudformation/EB-IAM-Deploy.template](aws/cloudformation/EB-IAM-Deploy.template)
+- [aws/cloudformation/S3-Configs.template](aws/cloudformation/S3-Configs.template)
+- [aws/cloudformation/S3-RootLogs.template](aws/cloudformation/S3-RootLogs.template)
+- [deploy/eb_deployment_helper.sh](deploy/eb_deployment_helper.sh)
+- [deploy/requirements-deploy.txt](deploy/requirements-deploy.txt)
+
+
+## Initialise EB Application and generate .elasticbeanstalk and .gitignore
+Only need to do it once
 
 ```
-################################################################################
-# Initialise EB Application and generate .elasticbeanstalk and .gitignore
-# Only need to do it once
-
 $ pip install awsebcli six
 
 # Change to the source directory
@@ -21,63 +37,61 @@ $ eb create SampleService-dev --cname sampleservice-dev --vpc
 # - Environment Name: SampleService-dev
 # - DNS CNAME prefix: sampleservice-dev
 # - Load balancer type: application
+```
 
 
-################################################################################
-$ aws elasticbeanstalk list-available-solution-stacks
+## Deploy application and update Elastic Beanstalk Environment
 
-$ eb ssh [EB_ENV_NAME] --profile [profile-name]
+See also [EB CLI Reference: `eb config`](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb3-config.html).
 
-$ eb logs --all
+1. To build and test the Docker image for the application. 
+   You need to install `docker` if you want to run it locally:
 
-################################################################################
-# Deploy application and update Elastic Beanstalk Environment
+       $ cd deploy
+       $ ./eb_deployment_helper.sh --build-image 
 
-# 1. To build and test the Docker image for the application. You need to install `docker` if you want to run it locally:
+2. To also deploy the application and update settings/configurations within EC2 instances:
+  
+       $ cd deploy
+       $ ./eb_deployment_helper.sh --build-image \
+             [--push-image] \
+             --eb-deploy --eb-env [EB_ENV_NAME]
 
-$ cd app/
-$ docker build -t ${VERSION_TAG} -f Dockerfile .
+3. To update Elastic Beanstalk Environment for instant change in After Creation state:
 
-# 2. To also deploy the application and update settings/configurations within EC2 instances:
-
-$ cd app/
-$ docker tag ${VERSION_TAG} ${STAGE_TAG}
-$ docker push ${STAGE_TAG} || echo "Failure: ${STAGE_TAG} push failed."
-$ eb deploy --region $EB_REGION $EB_ENV_NAME
-
-# 3. To update Elastic Beanstalk Environment for instant change in After Creation state:
-# 3.1  Make sure you have the latest EB environment first. 
-#      Because `aws:elasticbeanstalk:managedactions:platformupdate` is enabled, the Docker/platform version in
-#     `Platform:PlatformArn` can be different from the last saved `*.cfg.yml` file.
+    1. Make sure you have the latest EB environment first. 
+       Because `aws:elasticbeanstalk:managedactions:platformupdate` is enabled, the Docker/platform version in
+       `Platform:PlatformArn` can be different from the last saved `*.cfg.yml` file.
     
-$ cd app/
-$ eb use [EB_ENV_NAME]              # Ensure all operations take effect to a specific EB environment
-$ eb config delete [EB_ENV_NAME]    # Delete the named saved configuration (in EB S3)
-$ eb config save [EB_ENV_NAME]      # Save the environment configuration settings for the current running
-                                  # environment to .elasticbeanstalk/saved_configs/ with the filename
-                                  # [EB_ENV_NAME].cfg.yml.
+           $ cd app/
+           $ eb use [EB_ENV_NAME]              # Ensure all operations take effect to a specific EB environment
+           $ eb config delete [EB_ENV_NAME]    # Delete the named saved configuration (in EB S3)
+           $ eb config save [EB_ENV_NAME]      # Save the environment configuration settings for the current running
+                                               # environment to .elasticbeanstalk/saved_configs/ with the filename
+                                               # [EB_ENV_NAME].cfg.yml.
     
-# 3.2  Edit `app/.elasticbeanstalk/saved_configs/[EB_ENV_NAME].cfg.yml`.
+    2. Edit `app/.elasticbeanstalk/saved_configs/[EB_ENV_NAME].cfg.yml`.
 
-# 3.3  Create Pull Request for review.
+    3. Create Pull Request for review.
 
-# 3.4.  Apply the change 
+    4. Apply the change 
 
-$ cd app/
-$ eb use ${EB_ENV_NAME}
-$ eb config --region $EB_REGION --cfg ${EB_ENV_NAME}
+           $ cd deploy
+           $ ./eb_deployment_helper.sh --eb-config-update --eb-env [EB_ENV_NAME]
 
-```
 
-## Quick local packaging
+## To ssh to the EC2 using EB CLI
 
 ```
-$ docker build -t local/my_app .
-$ docker run -d -p 8080:8080 local/my_app:latest
-$ zip -r app.zip my_app env setup.py *.ini Dockerfile Dockerrun.aws.json constraints.txt MANIFEST.in
-
-$ aws elasticbeanstalk list-available-solution-stacks
+eb ssh [EB_ENV_NAME] --profile [profile-name]
 ```
+
+## See all logs
+
+```
+eb logs --all
+```
+
 
 ## Locations of file on EB EC2 Instances
 
@@ -156,14 +170,3 @@ not read the .gitignore.
 
 For details see [EB .ebignore](
 http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html#eb-cli3-ebignore).
-
-
-## Known Issues
-
-1. [AWS 'eb deploy' always returns returncode 0](
-https://stackoverflow.com/questions/37736392/aws-eb-deploy-always-returns-returncode-0
-)
-    - Use grep to get the success string. This will return a non-zero status (ie: failure) if it cannot be found:
-```
-eb deploy | tee /dev/tty | grep "update completed successfully"
-```
