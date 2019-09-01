@@ -1,5 +1,9 @@
 # Templates for creating EC2 and VPC aws resources
 
+1. [Linux Bastion Hosts on AWS](
+https://aws.amazon.com/quickstart/architecture/linux-bastion/
+)
+
 1. `BaseInfrastructure-Linux-SaltMaster.template`
     - Create VPC (at Sydney)
     - Create public Subnet, RouteTable, Route, InternetGateway, NetworkAcl 
