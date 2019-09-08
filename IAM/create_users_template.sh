@@ -24,7 +24,7 @@ for user in "${USERS[@]}"
 do
   echo "Adding $user"
   name_no_space=${user//[ ]/}
-  user_name=`echo "print('${user//[ ]/.}'.lower())" | python`
+  user_name=$(echo "print('${user//[ ]/.}'.lower())" | python)
 
 cat >> ${OUTPUT_FILE} << EOF
   ${name_no_space}IamUser:

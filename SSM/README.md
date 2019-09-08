@@ -1,5 +1,7 @@
 # SSM
 
+- [SessionManager](SessionManager.md)
+
 ```
 ################################################################################
 # Using aws ssm (simple systems manager)

@@ -14,8 +14,9 @@ run_s3_test() {
 
   for i in {1..20}
   do
+    echo "Running ${i}"
     # Upload
-    aws s3 cp ${UPLOAD_FILE}  s3://${TEST_BUCKET}/${UPLOAD_FILE} --quiet  ${option}
+    aws s3 cp ${UPLOAD_FILE}  s3://${TEST_BUCKET}/${UPLOAD_FILE} --quiet "${option}"
 
     # Download
     aws s3 cp s3://${TEST_BUCKET}/${UPLOAD_FILE} ${DOWNLOAD_FILE} --quiet

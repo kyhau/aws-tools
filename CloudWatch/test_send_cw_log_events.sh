@@ -13,7 +13,7 @@ for ((i=0;i<1;i++)); do
     --log-events "[{\"timestamp\":${timestamp} , \"message\": \"Simple Lambda Test ${i}\"}]" \
     --sequence-token 49591428281805786324319249872719417900846165990467188210
   )
-  echo $ret
+  echo "$ret"
 done
 
 
