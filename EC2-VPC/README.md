@@ -1,5 +1,7 @@
 # EC2 / VPC
 
+- [EC2 Instance Connect](EC2InstanceConnect.md)
+
 ```
 ################################################################################
 # Resize EBS of a Ubuntu
