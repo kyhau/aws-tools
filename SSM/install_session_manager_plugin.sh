@@ -21,4 +21,4 @@ if [ ! -f /usr/local/sessionmanagerplugin/seelog.xml ]; then
   sudo sed -i 's/minlevel=\"off\"/minlevel=\"debug\"/g' /usr/local/sessionmanagerplugin/seelog.xml
 fi
 
-echo "Usage: aws ssm start-session --target <id-of-an-instance-you-have-permissions-to-access>"
+echo "Usage: aws ssm start-session --target <instance-id>"
