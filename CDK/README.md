@@ -1,7 +1,9 @@
-# CDK
+# AWS Cloud Development Kit (CDK)
 
-- https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html
-- https://github.com/aws/aws-cdk/tree/master/packages/aws-cdk
+- [Getting Started Guide](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
+- [**`aws-cdk`**](https://github.com/aws/aws-cdk)
+- [**`jsii`**](https://github.com/aws/jsii) allows code in any language to naturally interact with JavaScript classes.
+  It is the technology that enables the AWS CDK to deliver polyglot libraries from a single codebase.
 
 ```
 # List the available template types & languages
@@ -10,16 +12,7 @@ cdk init --list
 # Start a new CDK project (app or library)
 cdk init --language python
 
-
-
-python3 -m venv .env
-source .env/bin/activate
-
-pip install -r requirements.txt
-
-# Change the instantiation of HelloCdkStack in app.py to the following.
-#HelloCdkStack(app, "HelloCdkStack")
-
+# E.g. Install package for S3 
 pip install aws-cdk.aws-s3
 
 # Access the online documentation
