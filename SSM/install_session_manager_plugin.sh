@@ -18,7 +18,11 @@ echo "Enabling logging for the plugin..."
 if [ ! -f /usr/local/sessionmanagerplugin/seelog.xml ]; then
   echo "Creating /usr/local/sessionmanagerplugin/seelog.xml..."
   sudo cp /usr/local/sessionmanagerplugin/seelog.xml.template /usr/local/sessionmanagerplugin/seelog.xml
-  sudo sed -i 's/minlevel=\"off\"/minlevel=\"debug\"/g' /usr/local/sessionmanagerplugin/seelog.xml
+
+  # Change minlevel="off" to minlevel="info" or minlevel="debug"
+  # By default, log entries about opening data channels and reconnecting sessions are recorded at the INFO level.
+  # Data flow (packets and acknowledgement) entries are recorded at the DEBUG level.
+  sudo sed -i 's/minlevel=\"off\"/minlevel=\"info\"/g' /usr/local/sessionmanagerplugin/seelog.xml
 fi
 
 echo "Usage: aws ssm start-session --target <instance-id>"
