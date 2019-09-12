@@ -62,7 +62,7 @@
     },
     "NotificationEmail": {
       "Description": "Email address the SNS notification about auto scaling activities to be sent to",
-      "Type": "String",
+      "Type": "String"
     },
     "Stage": {
       "Description": "Deployment stage.",
