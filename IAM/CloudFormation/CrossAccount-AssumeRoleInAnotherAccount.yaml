@@ -24,8 +24,6 @@ Resources:
     Type: AWS::IAM::Group
     Properties:
       GroupName: !Ref 'GroupName'
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/ReadOnlyAccess
       Policies:
         # Allow assume-role in another account
         # Policy name = Allow-Assume-Role-in-<other_account_id>

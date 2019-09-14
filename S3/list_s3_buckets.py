@@ -1,7 +1,7 @@
 import boto3
 from boto3.session import Session
 
-ROLE_ARN = "arn:aws:iam::000000000000:role/name-of-role"
+ROLE_ARN = "arn:aws:iam::210954854504:role/DEV-01"
 
 
 def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600):
@@ -19,7 +19,10 @@ def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600)
     )
 
 
-session = assume_role(ROLE_ARN)
+# Either Start from a role ARN, or from a profile_name
+#session = assume_role(ROLE_ARN)
+session = Session(profile_name="TODO")
+
 s3_resource = session.resource("s3")
 for bucket in s3_resource.buckets.all():
     print(bucket.name)
