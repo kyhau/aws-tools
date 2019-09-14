@@ -7,12 +7,13 @@ DEFAULT_ROLE_ARNS_FILE = "role_arns.txt"
 account_ids_checked = []
 
 
-def read_role_arns_from_file():
-    if exists(DEFAULT_ROLE_ARNS_FILE):
-        with open(DEFAULT_ROLE_ARNS_FILE) as f:
-            lns = f.readlines()
-            return [x.strip() for x in lns if x.strip() and not x.strip().startswith("#")] # ignore empty/commented line
-    return []
+def list_action(session):
+    account_id = session.client("sts").get_caller_identity()["Account"]
+    if account_id not in account_ids_checked:
+        account_ids_checked.append(account_id)
+
+        for bucket in session.resource("s3").buckets.all():
+            print(f"{account_id}: {bucket.name}")
 
 
 def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600):
@@ -28,13 +29,12 @@ def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600)
     )
 
 
-def list_action(session):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id not in account_ids_checked:
-        account_ids_checked.append(account_id)
-
-        for bucket in session.resource("s3").buckets.all():
-            print(f"{account_id}: {bucket.name}")
+def read_role_arns_from_file():
+    if exists(DEFAULT_ROLE_ARNS_FILE):
+        with open(DEFAULT_ROLE_ARNS_FILE) as f:
+            lns = f.readlines()
+            return [x.strip() for x in lns if x.strip() and not x.strip().startswith("#")] # ignore empty/commented line
+    return []
 
 
 ################################################################################
