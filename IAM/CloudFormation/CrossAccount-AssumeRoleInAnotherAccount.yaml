@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+# Stack name: Group-Assume-<role_name>-In-<account_id>
+Description: Create a Group allowing assume an role in another account
+
+Parameters:
+  GroupName:
+    Description: Name of the IAM Group to be created
+    Type: String
+    Default: DEV-01
+  UserName:
+    Description: Name of the existing IAM User to be added to Group
+    Type: String
+    Default: DEV-01
+  RoleInOtherAccount:
+    Description: ARN of a role in another account to be assumed to (e.g. arn:aws:iam::222222222222:role/DEV-01).
+    Type: String
+
+Conditions:
+  UserNameSpecified: !Not [!Equals ['', !Ref 'UserName']]
+
+Resources:
+  IamGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Ref 'GroupName'
+      Policies:
+        # Allow assume-role in another account
+        # Policy name = Allow-Assume-Role-in-<other_account_id>
+        - PolicyName: !Join [ "-", ["Allow-Assume-Role-in", !Select [4, !Split [":", !Ref RoleInOtherAccount]]]]
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sts:AssumeRole
+                Resource: !Ref 'RoleInOtherAccount'
+
+  AddUsersToNewGroup:
+    Type: AWS::IAM::UserToGroupAddition
+    Condition: UserNameSpecified
+    DependsOn: IamGroup
+    Properties:
+      GroupName: !Ref 'IamGroup'
+      Users:
+        - !Ref 'UserName'
+
+Outputs:
+  IamGroupArn:
+    Description: ARN of the Group
+    Value: !GetAtt IamGroup.Arn
