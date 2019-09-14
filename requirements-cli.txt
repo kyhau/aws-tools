@@ -1,6 +1,9 @@
-aws-shell
-aws-sam-cli
-awsebcli
+awscli~=1.16
+aws-shell~=0.2
+aws-cdk.core~=1.7    # require npm aws-cdk
+aws-sam-cli~=0.21    # require docker
+awsebcli~=3.15
+cfn_flip~=1.2
 
 # Local AWS cloud stack - https://github.com/localstack/localstack
 #localstack
