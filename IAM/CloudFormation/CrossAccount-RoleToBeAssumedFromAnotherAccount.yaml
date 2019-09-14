@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+# Stack name: Role-<role_name>-ToBeAssumed-From-<account_id>
+Description: Create a Role with ReadOnlyAccess and allow to be assumed from another account.
+
+Parameters:
+  RoleName:
+    Description: Name of the IAM Role to be created
+    Type: String
+    Default: DEV-01
+  FromAccountPrincipal:
+    Description: ARN of the principal allowing to assume this role (e.g. arn:aws:iam::111111111111:root)
+    Type: String
+
+Resources:
+  IamRole:
+    Type: AWS::IAM::Role
+    Description: 'Allow to be assumed from another account to have Read access to this account'
+    Properties:
+      # Create Trust Relationship access control policy
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: 'sts:AssumeRole'
+            Principal:
+              AWS:
+                - !Ref 'FromAccountPrincipal'
+      # Permissions
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+      RoleName: !Ref 'RoleName'
+
+Outputs:
+  IamRoleArn:
+    Description: ARN of the Role
+    Value: !GetAtt IamRole.Arn

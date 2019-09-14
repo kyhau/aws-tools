@@ -5,11 +5,11 @@ import decimal
 import json
 import logging
 from os.path import basename
-from arki_common.aws import print_json
 from arki_common.configs import (
     init_wrapper,
     default_config_file_path,
 )
+from arki_common.utils import print_json
 
 
 APP_NAME = basename(__file__).split('.')[0]
