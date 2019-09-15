@@ -48,12 +48,33 @@ def list_action(session):
             retrieve_inline_policy_permissions(iam_client, user_name, "user")
 
             # 2. Retrieve policies of attached group(s)
+            group_names = []
             for group in iam_client.list_groups_for_user(UserName=user_name)["Groups"]:
+                group_names.append(group["GroupName"])
                 retrieve_managed_policy_permissions(iam_client, group["GroupName"], "group")
-                #retrieve_inline_policy_permissions(iam_client, group["GroupName"], "group")
+                retrieve_inline_policy_permissions(iam_client, group["GroupName"], "group")
+            results["Groups"] = group_names
+
+            # 3. Retrieve any allowed assume roles
+            role_arns = set()
+            for policy_name, statements in results["AttachedInlinePolicies"].items():
+                for statement in statements:
+                    if statement["Effect"] == "Allow" and "sts:AssumeRole" in statement["Action"]:
+                        role_arns.add(statement["Resource"])
+            results["Roles"] = list(role_arns)
+            for role_arn in role_arns:
+                session_1 = assume_role(role_arn=role_arn, session_name=DEFAULT_SESSION_NAME)
+                list_action(session_1)
 
         elif f"arn:aws:sts::{account_id}:assumed-role/" in arn:
             role_name = arn.split("/")[-2]
+
+            # Retrieve managed policies and inline policies
+            retrieve_managed_policy_permissions(iam_client, role_name, "role")
+            retrieve_inline_policy_permissions(iam_client, role_name, "role")
+
+        elif f"arn:aws:sts::{account_id}:role/" in arn:
+            role_name = arn.split("/")[-1]
 
             # Retrieve managed policies and inline policies
             retrieve_managed_policy_permissions(iam_client, role_name, "role")
@@ -113,7 +134,7 @@ def retrieve_inline_policy_permissions(iam_client, name, type):
     for inline_policy_name in inline_policy_names:
         operation_params.update({"PolicyName": inline_policy_name})
         policy = get_policy_func(**operation_params)
-        results["AttachedInlinePolicies"][inline_policy_name] = policy["PolicyDocument"]
+        results["AttachedInlinePolicies"][inline_policy_name] = policy["PolicyDocument"]["Statement"]
 
 
 ################################################################################
