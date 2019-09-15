@@ -1,5 +1,5 @@
 """
-List users
+List UserArn, PasswordLastUsed
 """
 from boto3.session import Session
 import click
@@ -22,14 +22,15 @@ def list_action(session, results):
 
 @click.command()
 @click.option("--profile", "-p", help="AWS profile name")
-def main(profile):
+@click.option("--rolesfile", "-f", default=DEFAULT_ROLE_ARNS_FILE, help="Files containing Role ARNs")
+def main(profile, rolesfile):
     results = {}   # { user_arn: {data}, }
 
     if profile is not None:
         session = Session(profile_name=profile)
         list_action(session, results)
 
-    for role_arn in read_role_arns_from_file(filename=DEFAULT_ROLE_ARNS_FILE):
+    for role_arn in read_role_arns_from_file(filename=rolesfile):
         session = assume_role(role_arn=role_arn)
         list_action(session, results)
 
