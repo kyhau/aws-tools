@@ -6,7 +6,6 @@ import click
 from collections import defaultdict
 
 from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_ARNS_FILE
-from arki_common.utils import print_json
 
 
 def list_action(session, results):
