@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >-
+  Create AutoScaling::ScheduledAction for scaling out for weekends.
+
+Parameters:
+  AutoScalingGroupName:
+    Description: The name or Amazon Resource Name (ARN) of the Auto Scaling group
+    Type: String
+  TargetCapacityScheduledActionOut:
+    Description: The target capacity for the cluster on scale-out
+    Type: Number
+    Default: 1
+  RecurrenceScheduledActionIn:
+    Description: >-
+      (Optional) The recurring schedule for the scale-in action in Unix cron syntax format (UTC).
+      If specified, a ScheduledAction will be created for the provided cron schedule.
+      Example (Fri 5pm UTC+10):  "0 7 * * FRI"
+    Type: String
+    Default: "0 7 * * FRI"
+  RecurrenceScheduledActionOut:
+    Description: >-
+      (Optional) The recurring schedule for the scale-out action in Unix cron syntax format (UTC).
+      If specified, a ScheduledAction will be created for the provided cron schedule.
+      Example (Mon 5am UTC+10):  "0 19 * * SUN"
+    Type: String
+    Default: "0 19 * * SUN"
+
+Conditions:
+  CreateRecurrenceScheduledActionIn: !Not [!Equals [!Ref RecurrenceScheduledActionIn, ""]]
+  CreateRecurrenceScheduledActionOut: !Not [!Equals [!Ref RecurrenceScheduledActionOut, ""]]
+
+Resources:
+  ScheduledActionIn:
+    Type: AWS::AutoScaling::ScheduledAction
+    Condition: CreateRecurrenceScheduledActionIn
+    Properties:
+      AutoScalingGroupName: !Ref "AutoScalingGroupName"
+      DesiredCapacity: 0
+      MaxSize: 0
+      MinSize: 0
+      Recurrence: !Ref "RecurrenceScheduledActionIn"
+  ScheduledActionOut:
+    Type: AWS::AutoScaling::ScheduledAction
+    Condition: CreateRecurrenceScheduledActionOut
+    Properties:
+      AutoScalingGroupName: !Ref "AutoScalingGroupName"
+      DesiredCapacity: !Ref "TargetCapacityScheduledActionOut"
+      MaxSize: !Ref "TargetCapacityScheduledActionOut"
+      MinSize: !Ref "TargetCapacityScheduledActionOut"
+      Recurrence: !Ref "RecurrenceScheduledActionOut"
