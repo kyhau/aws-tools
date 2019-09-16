@@ -1,33 +1,17 @@
-import boto3
 from boto3.session import Session
+import click
 from collections import defaultdict
-from os.path import exists
 
-DEFAULT_ROLE_ARNS_FILE = "role_arns.txt"
-
-results = defaultdict(dict)
-"""
-results: 
-{
-    account_id: {
-        region: {
-            "ami_id": {
-                "asg": set(asg_name),
-                "ec2": set(instance_id),
-            }
-        }
-    }
-}
-"""
+from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_ARNS_FILE
 
 
-def list_action(session):
+def list_action(session, results):
     account_id = session.client("sts").get_caller_identity()["Account"]
     if account_id in results:
         return
 
     for region in session.get_available_regions("ec2"):
-        print(f"# Checking {account_id} {region}")
+        print(f"Checking {account_id} {region}")
         region_dict = defaultdict(lambda: defaultdict(set))
 
         try:
@@ -72,41 +56,34 @@ def list_action(session):
     return results
 
 
-def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600):
-    resp = boto3.client("sts").assume_role(
-        RoleArn=role_arn,
-        RoleSessionName=session_name,
-        DurationSeconds=duration_secs,  # 15 mins to 1 hour or 12 hours
-    )
-    return Session(
-        aws_access_key_id=resp["Credentials"]["AccessKeyId"],
-        aws_secret_access_key=resp["Credentials"]["SecretAccessKey"],
-        aws_session_token=resp["Credentials"]["SessionToken"]
-    )
-
-
-def read_role_arns_from_file():
-    if exists(DEFAULT_ROLE_ARNS_FILE):
-        with open(DEFAULT_ROLE_ARNS_FILE) as f:
-            lns = f.readlines()
-            return [x.strip() for x in lns if x.strip() and not x.strip().startswith("#")] # ignore empty/commented line
-    return []
-
-
 ################################################################################
 # Entry point
 
-def main():
-    # TODO Optional specify a profile instead
-    PROFILE_NAME = "default"
-    #PROFILE_NAME = None
-    if PROFILE_NAME is not None:
-        session = Session(profile_name=PROFILE_NAME)
-        list_action(session)
+@click.command()
+@click.option("--profile", "-p", help="AWS profile name")
+@click.option("--rolesfile", "-f", default=DEFAULT_ROLE_ARNS_FILE, help="Files containing Role ARNs")
+def main(profile, rolesfile):
+    results = defaultdict(dict)
+    """ Example:
+    {
+        account_id: {
+            region: {
+                "ami_id": {
+                    "asg": set(asg_name),
+                    "ec2": set(instance_id),
+                }
+            }
+        }
+    }
+    """
 
-    for role_arn in read_role_arns_from_file():
+    if profile is not None:
+        session = Session(profile_name=profile)
+        list_action(session, results)
+
+    for role_arn in read_role_arns_from_file(filename=rolesfile):
         session = assume_role(role_arn=role_arn)
-        list_action(session)
+        list_action(session, results)
 
 
-if __name__== "__main__": main()
+if __name__ == "__main__": main()

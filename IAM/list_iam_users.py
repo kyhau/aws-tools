@@ -1,3 +1,6 @@
+"""
+List UserArn, PasswordLastUsed
+"""
 from boto3.session import Session
 import click
 
@@ -5,12 +8,13 @@ from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_
 
 
 def list_action(session, results):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id in results:
-        return
-
-    for bucket in session.resource("s3").buckets.all():
-        results[account_id] = bucket.name
+    try:
+        paginator = session.client("iam").get_paginator("list_users")
+        for page in paginator.paginate():
+            for user in page["Users"]:
+                results[user["Arn"]] = user
+    except Exception as e:
+        print(e)
 
 
 ################################################################################
@@ -20,7 +24,7 @@ def list_action(session, results):
 @click.option("--profile", "-p", help="AWS profile name")
 @click.option("--rolesfile", "-f", default=DEFAULT_ROLE_ARNS_FILE, help="Files containing Role ARNs")
 def main(profile, rolesfile):
-    results = {}    # { account_id: bucket_name }
+    results = {}   # { user_arn: {data}, }
 
     if profile is not None:
         session = Session(profile_name=profile)
@@ -30,8 +34,9 @@ def main(profile, rolesfile):
         session = assume_role(role_arn=role_arn)
         list_action(session, results)
 
-    for account_id, bucket_name in results.items():
-        print(f"{account_id}, {bucket_name}")
+    print("UserArn, PasswordLastUsed")
+    for user_arn, data in results.items():
+        print(f"{user_arn}, {data.get('PasswordLastUsed')}")
 
 
 if __name__ == "__main__": main()

@@ -18,10 +18,14 @@ class DefaultEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def print_json(json_data):
+def print_json(json_data, logger=None):
     """Print json data nicely
     """
-    print(json.dumps(json_data, cls=DefaultEncoder, sort_keys=True, indent=2))
+    ret = json.dumps(json_data, cls=DefaultEncoder, sort_keys=True, indent=2)
+    if logger is None:
+        print(ret)
+    else:
+        logger.info(ret)
 
 
 def check_response(resp):
