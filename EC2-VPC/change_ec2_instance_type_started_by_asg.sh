@@ -59,7 +59,10 @@ echo "Suspending processes on Auto Scaling Group $asg_name..."
 } || (echo "Error: Unable to suspend Auto Scaling Group ($asg_name). Aborted." && exit 1)
 
 echo "Stopping EC2 instance $instance_id..."
-aws ec2 stop-instances --instance-ids "$instance_id"
+{
+  aws ec2 stop-instances --instance-ids "$instance_id"
+} || (echo "Error: Unable to stop instance ($instance_id). Aborted." && exit 1)
+
 aws ec2 wait instance-stopped --instance-ids "$instance_id"
 echo "Confirmed EC2 instance $instance_id is stopped."
 
@@ -70,9 +73,13 @@ echo "Updating instance ${instance_name} (${instance_id}) from ${instance_type} 
 } || (echo "Error: Unable to change instance type for ($instance_id). Aborted." && exit 1)
 
 echo "Starting EC2 instance ${instance_id}..."
-aws ec2 start-instances --instance-ids "$instance_id"
+{
+  aws ec2 start-instances --instance-ids "$instance_id"
+} || (echo "Error: Unable to start instance ($instance_id). Aborted." && exit 1)
+
 aws ec2 wait instance-running --instance-ids "$instance_id"
 echo "Confirmed EC2 instance ${instance_id} is running."
+
 aws ec2 wait instance-status-ok --instance-ids "$instance_id"
 echo "Confirmed EC2 instance ${instance_id} status OK."
 
