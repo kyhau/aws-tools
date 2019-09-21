@@ -12,8 +12,10 @@ from arki_common import init_logging
 
 
 DEFAULT_SESSION_NAME = "AssumeRoleSession-ListIamUsers-local"
+OUTPUT_FILE = "whoami.json"
+LOG_FILE = "whoami.log"
 
-logger = init_logging(name="whoami", log_level=logging.INFO, log_file="whoami.log")
+logger = init_logging(name="whoami", log_level=logging.INFO, log_file=LOG_FILE)
 
 
 class ResultSet:
@@ -40,8 +42,9 @@ class ResultSet:
 
     def __del__(self):
         """Print data to file"""
-        with open("whoami.json", "w", encoding="utf-8") as f:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             json.dump(self.data, f, ensure_ascii=False, indent=2, sort_keys=True)
+        logger.info(f"Output file: {OUTPUT_FILE}")
 
 
 def process_identity(session, result):
@@ -182,6 +185,8 @@ def main(profile):
     #for role_arn in read_role_arns_from_file(filename=DEFAULT_ROLE_ARNS_FILE):
     #    session = assume_role(role_arn=role_arn, session_name=DEFAULT_SESSION_NAME)
     #    process_identity(session)
+
+    logger.info(f"Log file: {LOG_FILE}")
 
 
 if __name__ == "__main__": main()
