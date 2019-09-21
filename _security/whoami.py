@@ -6,16 +6,18 @@ import click
 from collections import defaultdict
 import json
 import logging
+from os.path import basename
 
 from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_ARNS_FILE
 from arki_common import init_logging
 
 
+APP_NAME = basename(__file__).split(".")[0]
 DEFAULT_SESSION_NAME = "AssumeRoleSession-ListIamUsers-local"
-OUTPUT_FILE = "whoami.json"
-LOG_FILE = "whoami.log"
+OUTPUT_FILE = f"{APP_NAME}.json"
+LOG_FILE = None    # or LOG_FILE = f"{APP_NAME}.log"
 
-logger = init_logging(name="whoami", log_level=logging.INFO, log_file=LOG_FILE)
+logger = init_logging(name=APP_NAME, log_level=logging.INFO, log_file=LOG_FILE)
 
 
 class ResultSet:
@@ -25,10 +27,14 @@ class ResultSet:
         {
             account_id: {
                 user_arn: {
-                    "AttachedInlinePolicies": {},
-                    "AttachedManagedPolicies": {}.
+                    "AttachedInlinePolicies": {
+                      string(policy arn): [ 
+                          { "Action": ... },
+                      ],
+                    },
+                    "AttachedManagedPolicies": {}
                     "Groups": [],
-                    "Roless": [],
+                    "Roles": [],
                     "UserId": string,
                 },
                 role_arn: {
