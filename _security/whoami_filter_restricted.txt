@@ -1,7 +1,6 @@
 /*
 :*
-:Add
-:Attach
+:A
 :Cancel
 :Create
 :Delete
