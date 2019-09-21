@@ -10,7 +10,7 @@ from arki_common.configs import (
     default_config_file_path,
 )
 
-APP_NAME = basename(__file__).split('.')[0]
+APP_NAME = basename(__file__).split(".")[0]
 
 # Default configuration file location
 DEFAULT_CONFIG_FILE = default_config_file_path(f"{APP_NAME}.toml")
@@ -37,7 +37,7 @@ def _prepare_definition(state_machine_definition_file, lambda_name, lambda_alias
     for state, attrs in data["States"].items():
         for k, v in attrs.items():
             if k == "Resource":
-                ori_name = v.split(':')[-1]
+                ori_name = v.split(":")[-1]
                 data["States"][state]["Resource"] = v.replace(ori_name, f"{lambda_name}:{lambda_alias}")
 
     logging.info(json.dumps(data, indent=2))

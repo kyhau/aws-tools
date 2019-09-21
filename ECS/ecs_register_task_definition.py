@@ -10,7 +10,7 @@ from arki_common.configs import (
 )
 from arki_common.utils import check_response
 
-APP_NAME = basename(__file__).split('.')[0]
+APP_NAME = basename(__file__).split(".")[0]
 
 # Default configuration file location
 DEFAULT_CONFIG_FILE = default_config_file_path(f"{APP_NAME}.toml")

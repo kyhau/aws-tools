@@ -1,0 +1,12 @@
+/*
+:*
+:Create
+:Delete
+:Download
+:Modify
+:Update
+cognito-idp:Admin
+iam:Get
+iam:List
+organizations:
+sts:AssumeRole

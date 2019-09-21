@@ -27,5 +27,5 @@ env/
 venv/
 
 .idea/
-*whoami.json
-*whoami.log
+*whoami*.json
+*whoami*.log
