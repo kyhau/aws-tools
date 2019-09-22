@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Create Lambda function with dummy content, create Managed Policies for
+  CI to update and deploy the Lambda function.
+Parameters:
+  LambdaFunctionName:
+    Description: Name of the Lambda function to be created or updated.
+    Type: String
+    Default: TodoServiceFunction
+  LambdaExecuteRoleName:
+    Description: Name of the Role for executing the Lambda function.
+    Type: String
+    Default: TodoService-Lambda-ExecuteRole
+
+Resources:
+  TodoServiceFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: LambdaExecutionRole
+    Properties:
+      FunctionName: !Ref 'LambdaFunctionName'
+      Runtime: python3.7
+      Handler: TodoServiceFunction.lambda_handler
+      MemorySize: 1024
+      Timeout: 30
+      Role: !GetAtt 'LambdaExecutionRole.Arn'
+      Code:
+        ZipFile: !Join
+          - ''
+          - - 'def lambda_handler(event, context):'
+            - '   # This function will be updated through CI/CD'
+            - '   return ''Hello from Lambda!'''
+      Tags:
+        - Key: Billing
+          Value: TodoService
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref 'LambdaExecuteRoleName'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: !Join
+            - '-'
+            - - !Ref 'LambdaExecuteRoleName'
+              - Logging
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource: arn:aws:logs:*:*:*
+
+  LambdaManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    DependsOn:
+      - LambdaExecutionRole
+    Properties:
+      Description: Managed Policy for creating/updating the specified lambda function
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:GetFunction
+              - lambda:CreateFunction
+              - lambda:UpdateFunctionCode
+              - lambda:UpdateFunctionConfiguration
+              - lambda:CreateAlias
+              - lambda:DeleteAlias
+              - lambda:GetAlias
+              - lambda:UpdateAlias
+              - lambda:PublishVersion
+              - lambda:InvokeFunction
+            Resource:
+              - !GetAtt 'TodoServiceFunction.Arn'
+          - Effect: Allow
+            Action:
+              - iam:Passrole
+            Resource: !GetAtt 'LambdaExecutionRole.Arn'
+
+
+Outputs:
+  LambdaFunctionName:
+    Description: Lambda function name
+    Value: !Ref 'TodoServiceFunction'
+  LambdaFunctionArn:
+    Description: The ARN of the Lambda function
+    Value: !GetAtt 'TodoServiceFunction.Arn'
