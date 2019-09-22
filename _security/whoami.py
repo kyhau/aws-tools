@@ -6,14 +6,18 @@ import click
 from collections import defaultdict
 import json
 import logging
+from os.path import basename
 
 from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_ARNS_FILE
 from arki_common import init_logging
 
 
+APP_NAME = basename(__file__).split(".")[0]
 DEFAULT_SESSION_NAME = "AssumeRoleSession-ListIamUsers-local"
+OUTPUT_FILE = f"{APP_NAME}.json"
+LOG_FILE = None    # or LOG_FILE = f"{APP_NAME}.log"
 
-logger = init_logging(name="whoami", log_level=logging.INFO, log_file="whoami.log")
+logger = init_logging(name=APP_NAME, log_level=logging.INFO, log_file=LOG_FILE)
 
 
 class ResultSet:
@@ -23,10 +27,14 @@ class ResultSet:
         {
             account_id: {
                 user_arn: {
-                    "AttachedInlinePolicies": {},
-                    "AttachedManagedPolicies": {}.
+                    "AttachedInlinePolicies": {
+                      string(policy arn): [ 
+                          { "Action": ... },
+                      ],
+                    },
+                    "AttachedManagedPolicies": {}
                     "Groups": [],
-                    "Roless": [],
+                    "Roles": [],
                     "UserId": string,
                 },
                 role_arn: {
@@ -40,8 +48,9 @@ class ResultSet:
 
     def __del__(self):
         """Print data to file"""
-        with open("whoami.json", "w", encoding="utf-8") as f:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             json.dump(self.data, f, ensure_ascii=False, indent=2, sort_keys=True)
+        logger.info(f"Output file: {OUTPUT_FILE}")
 
 
 def process_identity(session, result):
@@ -182,6 +191,8 @@ def main(profile):
     #for role_arn in read_role_arns_from_file(filename=DEFAULT_ROLE_ARNS_FILE):
     #    session = assume_role(role_arn=role_arn, session_name=DEFAULT_SESSION_NAME)
     #    process_identity(session)
+
+    logger.info(f"Log file: {LOG_FILE}")
 
 
 if __name__ == "__main__": main()

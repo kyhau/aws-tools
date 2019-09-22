@@ -23,7 +23,7 @@ while [[ "$#" -gt 0 ]]; do case $1 in
     *)                echo "Invalid option: ${1}" && help_menu ;;
 esac; shift; done
 
-[[ ! -z "NAME_TAG" ]] || (echo "Error: NAME_TAG is not provided. Aborted." && exit 1)
+[[ ! -z "$NAME_TAG" ]] || (echo "Error: NAME_TAG is not provided. Aborted." && exit 1)
 [[ ! -z "$INSTANCE_TYPE" ]] || (echo "Error: INSTANCE_TYPE is not provided. Aborted." && exit 1)
 
 

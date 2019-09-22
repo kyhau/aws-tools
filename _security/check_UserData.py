@@ -1,5 +1,5 @@
 """
-Decode EC2's UserData
+Decode EC2's or Launch Configuration Template's UserData
 """
 import base64
 from boto3.session import Session
@@ -47,24 +47,25 @@ def get_launch_template_ids(client):
             yield item["LaunchTemplateId"]
 
 
-def process(session, result):
+def process(session, instance_id, launch_template_id, result):
     account_id = session.client("sts").get_caller_identity()["Account"]
     logger.info(f"Checking account {account_id}")
 
     client = session.client("ec2")
 
     # Check UserData of EC2 instances
-    for instance_id in get_instance_ids(client):
+    instance_ids = get_instance_ids(client) if instance_id is None else [instance_id]
+    for instance_id in instance_ids:
         resp = client.describe_instance_attribute(Attribute="userData", InstanceId=instance_id)
-        user_data = base64.b64decode(resp["UserData"]["Value"])
-        result[account_id][instance_id] = user_data
+        result[account_id][instance_id] = base64.b64decode(resp["UserData"]["Value"])
 
     # Check UserData in Launch Configuration
-    for launch_template_id in get_launch_template_ids(client):
+    launch_template_ids = get_launch_template_ids(client) if launch_template_id is None else [launch_template_id]
+    for launch_template_id in launch_template_ids:
         resp = client.describe_launch_template_versions(LaunchTemplateId=launch_template_id)
         for launch_version in resp["LaunchTemplateVersions"]:
-            user_data = base64.b64decode(launch_version["LaunchTemplateData"]["UserData"])
-            result[account_id][launch_template_id][launch_version["VersionNumber"]] = user_data
+            result[account_id][launch_template_id][launch_version["VersionNumber"]] = \
+                base64.b64decode(launch_version["LaunchTemplateData"]["UserData"])
 
 
 ################################################################################
@@ -72,15 +73,17 @@ def process(session, result):
 
 @click.command()
 @click.option("--profile", "-p", default="default", help="AWS profile name")
-def main(profile):
+@click.option("--instance-id", "-i", help="Instance ID. Optional.")
+@click.option("--lt-id", "-i", help="Launch Template ID. Optional.")
+def main(profile, instance_id, lt_id):
     result = ResultSet()
 
     session = Session(profile_name=profile)
-    process(session, result.data)
+    process(session, instance_id, lt_id, result.data)
 
     #for role_arn in read_role_arns_from_file(filename=DEFAULT_ROLE_ARNS_FILE):
     #    session = assume_role(role_arn=role_arn, session_name=DEFAULT_SESSION_NAME)
-    #    process(session)
+    #    process(session, instance_id, lt_id, result.data)
 
     logger.info(f"Log file: {LOG_FILE}")
 
