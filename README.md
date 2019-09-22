@@ -22,7 +22,9 @@ pip install -r requirements.txt
 - [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
 - [AWS Tools for PowerShell](https://aws.amazon.com/powershell/)
+- [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
+- [IAM Policy Simulator Console](https://policysim.aws.amazon.com/)
 
-**Other tools**
+**Other useful tools**
 - [CloudMapper](https://github.com/duo-labs/cloudmapper) - helps you analyze AWS environments 
 - [Pacu](https://github.com/RhinoSecurityLabs/pacu) - an open source AWS exploitation framework
