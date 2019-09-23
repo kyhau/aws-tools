@@ -32,9 +32,9 @@ NAME_TAG="informix-${APP_NAME}-${STAGE_NAME}-${STACK_NAME}-db-ha1"
 # Find Instance ID and check instance type
 {
   ec2_instance=$(aws ec2 describe-instances \
-    --query 'Reservations[*].Instances[*].[InstanceType,InstanceId,Tags[?Key==`Name`] | [0].Value]' --output text \
-    | grep "$NAME_TAG")
-} || (echo "Error: Instance with prefix (${NAME_TAG}) not found. Aborted." && exit 1)
+    --filters "Name=tag:Name,Values=${NAME_TAG}" "Name=instance-state-name,Values=running,pending"\
+    --query 'Reservations[*].Instances[*].[InstanceType,InstanceId,Tags[?Key==`Name`] | [0].Value]' --output text)
+} || (echo "Error: Instance (${NAME_TAG}) not found. Aborted." && exit 1)
 
 instance_type=$(echo ${ec2_instance} | cut -d' ' -f1)
 instance_id=$(echo ${ec2_instance} | cut -d' ' -f2)
