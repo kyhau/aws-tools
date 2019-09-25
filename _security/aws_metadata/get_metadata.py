@@ -1,3 +1,4 @@
+import base64
 import os
 
 
@@ -7,6 +8,8 @@ public_ip = os.system("curl ifconfig.co")
 
 # Reverse DNS lookup
 dns_lookup = lambda ip: os.system(f"nsloopup {ip}")
+
+decode_data = lambda x: base64.b64decode(x)
 
 
 def main():
