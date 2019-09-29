@@ -59,7 +59,7 @@
   "Mappings": {
     "StageMap": {
       "prod": {
-        "BillingTag": "PROF",
+        "BillingTag": "PROD",
         "CloudFrontAlias1": "api-prod.example.com",
         "CloudFrontAlias2": "api.example.com",
         "CloudFrontOAI": "",
@@ -113,7 +113,7 @@
         "PolicyDocument": {
           "Statement": [
             {
-              "Sid": "CloudFrontOriginAccess",
+              "Sid": "Grant a CloudFront OAI access to support private content",
               "Action": ["s3:GetObject"],
               "Effect": "Allow",
               "Principal": {"CanonicalUser": {"Fn::FindInMap": ["StageMap", {"Ref":"StageName"}, "CloudFrontCUI"]}},
