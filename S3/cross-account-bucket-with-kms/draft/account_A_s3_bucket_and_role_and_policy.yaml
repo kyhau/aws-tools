@@ -6,19 +6,40 @@ Parameters:
   BucketName:
     Description: The name of the S3 bucket to be created.
     Type: String
-  RoleName:
+    Default: k-shared-cross-account-bucket
+  AccountARoleName:
     Description: The name of the role for assuming from other accounts to read the objects
     Type: String
-    Default: s3-bucket-readonly-role
+    Default: k-shared-cross-account-bucket-readonly-role
+  AccountBUserArn:
+    Description: The ARN of a role in account B for uploading files to the shared bucket in account A
+    Type: String
+    Default: arn:aws:iam::222222222222:user/cross-account-s3-upload
+  AccountCUserArn:
+    Description: The ARN of a the root of account C as the principal for downloading B's files from the shared bucket in account A
+    Type: String
+    Default: arn:aws:iam::333333333333:root
 
 Resources:
+  IamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref AccountARoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              AWS: !Ref AccountCUserArn
+            Action:
+              - "sts:AssumeRole"
+
   KmsKey:
     Type: AWS::KMS::Key
     Properties:
       EnableKeyRotation: True
       KeyPolicy:
         Version: "2012-10-17"
-        Id: "key-default-1"
         Statement:
           - Sid: "Enable IAM User Permissions"
             Effect: "Allow"
@@ -29,7 +50,7 @@ Resources:
           - Sid: "Allow administration of the key"
             Effect: "Allow"
             Principal:
-              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:role/account_a_role'
+              AWS: !GetAtt IamRole.Arn
             Action:
               - "kms:Create*"
               - "kms:Describe*"
@@ -47,7 +68,7 @@ Resources:
           - Sid: "Allow use of the key"
             Effect: "Allow"
             Principal:
-              AWS: "arn:aws:iam::333333333333:role/account_c_role"
+              AWS: !Ref AccountCUserArn
             Action:
               - "kms:DescribeKey"
               - "kms:Encrypt"
@@ -57,10 +78,18 @@ Resources:
               - "kms:GenerateDataKeyWithoutPlaintext"
             Resource: "*"
 
+  KmsAlias:
+    Type: AWS::KMS::Alias
+    DependsOn: KmsKey
+    Properties:
+      AliasName: !Join ["", ["alias/", !Ref BucketName, "-kms"]]
+      TargetKeyId: !Ref KmsKey
+
   S3Bucket:
     Type: AWS::S3::Bucket
+    DependsOn: KmsKey
     Properties:
-      BucketName: !Ref 'BucketName'
+      BucketName: !Ref BucketName
       AccessControl: BucketOwnerFullControl
       BucketEncryption:
         ServerSideEncryptionConfiguration:
@@ -79,7 +108,7 @@ Resources:
         - Effect: Allow
           Principal:
             AWS:
-            - arn:aws:iam::222222222222:role/account_b_role
+            - !Ref AccountBUserArn
           Action:
             - s3:ListBucket
           Resource:
@@ -87,7 +116,7 @@ Resources:
         - Effect: Allow
           Principal:
             AWS:
-            - arn:aws:iam::222222222222:role/account_b_role
+            - !Ref AccountBUserArn
           Action:
             - s3:PutObject
             - s3:PutObjectAcl
@@ -99,9 +128,11 @@ Resources:
 
   S3ReadPolicy:
     Type: AWS::IAM::ManagedPolicy
-    DependsOn: S3Bucket
+    DependsOn:
+      - IamRole
+      - S3Bucket
     Properties:
-      Description: "Policy for reading the target bucket"
+      Description: "Allow to decrypt the AWS KMS key and also download from the S3 bucket"
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -115,20 +146,19 @@ Resources:
               - s3:GetObject
             Resource:
               - !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
-
-  IamRole:
-    Type: AWS::IAM::Role
-    DependsOn: S3ReadPolicy
-    Properties:
-      RoleName: !Ref RoleName
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              AWS:
-                - arn:aws:iam::333333333333:role/account_c_role
+          - Effect: Allow
             Action:
-              - "sts:AssumeRole"
-      ManagedPolicyArns:
-        - !Ref S3ReadPolicy
+              - kms:Decrypt
+            Resource:
+              - !GetAtt KmsKey.Arn
+      Roles:
+        - !Ref IamRole
+
+Outputs:
+  IamRoleArn:
+    Description: RoleArn
+    Value: !GetAtt IamRole.Arn
+
+  S3BucketArn:
+    Description: S3BucketArn
+    Value: !GetAtt S3Bucket.Arn

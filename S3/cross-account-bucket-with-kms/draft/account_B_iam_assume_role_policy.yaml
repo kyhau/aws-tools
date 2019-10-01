@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Create a IAM user and a managed policy in account B for uploading objects a bucket in account A.
+
+Parameters:
+  AccountABucketArn:
+    Description: The bucket in account A
+    Type: String
+
+  AccountBUserName:
+    Description: The name of the user in account B for uploading files to the shared bucket in account A
+    Type: String
+    Default: cross-account-s3-upload
+
+Conditions:
+  AttachPolicy: !Not [!Equals [!Ref AccountABucketArn, ""]]
+
+Resources:
+  IamUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref AccountBUserName
+
+  IamAccessKey:
+    Type: AWS::IAM::AccessKey
+    DependsOn: IamUser
+    Properties:
+      UserName: !Ref IamUser
+
+  IamPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Condition: AttachPolicy
+    DependsOn: IamUser
+    Properties:
+      Description: "Policy for uploading files to the shared s3 bucket"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: Allow
+          Action:
+            - s3:ListBucket
+          Resource:
+            - !Ref AccountABucketArn
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:PutObjectAcl
+          Condition:
+            StringEquals:
+              s3:x-amz-acl: bucket-owner-full-control
+          Resource:
+            - !Join ['/',[!Ref AccountABucketArn, '*']]
+      Users:
+        - !Ref IamUser
+
+Outputs:
+  IamUserArn:
+    Description: UserArn
+    Value: !GetAtt IamUser.Arn
+
+  IamAccessKey:
+    Description: AccessKeyId
+    Value: !Ref IamAccessKey
+
+  IamSecretAccessKey:
+    Description: SecretAccessKey
+    Value: !GetAtt IamAccessKey.SecretAccessKey

@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Create a IAM user and a managed policy in account C for downloading B's files stored in a bucket in account A.
+
+Parameters:
+  AccountARoleArn:
+    Description: The ARN of the role (of account A) to be assumed to for reading uploading S3 objects
+    Type: String
+
+  AccountCUserName:
+    Description: The name of the user in account C for downloading files to the shared bucket in account A
+    Type: String
+    Default: cross-account-s3-download
+
+Conditions:
+  AttachPolicy: !Not [!Equals [!Ref AccountARoleArn, ""]]
+
+Resources:
+  IamUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref AccountCUserName
+
+  IamAccessKey:
+    Type: AWS::IAM::AccessKey
+    DependsOn: IamUser
+    Properties:
+      UserName: !Ref IamUser
+
+  IamPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Condition: AttachPolicy
+    DependsOn: IamUser
+    Properties:
+      Description: "Policy for assuming role"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action: "sts:AssumeRole"
+            Resource: !Ref AccountARoleArn
+      Users:
+        - !Ref IamUser
+
+Outputs:
+  IamUserArn:
+    Description: UserArn
+    Value: !GetAtt IamUser.Arn
+
+  IamAccessKey:
+    Description: AccessKeyId
+    Value: !Ref IamAccessKey
+
+  IamSecretAccessKey:
+    Description: SecretAccessKey
+    Value: !GetAtt IamAccessKey.SecretAccessKey
