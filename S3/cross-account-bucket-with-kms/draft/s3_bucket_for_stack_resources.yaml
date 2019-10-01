@@ -1,0 +1,134 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Create a S3 bucket in account-a, for account-b's role to upload objects, and account-c's role to download objects.
+
+Parameters:
+  BucketName:
+    Description: The name of the S3 bucket to be created.
+    Type: String
+  RoleName:
+    Description: The name of the role for assuming from other accounts to read the objects
+    Type: String
+    Default: s3-bucket-readonly-role
+
+Resources:
+  KmsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: True
+      KeyPolicy:
+        Version: "2012-10-17"
+        Id: "key-default-1"
+        Statement:
+          - Sid: "Enable IAM User Permissions"
+            Effect: "Allow"
+            Principal:
+              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+            Action: "kms:*"
+            Resource: "*"
+          - Sid: "Allow administration of the key"
+            Effect: "Allow"
+            Principal:
+              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:role/account_a_role'
+            Action:
+              - "kms:Create*"
+              - "kms:Describe*"
+              - "kms:Enable*"
+              - "kms:List*"
+              - "kms:Put*"
+              - "kms:Update*"
+              - "kms:Revoke*"
+              - "kms:Disable*"
+              - "kms:Get*"
+              - "kms:Delete*"
+              - "kms:ScheduleKeyDeletion"
+              - "kms:CancelKeyDeletion"
+            Resource: "*"
+          - Sid: "Allow use of the key"
+            Effect: "Allow"
+            Principal:
+              AWS: "arn:aws:iam::333333333333:role/account_c_role"
+            Action:
+              - "kms:DescribeKey"
+              - "kms:Encrypt"
+              - "kms:Decrypt"
+              - "kms:ReEncrypt*"
+              - "kms:GenerateDataKey"
+              - "kms:GenerateDataKeyWithoutPlaintext"
+            Resource: "*"
+
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref 'BucketName'
+      AccessControl: BucketOwnerFullControl
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: "aws:kms"
+              KMSMasterKeyID: !Ref KmsKey
+    DeletionPolicy: Retain
+
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: S3Bucket
+    Properties:
+      Bucket: !Ref "S3Bucket"
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            AWS:
+            - arn:aws:iam::222222222222:role/account_b_role
+          Action:
+            - s3:ListBucket
+          Resource:
+            - !GetAtt S3Bucket.Arn
+        - Effect: Allow
+          Principal:
+            AWS:
+            - arn:aws:iam::222222222222:role/account_b_role
+          Action:
+            - s3:PutObject
+            - s3:PutObjectAcl
+          Condition:
+            StringEquals:
+              s3:x-amz-acl: bucket-owner-full-control
+          Resource:
+            - !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+
+  S3ReadPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    DependsOn: S3Bucket
+    Properties:
+      Description: "Policy for reading the target bucket"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+            Resource:
+              - !GetAtt S3Bucket.Arn
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+            Resource:
+              - !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+
+  IamRole:
+    Type: AWS::IAM::Role
+    DependsOn: S3ReadPolicy
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              AWS:
+                - arn:aws:iam::333333333333:role/account_c_role
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - !Ref S3ReadPolicy
