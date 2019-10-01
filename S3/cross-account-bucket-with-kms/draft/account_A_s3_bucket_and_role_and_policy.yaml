@@ -7,6 +7,9 @@ Parameters:
     Description: The name of the S3 bucket to be created.
     Type: String
     Default: k-shared-cross-account-bucket
+  AccountAKeyAdminRoleArn:
+    Description: The ARN of a user in account A managing kms keys
+    Type: String
   AccountARoleName:
     Description: The name of the role for assuming from other accounts to read the objects
     Type: String
@@ -47,10 +50,11 @@ Resources:
               AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
             Action: "kms:*"
             Resource: "*"
+
           - Sid: "Allow administration of the key"
             Effect: "Allow"
             Principal:
-              AWS: !GetAtt IamRole.Arn
+              AWS: !Ref AccountAKeyAdminRoleArn
             Action:
               - "kms:Create*"
               - "kms:Describe*"
@@ -65,10 +69,13 @@ Resources:
               - "kms:ScheduleKeyDeletion"
               - "kms:CancelKeyDeletion"
             Resource: "*"
+
+          # Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
+          # permission on the key policy for the download to work.
           - Sid: "Allow use of the key"
             Effect: "Allow"
             Principal:
-              AWS: !Ref AccountCUserArn
+              AWS: !GetAtt IamRole.Arn
             Action:
               - "kms:DescribeKey"
               - "kms:Encrypt"
@@ -141,14 +148,19 @@ Resources:
               - s3:ListBucket
             Resource:
               - !GetAtt S3Bucket.Arn
+
           - Effect: Allow
             Action:
               - s3:GetObject
             Resource:
               - !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+
+          # Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
+          # permission on the key policy for the download to work.
           - Effect: Allow
             Action:
               - kms:Decrypt
+              - kms:DescribeKey
             Resource:
               - !GetAtt KmsKey.Arn
       Roles:
