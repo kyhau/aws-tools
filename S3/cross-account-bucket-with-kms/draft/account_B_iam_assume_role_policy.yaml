@@ -12,6 +12,10 @@ Parameters:
     Type: String
     Default: cross-account-s3-upload
 
+  KmsArn:
+    Description: The ARN of the KMS to be used for encrypting the object
+    Type: String
+
 Conditions:
   AttachPolicy: !Not [!Equals [!Ref AccountABucketArn, ""]]
 
@@ -41,6 +45,7 @@ Resources:
             - s3:ListBucket
           Resource:
             - !Ref AccountABucketArn
+
         - Effect: Allow
           Action:
             - s3:PutObject
@@ -50,6 +55,16 @@ Resources:
               s3:x-amz-acl: bucket-owner-full-control
           Resource:
             - !Join ['/',[!Ref AccountABucketArn, '*']]
+
+          # Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
+          # permission on the key policy for the download to work.
+        - Effect: Allow
+          Action:
+            - kms:Decrypt
+            - kms:DescribeKey
+            - kms:Encrypy
+          Resource:
+            - !Ref KmsArn
       Users:
         - !Ref IamUser
 

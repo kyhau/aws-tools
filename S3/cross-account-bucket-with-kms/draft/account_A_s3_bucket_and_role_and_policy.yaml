@@ -75,14 +75,16 @@ Resources:
           - Sid: "Allow use of the key"
             Effect: "Allow"
             Principal:
-              AWS: !GetAtt IamRole.Arn
+              AWS:
+                - !GetAtt IamRole.Arn
+                - !Ref AccountBUserArn
             Action:
               - "kms:DescribeKey"
               - "kms:Encrypt"
               - "kms:Decrypt"
               - "kms:ReEncrypt*"
-              - "kms:GenerateDataKey"
-              - "kms:GenerateDataKeyWithoutPlaintext"
+              #- "kms:GenerateDataKey"
+              #- "kms:GenerateDataKeyWithoutPlaintext"
             Resource: "*"
 
   KmsAlias:
