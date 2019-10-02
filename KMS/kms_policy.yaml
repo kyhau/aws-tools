@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Create KMS Key, and Key policies (which are resource policies that control access to the Customer Master Keys (CMKs)).
+
+Parameters:
+  KeyAdminRoleArn:
+    Description: The ARN of the key admin role
+    Type: String
+  KeyUserRoleArn:
+    Description: The ARN of the key user role
+    Type: String
+  KmsAliasName:
+    Description: Key alias
+    Type: String
+
+Resources:
+  KmsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: True
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          # Give the account full control of a key, allowing IAM identity policies to control access.
+          # Removing the policy, nothing can use the key. AWS support is required.
+          - Sid: "Enable IAM User Permissions"
+            Effect: "Allow"
+            Principal:
+              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+            Action: "kms:*"
+            Resource: "*"
+
+          # Key administrators can admin keys, not use them.
+          # Permissions granted via IAM policy, or key policy, or both.
+          - Sid: "Allow administration of the key"
+            Effect: "Allow"
+            Principal:
+              AWS: !Ref KeyAdminRoleArn
+            Action:
+              - "kms:Create*"
+              - "kms:Describe*"
+              - "kms:Enable*"
+              - "kms:List*"
+              - "kms:Put*"
+              - "kms:Update*"
+              - "kms:Revoke*"
+              - "kms:Disable*"
+              - "kms:Get*"
+              - "kms:Delete*"
+              - "kms:ScheduleKeyDeletion"    # allow for key deletion
+              - "kms:CancelKeyDeletion"      # allow for key deletion
+            Resource: "*"
+
+          # * Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
+          #   permission on the key policy for the download to work.
+          # * If the IAM user or role belongs to a different account than the key, then the permission to decrypt must
+          #   be granted on both the IAM user’s policy and the key’s policy.
+          # * Whenever possible, use key policies to give users permission to call the Decrypt operation on the CMK,
+          #   instead of IAM policies. Otherwise, you might create an IAM user policy that gives the user Decrypt
+          #   permission on all CMKs.
+          - Sid: "Allow use of the key"
+            Effect: "Allow"
+            Principal:
+              AWS:
+                - !Ref KeyUserRoleArn
+                # - "arn:aws:iam::109876543210:user/User1"    # parent account
+                # - "arn:aws:iam::012345678901:root"          # external account
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey*
+              - kms:ReEncrypt*
+            Resource: "*"
+
+  KmsAlias:
+    Type: AWS::KMS::Alias
+    DependsOn: KmsKey
+    Properties:
+      AliasName: !Join ["", ["alias/", !Ref KmsAliasName]]
+      TargetKeyId: !Ref KmsKey
+
+Outputs:
+  KmsKeyArn:
+    Description: KmsKeyArn
+    Value: !GetAtt KmsKey.Arn
