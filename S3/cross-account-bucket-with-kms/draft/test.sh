@@ -2,32 +2,62 @@
 # Set to fail script if any command fails.
 set -e
 
-key_arn=""
+function finish {
+  # Cleanup at the end
+  [[ -f sample.json ]] && rm sample.json
+  [[ -f test111.tgz ]] && rm test111.tgz
+  [[ -f test_download.tgz ]] && rm test_download.tgz
+}
+trap finish EXIT
 
-function upload_file {
-  #aws s3 cp test.json s3://k-shared-cross-account-bucket/account_b.json --acl bucket-owner-full-control --sse aws:kms --profile account-b
-  aws s3 cp test.json s3://k-shared-cross-account-bucket/account_b.json --acl bucket-owner-full-control --sse aws:kms --sse-kms-key-id ${key_arn} --profile account-b
+# TODO Change these
+AWS_PROFILE_UPLOAD="account-b"
+AWS_PROFILE_DOWNLOAD="account-c"
+
+BUCKET_NAME="k-shared-cross-account-bucket"
+IAM_ASSUME_ROLE="arn:aws:iam::111111111111:role/k-shared-cross-account-bucket-readonly-role"
+KMS_ALIAS_ARN="arn:aws:kms:ap-southeast-2:111111111111:alias/${BUCKET_NAME}-kms"
+SAMPLE_DATA="{\"hello\":\"world\"}"
+
+test_upload() {
+  echo "Checking kms describe-key"
+  aws kms describe-key --key-id=${KMS_ALIAS_ARN} --profile ${AWS_PROFILE_UPLOAD} | jq -r '.KeyMetadata.Arn'
+
+  echo "Uploading file to another account"
+  echo "Command: aws s3 cp test111.tgz s3://${BUCKET_NAME}/test/test-${AWS_PROFILE_UPLOAD}.tgz --acl bucket-owner-full-control --sse aws:kms --sse-kms-key-id ${KMS_ALIAS_ARN} --profile ${AWS_PROFILE_UPLOAD}"
+  aws s3 cp test111.tgz s3://${BUCKET_NAME}/test/test-${AWS_PROFILE_UPLOAD}.tgz --acl bucket-owner-full-control --sse aws:kms --sse-kms-key-id ${KMS_ALIAS_ARN} --profile ${AWS_PROFILE_UPLOAD}
+
+  echo "Checking aws s3 ls"
+  aws s3 ls s3://${BUCKET_NAME}/test/ --profile ${AWS_PROFILE_UPLOAD}
 }
 
-function download_file {
-  # Ref: https://aws.amazon.com/premiumsupport/knowledge-center/decrypt-kms-encrypted-objects-s3/
-  # https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-store-kms-encrypted-objects/
-  # https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-access-default-encryption/
-
-  ROLE_ARN="arn:aws:iam::111111111111:role/k-shared-cross-account-bucket-readonly-role"
-
-  resp=$(aws sts assume-role --role-arn ${ROLE_ARN} --profile account-c --role-session-name test-s3)
+test_download_succeeded() {
+  resp=$(aws sts assume-role --role-arn ${IAM_ASSUME_ROLE} --profile ${AWS_PROFILE_DOWNLOAD} --role-session-name test-s3)
   export AWS_ACCESS_KEY_ID=$(echo "$resp" | jq -r '.Credentials.AccessKeyId')
   export AWS_SECRET_ACCESS_KEY=$(echo "$resp" | jq -r '.Credentials.SecretAccessKey')
   export AWS_SESSION_TOKEN=$(echo "$resp" | jq -r '.Credentials.SessionToken')
 
-  #aws s3 ls s3://k-shared-cross-account-bucket
+  echo "Checking kms describe-key"
+  aws kms describe-key --key-id=${KMS_ALIAS_ARN} | jq -r '.KeyMetadata.Arn'
 
-  #aws kms describe-key --key-id=xxx
+  echo "Checking aws s3 ls"
+  aws s3 ls s3://${BUCKET_NAME}/
+  aws s3 ls s3://${BUCKET_NAME}/test/
 
-  aws s3 cp s3://k-shared-cross-account-bucket/account_b.json test_download.json
-  #aws s3api get-object --bucket k-shared-cross-account-bucket --key account_b.json test_download.json
+  echo "Downloading a file uploaded by other account"
+  aws s3 cp s3://${BUCKET_NAME}/test/test-${AWS_PROFILE_UPLOAD}.tgz test_download.tgz
+
+  echo "Checking the downloaded file"
+  tar xvzf test_download.tgz
+  [[ "$SAMPLE_DATA" = $(cat sample.json) ]] || (echo "Error: File content not the same." && exit 1)
 }
 
-upload_file
-download_file
+prepare_file() {
+  echo "$SAMPLE_DATA" > sample.json
+  tar czvf test111.tgz sample.json
+  rm sample.json
+}
+
+prepare_file
+test_upload
+test_download_succeeded
