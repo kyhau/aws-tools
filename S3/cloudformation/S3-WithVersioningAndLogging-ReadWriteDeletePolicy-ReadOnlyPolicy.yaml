@@ -1,10 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create S3 bucket with logging enabled (also optionally enable versioning,
+
+Description: >-
+  Create S3 bucket with logging enabled (also optionally enable versioning,
   create managed policies for Read-Only and Read-Write-Delete accesses).
+
 Parameters:
   BucketName:
     Description: The name of the S3 bucket to be created.
     Type: String
+
   EnableLogging:
     Description: Enable logging.
     Type: String
@@ -12,6 +16,7 @@ Parameters:
       - Enabled
       - Suspended
     Default: Suspended
+
   EnableVersioning:
     Description: Enable versioning (Enabled or Suspended).
     Type: String
@@ -19,6 +24,7 @@ Parameters:
       - Enabled
       - Suspended
     Default: Suspended
+
   ServerSideEncryptionAlgorithm:
     Description: Specify server side encryption. Choose None to disable server side
       encryption.
@@ -28,53 +34,61 @@ Parameters:
       - AES256
       - aws:kms
     Default: None
+
   KMSMasterKeyID:
     Description: KMS Master Key ID. Required only if selecting aws:kms in ServerSideEncryptionAlgorithm.
     Type: String
+
   ReadOnlyGroupName:
     Description: Optional. Name of the Group to be created and given Read-only access
       to the given bucket.
     Type: String
     Default: ''
+
   ReadWriteDeleteGroupName:
     Description: Optional. Name of the Group to be created and given Read-Write-Delete
       access to the given bucket.
     Type: String
     Default: ''
+
 Conditions:
   SSEEnabled: !Not
     - !Equals
       - None
       - !Ref 'ServerSideEncryptionAlgorithm'
+
   UseKms: !Equals
     - aws:kms
     - !Ref 'ServerSideEncryptionAlgorithm'
+
   LoggingEnabled: !Equals
     - Enabled
     - !Ref 'EnableLogging'
+
   VersioningEnabled: !Equals
     - Enabled
     - !Ref 'EnableVersioning'
+
   ReadOnlyGroupNameSpecified: !Not
     - !Equals
       - ''
       - !Ref 'ReadOnlyGroupName'
+
   ReadWriteDeleteGroupNameSpecified: !Not
     - !Equals
       - ''
       - !Ref 'ReadWriteDeleteGroupName'
+
 Resources:
   S3BucketLogs:
     Type: AWS::S3::Bucket
     Condition: LoggingEnabled
     Properties:
       AccessControl: LogDeliveryWrite
-      BucketName: !Join
-        - '-'
-        - - !Ref 'BucketName'
-          - logs
+      BucketName: !Join ['-', [!Ref 'BucketName', 'logs']]
       VersioningConfiguration:
         Status: Suspended
+
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -96,11 +110,13 @@ Resources:
       VersioningConfiguration:
         Status: !Ref 'EnableVersioning'
     DeletionPolicy: Retain
+
   IamGroupReadWriteDelete:
     Type: AWS::IAM::Group
     Condition: ReadWriteDeleteGroupNameSpecified
     Properties:
       GroupName: !Ref 'ReadWriteDeleteGroupName'
+
   ManagedPolicyS3ReadWriteDelete:
     Type: AWS::IAM::ManagedPolicy
     DependsOn:
@@ -112,36 +128,31 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - s3:ListAllMyBuckets
+              - s3:ListAllMyBuckets     # if need console access
             Resource: arn:aws:s3:::*
           - Effect: Allow
             Action:
-              - s3:ListBucket
-              - s3:GetBucketLocation
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref 'BucketName'
+              - s3:GetBucketLocation    # if need console access
+              - s3:ListBucket           # if need to list root-level items, folders in the given bucket
+            Resource: !GetAtt S3Bucket.Arn
           - Effect: Allow
             Action:
               - s3:PutObject*
               - s3:GetObject
               - s3:DeleteObject
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref 'BucketName'
-                - /*
+            Resource: !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
       Groups:
         - !If
           - ReadWriteDeleteGroupNameSpecified
           - !Ref 'ReadWriteDeleteGroupName'
           - !Ref 'AWS::NoValue'
+
   IamGroupReadOnly:
     Type: AWS::IAM::Group
     Condition: ReadOnlyGroupNameSpecified
     Properties:
       GroupName: !Ref 'ReadOnlyGroupName'
+
   ManagedPolicyS3Read:
     Type: AWS::IAM::ManagedPolicy
     Condition: ReadOnlyGroupNameSpecified
@@ -155,24 +166,17 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - s3:ListAllMyBuckets
+              - s3:ListAllMyBuckets     # if need console access
             Resource: arn:aws:s3:::*
           - Effect: Allow
             Action:
-              - s3:ListBucket
-              - s3:GetBucketLocation
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref 'BucketName'
+              - s3:GetBucketLocation    # if need console access
+              - s3:ListBucket           # if need to list root-level items, folders in the given bucket
+            Resource: !GetAtt S3Bucket.Arn
           - Effect: Allow
             Action:
               - s3:GetObject
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref 'BucketName'
-                - /*
+            Resource: !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
       Groups:
         - !If
           - ReadOnlyGroupNameSpecified
