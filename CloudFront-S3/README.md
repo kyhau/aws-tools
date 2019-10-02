@@ -17,6 +17,16 @@ Two ways to integrate CloudFront with S3 for Web Distributions (e.g. api.example
     1. Use Origin Access Identity to restrict S3 access only to CloudFront
     1. Need to give a Default Root Object (i.e. index.html) for accessing the single page app 
     1. Need to redirect 403 to index page
+    1. Include a Bucket Policy
+      ```
+      "Statement":[{
+         "Sid":" Grant a CloudFront OAI access to support private content",
+         "Effect":"Allow",
+         "Principal":{"CanonicalUser":"CloudFront Origin Identity Canonical UserID"},
+         "Action":"s3:GetObject",
+         "Resource":"arn:aws:s3:::examplebucket/*"
+       }]
+      ```
 
 See also [Using Amazon S3 Origins and Custom Origins for Web Distributions](
   http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
