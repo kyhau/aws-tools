@@ -1,7 +1,17 @@
 import boto3
+from boto3.session import Session
 
 AWS_PROFILE="default"
 AWS_DEFAULT_REGION="ap-southeast-2"
 
-#boto3.setup_default_session(profile_name=AWS_PROFILE)
-client = boto3.session.Session(profile_name=AWS_PROFILE).client("cloudformation")
+
+################################################################################
+# Entry point
+
+def main():
+    session = Session(profile_name=AWS_PROFILE)
+    this_identity = session.client("sts").get_caller_identity()
+    print(f"Started processing identity {this_identity['Arn']}")
+
+
+if __name__ == "__main__": main()
