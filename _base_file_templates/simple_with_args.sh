@@ -3,16 +3,15 @@
 # Set to fail script if any command fails.
 set -e
 
-# Define constants
-SCRIPT_DIR=$(dirname $(realpath $0))
-
-# Cleanup hack at the end
 function finish {
   # Delete any tmp file
   [[ -f tmp.json ]] && rm tmp.json
   echo "Goodbye"
 }
 trap finish EXIT
+
+# Define constants
+SCRIPT_DIR=$(dirname $(realpath $0))
 
 # Define the help menu
 help_menu() {
