@@ -15,11 +15,11 @@ Parameters:
     Type: String
     Default: k-shared-cross-account-bucket-readonly-role
   AccountBUserArn:
-    Description: The ARN of a role in account B for uploading files to the shared bucket in account A
+    Description: The ARN of the root in account B for uploading files to the shared bucket in account A
     Type: String
-    Default: arn:aws:iam::222222222222:user/cross-account-s3-upload
+    Default: arn:aws:iam::222222222222:root
   AccountCUserArn:
-    Description: The ARN of a the root of account C as the principal for downloading B's files from the shared bucket in account A
+    Description: The ARN of the root of account C as the principal for downloading B's files from the shared bucket in account A
     Type: String
     Default: arn:aws:iam::333333333333:root
 
@@ -78,11 +78,14 @@ Resources:
               AWS:
                 - !GetAtt IamRole.Arn
                 - !Ref AccountBUserArn
+                # - "arn:aws:iam::109876543210:user/User1"    # parent account
+                # - "arn:aws:iam::012345678901:root"          # external account
             Action:
               - kms:Decrypt
               - kms:DescribeKey
               - kms:Encrypt
               - kms:GenerateDataKey*
+              - kms:ReEncrypt*
             Resource: "*"
 
   KmsAlias:
@@ -123,7 +126,9 @@ Resources:
         - Effect: Allow
           Principal:
             AWS:
-            - !Ref AccountBUserArn
+              - !Ref AccountBUserArn
+              # - "arn:aws:iam::109876543210:user/User1"    # parent account
+              # - "arn:aws:iam::012345678901:root"          # external account
           Action:
             - s3:PutObject
             - s3:PutObjectAcl
@@ -169,9 +174,9 @@ Resources:
           # permission on the key policy for the download to work.
           - Effect: Allow
             Action:
-              - kms:DescribeKey
-              - kms:Encrypt
               - kms:Decrypt
+              - kms:DescribeKey
+              - kms:GenerateDataKey*
             Resource:
               - !GetAtt KmsKey.Arn
       Roles:

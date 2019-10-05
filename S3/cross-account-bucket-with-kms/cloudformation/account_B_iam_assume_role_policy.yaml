@@ -62,7 +62,9 @@ Resources:
           Action:
             - kms:Decrypt
             - kms:DescribeKey
-            - kms:Encrypy
+            - kms:Encrypt
+            - kms:GenerateDataKey*
+            - kms:ReEncrypt*
           Resource:
             - !Ref KmsArn
       Users:

@@ -13,7 +13,6 @@ trap finish EXIT
 # TODO Change these
 AWS_PROFILE_UPLOAD="account-b"
 AWS_PROFILE_DOWNLOAD="account-c"
-
 BUCKET_NAME="k-shared-cross-account-bucket"
 IAM_ASSUME_ROLE="arn:aws:iam::111111111111:role/k-shared-cross-account-bucket-readonly-role"
 KMS_ALIAS_ARN="arn:aws:kms:ap-southeast-2:111111111111:alias/${BUCKET_NAME}-kms"
