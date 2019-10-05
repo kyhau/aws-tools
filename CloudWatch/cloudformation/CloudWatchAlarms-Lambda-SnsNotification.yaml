@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This template deploys additional CloudWatch Alarms and SNS email notifications
+  (not Auto Scaling).
+
+Parameters:
+  LambdaAlarmEmail:
+    Description: Email address to notify if there are any Lambda operational issues
+    Type: String
+  LambdaAlias:
+    Description: Lambda alias for a deployment stage.
+    Type: String
+    AllowedValues:
+      - V1
+      - STAGING
+      - DEV
+    Default: DEV
+  LambdaFunctionName:
+    Description: name of the  Lambda function.
+    Type: String
+
+Resources:
+  LambdaAlarmSnsTopic:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      Subscription:
+        - Endpoint: !Ref LambdaAlarmEmail
+          Protocol: email
+
+  LambdaErrorsAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    DependsOn: LambdaAlarmSnsTopic
+    Properties:
+      AlarmActions:
+        - !Ref LambdaAlarmSnsTopic
+      AlarmDescription: When Lambda error occurs it will be notified through SNS
+      AlarmName: !Join ['/', [!Ref LambdaFunctionName, !Ref LambdaAlias, 'LambdaErrors']]
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref LambdaFunctionName
+        - Name: Resource
+          Value: !Join [':', [!Ref LambdaFunctionName, !Ref LambdaAlias]]
+      EvaluationPeriods: 1
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Period: 60
+      Statistic: Sum
+      Threshold: 0
+      TreatMissingData: notBreaching
+
+  LambdaThrottlesAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    DependsOn:
+      - LambdaAlarmSnsTopic
+    Properties:
+      AlarmActions:
+        - !Ref LambdaAlarmSnsTopic
+      AlarmDescription: When Lambda throttle occurs it will be notified through SNS
+      AlarmName: !Join ['/', [!Ref LambdaFunctionName, !Ref LambdaAlias, 'LambdaThrottles']]
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref LambdaFunctionName
+        - Name: Resource
+          Value: !Join [':', [!Ref LambdaFunctionName, !Ref LambdaAlias]]
+      EvaluationPeriods: 1
+      MetricName: Throttles
+      Namespace: AWS/Lambda
+      Period: 60
+      Statistic: Sum
+      Threshold: 0
+      TreatMissingData: notBreaching
+
+Outputs:
+  LambdaAlarmSnsTopicArn:
+    Description: A reference to SNS Notification ARN of Lambda error activities
+    Value: !Ref LambdaAlarmSnsTopic
