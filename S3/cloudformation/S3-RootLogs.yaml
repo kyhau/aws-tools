@@ -13,10 +13,10 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       AccessControl: LogDeliveryWrite
-      BucketName: !Ref 'RootLogName'
+      BucketName: !Ref RootLogName
       Tags:
         - Key: Billing
-          Value: !Ref 'RootLogBillingTag'
+          Value: !Ref RootLogBillingTag
 Outputs:
   S3BucketLogsName:
     Value: !Ref 'S3BucketLogs'

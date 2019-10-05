@@ -12,72 +12,47 @@ Parameters:
   EnableLogging:
     Description: Enable logging.
     Type: String
-    AllowedValues:
-      - Enabled
-      - Suspended
+    AllowedValues: [Enabled, Suspended]
     Default: Suspended
 
   EnableVersioning:
     Description: Enable versioning (Enabled or Suspended).
     Type: String
-    AllowedValues:
-      - Enabled
-      - Suspended
+    AllowedValues: [Enabled, Suspended]
     Default: Suspended
 
   ServerSideEncryptionAlgorithm:
-    Description: Specify server side encryption. Choose None to disable server side
-      encryption.
+    Description: Specify server side encryption. Choose None to disable server side encryption.
     Type: String
-    AllowedValues:
-      - None
-      - AES256
-      - aws:kms
-    Default: None
+    AllowedValues: [None, AES256, 'aws:kms']
+    Default: AES256
 
   KMSMasterKeyID:
     Description: KMS Master Key ID. Required only if selecting aws:kms in ServerSideEncryptionAlgorithm.
     Type: String
 
   ReadOnlyGroupName:
-    Description: Optional. Name of the Group to be created and given Read-only access
-      to the given bucket.
+    Description: Optional. Name of the Group to be created and given Read-only access to the given bucket.
     Type: String
     Default: ''
 
   ReadWriteDeleteGroupName:
-    Description: Optional. Name of the Group to be created and given Read-Write-Delete
-      access to the given bucket.
+    Description: Optional. Name of the Group to be created and given Read-Write-Delete access to the given bucket.
     Type: String
     Default: ''
 
 Conditions:
-  SSEEnabled: !Not
-    - !Equals
-      - None
-      - !Ref 'ServerSideEncryptionAlgorithm'
+  SSEEnabled: !Not [!Equals [None, !Ref ServerSideEncryptionAlgorithm]]
 
-  UseKms: !Equals
-    - aws:kms
-    - !Ref 'ServerSideEncryptionAlgorithm'
+  UseKms: !Equals ['aws:kms', !Ref ServerSideEncryptionAlgorithm]
 
-  LoggingEnabled: !Equals
-    - Enabled
-    - !Ref 'EnableLogging'
+  LoggingEnabled: !Equals [Enabled, !Ref EnableLogging]
 
-  VersioningEnabled: !Equals
-    - Enabled
-    - !Ref 'EnableVersioning'
+  VersioningEnabled: !Equals [Enabled, !Ref EnableVersioning]
 
-  ReadOnlyGroupNameSpecified: !Not
-    - !Equals
-      - ''
-      - !Ref 'ReadOnlyGroupName'
+  ReadOnlyGroupNameSpecified: !Not [!Equals ['', !Ref ReadOnlyGroupName]]
 
-  ReadWriteDeleteGroupNameSpecified: !Not
-    - !Equals
-      - ''
-      - !Ref 'ReadWriteDeleteGroupName'
+  ReadWriteDeleteGroupNameSpecified: !Not [!Equals ['', !Ref ReadWriteDeleteGroupName]]
 
 Resources:
   S3BucketLogs:
@@ -85,30 +60,35 @@ Resources:
     Condition: LoggingEnabled
     Properties:
       AccessControl: LogDeliveryWrite
-      BucketName: !Join ['-', [!Ref 'BucketName', 'logs']]
+      BucketName: !Join ['-', [!Ref BucketName, 'logs']]
       VersioningConfiguration:
         Status: Suspended
 
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Ref 'BucketName'
+      BucketName: !Ref BucketName
       AccessControl: BucketOwnerFullControl
       BucketEncryption: !If
         - SSEEnabled
         - ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault: !If
                 - UseKms
-                - SSEAlgorithm: !Ref 'ServerSideEncryptionAlgorithm'
-                  KMSMasterKeyID: !Ref 'KMSMasterKeyID'
-                - SSEAlgorithm: !Ref 'ServerSideEncryptionAlgorithm'
-        - !Ref 'AWS::NoValue'
+                - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+                  KMSMasterKeyID: !Ref KMSMasterKeyID
+                - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+        - !Ref AWS::NoValue
       LoggingConfiguration: !If
         - LoggingEnabled
-        - DestinationBucketName: !Ref 'S3BucketLogs'
-        - !Ref 'AWS::NoValue'
+        - DestinationBucketName: !Ref S3BucketLogs
+        - !Ref AWS::NoValue
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       VersioningConfiguration:
-        Status: !Ref 'EnableVersioning'
+        Status: !Ref EnableVersioning
     DeletionPolicy: Retain
 
   IamGroupReadWriteDelete:
@@ -144,14 +124,14 @@ Resources:
       Groups:
         - !If
           - ReadWriteDeleteGroupNameSpecified
-          - !Ref 'ReadWriteDeleteGroupName'
-          - !Ref 'AWS::NoValue'
+          - !Ref ReadWriteDeleteGroupName
+          - !Ref AWS::NoValue
 
   IamGroupReadOnly:
     Type: AWS::IAM::Group
     Condition: ReadOnlyGroupNameSpecified
     Properties:
-      GroupName: !Ref 'ReadOnlyGroupName'
+      GroupName: !Ref ReadOnlyGroupName
 
   ManagedPolicyS3Read:
     Type: AWS::IAM::ManagedPolicy
@@ -180,5 +160,5 @@ Resources:
       Groups:
         - !If
           - ReadOnlyGroupNameSpecified
-          - !Ref 'ReadOnlyGroupName'
-          - !Ref 'AWS::NoValue'
+          - !Ref ReadOnlyGroupName
+          - !Ref AWS::NoValue
