@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Create CloudWatch Log Subscription Filter and LambdaInvokePermission for a Lambda function.
+
+Parameters:
+  CloudWatchEcsLogGroupName:
+    Description: Name of CloudWatch Log Group the Lambda Function to be invoked from
+    Type: String
+    Default: ECS/Simple-Service-Dev
+  LambdaAlias:
+    Description: Lambda alias for a deployment stage.
+    Type: String
+    AllowedValues:
+      - V1
+      - STAGING
+      - DEV
+    Default: DEV
+  LambdaArn:
+    Description: ARN of the  Lambda function to be created or updated.
+    Type: String
+
+Resources:
+  SubscriptionFilter:
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      LogGroupName: !Ref CloudWatchEcsLogGroupName
+      FilterPattern: ''
+      DestinationArn: !Join [':', [!Ref LambdaArn, !Ref LambdaAlias]]
+
+  LambdaInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Join [':', [!Ref LambdaArn, !Ref LambdaAlias]]
+      Action: 'lambda:InvokeFunction'
+      Principal: !Sub 'logs.${AWS::Region}.amazonaws.com'
+      SourceAccount: !Ref 'AWS::AccountId'
+      SourceArn: !Sub
+        - 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LogGroupName}:*'
+        - {LogGroupName: !Ref CloudWatchEcsLogGroupName}
+
+Outputs:
+  SubscriptionFilter:
+    Description: The logical ID of the SubscriptionFilter
+    Value: !Ref SubscriptionFilter
+
+  LambdaInvokePermission:
+    Description: The logical ID of the LambdaInvokePermission
+    Value: !Ref LambdaInvokePermission
