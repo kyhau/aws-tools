@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >-
+  Create CloudWatch Event Rule for triggering Lambda function on ECS Task Stopped event.
+
+Parameters:
+  ClusterName:
+    Description: ARN of the task stopped handler Lambda function.
+    Type: String
+
+  TaskStoppedHandlerLambdaArn:
+    Description: ARN of the task stopped handler Lambda function.
+    Type: String
+
+Resources:
+  TaskStoppedEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: ECS Task Stopped Event Rule
+      Name: !Join ['-', ['ECS', 'TaskStopped', !Ref ClusterName]]
+      EventPattern:
+        source:
+          - aws.ecs
+        detail-type:
+          - ECS Task State Change
+        detail:
+          clusterArn: !Join ['', ['arn:aws:ecs:', !Ref AWS::Region, ':', !Ref AWS::AccountId, '/', !Ref ClusterName]]
+          containers:
+            exitCode:
+              - 1
+          lastStatus:
+            - STOPPED
+          stoppedReason:
+            - Essential container in task exited
+      State: ENABLED
+      Targets:
+        - Arn: !Ref TaskStoppedHandlerLambdaArn
+          Id: !Join ['-', [!Ref ClusterName, 'TaskStopped', 'Target', 'Lambda']]
+
+  PermissionForEventsToInvokeLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref TaskStoppedHandlerLambdaArn
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt TaskStoppedEventRule.Arn
+
+Outputs:
+  TaskStoppedEventRule:
+    Description: SampleApp task stopped event rule
+    Value: !Ref TaskStoppedEventRule
+
+  PermissionForEventsToInvokeLambda:
+    Description: Lambda Permission for events to invoke Lambda
+    Value: !Ref PermissionForEventsToInvokeLambda

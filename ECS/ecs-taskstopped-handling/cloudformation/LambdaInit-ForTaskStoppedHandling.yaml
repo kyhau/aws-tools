@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create Lambda function with dummy content
+
+Parameters:
+  TaskStoppedHandlerLambdaFunctionName:
+    Description: Name of the task stopped handler Lambda function to be created or updated.
+    Type: String
+
+Resources:
+  TaskStoppedHandler:
+    Type: AWS::Lambda::Function
+    DependsOn: TaskStoppedHandlerExecutionRole
+    Properties:
+      FunctionName: !Ref TaskStoppedHandlerLambdaFunctionName
+      Runtime: python3.6
+      Handler: TaskStoppedHandler.lambda_handler
+      MemorySize: 2048
+      Timeout: 60
+      Role: !GetAtt TaskStoppedHandlerExecutionRole.Arn
+      Code:
+        ZipFile: !Join
+          - ''
+          - - 'def lambda_handler(event, context):'
+            - '   # This function will be updated through CI/CD'
+            - '   return ''Hello from Lambda!'''
+  TaskStoppedHandlerExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join ['', [!Ref TaskStoppedHandlerLambdaFunctionName, ExecuteRole]]
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: !Join ['', [!Ref TaskStoppedHandlerLambdaFunctionName, ExecuteRole-Logging]]
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource: arn:aws:logs:*:*:*
+
+Outputs:
+  EventHandlerLambdaFunctionName:
+    Description: Task stopped handler Lambda function name
+    Value: !Ref TaskStoppedHandler
+
+  EventHandlerLambdaFunctionArn:
+    Description: The ARN of the task stopped handler Lambda function
+    Value: !GetAtt TaskStoppedHandler.Arn
