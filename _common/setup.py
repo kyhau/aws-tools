@@ -19,11 +19,10 @@ __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
     "boto3~=1.9",
-    "click~=7",
+    "click~=7.0",
     "docker~=4.0",
     "pyyaml~=5.1",
     "toml~=0.10",
-    "warrant~=0.6",
 ]
 
 with open(os.path.join(base_dir, "README.md")) as f:
