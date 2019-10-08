@@ -23,6 +23,9 @@ setuptools.setup(
         "aws-cdk.aws-dynamodb",
         "aws-cdk.aws-lambda",
         "aws-cdk.aws-apigateway",
+        "aws-cdk.aws-ecs",
+        "aws-cdk.aws-ec2",
+        "cdk-watchful",
     ],
 
     python_requires=">=3.6",

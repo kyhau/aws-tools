@@ -1,4 +1,6 @@
 from aws_cdk import core, aws_dynamodb, aws_lambda, aws_apigateway
+from waltersco_common import WaltersCoStack
+from cdk_watchful import Watchful
 
 """
 API:
@@ -31,3 +33,20 @@ class UrlShortenerStack(core.Stack):
         api = aws_apigateway.LambdaRestApi(self, "api", handler=function)
         
         self.map_waltersco_subdomain("go", api)
+        
+        wf = Watchful(self, "monitoring", alarm_email="todo")
+        wf.watch_scope(self)
+
+
+from traffico import Traffico
+
+class TrafficStack(WaltersCoStack):
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+        
+        Traffico(
+            self, "TestTraffic",
+            vpc=self.waltersco_vpc,
+            url="https://gp.waltersco.co/759595fe",
+            tps=10,
+        )

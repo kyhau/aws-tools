@@ -57,3 +57,20 @@ command.
  * `cdk docs`        open CDK documentation
 
 Enjoy!
+
+---
+
+# Load Testing
+
+```
+cd pinger
+URL=https://gp.waltersco.co/759595fe ./ping.sh
+
+docker run -it -e URL=https://gp.waltersco.co/759595fe ./ping.sh
+
+
+```
+
+---
+
+# Monitorin
