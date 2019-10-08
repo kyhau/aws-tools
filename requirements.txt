@@ -4,7 +4,8 @@
 #pip~=19.0
 
 boto3~=1.9
-#click~=7
+click~=7
+#pipdeptree
 #pyyaml~=5.1
 #pypiwin32==220
 #toml~=0.10

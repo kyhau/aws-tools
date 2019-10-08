@@ -18,11 +18,12 @@ __summary__ = "This package includes some simple scripts for setting up local de
 __uri__ = "https://github.com/kyhau/arki"
 
 __requirements__ = [
-    "boto3==1.9.215",
-    "docker==4.0.2",
-    "pyyaml==5.1.2",
-    "toml==0.10.0",
-    "warrant==0.6.1",
+    "boto3~=1.9",
+    "click~=7",
+    "docker~=4.0",
+    "pyyaml~=5.1",
+    "toml~=0.10",
+    "warrant~=0.6",
 ]
 
 with open(os.path.join(base_dir, "README.md")) as f:
