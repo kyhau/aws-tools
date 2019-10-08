@@ -19,6 +19,10 @@ pip install -r requirements.txt
 - [kyhau/aws-notebook](https://github.com/kyhau/aws-notebook)
 
 **Other AWS tools**
+- [aws/aws-cdk](https://github.com/aws/aws-cdk)
+- [aws/aws-cli](https://github.com/aws/aws-cli)
+- [awsebcli/awsebcli](https://github.com/awsebcli/awsebcli)
+- [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
 - [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
 - [AWS Tools for PowerShell](https://aws.amazon.com/powershell/)
@@ -26,5 +30,12 @@ pip install -r requirements.txt
 - [IAM Policy Simulator Console](https://policysim.aws.amazon.com/)
 
 **Other useful tools**
+- https://github.com/toniblyx/my-arsenal-of-aws-security-tools
+- [awscli-local](https://github.com/localstack/awscli-local)
+- [localstack](https://github.com/localstack/localstack)
+- cfn-flip
+- cfn-lint
+- [CloudGoat](https://github.com/RhinoSecurityLabs/cloudgoat)
 - [CloudMapper](https://github.com/duo-labs/cloudmapper) - helps you analyze AWS environments 
+- [git-secrets](https://github.com/awslabs/git-secrets)
 - [Pacu](https://github.com/RhinoSecurityLabs/pacu) - an open source AWS exploitation framework
