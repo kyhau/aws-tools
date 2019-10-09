@@ -11,8 +11,6 @@ SAML2AWS_CONFIG = join(str(Path.home()), ".saml2aws")
 # role_arn, account_id, account_name
 ROLES_FILE = join(dirname(abspath(__file__)), "data", "accounts.csv")
 
-get_arn = lambda x: f"arn:aws:iam::{self.account_id}:role/{role}"
-
 
 def load_csv(filename, delimiter=","):
     with open(filename) as csvfile:
