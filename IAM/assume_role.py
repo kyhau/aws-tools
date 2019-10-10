@@ -8,13 +8,12 @@ def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600)
     resp = boto3.client("sts").assume_role(
         RoleArn=role_arn,
         RoleSessionName=session_name,
-        DurationSeconds=duration_secs,  # 15 mins to 1 hour or 12 hours
-    )
+        DurationSeconds=duration_secs)  # 15 mins to 1 hour or 12 hours
+
     return Session(
         aws_access_key_id=resp["Credentials"]["AccessKeyId"],
         aws_secret_access_key=resp["Credentials"]["SecretAccessKey"],
-        aws_session_token=resp["Credentials"]["SessionToken"]
-    )
+        aws_session_token=resp["Credentials"]["SessionToken"])
 
 
 def test_assume_role_print_account_id(role_arn):

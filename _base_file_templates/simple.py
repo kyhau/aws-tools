@@ -1,5 +1,13 @@
 import boto3
 from boto3.session import Session
+import logging
+
+# Update the root logger to get messages at DEBUG and above
+logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger("botocore").setLevel(logging.CRITICAL)
+logging.getLogger("boto3").setLevel(logging.CRITICAL)
+logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
+logging.info(f"boto3.__version__: {boto3.__version__}")
 
 AWS_PROFILE="default"
 AWS_DEFAULT_REGION="ap-southeast-2"
