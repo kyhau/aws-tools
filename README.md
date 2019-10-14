@@ -21,6 +21,7 @@ pip install -r requirements.txt
 **Other AWS tools**
 - [aws/aws-cdk](https://github.com/aws/aws-cdk)
 - [aws/aws-cli](https://github.com/aws/aws-cli)
+- [aws/chalice](https://github.com/aws/chalice)
 - [awsebcli/awsebcli](https://github.com/awsebcli/awsebcli)
 - [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
 - [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
