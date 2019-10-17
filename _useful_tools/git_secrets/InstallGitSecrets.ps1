@@ -1,11 +1,11 @@
 # https://github.com/awslabs/git-secrets
 
-pushd C:\Workspaces\github\workspace
+pushd C:\Workspaces\github
 
 Write-Host "Cloning git-secrets..."
 git clone https://github.com/awslabs/git-secrets
 
-pushd C:\Workspaces\github\workspace\git-secrets
+pushd C:\Workspaces\github\git-secrets
 
 Write-Host "Installing git-secrets..."
 ./install.ps1
