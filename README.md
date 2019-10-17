@@ -22,7 +22,9 @@ pip install -r requirements.txt
 - [aws/aws-cdk](https://github.com/aws/aws-cdk)
 - [aws/aws-cli](https://github.com/aws/aws-cli)
 - [aws/chalice](https://github.com/aws/chalice)
+- [aws-cloudformation/cfn-python-lint (cfn-lint)](https://github.com/aws-cloudformation/cfn-python-lint)
 - [awsebcli/awsebcli](https://github.com/awsebcli/awsebcli)
+- [awslabs/aws-cfn-template-flip (cfn-flip)](https://github.com/awslabs/aws-cfn-template-flip)
 - [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
 - [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
@@ -35,8 +37,7 @@ pip install -r requirements.txt
 - https://github.com/toniblyx/my-arsenal-of-aws-security-tools
 - [awscli-local](https://github.com/localstack/awscli-local)
 - [localstack](https://github.com/localstack/localstack)
-- cfn-flip
-- cfn-lint
 - [CloudGoat](https://github.com/RhinoSecurityLabs/cloudgoat)
 - [CloudMapper](https://github.com/duo-labs/cloudmapper) - helps you analyze AWS environments 
 - [Pacu](https://github.com/RhinoSecurityLabs/pacu) - an open source AWS exploitation framework
+- https://regex101.com/
