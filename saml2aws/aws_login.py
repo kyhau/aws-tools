@@ -35,21 +35,27 @@ def load_saml2aws_config(filename):
     return configs
 
 
-def run_saml2aws_login(role_arn, profile_name, uname, upass):
+def run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration):
     logging.info(f"Adding {profile_name}...")
+
     cmd = f"saml2aws login --role={role_arn} -p {profile_name} --username={uname} --password={upass} --skip-prompt"
+    if session_duration:
+        cmd = f"{cmd} --session-duration={session_duration}"
+
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for line in p.stdout.readlines():
         logging.debug(line.decode("utf-8").rstrip("\r|\n"))
     retval = p.wait()
+
     logging.info(f"Response Code {retval}")
     return retval
 
 
 @click.command()
 @click.option("--keyword", "-k", help="Login only to roles with the given keyword")
+@click.option("--session-duration", "-s", help="Session duration in seconds, override that of .saml2aws if provided")
 @click.option("--debug", "-d", is_flag=True)
-def main(keyword, debug):
+def main(keyword, session_duration, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
     
@@ -68,7 +74,7 @@ def main(keyword, debug):
         
         if keyword is None or keyword in role_arn:
             profile_name = role_arn.split("role/")[-1].replace("/", "-")
-            run_saml2aws_login(role_arn, profile_name, uname, upass)
+            run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration)
 
 
 if __name__ == "__main__": main()
