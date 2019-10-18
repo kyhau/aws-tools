@@ -9,7 +9,7 @@ See also https://docs.aws.amazon.com/en_pv/awscloudtrail/latest/userguide/view-c
    - `EventName` (e.g. `RunInstances`)
    - `EventSource` (e.g. `iam.amazonaws.com`)
    - `ReadOnly` (e.g. `false`)
-    - `ResourceName` (e.g. `CloudTrail_CloudWatchLogs_Role`)
+   - `ResourceName` (e.g. `CloudTrail_CloudWatchLogs_Role`)
    - `ResourceType` (e.g. `AWS::S3::Bucket`)
    - `Username` (e.g. `root`)
 
