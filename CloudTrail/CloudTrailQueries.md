@@ -16,7 +16,9 @@ See also https://docs.aws.amazon.com/en_pv/awscloudtrail/latest/userguide/view-c
 2. [Valid `<timestamp>` formats](
     https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events-cli.html#look-up-events-by-time-range-formats)
 
-3. CloudTrail supports logging S3 object-level API operations such as `GetObject`, `DeleteObject`, and `PutObject`.
+3. [Event Names](https://gist.github.com/pkazi/8b5a1374771f6efa5d55b92d8835718c)
+
+4. CloudTrail supports logging S3 object-level API operations such as `GetObject`, `DeleteObject`, and `PutObject`.
    These events are called data events. 
    **However, CloudTrail trails do not log data events by default**; you need to enable S3 Object-Level Logging to
    log data events to CloudTrail ([see REF](
