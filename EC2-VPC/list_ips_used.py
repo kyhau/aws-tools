@@ -72,7 +72,7 @@ def list_action(session):
 
 @click.command()
 @click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--rolesfile", "-f", help="Files containing Role ARNs")
+@click.option("--rolesfile", "-f", help="File containing Role ARNs")
 def main(profile, rolesfile):
     if rolesfile:
         for role_arn, acc_name in read_role_arns_from_file(filename=rolesfile):
