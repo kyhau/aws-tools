@@ -53,9 +53,10 @@ def run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration):
 
 @click.command()
 @click.option("--keyword", "-k", help="Login only to roles with the given keyword")
-@click.option("--session-duration", "-s", help="Session duration in seconds, override that of .saml2aws if provided")
+@click.option("--rolesfile", "-f", help="File containing Role ARNs (csv)")
+@click.option("--session-duration", "-s", help="Session duration in seconds")
 @click.option("--debug", "-d", is_flag=True)
-def main(keyword, session_duration, debug):
+def main(keyword, rolesfile, session_duration, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
     
@@ -67,14 +68,25 @@ def main(keyword, session_duration, debug):
         logging.info(f"Username: {uname}")
     upass = getpass.getpass("Password: ")
     
-    rolefile = ALL_ROLES_FILE if keyword else ROLES_FILE
+    if not rolesfile:
+        rolesfile = ALL_ROLES_FILE if keyword else ROLES_FILE
     
-    for item in load_csv(rolefile):
+    profiles = []
+    
+    for item in load_csv(rolesfile):
         role_arn, account_name = item[0], item[1]
         
         if keyword is None or keyword in role_arn:
             profile_name = role_arn.split("role/")[-1].replace("/", "-")
             run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration)
+
+            profiles.append(profile_name)
+
+    profiles_file = rolesfile.replace(".csv", ".txt").replace("roles", "profiles")
+
+    with open(profiles_file, "w") as f:
+        f.write("\n".join(profiles))
+    logging.info(f"Wrote the profile names to {profiles_file}")
 
 
 if __name__ == "__main__": main()

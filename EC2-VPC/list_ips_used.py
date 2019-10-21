@@ -43,6 +43,7 @@ def list_action(session):
     for region in session.get_available_regions("ec2"):
         #if region != "ap-southeast-2":
         #    continue
+        
         print(f"Checking {account_id} {region}")
 
         client = session.client("ec2", region_name=region)
