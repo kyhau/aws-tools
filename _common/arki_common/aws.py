@@ -1,6 +1,6 @@
 import boto3
 from boto3.session import Session
-from os.path import exists
+import csv
 
 DEFAULT_ROLE_ARNS_FILE = "role_arns.txt"
 
@@ -19,8 +19,19 @@ def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600)
 
 
 def read_role_arns_from_file(filename=DEFAULT_ROLE_ARNS_FILE):
-    if exists(filename):
+    """
+    Return list of role-arn if the filename has a txt file extension; or list of [role-arn, account-name] if the
+    filename has a csv extension.
+    """
+    if filename.lower().endswith(".txt"):
         with open(filename) as f:
             lns = f.readlines()
             return [x.strip() for x in lns if x.strip() and not x.strip().startswith("#")] # ignore empty/commented line
-    return []
+
+    if filename.lower().endswith(".csv"):
+        with open(filename) as csvfile:
+            reader = csv.reader(csvfile)
+            
+            return [row for row in reader if row and not row[0].startswith("#")]
+
+    return None

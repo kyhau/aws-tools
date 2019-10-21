@@ -29,3 +29,4 @@ venv/
 .idea/
 *whoami*.json
 *whoami*.log
+*ips_used.csv
