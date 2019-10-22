@@ -18,7 +18,7 @@ def list_action(session, sql_statement):
         print_json(resp["Results"])
         while next_token:
             resp = client.select_resource_config(Expression=sql_statement, NextToken=next_token)
-            next_token = resp["NextToken"]
+            next_token = resp.get("NextToken")
             print_json(resp["Results"])
 
 
