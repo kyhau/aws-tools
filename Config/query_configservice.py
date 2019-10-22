@@ -1,56 +1,44 @@
 from boto3.session import Session
 import click
 
-from arki_common.aws import assume_role, read_role_arns_from_file
 from arki_common.utils import print_json
-
-
-def read_file(filename):
-    with open(filename, "r") as f:
-        return f.read()
-
-
-def dump(data, output_filename, append=True, to_console=True):
-    if to_console is True:
-        print(data)
-
-    with open(output_filename, "a" if append else "w") as f:
-        f.write(f'{",".join(list(map(str, data)))}\n')
 
 
 def list_action(session, sql_statement):
     account_id = session.client("sts").get_caller_identity()["Account"]
 
-    for region in session.get_available_regions("ec2"):
+    for region in session.get_available_regions("config"):
         if region != "ap-southeast-2":
             continue
         print(f"Checking {account_id} {region}")
 
         client = session.client("config", region_name=region)
-        paginator = client.get_paginator("select_resource_config")
-        for page in paginator.paginate(
-            Expression=sql_statement,
-        ):
-            print_json(page)
-            
+        resp = client.select_resource_config(Expression=sql_statement)
+        next_token = resp["NextToken"]
+        print_json(resp["Results"])
+        while next_token:
+            resp = client.select_resource_config(Expression=sql_statement, NextToken=next_token)
+            next_token = resp["NextToken"]
+            print_json(resp["Results"])
 
-################################################################################
-# Entry point
 
 @click.command()
 @click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--rolesfile", "-f", help="File containing Role ARNs")
+@click.option("--profilesfile", "-f", help="File containing AWS profile names")
 @click.option("--sqlfile", "-s", required=True, help="File containing the sql statement")
-def main(profile, rolesfile, sqlfile):
+def main(profile, profilesfile, sqlfile):
     
-    sql_statement = read_file(sqlfile)
-    
-    if rolesfile:
-        for role_arn, acc_name in read_role_arns_from_file(filename=rolesfile):
-            session = assume_role(role_arn=role_arn)
-            list_action(session, sql_statement)
+    with open(sqlfile, "r") as f:
+        sql_statement = f.read()
+
+    if profilesfile:
+        with open(profilesfile, "r") as f:
+            profile_names = f.readlines()
     else:
-        session = Session(profile_name=profile)
+        profile_names = [profile]
+    
+    for profile_name in profile_names:
+        session = Session(profile_name=profile_name.strip())
         list_action(session, sql_statement)
 
 
