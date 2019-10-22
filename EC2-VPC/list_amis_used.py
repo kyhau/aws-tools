@@ -2,8 +2,6 @@ from boto3.session import Session
 import click
 from collections import defaultdict
 
-from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_ARNS_FILE
-
 
 def list_action(session, results):
     account_id = session.client("sts").get_caller_identity()["Account"]
@@ -60,9 +58,9 @@ def list_action(session, results):
 # Entry point
 
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name")
-@click.option("--rolesfile", "-f", default=DEFAULT_ROLE_ARNS_FILE, help="Files containing Role ARNs")
-def main(profile, rolesfile):
+@click.option("--profile", "-p", default="default", help="AWS profile name")
+@click.option("--profilesfile", "-f", help="File containing AWS profile names")
+def main(profile, profilesfile):
     results = defaultdict(dict)
     """ Example:
     {
@@ -77,12 +75,14 @@ def main(profile, rolesfile):
     }
     """
 
-    if profile is not None:
-        session = Session(profile_name=profile)
-        list_action(session, results)
+    if profilesfile:
+        with open(profilesfile, "r") as f:
+            profile_names = f.readlines()
+    else:
+        profile_names = [profile]
 
-    for role_arn in read_role_arns_from_file(filename=rolesfile):
-        session = assume_role(role_arn=role_arn)
+    for profile_name in profile_names:
+        session = Session(profile_name=profile_name.strip())
         list_action(session, results)
 
 
