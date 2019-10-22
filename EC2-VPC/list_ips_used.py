@@ -10,7 +10,6 @@ PrivateIpAddress, PrivateDnsName, IsPrimary, PublicIp, PublicDnsName, InstanceId
 from boto3.session import Session
 import click
 
-from arki_common.aws import assume_role, read_role_arns_from_file
 #from arki_common.utils import print_json
 
 
@@ -41,10 +40,12 @@ def list_action(session):
     dump(titles, output_filename, append=False)
 
     for region in session.get_available_regions("ec2"):
-        #if region != "ap-southeast-2":
-        #    continue
+        if region != "ap-southeast-2":
+            continue
         
         print(f"Checking {account_id} {region}")
+        
+        # TODO catch exception related to deactivated region/services
 
         client = session.client("ec2", region_name=region)
         paginator = client.get_paginator("describe_network_interfaces")
@@ -73,14 +74,16 @@ def list_action(session):
 
 @click.command()
 @click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--rolesfile", "-f", help="File containing Role ARNs")
-def main(profile, rolesfile):
-    if rolesfile:
-        for role_arn, acc_name in read_role_arns_from_file(filename=rolesfile):
-            session = assume_role(role_arn=role_arn)
-            list_action(session)
+@click.option("--profilesfile", "-f", help="File containing AWS profile names")
+def main(profile, profilesfile):
+    if profilesfile:
+        with open(profilesfile, "r") as f:
+            profile_names = f.readlines()
     else:
-        session = Session(profile_name=profile)
+        profile_names = [profile]
+    
+    for profile_name in profile_names:
+        session = Session(profile_name=profile_name.strip())
         list_action(session)
 
 
