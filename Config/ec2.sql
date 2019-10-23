@@ -1,6 +1,5 @@
 SELECT
     resourceId,
-    resourceType,
     configuration.instanceType,
     configuration.placement.tenancy,
     configuration.imageId,
