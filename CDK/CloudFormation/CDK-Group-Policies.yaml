@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create a Group for creating CloudFormation stack with CDK (API Gateway, Lambda, DynamoDB)
+
+Parameters:
+  GroupName:
+    Description: Name of the IAM Group to be created
+    Type: String
+    Default: CDK-DEV-01
+
+Resources:
+  IamGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Ref GroupName
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
+        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+
+Outputs:
+  IamGroupArn:
+    Description: ARN of the Group
+    Value: !GetAtt IamGroup.Arn
