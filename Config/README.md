@@ -6,6 +6,7 @@ See also
 - [Resource Types supported](
   https://docs.aws.amazon.com/en_pv/config/latest/developerguide/resource-config-reference.html)
 
+CLI
 ```
 aws configservice select-resource-config --expression "$(cat ec2.sql)"
 ```
