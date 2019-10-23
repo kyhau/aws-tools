@@ -1,6 +1,14 @@
 from boto3.session import Session
+from botocore.exceptions import ClientError
 import click
 from collections import defaultdict
+import logging
+
+# Update the root logger to get messages at DEBUG and above
+logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger("botocore").setLevel(logging.CRITICAL)
+logging.getLogger("boto3").setLevel(logging.CRITICAL)
+logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 
 def list_action(session, results):
@@ -46,8 +54,14 @@ def list_action(session, results):
             for ami_id, v in region_dict.items():
                 for asg_name in v["asg"]:
                     print(f"{account_id}, {region}, {ami_id}, asg, {asg_name}")
+
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "UnrecognizedClientException":
+                logging.warning(f"Unable to process region {region}")
+            else:
+                raise
         except Exception as e:
-            print(e)
+            logging.error(e)
 
         results[account_id][region] = region_dict
 
