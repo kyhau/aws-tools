@@ -16,3 +16,22 @@ aws ec2 describe-security-groups --profile my_profile --filters Name=ip-permissi
 
 ```
 
+### List AMIs
+
+```
+# List all public AMIs, including any public AMIs that you own.
+aws ec2 describe-images --executable-users all
+
+# List AMIs with explicit launch permissions, does not include any AMIs that you own.
+aws ec2 describe-images --executable-users self
+
+# List AMIs owned by Amazon
+aws ec2 describe-images --owners amazon
+
+# List AMIs owned by an account
+aws ec2 describe-images --owners 123456789012
+
+# Scope AMIs using a filter
+# To reduce the number of displayed AMIs, use a filter to list only the types of AMIs that interest you. For example, use the following filter to display only EBS-backed AMIs.
+# --filters "Name=root-device-type,Values=ebs"
+```
