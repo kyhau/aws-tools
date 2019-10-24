@@ -43,12 +43,13 @@ def create_short_url(event):
     
     return {
         "statusCode": 200,
-        "header": {"Content-Type": "text/plain"},
+        "headers": {"Content-Type": "text/plain"},
         "body": f"Created URL: {url}"
     }
 
 
 def read_short_url(event):
+    # Parse redirect ID from path
     id = event["pathParameters"]["proxy"]
     table_name = os.environ.get("TABLE_NAME")
 
@@ -60,13 +61,13 @@ def read_short_url(event):
     if item is None:
         return {
             "statusCode": 400,
-            "header": {"Content-Type": "text/plain"},
+            "headers": {"Content-Type": "text/plain"},
             "body": f"No redirect found for {id}"
         }
     
     return {
         "statusCode": 301,
-        "header": {
+        "headers": {
             "location": item.get("target_url")
         }
     }

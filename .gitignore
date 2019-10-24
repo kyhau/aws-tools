@@ -30,3 +30,5 @@ venv/
 *whoami*.json
 *whoami*.log
 *ips_used.csv
+*cdk.out/
+*cdk.context.json

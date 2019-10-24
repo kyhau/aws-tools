@@ -48,6 +48,11 @@ To add additional dependencies, for example other CDK libraries, just add
 them to your `setup.py` file and rerun the `pip install -r requirements.txt`
 command.
 
+If the stack uses assets, the toolkit stack must be deployed to the environment
+```
+$ cdk bootstrap
+```
+
 # Useful commands
 
  * `cdk ls`          list all stacks in the app
@@ -64,13 +69,11 @@ Enjoy!
 
 ```
 cd pinger
-URL=https://gp.waltersco.co/759595fe ./ping.sh
+URL=https://todo.execute-api.ap-southeast-2.amazonaws.com/prod/ ./ping.sh
 
-docker run -it -e URL=https://gp.waltersco.co/759595fe ./ping.sh
-
-
+docker run -it -e URL=https://todo.execute-api.ap-southeast-2.amazonaws.com/prod/ ./ping.sh
 ```
 
 ---
 
-# Monitorin
+# Monitoring
