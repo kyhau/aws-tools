@@ -65,6 +65,12 @@ Enjoy!
 
 ---
 
+
+```
+E.g. 
+https://xxx.execute-api.ap-southeast-2.amazonaws.com/prod/?targetUrl=https://github.com
+```
+
 # Load Testing
 
 ```

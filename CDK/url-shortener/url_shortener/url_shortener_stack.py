@@ -43,7 +43,7 @@ class UrlShortenerStack(Stack):
         wf = Watchful(self, "watchful", alarm_email=ALERT_EMAIL)
         wf.watch_scope(self)
         
-        CfnOutput(self, "UrlShortenerApiUrl", value=api.url)
+        CfnOutput(self, "UrlShortenerApiUrl", value=api.url, export_name="UrlShortenerApiUrl")
 
 
 # Separate stack that includes the traffic generator

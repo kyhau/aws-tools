@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apl add curl
+RUN apk add curl
 
 ADD ping.sh /ping.sh
 
