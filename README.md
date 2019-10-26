@@ -37,6 +37,7 @@ pip install -r requirements.txt
 - https://github.com/toniblyx/my-arsenal-of-aws-security-tools
 - [awscli-local](https://github.com/localstack/awscli-local)
 - [awslimitchecker](https://github.com/jantman/awslimitchecker)
+- [bash-my-aws](https://github.com/bash-my-universe/bash-my-aws.git)
 - [localstack](https://github.com/localstack/localstack)
 - [CloudGoat](https://github.com/RhinoSecurityLabs/cloudgoat)
 - [CloudMapper](https://github.com/duo-labs/cloudmapper) - helps you analyze AWS environments 
