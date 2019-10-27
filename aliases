@@ -2,7 +2,6 @@
 #!/bin/bash
 
 SRC_HOME="$( cd "$( dirname -- "$0" )" && pwd )"
-echo "$SRC_HOME"
 
 alias aws-ami-latest-ecs-optimized-ami-id='. ${SRC_HOME}/AMI/get_latest_ecs_optimized_ami.sh'
 alias aws-ami-latest-eks-optimized-ami-id='. ${SRC_HOME}/AMI/get_latest_eks_optimized_ami.sh'
