@@ -25,6 +25,7 @@ pip install -r requirements.txt
 - [aws-cloudformation/cfn-python-lint (cfn-lint)](https://github.com/aws-cloudformation/cfn-python-lint)
 - [awsebcli/awsebcli](https://github.com/awsebcli/awsebcli)
 - [awslabs/aws-cfn-template-flip (cfn-flip)](https://github.com/awslabs/aws-cfn-template-flip)
+- [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer)
 - [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
 - [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
