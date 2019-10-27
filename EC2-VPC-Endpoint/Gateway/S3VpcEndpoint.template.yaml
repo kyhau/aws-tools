@@ -28,11 +28,11 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-        Principal: !Ref Principal
-        Action:
-          - s3:GetObject
-        Resource:
-          - !Ref ResourceArn
+            Principal: !Ref Principal
+            Action:
+              - s3:GetObject
+            Resource:
+              - !Ref ResourceArn
       RouteTableIds:
         - !Ref RouteTableIdA
         - !Ref RouteTableIdB

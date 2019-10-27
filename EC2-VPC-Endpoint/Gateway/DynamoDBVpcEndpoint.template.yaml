@@ -28,16 +28,16 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-        Principal: !Ref Principal
-        Action:
-          - "dynamodb:Batch*"
-          - "dynamodb:Delete*"
-          - "dynamodb:DescribeTable"
-          - "dynamodb:GetItem"
-          - "dynamodb:PutItem"
-          - "dynamodb:Update*"
-        Resource:
-          - !Ref ResourceArn
+            Principal: !Ref Principal
+            Action:
+              - "dynamodb:Batch*"
+              - "dynamodb:Delete*"
+              - "dynamodb:DescribeTable"
+              - "dynamodb:GetItem"
+              - "dynamodb:PutItem"
+              - "dynamodb:Update*"
+            Resource:
+              - !Ref ResourceArn
       RouteTableIds:
         - !Ref RouteTableIdA
         - !Ref RouteTableIdB
