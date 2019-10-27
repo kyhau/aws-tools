@@ -72,10 +72,10 @@ Outputs:
     Description: >-
       The DNS entries for the endpoint.
       If you update the PrivateDnsEnabled or SubnetIds properties, the DNS entries in the list will change.
-    Value: !GetAtt VpcEndpoint.DnsEntries
+    Value: !Join [",", !GetAtt VpcEndpoint.DnsEntries]
 
   VpcEndpointNetworkInterfaceIds:
     Description: >-
       One or more network interface IDs.
       If you update the PrivateDnsEnabled or SubnetIds properties, the items in this list might change.
-    Value: !GetAtt VpcEndpoint.NetworkInterfaceIds
+    Value: !Join [",", !GetAtt VpcEndpoint.NetworkInterfaceIds]
