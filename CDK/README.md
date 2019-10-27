@@ -1,10 +1,13 @@
 # AWS Cloud Development Kit (CDK)
 
 - [Getting Started Guide](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
-- [**`aws-cdk`**](https://github.com/aws/aws-cdk)
-- [**`jsii`**](https://github.com/aws/jsii) allows code in any language to naturally interact with JavaScript classes.
+- [github.com/aws/aws-cdk](https://github.com/aws/aws-cdk)
+- [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html)
+- [jsii](https://github.com/aws/jsii) allows code in any language to naturally interact with JavaScript classes.
   It is the technology that enables the AWS CDK to deliver polyglot libraries from a single codebase.
 
+---
+### Quick start
 ```
 # List the available template types & languages
 cdk init --list
