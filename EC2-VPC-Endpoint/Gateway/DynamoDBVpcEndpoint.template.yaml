@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Create VPC Endpoint and Policy
+
+Parameters:
+  VpcId:
+    Description: The ID of the VPC in which the endpoint will be used.
+    Type: String
+  RouteTableIdA:
+    Description: Route table ID
+    Type: String
+  RouteTableIdB:
+    Description: Route table ID
+    Type: String
+  ResourceArn:
+    Description: E.g. arn:aws:dynamodb:ap-southeast-2:123412341234:table/test
+    Type: String
+  Principal:
+    Description: Principal
+    Type: String
+    Default: "*"
+
+Resources:
+  VpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: !Ref Principal
+            Action:
+              - "dynamodb:Batch*"
+              - "dynamodb:Delete*"
+              - "dynamodb:DescribeTable"
+              - "dynamodb:GetItem"
+              - "dynamodb:PutItem"
+              - "dynamodb:Update*"
+            Resource:
+              - !Ref ResourceArn
+      RouteTableIds:
+        - !Ref RouteTableIdA
+        - !Ref RouteTableIdB
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.dynamodb
+      VpcEndpointType: Gateway
+      VpcId: !Ref VpcId
+
+Outputs:
+  VpcEndpointId:
+    Description: Logical ID of the VPC endpoint
+    Value: !Ref VpcEndpoint
+
+  VpcEndpointCreationTimestamp:
+    Description: The date and time the VPC endpoint was created. E.g. Fri Sep 28 23:34:36 UTC 2018.
+    Value: !GetAtt VpcEndpoint.CreationTimestamp
+

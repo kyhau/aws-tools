@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >-
+  Create VPC Endpoint and Policy.
+  After you create an interface VPC endpoint, if you enable private DNS hostnames for the endpoint, the default
+  EFS endpoint (https://elasticfilesystem.<Region>.amazonaws.com) resolves to your VPC endpoint.
+  If you do not enable private DNS hostnames, Amazon VPC provides a DNS endpoint name that you can use in the
+  following format: <VPC_Endpoint_ID>.elasticfilesystem.<Region>.vpce.amazonaws.com.
+
+Parameters:
+  VpcId:
+    Description: The ID of the VPC in which the endpoint will be used.
+    Type: String
+  SecurityGroupIdA:
+    Description: The ID of a security group to associate with the endpoint network interface.
+    Type: String
+  SubnetIdA:
+    Description: The ID of a subnet in which to create an endpoint network interface.
+    Type: String
+  ResourceArn:
+    Description: ARN of the resource
+    Type: String
+  Principal:
+    Description: Principal
+    Type: String
+    Default: "*"
+  PrivateDnsEnabled:
+    Description: Indicate whether to associate a private hosted zone with the specified VPC.
+    Type: String
+    AllowedValues: [true, false]
+    Default: false
+
+Resources:
+  VpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: !Ref Principal
+            Action:
+              - "*"
+            Resource:
+              - !Ref ResourceArn
+          - Effect: Deny
+            Principal: !Ref Principal
+            Action:
+              - elasticloadbalancing:CreateLoadBalancer
+            Resource:
+              - !Ref ResourceArn
+      PrivateDnsEnabled: !Ref PrivateDnsEnabled
+      SecurityGroupIds:
+        - !Ref SecurityGroupIdA
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.elasticfilesystem
+      SubnetIds:
+        - !Ref SubnetIdA
+      VpcEndpointType: Interface
+      VpcId: !Ref VpcId
+
+Outputs:
+  VpcEndpointId:
+    Description: Logical ID of the VPC endpoint
+    Value: !Ref VpcEndpoint
+
+  VpcEndpointCreationTimestamp:
+    Description: The date and time the VPC endpoint was created. E.g. Fri Sep 28 23:34:36 UTC 2018.
+    Value: !GetAtt VpcEndpoint.CreationTimestamp
+
+  VpcEndpointDnsEntries:
+    Description: >-
+      The DNS entries for the endpoint.
+      If you update the PrivateDnsEnabled or SubnetIds properties, the DNS entries in the list will change.
+    Value: !Join [",", !GetAtt VpcEndpoint.DnsEntries]
+
+  VpcEndpointNetworkInterfaceIds:
+    Description: >-
+      One or more network interface IDs.
+      If you update the PrivateDnsEnabled or SubnetIds properties, the items in this list might change.
+    Value: !Join [",", !GetAtt VpcEndpoint.NetworkInterfaceIds]

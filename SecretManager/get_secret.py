@@ -1,13 +1,14 @@
 import boto3
 import base64
 from botocore.exceptions import ClientError
+import click
 
 # See https://docs.aws.amazon.com/code-samples/latest/catalog/python-secretsmanager-secrets_manager.py.html
 # See https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
 
 
-def get_secret(secret_name, region_name):
-    client = boto3.session.Session().client("secretsmanager", region_name=region_name)
+def get_secret(secret_name, region_name, profile):
+    client = boto3.session.Session(profile_name=profile).client("secretsmanager", region_name=region_name)
     
     try:
         resp = client.get_secret_value(SecretId=secret_name)
@@ -35,4 +36,15 @@ def get_secret(secret_name, region_name):
         else:
             secret = base64.b64decode(resp["SecretBinary"])
 
-    return secret
+        return secret
+
+
+@click.command()
+@click.option("--profile", "-p", default="default", help="AWS profile name")
+@click.option("--secret_name", "-s", required=True, help="Secret name")
+@click.option("--region", "-r", default="ap-southeast-2", help="AWS region")
+def main(profile, secret_name, region):
+    print(get_secret(secret_name, region, profile))
+
+
+if __name__ == "__main__": main()
