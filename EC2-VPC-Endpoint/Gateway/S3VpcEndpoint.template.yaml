@@ -13,11 +13,12 @@ Parameters:
     Description: Route table ID
     Type: String
   ResourceArn:
-    Description: E.g. arn:aws:dynamodb:ap-southeast-2:123412341234:table/test
+    Description: E.g. arn:aws:s3:::examplebucket/
     Type: String
   Principal:
     Description: Principal
     Type: String
+    Default: "*"
 
 Resources:
   VpcEndpoint:
@@ -29,18 +30,13 @@ Resources:
           - Effect: Allow
         Principal: !Ref Principal
         Action:
-          - "dynamodb:Batch*"
-          - "dynamodb:Delete*"
-          - "dynamodb:DescribeTable"
-          - "dynamodb:GetItem"
-          - "dynamodb:PutItem"
-          - "dynamodb:Update*"
+          - s3:GetObject
         Resource:
           - !Ref ResourceArn
       RouteTableIds:
         - !Ref RouteTableIdA
         - !Ref RouteTableIdB
-      ServiceName: !Sub com.amazonaws.${AWS::Region}.dynamodb
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
       VpcEndpointType: Gateway
       VpcId: !Ref VpcId
 
