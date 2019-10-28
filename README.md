@@ -30,6 +30,7 @@ pip install -r requirements.txt
 - [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer)
 - [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
 - [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
+- [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
 - [awslabs/git-secrets](https://github.com/awslabs/git-secrets)
 - [AWS Tools for PowerShell](https://aws.amazon.com/powershell/)
