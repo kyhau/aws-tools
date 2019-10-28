@@ -26,6 +26,7 @@ pip install -r requirements.txt
 - [awsebcli/awsebcli](https://github.com/awsebcli/awsebcli)
 - [awslabs/amazon-ecr-credential-helper](https://github.com/awslabs/amazon-ecr-credential-helper)
 - [awslabs/aws-cfn-template-flip (cfn-flip)](https://github.com/awslabs/aws-cfn-template-flip)
+- [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework)
 - [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer)
 - [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
 - [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
