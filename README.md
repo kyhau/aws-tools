@@ -24,6 +24,7 @@ pip install -r requirements.txt
 - [aws/chalice](https://github.com/aws/chalice)
 - [aws-cloudformation/cfn-python-lint (cfn-lint)](https://github.com/aws-cloudformation/cfn-python-lint)
 - [awsebcli/awsebcli](https://github.com/awsebcli/awsebcli)
+- [awslabs/amazon-ecr-credential-helper](https://github.com/awslabs/amazon-ecr-credential-helper)
 - [awslabs/aws-cfn-template-flip (cfn-flip)](https://github.com/awslabs/aws-cfn-template-flip)
 - [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer)
 - [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
