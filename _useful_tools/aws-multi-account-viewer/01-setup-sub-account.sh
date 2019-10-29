@@ -7,15 +7,13 @@ set -e
 # TODO - fill in the TODOs
 REPO_HOME=TODO-1/aws-multi-account-viewer
 
-AWS_PROFILE=TODO-2
-
 # ID of the main aws account
-MAIN_ACCOUNT=TODO-3
+MAIN_ACCOUNT=TODO-2
 
 # AWS Profiles of the sub accounts to be monitored
 declare -a SUB_ACCOUNT_PROFILES=(
-  "TODO-4a"
-  "TODO-4b"
+  "TODO-3a"
+  "TODO-3b"
 )
 
 ################################################################################
