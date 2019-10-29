@@ -43,6 +43,7 @@ pip install -r requirements.txt
 - [awslimitchecker](https://github.com/jantman/awslimitchecker)
 - [bash-my-aws](https://github.com/bash-my-universe/bash-my-aws.git)
 - [localstack](https://github.com/localstack/localstack)
+- [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian)
 - [CloudGoat](https://github.com/RhinoSecurityLabs/cloudgoat)
 - [CloudMapper](https://github.com/duo-labs/cloudmapper) - helps you analyze AWS environments 
 - [Pacu](https://github.com/RhinoSecurityLabs/pacu) - an open source AWS exploitation framework
