@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Create SNS Topic, Subscription and Topic Policies for using Amazon Inspector.
+
+Parameters:
+  InspectorRegionUserArn:
+    Description: >-
+      For the right ARN please see
+      https://docs.aws.amazon.com/inspector/latest/userguide/inspector_assessments.html#sns-topic
+    Type: String
+
+  SubscriptionEmail:
+    Description: Email address for the Inspector finding subscription.
+    Type: String
+
+  TopicName:
+    Description: Name of the SNS topic.
+    Type: String
+    Default: Inspector-EC2
+
+Resources:
+  SnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Ref TopicName
+      DisplayName: !Ref TopicName
+
+  SnsTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    DependsOn: SnsTopic
+    Properties:
+      Topics:
+        - !Ref SnsTopic
+      PolicyDocument:
+        Version: "2012-10-17"
+        Id: Inspector-SNS-Publish-Policy
+        Statement:
+          - Sid: ForThisAccount
+            Effect: Allow
+            Principal:
+              AWS: "*"
+            Action:
+              - SNS:Publish
+              - SNS:RemovePermission
+              - SNS:SetTopicAttributes
+              - SNS:DeleteTopic
+              - SNS:ListSubscriptionsByTopic
+              - SNS:GetTopicAttributes
+              - SNS:Receive
+              - SNS:AddPermission
+              - SNS:Subscribe
+            Resource: !Ref SnsTopic
+            Condition:
+              StringEquals:
+                AWS:SourceOwner: !Ref AWS::AccountId
+          - Sid: ForInspector
+            Effect: Allow
+            Principal:
+              AWS: !Ref InspectorRegionUserArn
+            Action:
+              - SNS:Publish
+              - SNS:Receive
+              - SNS:Subscribe
+            Resource: !Ref SnsTopic
+
+  SnsSubscriptionEmail:
+    DependsOn: SnsTopic
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !Ref SubscriptionEmail
+      Protocol: email
+      TopicArn: !Ref SnsTopic
