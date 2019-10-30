@@ -1,17 +1,21 @@
-# Set aliases for some generic scripts
 #!/bin/bash
+# Set aliases for some generic scripts
 
 ARKI_REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-alias aws-ami-latest-ecs-optimized-ami-id='. ${ARKI_REPO_HOME}/AMI/get_latest_ecs_optimized_ami.sh'
+doalias aws-ami-latest-ecs-optimized-ami-id='. ${ARKI_REPO_HOME}/AMI/get_latest_ecs_optimized_ami.sh'
 alias aws-ami-latest-eks-optimized-ami-id='. ${ARKI_REPO_HOME}/AMI/get_latest_eks_optimized_ami.sh'
 
 alias aws-canonical-user-id='. ${ARKI_REPO_HOME}/CloudFront-S3/get_canonical_user_id.sh'
 
+alias aws-cognito='/usr/bin/python ${ARKI_REPO_HOME}/Cognito/cognito.py'
+
+alias aws-config-query='/usr/bin/python ${ARKI_REPO_HOME}/Config/query_configservice.py'
+
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 
-alias aws-secretsmanager-get-secret='python ${ARKI_REPO_HOME}/SecretManager/get_secret.py'
+alias aws-secretsmanager-get-secret='/usr/bin/python ${ARKI_REPO_HOME}/SecretManager/get_secret.py'
 
 alias aws-vpcendpoint-list-supported-services='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh'
 alias aws-vpcendpoint-list-supported-services-name-only='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh --name-only'

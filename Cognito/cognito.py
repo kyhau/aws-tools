@@ -77,7 +77,7 @@ def print_users(user_list):
         for a in u["Attributes"]:
             if a["Name"] in ["given_name", "family_name"]:
                 data.append(a["Value"])
-        lines.append(f"{", ".join(data)}")
+        lines.append(f'{", ".join(data)}')
 
     for line in lines:
         print(line)
