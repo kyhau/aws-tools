@@ -3,6 +3,7 @@
 #virtualenv~=16.4
 #pip~=19.0
 
+#black
 boto3~=1.9
 click~=7.0
 #pipdeptree
