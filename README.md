@@ -48,4 +48,5 @@ pip install -r requirements.txt
 - [CloudGoat](https://github.com/RhinoSecurityLabs/cloudgoat)
 - [CloudMapper](https://github.com/duo-labs/cloudmapper) - helps you analyze AWS environments 
 - [Pacu](https://github.com/RhinoSecurityLabs/pacu) - an open source AWS exploitation framework
-- https://regex101.com/
+- [Online regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript](https://regex101.com/)
+- [Subnet Calculator - MxToolbox](https://mxtoolbox.com/subnetcalculator.aspx)
