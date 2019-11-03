@@ -8,6 +8,8 @@ Limits
   Organizations, or all accounts.
 - Layers are extracted to the `/opt` directory in the function execution environment. Each runtime looks for libraries
   in a different location under `/opt`, depending on the language.
+- [Environment Variables Available to Lambda Functions](
+  https://docs.aws.amazon.com/lambda/latest/dg/lambda-environment-variables.html)
 
 ```
 aws lambda update-function-configuration --function-name my-function --layers []
