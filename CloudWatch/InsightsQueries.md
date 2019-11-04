@@ -6,6 +6,7 @@
 - [VPC Flow Logs](#vpc-flow-logs)
 - [Route 53 Logs](#route-53-logs)
 - [AppSync Logs](#appsync-logs)
+- [API Rate Limits](#awsapicall-rate)
 
 See also https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-examples.html.
 
@@ -216,4 +217,15 @@ Requests (top 10) with maximum latency
 fields requestId, latency
 | filter logType = "RequestSummary"
 | sort latency desc | limit 10
+```
+
+
+### AwsApiCall Rate
+
+AwsApiCall Rate exceeded
+```
+fields @timestamp, eventSource, eventName, sourceIPAddress, userIdentity.arn, @message
+| sort @timestamp desc
+| limit 200
+| filter (eventType = "AwsApiCall" and @message like /(?i)(Rate exceeded)/)
 ```

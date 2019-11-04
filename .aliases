@@ -15,6 +15,8 @@ alias aws-config-query='/usr/bin/python ${ARKI_REPO_HOME}/Config/query_configser
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 
+alias aws-subnet-available-ip--address-count='. ${ARKI_REPO_HOME}/EC2-VPC/available_ip_address_count.sh'
+
 alias aws-secretsmanager-get-secret='/usr/bin/python ${ARKI_REPO_HOME}/SecretManager/get_secret.py'
 
 alias aws-vpcendpoint-list-supported-services='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh'
