@@ -75,7 +75,7 @@ def list_action(session):
                         dump(ret, output_filename)
     
         except ClientError as e:
-            if e.response["Error"]["Code"] == "UnrecognizedClientException":
+            if e.response["Error"]["Code"] in ["UnrecognizedClientException", "AuthFailure"]:
                 logging.warning(f"Unable to process region {region}")
             else:
                 raise
