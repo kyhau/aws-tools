@@ -22,5 +22,3 @@ sam local start-api
 sam local start-lambda
 
 ```
-
-

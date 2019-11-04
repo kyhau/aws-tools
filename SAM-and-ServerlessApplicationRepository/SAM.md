@@ -4,13 +4,23 @@
 - https://aws.amazon.com/serverless/serverlessrepo/resources/
 - [Examples](https://github.com/awslabs/serverless-application-model/tree/master/examples/2016-10-31)
 
+1. Install Docker
+2. Install Python 3.7
+
+
 ```
 pip install aws-sam-cli
 
-sam init --runtime python3.7
+sam init --runtime python3.7 --dependency-manager pip --name sam-app --output-dir . --app-template hello-world
 
+cd sam-app/
 
+mkdir build
+pip install -r hello_world/requirements.txt -t build/
+cp hello_world/*.py build/
+
+sam local start-api
+
+sam local start-lambda
 
 ```
-
-
