@@ -7,6 +7,9 @@
 1. Install Docker
 2. Install Python 3.7
 
+**Note:** 
+If docker volume mounting is required, need to use Windows cmd instead of WSL, 
+otherwise the mounting will not work probably (without error).
 
 ```
 pip install aws-sam-cli
@@ -16,8 +19,8 @@ sam init --runtime python3.7 --dependency-manager pip --name sam-app --output-di
 cd sam-app/
 
 mkdir build
-pip install -r hello_world/requirements.txt -t build/
-cp hello_world/*.py build/
+pip install -r hello_world/requirements.txt -t hello_world/build/
+cp hello_world/*.py hello_world/build/
 
 sam local start-api
 
