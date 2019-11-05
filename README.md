@@ -34,6 +34,10 @@ pip install -r requirements.txt
 - [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
 - [awslabs/git-secrets](https://github.com/awslabs/git-secrets)
+- [weaveworks/eksctl](https://github.com/weaveworks/eksctl)
+- [Amazon EKS-vended aws-iam-authenticator](
+  https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
+- [Amazon EKS-vended kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
 - [AWS Tools for PowerShell](https://aws.amazon.com/powershell/)
 - [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
 - [IAM Policy Simulator Console](https://policysim.aws.amazon.com/)
@@ -47,6 +51,8 @@ pip install -r requirements.txt
 - [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian)
 - [CloudGoat](https://github.com/RhinoSecurityLabs/cloudgoat)
 - [CloudMapper](https://github.com/duo-labs/cloudmapper) - helps you analyze AWS environments 
+- [kubernetes/kubectl](https://github.com/kubernetes/kubectl) - Kubernetes command line utility for communicating with
+  the cluster API server.
 - [Pacu](https://github.com/RhinoSecurityLabs/pacu) - an open source AWS exploitation framework
 - [Online regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript](https://regex101.com/)
 - [Subnet Calculator - MxToolbox](https://mxtoolbox.com/subnetcalculator.aspx)
