@@ -26,9 +26,12 @@ junit*.xml
 env/
 venv/
 
-.idea/
+# AWS
+*cdk.out/
+*cdk.context.json
+*.aws-sam/
+
+# Other files
 *whoami*.json
 *whoami*.log
 *ips_used.csv
-*cdk.out/
-*cdk.context.json
