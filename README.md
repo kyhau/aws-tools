@@ -34,6 +34,7 @@ pip install -r requirements.txt
 - [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
 - [awslabs/git-secrets](https://github.com/awslabs/git-secrets)
+- [weaveworks/eksctl](https://github.com/weaveworks/eksctl)
 - [Amazon EKS-vended aws-iam-authenticator](
   https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 - [Amazon EKS-vended kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
