@@ -18,6 +18,23 @@ sam init --runtime python3.7 --dependency-manager pip --name sam-app --output-di
 
 cd sam-app/
 
+# To build on your workstation, run this command in folder containing
+# SAM template. Built artifacts will be written to .aws-sam/build folder
+sam build
+ 
+# To build inside a AWS Lambda like Docker container
+sam build --use-container
+  
+# To build & run your functions locally
+sam build && sam local invoke --event events\event.json
+  
+# To build and package for deployment
+sam build && sam package --s3-bucket <bucketname>
+
+sam build
+
+sam local invoke --event events\event.json
+
 mkdir build
 pip install -r hello_world/requirements.txt -t hello_world/build/
 cp hello_world/*.py hello_world/build/
