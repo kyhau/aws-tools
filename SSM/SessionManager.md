@@ -1,5 +1,8 @@
 # Session Manager
 
+For Powershell users, see 
+https://docs.aws.amazon.com/powershell/latest/reference/items/SimpleSystemsManagement_cmdlets.html
+
 ```
 ################################################################################
 # Viewing Session History (AWS CLI)
