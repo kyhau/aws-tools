@@ -1,0 +1,4 @@
+aws-cdk.core~=1.15
+aws-cdk.aws-iam~=1.15
+aws-cdk.aws-s3~=1.15
+aws_cdk.aws-kms~=1.15
