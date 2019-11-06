@@ -8,7 +8,9 @@
 - [AppSync Logs](#appsync-logs)
 - [API Rate Limits](#awsapicall-rate)
 
-See also https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-examples.html.
+See also 
+- https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html#CWL_QuerySyntax-operations-functions
+- https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-examples.html. 
 
 ---
 
