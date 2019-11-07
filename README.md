@@ -33,6 +33,7 @@ pip install -r requirements.txt
 - [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark)
 - [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model)
 - [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) 
+- [aws/ec2-net-utils](https://github.com/aws/ec2-net-utils)
 - [awslabs/git-secrets](https://github.com/awslabs/git-secrets)
 - [weaveworks/eksctl](https://github.com/weaveworks/eksctl)
 - [Amazon EKS-vended aws-iam-authenticator](
