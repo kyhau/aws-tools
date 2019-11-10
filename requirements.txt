@@ -3,9 +3,27 @@
 #virtualenv~=16.4
 #pip~=19.0
 
-#black
+# AWS related packages
 boto3~=1.9
+#aws-encryption-sdk
+#aws-xray-sdk
+#sagemaker
+#stepfunctions
+#AWSIoTPythonSDK
+
+
+# AWS-CDK related packages
+#aws-cdk.core
+#aws-cdk.aws-apigateway
+#aws-cdk.aws-dynamodb
+#aws-cdk.aws-ecs
+#aws-cdk.aws-ec2
+#aws-cdk.aws-lambda
+#cdk-watchful
+
+# None aws related packages
 click~=7.0
+#black
 #pipdeptree
 #pyyaml~=5.1
 #pypiwin32==220
