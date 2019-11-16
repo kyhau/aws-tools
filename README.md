@@ -61,7 +61,7 @@ pip install -r requirements.txt
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
 | LocalStack | [localstack](https://github.com/localstack/localstack) |
 | LocalStack AWS CLI (awslocal) | [awscli-local](https://github.com/localstack/awscli-local) |
-| my-arsenal-of-aws-security-tools | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
+| List of open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
 | bash-my-aws | [bash-my-universe/bash-my-aws](https://github.com/bash-my-universe/bash-my-aws.git) |
 | cloud-custodian | [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian) |
 | CloudGoat | [RhinoSecurityLabs/cloudgoat](https://github.com/RhinoSecurityLabs/cloudgoat) |
