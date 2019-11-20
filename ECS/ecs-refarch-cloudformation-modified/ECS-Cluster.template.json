@@ -19,6 +19,11 @@
       "Type": "Number",
       "Default": 20
     },
+    "ClusterMaxInstanceLifetime": {
+      "Description": "The maximum amount of time (in seconds) that an instance can be in service",
+      "Type": "Number",
+      "Default": 604800
+    },
     "ClusterAutoScalingHighCPUValue": {
       "Description": "The value indicating high CPU Utilization % for the Auto Scaling (scale-out) policies to action accordingly",
       "Type": "Number",
@@ -342,6 +347,7 @@
         "DesiredCapacity": {"Ref": "ClusterSize"},
         "MinSize": {"Ref": "ClusterSize"},
         "MaxSize": {"Ref": "ClusterSizeMax"},
+        "MaxInstanceLifetime": {"Ref":  "ClusterMaxInstanceLifetime"},
         "TerminationPolicies": [
           "OldestInstance",
           "OldestLaunchConfiguration"
