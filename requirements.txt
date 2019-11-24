@@ -12,6 +12,8 @@ boto3~=1.9
 #stepfunctions
 #AWSIoTPythonSDK
 
+# AWS CloudFormation Resource Provider Python Plugin (preview)
+#git+https://github.com/aws-cloudformation/aws-cloudformation-rpdk-python-plugin.git#egg=cloudformation-cli-python-plugin
 
 # AWS-CDK related packages
 #aws-cdk.core

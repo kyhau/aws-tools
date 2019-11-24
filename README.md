@@ -8,7 +8,7 @@ Some tools and sample code I created for building with AWS.
 ```
 # Create virtual env and install the required packages
 
-virtualenv env -p python3.7
+virtualenv env -p python3.8
 . env/bin/activate
 pip install -r requirements.txt
 ```
@@ -32,6 +32,7 @@ pip install -r requirements.txt
 | AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
 | AWS CloudFormation Linter (cfn-lint)  | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
 | AWS CloudFormation Resource Provider Development Kit (cloudformation-cli) | [aws-cloudformation/aws-cloudformation-rpdk](https://github.com/aws-cloudformation/aws-cloudformation-rpdk) |
+| AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/aws-cloudformation-rpdk-python-plugin](https://github.com/aws-cloudformation/aws-cloudformation-rpdk-python-plugin) |
 | AWS CloudFormation Template Flip (cfn-flip) | [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) |
 | AWS Config Rules Development Kit (RDK) | [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) |
 | AWS Deployment Framework (ADF) | [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework) |
