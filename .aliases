@@ -23,3 +23,7 @@ alias aws-secretsmanager-get-secret='/usr/bin/python ${ARKI_REPO_HOME}/SecretMan
 
 alias aws-vpcendpoint-list-supported-services='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh'
 alias aws-vpcendpoint-list-supported-services-name-only='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh --name-only'
+
+alias arki-ls-common-ip-protocols='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-protocols.md'
+alias arki-ls-common-ip-ranges='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-ranges.md'
+alias arki-ls-common-ports='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ports.md'
