@@ -1,4 +1,5 @@
 #!/bin/bash
+# Install the Session Manager Plugin on Ubuntu Server
 # https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html
 # To uninstall: sudo dpkg -r session-manager-plugin
 
