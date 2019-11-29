@@ -1,4 +1,5 @@
 User has problem accessing EC2 Console
+- (Use Policy Simulator first)
 - Log group: cloudtrail (e.g. /aws/cloudtrail)
 - Filters
     - `errorCode = "Client.UnauthorizedOperation"` 
