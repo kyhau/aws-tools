@@ -1,8 +1,5 @@
 # IAM
 
-```
-################################################################################
-# Rename user
-aws iam update-user --user-name devpos --new-user-name devops --profile my_profile
-
-```
+- [Refining Permissions Using Service Last Accessed Data](
+  https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor.html)
+ 
