@@ -1,15 +1,23 @@
 #!/bin/bash
-# Install the official Amazon EKS command line utility for creating and managing Kubernetes clusters on Amazon EKS
-# https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
+# Install the the Kubernetes Metrics Server
+# https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html
 
 set -e
 
-echo "Downloading the latest version of eksctl..."
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+VERSION=0.3.6
 
-echo "Coping binary to .local/bin..."
-mkdir -p ~/.local/bin
-mv /tmp/eksctl ~/.local/bin/
+#mkdir -p /opt/kms/metrics-server
+#pushd /opt/kms/metrics-server
 
-echo "Checking version..."
-eksctl version
+echo "Downloading metrics-server ${VERSION}..."
+curl -o "v${VERSION}.tar.gz" "https://github.com/kubernetes-incubator/metrics-server/archive/v${VERSION}.tar.gz"
+tar -xvzf "v${VERSION}.tar.gz"
+
+#tar -xzf metrics-server-$VERSION.tar.gz --directory "metrics-server-v${VERSION}" --strip-components 1
+
+#kubectl apply -f metrics-server-$DOWNLOAD_VERSION/deploy/1.8+/
+
+#popd
+
+#echo "Checking metrics-server deployment is running the desired number of pods..."
+#kubectl get deployment metrics-server -n kube-system
