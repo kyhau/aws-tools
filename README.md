@@ -52,6 +52,7 @@ pip install -r requirements.txt
 | AWS SageMaker SDK (Python) | [aws/sagemaker-python-sdk](https://github.com/aws/sagemaker-python-sdk) |
 | AWS X-Ray SDK (Python) | [aws/aws-xray-sdk-python](https://github.com/aws/aws-xray-sdk-python) |
 | AWS Tools and sample code provided by AWS Premium Support | [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) |
+| AWS Tools for Microsoft VSTS | [AWS Tools for Microsoft Visual Studio Team Services](https://docs.aws.amazon.com/vsts/latest/userguide/welcome.html) |
 | AWS Tools for PowerShell | [AWS Tools for PowerShell](https://aws.amazon.com/powershell/) |
 | git-secrets | [awslabs/git-secrets](https://github.com/awslabs/git-secrets) |
 
