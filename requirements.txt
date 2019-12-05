@@ -5,6 +5,7 @@
 
 # AWS related packages
 boto3~=1.9
+#aws-embedded-metrics
 #aws-encryption-sdk
 #aws-xray-sdk
 #pyathena

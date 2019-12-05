@@ -22,6 +22,7 @@ pip install -r requirements.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
+| Amazon CloudWatch Embedded Metric Format Client Library | [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python) |
 | Amazon ECR Docker Credential Helper | [awslabs/amazon-ecr-credential-helper](https://github.com/awslabs/amazon-ecr-credential-helper) |
 | Amazon EKS CLI | [weaveworks/eksctl](https://github.com/weaveworks/eksctl) |
 | Amazon EKS-vended aws-iam-authenticator | [Amazon EKS-vended aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html) |
@@ -41,6 +42,7 @@ pip install -r requirements.txt
 | AWS Encryption SDK (Python) | [aws/aws-encryption-sdk-python](https://github.com/aws/aws-encryption-sdk-python) |
 | AWS Encryption SDK CLI | [aws/aws-encryption-sdk-cli](https://github.com/aws/aws-encryption-sdk-cli) |
 | AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
+| AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
 | AWS IoT Greengrass Core SDK (Python) | [aws/aws-greengrass-core-sdk-python](https://github.com/aws/aws-greengrass-core-sdk-python) |
 | AWS IoT Device SDK (Python) | [aws/aws-iot-device-sdk-python](https://github.com/aws/aws-iot-device-sdk-python) |
 | AWS Multi Account Viewer | [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer) |
@@ -54,6 +56,7 @@ pip install -r requirements.txt
 | AWS Tools and sample code provided by AWS Premium Support | [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) |
 | AWS Tools for Microsoft VSTS | [AWS Tools for Microsoft Visual Studio Team Services](https://docs.aws.amazon.com/vsts/latest/userguide/welcome.html) |
 | AWS Tools for PowerShell | [AWS Tools for PowerShell](https://aws.amazon.com/powershell/) |
+| CloudFormer | [CloudFormer for creating templates from existing AWS resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html) |
 | git-secrets | [awslabs/git-secrets](https://github.com/awslabs/git-secrets) |
 
 
