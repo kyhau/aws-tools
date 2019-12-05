@@ -1,5 +1,7 @@
-AwsApiCall Rate exceeded
+### AwsApiCall Rate exceeded
+
 - Log group: cloudtrail (e.g. /aws/cloudtrail)
+
 ```
 fields @timestamp, eventSource, eventName, sourceIPAddress, userIdentity.arn, @message
 | sort @timestamp desc

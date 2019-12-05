@@ -20,6 +20,7 @@ TCP       1723   PPTP (Virtual Private Networks)
 TCP       3389   RDP
 TCP       4369   (RabbitMQ) Erlang makes use of a Port Mapper Daemon (epmd) for resolution of node names in a cluster.
 TCP       5672   RabbitMQ main port
+TCP       8080   Apache Tomcat; alternative to port 80, as proxy and caching port.
 TCP       15672  RabbitMQ Management Console
 TCP       35197  (RabbitMQ) set by inet_dist_listen_min/max Firewalls must permit traffic in this range to pass between clustered nodes
 ```
