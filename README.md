@@ -32,6 +32,7 @@ pip install -r requirements.txt
 | AWS CLI interactive productivity booster (aws-shell) | [awslabs/aws-shell](https://github.com/awslabs/aws-shell) |
 | AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
 | AWS CloudFormation Linter (cfn-lint)  | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
+| AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
 | AWS CloudFormation Resource Provider Development Kit (cloudformation-cli) | [aws-cloudformation/aws-cloudformation-rpdk](https://github.com/aws-cloudformation/aws-cloudformation-rpdk) |
 | AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/aws-cloudformation-rpdk-python-plugin](https://github.com/aws-cloudformation/aws-cloudformation-rpdk-python-plugin) |
 | AWS CloudFormation Template Flip (cfn-flip) | [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) |
@@ -72,6 +73,7 @@ pip install -r requirements.txt
 | cloud-custodian | [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian) |
 | CloudGoat | [RhinoSecurityLabs/cloudgoat](https://github.com/RhinoSecurityLabs/cloudgoat) |
 | CloudMapper | [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper) |
+| Former2 generates CloudFormation / Terraform / Troposphere templates from existing AWS resources | [iann0036/former2](https://github.com/iann0036/former2) |
 | kubectl | [kubernetes/kubectl](https://github.com/kubernetes/kubectl) |
 | Pacu an open source AWS exploitation framework | [RhinoSecurityLabs/Pacu](https://github.com/RhinoSecurityLabs/pacu) |
 | Regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript | [regex101.com](https://regex101.com/) |
