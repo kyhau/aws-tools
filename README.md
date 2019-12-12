@@ -69,6 +69,9 @@ pip install -r requirements.txt
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
 | LocalStack | [localstack](https://github.com/localstack/localstack) |
 | LocalStack AWS CLI (awslocal) | [awscli-local](https://github.com/localstack/awscli-local) |
+| Serverless Framework | [serverless/serverless](https://github.com/serverless/serverless) |
+| Serverless Components | [serverless/components](https://github.com/serverless/components) |
+| Serverless Components CLI | [serverless/cli](https://github.com/serverless/cli) |
 | Stelligent mu (a tool for managing your microservices platform) | [stelligent/mu](https://github.com/stelligent/mu)|
 | bash-my-aws | [bash-my-universe/bash-my-aws](https://github.com/bash-my-universe/bash-my-aws.git) |
 | cloud-custodian | [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian) |
