@@ -10,7 +10,9 @@ PrivateIpAddress, PrivateDnsName, IsPrimary, PublicIp, PublicDnsName, InstanceId
 from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
+from configparser import ConfigParser
 import logging
+from os.path import expanduser, join
 
 #from arki_common.utils import print_json
 
@@ -19,6 +21,14 @@ logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger("botocore").setLevel(logging.CRITICAL)
 logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3").setLevel(logging.CRITICAL)
+
+aws_profiles = []
+try:
+    cp = ConfigParser()
+    cp.read(join(expanduser("~"), ".aws", "credentials"))
+    aws_profiles = cp.sections()
+except Exception as e:
+    print(e)
 
 
 def dump(data, output_filename, append=True, to_console=True):
@@ -82,17 +92,12 @@ def list_action(session):
 
 
 @click.command()
-@click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--profilesfile", "-f", help="File containing AWS profile names")
-def main(profile, profilesfile):
-    if profilesfile:
-        with open(profilesfile, "r") as f:
-            profile_names = f.readlines()
-    else:
-        profile_names = [profile]
+@click.option("--profile", "-p", help="AWS profile name")
+def main(profile):
+    profile_names = [profile] if profile else aws_profiles
     
     for profile_name in profile_names:
-        session = Session(profile_name=profile_name.strip())
+        session = Session(profile_name=profile_name)
         list_action(session)
 
 

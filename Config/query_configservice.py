@@ -1,8 +1,9 @@
 from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
+from configparser import ConfigParser
 import logging
-from os.path import exists
+from os.path import exists, expanduser, join
 from shutil import rmtree
 
 # Update the root logger to get messages at DEBUG and above
@@ -10,6 +11,14 @@ logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger("botocore").setLevel(logging.CRITICAL)
 logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3").setLevel(logging.CRITICAL)
+
+aws_profiles = []
+try:
+    cp = ConfigParser()
+    cp.read(join(expanduser("~"), ".aws", "credentials"))
+    aws_profiles = cp.sections()
+except Exception as e:
+    print(e)
 
 
 def dump(data, output_filename, to_console=True):
@@ -52,22 +61,17 @@ def list_action(session, sql_statement, sqlfile):
                 raise
 
 @click.command()
-@click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--profilesfile", "-f", help="File containing AWS profile names")
+@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--sqlfile", "-s", required=True, help="File containing the sql statement (.sql)")
-def main(profile, profilesfile, sqlfile):
+def main(profile, sqlfile):
     
     with open(sqlfile, "r") as f:
         sql_statement = f.read()
-        
-    if profilesfile:
-        with open(profilesfile, "r") as f:
-            profile_names = f.readlines()
-    else:
-        profile_names = [profile]
+
+    profile_names = [profile] if profile else aws_profiles
 
     for profile_name in profile_names:
-        session = Session(profile_name=profile_name.strip())
+        session = Session(profile_name=profile_name)
         list_action(session, sql_statement, sqlfile)
 
 
