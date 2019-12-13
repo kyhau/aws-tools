@@ -39,6 +39,7 @@ pip install -r requirements.txt
 | AWS CloudFormation Template Flip (cfn-flip) | [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) |
 | AWS Config Rules Development Kit (RDK) | [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) |
 | AWS Deployment Framework (ADF) | [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework) |
+| AWS DynamoDB Encryption Client for Python | [aws/aws-dynamodb-encryption-python](https://github.com/aws/aws-dynamodb-encryption-python) |
 | AWS EC2 ENI Utilities (ec2-net-utils)  | [aws/ec2-net-utils](https://github.com/aws/ec2-net-utils) |
 | AWS Elastic Beanstalk CLI | [awsebcli/awsebcli](https://github.com/awsebcli/awsebcli) |
 | AWS Encryption SDK (Python) | [aws/aws-encryption-sdk-python](https://github.com/aws/aws-encryption-sdk-python) |
