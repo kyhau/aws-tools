@@ -15,10 +15,10 @@ pip install -r requirements.txt
 
 # Table of content
 - [AWS SDKs and CLIs](#aws-sdks-and-clis)
+  - [CloudFormation](#cloudformation)
+  - [Serverless](#serverless)
+  - [Security](#security)
 - [Some useful tools required deployment](#some-useful-tools-required-deployment)
-- [CloudFormation](#cloudformation)
-- [Security](#security)
-- [Serverless](#serverless)
 - [Other tools](#other-tools)
 - [kyhau/aws-notebook](https://github.com/kyhau/aws-notebook)
 
@@ -55,21 +55,7 @@ pip install -r requirements.txt
 | kubectl | [kubernetes/kubectl](https://github.com/kubernetes/kubectl) |
 | Warrant a Python library for using AWS Cognito with support for SRP| [capless/warrant](https://github.com/capless/warrant) |
 
-## Some useful tools required deployment
-
-| Description | Repo/Link |
-| :--- | :--- |
-| AWS CIDR Finder | [aws-samples/aws-cidr-finder](https://github.com/aws-samples/aws-cidr-finder) | 
-| AWS Deployment Framework (ADF) | [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework) |
-| AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
-| AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
-| AWS Multi Account Viewer | [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer) |
-| AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
-| awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
-| TGW (Transit Gateway) Migrator Tool | [TGW Migrator Tool](https://aws.amazon.com/blogs/networking-and-content-delivery/migrate-from-transit-vpc-to-aws-transit-gateway/) |
-| TGW to solve overlapping CIDRs | [aws-samples/aws-transit-gateway-overlapping-cidrs](https://github.com/aws-samples/aws-transit-gateway-overlapping-cidrs) |
-
-## CloudFormation
+### CloudFormation
 
 | Description | Repo/Link |
 | :--- | :--- |
@@ -83,18 +69,7 @@ pip install -r requirements.txt
 | CloudFormer | [CloudFormer for creating templates from existing AWS resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html) |
 | Former2 generates CloudFormation / Terraform / Troposphere templates from existing AWS resources | [iann0036/former2](https://github.com/iann0036/former2) |
 
-## Security
-
-| Description | Repo/Link |
-| :--- | :--- |
-| Open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
-| AWS Security Benchmark | [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark) |
-| cloud-custodian | [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian) |
-| CloudGoat | [RhinoSecurityLabs/cloudgoat](https://github.com/RhinoSecurityLabs/cloudgoat) |
-| git-secrets | [awslabs/git-secrets](https://github.com/awslabs/git-secrets) |
-| Pacu an open source AWS exploitation framework | [RhinoSecurityLabs/Pacu](https://github.com/RhinoSecurityLabs/pacu) |
-
-## Serverless
+### Serverless
 
 | Description | Repo/Link |
 | :--- | :--- |
@@ -109,6 +84,31 @@ pip install -r requirements.txt
 | Serverless Components | [serverless/components](https://github.com/serverless/components) |
 | Serverless Components CLI | [serverless/cli](https://github.com/serverless/cli) |
 | Stelligent mu (a tool for managing your microservices platform) | [stelligent/mu](https://github.com/stelligent/mu)|
+
+### Security
+
+| Description | Repo/Link |
+| :--- | :--- |
+| Open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
+| AWS Security Benchmark | [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark) |
+| cloud-custodian | [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian) |
+| CloudGoat | [RhinoSecurityLabs/cloudgoat](https://github.com/RhinoSecurityLabs/cloudgoat) |
+| git-secrets | [awslabs/git-secrets](https://github.com/awslabs/git-secrets) |
+| Pacu an open source AWS exploitation framework | [RhinoSecurityLabs/Pacu](https://github.com/RhinoSecurityLabs/pacu) |
+
+## Some useful tools required deployment
+
+| Description | Repo/Link |
+| :--- | :--- |
+| AWS CIDR Finder | [aws-samples/aws-cidr-finder](https://github.com/aws-samples/aws-cidr-finder) | 
+| AWS Deployment Framework (ADF) | [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework) |
+| AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
+| AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
+| AWS Multi Account Viewer | [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer) |
+| AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
+| awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
+| TGW (Transit Gateway) Migrator Tool | [TGW Migrator Tool](https://aws.amazon.com/blogs/networking-and-content-delivery/migrate-from-transit-vpc-to-aws-transit-gateway/) |
+| TGW to solve overlapping CIDRs | [aws-samples/aws-transit-gateway-overlapping-cidrs](https://github.com/aws-samples/aws-transit-gateway-overlapping-cidrs) |
 
 ## Other tools
 
