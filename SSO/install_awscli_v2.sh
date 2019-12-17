@@ -8,6 +8,8 @@ curl 'https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip' -o 'aws
 
 unzip awscli-exe.zip
 
+[[ -e "/usr/local/aws-cli/v2/current" ]] && sudo rm /usr/local/aws-cli/v2/current
+
 # Install the AWS CLI v2 preview under the /usr/local/aws-cli and create an aws2 symlink in /usr/local/bin
 sudo ./aws/install
 
