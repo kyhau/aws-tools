@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import click
+from collections import OrderedDict
 import csv
 import getpass
 import logging
-from os.path import abspath, dirname, join
+from os.path import abspath, dirname, exists, join
 from pathlib import Path
+from PyInquirer import style_from_dict, Token, prompt, Separator
 import subprocess
 
 logging.basicConfig(format="%(message)s")
@@ -13,8 +15,32 @@ logging.getLogger().setLevel(logging.INFO)
 SAML2AWS_CONFIG = join(str(Path.home()), ".saml2aws")
 
 # role_arn, account_name
-ROLES_FILE = join(dirname(abspath(__file__)), "data", "roles.csv")
 ALL_ROLES_FILE = join(dirname(abspath(__file__)), "data", "roles_all.csv")
+LAST_SELECTED_FILE = join(dirname(abspath(__file__)), "data", "aws_login_last_selected.txt")
+
+custom_style = style_from_dict({
+    Token.Separator: "#6C6C6C",
+    Token.QuestionMark: "#FF9D00 bold",
+    Token.Selected: "#5F819D",
+    Token.Pointer: "#FF9D00 bold",
+    Token.Instruction: "",  # default
+    Token.Answer: "#5F819D bold",
+    Token.Question: "",
+})
+
+
+def roles_selection(roles, last_selected_profiles):
+    return [
+        {
+            "choices": [dict({
+                "name": role,
+                "checked": True if role in last_selected_profiles else False}
+            ) for role in roles],
+            "message": "Please choose the role",
+            "name": "roles",
+            "type": "checkbox",
+        }
+    ]
 
 
 def load_csv(filename, delimiter=","):
@@ -23,6 +49,14 @@ def load_csv(filename, delimiter=","):
         for row in reader:
             if row and not row[0].startswith("#"):
                 yield row
+
+
+def read_lines_from_file(filename):
+    if exists(filename):
+        with open(filename) as f:
+            content = f.readlines()
+        return [x.strip() for x in content]
+    return []
 
 
 def load_saml2aws_config(filename):
@@ -37,22 +71,22 @@ def load_saml2aws_config(filename):
 
 def run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration):
     logging.info(f"Adding {profile_name}...")
-
+    
     cmd = f"saml2aws login --role={role_arn} -p {profile_name} --username={uname} --password={upass} --skip-prompt"
     if session_duration:
         cmd = f"{cmd} --session-duration={session_duration}"
-
+    
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for line in p.stdout.readlines():
         logging.debug(line.decode("utf-8").rstrip("\r|\n"))
     retval = p.wait()
-
+    
     logging.info(f"Response Code {retval}")
     return retval
 
 
 @click.command()
-@click.option("--keyword", "-k", help="Login only to roles with the given keyword")
+@click.option("--keyword", "-k", help="Pre-select roles with the given keyword")
 @click.option("--rolesfile", "-f", help="File containing Role ARNs (csv)")
 @click.option("--session-duration", "-s", help="Session duration in seconds")
 @click.option("--debug", "-d", is_flag=True)
@@ -60,33 +94,41 @@ def main(keyword, rolesfile, session_duration, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
     
-    configs = load_saml2aws_config(filename=SAML2AWS_CONFIG)
-    uname = configs.get("username")
-    if uname is None:
-        uname = input("Username: ")
-    else:
-        logging.info(f"Username: {uname}")
-    upass = getpass.getpass("Password: ")
-    
+    last_selected_profiles = read_lines_from_file(LAST_SELECTED_FILE)
+
     if not rolesfile:
-        rolesfile = ALL_ROLES_FILE if keyword else ROLES_FILE
+        rolesfile = ALL_ROLES_FILE
     
-    profiles = []
-    
+    profiles = OrderedDict()
     for item in load_csv(rolesfile):
-        role_arn, account_name = item[0], item[1]
+        role_arn = item[0]
+        profile_name = role_arn.split("role/")[-1].replace("/", "-")
+        profiles[profile_name] = item
         
-        if keyword is None or keyword in role_arn:
-            profile_name = role_arn.split("role/")[-1].replace("/", "-")
+        if keyword is not None and keyword in role_arn:
+            last_selected_profiles.append(profile_name)
+    
+    answers = prompt(roles_selection(profiles.keys(), last_selected_profiles), style=custom_style)
+    if answers.get("roles"):
+        
+        configs = load_saml2aws_config(filename=SAML2AWS_CONFIG)
+        uname = configs.get("username")
+        if uname is None:
+            uname = input("Username: ")
+        else:
+            logging.info(f"Username: {uname}")
+        upass = getpass.getpass("Password: ")
+        
+        for profile_name in answers["roles"]:
+            item = profiles[profile_name]
+            role_arn, account_name = item[0], item[1]
             run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration)
-
-            profiles.append(profile_name)
-
-    profiles_file = rolesfile.replace(".csv", ".txt").replace("roles", "profiles")
-
-    with open(profiles_file, "w") as f:
-        f.write("\n".join(profiles))
-    logging.info(f"Wrote the profile names to {profiles_file}")
+    else:
+        print("Nothing selected. Aborted.")
+    
+    # Dump the last selected options
+    with open(LAST_SELECTED_FILE, "w") as f:
+        f.write("\n".join(answers["roles"]))
 
 
 if __name__ == "__main__": main()
