@@ -136,15 +136,6 @@ def run_saml2aws_list_roles(uname, upass):
     return roles
 
 
-def get_profile_name(role_arn, account_name):
-    
-    if profile_name.startswith("cloud-saml-"):
-        profile_name = profile_name.replace("cloud-saml-", "")
-    elif profile_name.endswith("administrator-role"):
-        profile_name = f"{account_name}-admin"
-    return profile_name
-
-
 @click.command()
 @click.option("--keyword", "-k", help="Pre-select roles with the given keyword")
 @click.option("--profile", "-p", help="Set the given profile as the default profile")
@@ -194,9 +185,7 @@ def main(keyword, profile, refresh_cached_roles, session_duration, debug):
             uname, upass = get_credentials()
         
         for profile_name in answers["roles"]:
-            item = profiles[profile_name]
-            role_arn, account_name = item[0], item[1]
-            run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration)
+            run_saml2aws_login(profiles[profile_name], profile_name, uname, upass, session_duration)
     else:
         logging.info("Nothing selected. Aborted.")
     
