@@ -186,12 +186,12 @@ def main(keyword, profile, refresh_cached_roles, session_duration, debug):
         
         for profile_name in answers["roles"]:
             run_saml2aws_login(profiles[profile_name], profile_name, uname, upass, session_duration)
+
+        # Dump the last selected options
+        with open(LAST_SELECTED_FILE, "w") as f:
+            f.write("\n".join(answers["roles"]))
     else:
         logging.info("Nothing selected. Aborted.")
-    
-    # Dump the last selected options
-    with open(LAST_SELECTED_FILE, "w") as f:
-        f.write("\n".join(answers["roles"]))
 
 
 if __name__ == "__main__": main()
