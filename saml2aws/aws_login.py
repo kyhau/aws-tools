@@ -161,9 +161,12 @@ def main(keyword, refresh_cached_roles, session_duration, switch_profile, debug)
         if options:
             answer = prompt(profile_selection(options), style=custom_style)
             profile = answer.get("profile")
-            config["default"] = config[profile]
-            write_aws_profiles(config)
-            logging.info(f"Set the default profile to {profile}")
+            if profile is not None:
+                config["default"] = config[profile]
+                write_aws_profiles(config)
+                logging.info(f"Set the default profile to {profile}")
+            else:
+                logging.info("Nothing selected. Aborted.")
         else:
             logging.info("No non default aws profile found. Aborted.")
         return
