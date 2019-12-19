@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 import click
 from collections import OrderedDict
+from configparser import ConfigParser
 import csv
 import getpass
 import logging
 from os.path import abspath, dirname, exists, join
 from pathlib import Path
-from PyInquirer import style_from_dict, Token, prompt, Separator
+from PyInquirer import style_from_dict, Token, prompt
 import subprocess
 
 logging.basicConfig(format="%(message)s")
 logging.getLogger().setLevel(logging.INFO)
 
+AWS_CRED = join(str(Path.home()), ".aws", "credentials")
 SAML2AWS_CONFIG = join(str(Path.home()), ".saml2aws")
 
 # role_arn, account_name
@@ -30,20 +32,25 @@ custom_style = style_from_dict({
 
 
 def roles_selection(roles, last_selected_profiles):
-    return [
-        {
-            "choices": [dict({
-                "name": role,
-                "checked": True if role in last_selected_profiles else False}
-            ) for role in roles],
-            "message": "Please choose the role",
-            "name": "roles",
-            "type": "checkbox",
-        }
-    ]
+    return [{
+        "choices": [dict({
+            "name": role,
+            "checked": True if role in last_selected_profiles else False}
+        ) for role in roles],
+        "message": "Please choose the role",
+        "name": "roles",
+        "type": "checkbox",
+    }]
 
 
-def load_csv(filename, delimiter=","):
+def write_csv(output_filename, data_list):
+    with open(output_filename, "w") as f:
+        csv_out = csv.writer(f)
+        for item in data_list:
+            csv_out.writerow(item)
+
+
+def read_csv(filename, delimiter=","):
     with open(filename) as csvfile:
         reader = csv.reader(csvfile, delimiter=delimiter)
         for row in reader:
@@ -61,12 +68,34 @@ def read_lines_from_file(filename):
 
 def load_saml2aws_config(filename):
     configs = {}
-    rows = load_csv(filename, "=")
+    rows = read_csv(filename, "=")
     for row in rows:
         w = [f.strip() for f in row]
         if len(w) > 1 and w[1]:
             configs[w[0]] = w[1]
     return configs
+
+
+def get_aws_profiles(filename=AWS_CRED):
+    cp = ConfigParser()
+    cp.read(filename)
+    return cp
+
+
+def write_aws_profiles(config, filename=AWS_CRED):
+    with open(filename, "w") as configfile:
+        config.write(configfile)
+
+
+def get_credentials():
+    configs = load_saml2aws_config(filename=SAML2AWS_CONFIG)
+    uname = configs.get("username")
+    if uname is None:
+        uname = input("Username: ")
+    else:
+        logging.info(f"Username: {uname}")
+    upass = getpass.getpass("Password: ")
+    return uname, upass
 
 
 def run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration):
@@ -85,46 +114,91 @@ def run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration):
     return retval
 
 
+def run_saml2aws_list_roles(uname, upass):
+    roles = []
+    accounts_dict = {}
+    
+    cmd = f"saml2aws list-roles --username={uname} --password={upass} --skip-prompt"
+    
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in p.stdout.readlines():
+        line = line.decode("utf-8").rstrip("\r|\n")
+        logging.debug(line)
+        if line.startswith("Account:"):
+            acc_name, acc_id = line.replace("(", "").replace(")", "").split(" ")[1:]
+            accounts_dict[acc_id] = acc_name
+        elif line.startswith("arn:"):
+            acc_id = line.split(":")[4]
+            roles.append([line, accounts_dict[acc_id]])
+    retval = p.wait()
+    
+    logging.info(f"Response Code {retval}")
+    return roles
+
+
+def get_profile_name(role_arn, account_name):
+    
+    if profile_name.startswith("cloud-saml-"):
+        profile_name = profile_name.replace("cloud-saml-", "")
+    elif profile_name.endswith("administrator-role"):
+        profile_name = f"{account_name}-admin"
+    return profile_name
+
+
 @click.command()
 @click.option("--keyword", "-k", help="Pre-select roles with the given keyword")
-@click.option("--rolesfile", "-f", help="File containing Role ARNs (csv)")
+@click.option("--profile", "-p", help="Set the given profile as the default profile")
+@click.option("--refresh-cached-roles", "-r", is_flag=True)
 @click.option("--session-duration", "-s", help="Session duration in seconds")
 @click.option("--debug", "-d", is_flag=True)
-def main(keyword, rolesfile, session_duration, debug):
+def main(keyword, profile, refresh_cached_roles, session_duration, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
     
+    if profile:
+        if profile == "dafault":
+            logging.info("Cannot set default to default. Aborted.")
+        else:
+            config = get_aws_profiles()
+            logging.info(f"Profiles: {config.sections()}")
+            if profile not in config:
+                logging.info(f"Profile {profile} cannot be found")
+            else:
+                config["default"] = config[profile]
+                logging.info(f"Set the default profile to {profile}")
+                write_aws_profiles(config)
+        return
+    
     last_selected_profiles = read_lines_from_file(LAST_SELECTED_FILE)
-
-    if not rolesfile:
-        rolesfile = ALL_ROLES_FILE
+    uname, upass = None, None
+    
+    if refresh_cached_roles or not exists(ALL_ROLES_FILE):
+        uname, upass = get_credentials()
+        roles = run_saml2aws_list_roles(uname, upass)
+        write_csv(ALL_ROLES_FILE, roles)
+    else:
+        roles = read_csv(ALL_ROLES_FILE)
     
     profiles = OrderedDict()
-    for item in load_csv(rolesfile):
-        role_arn = item[0]
+    for item in roles:
+        role_arn, account_name = item[0], item[1]
         profile_name = role_arn.split("role/")[-1].replace("/", "-")
-        profiles[profile_name] = item
+        profiles[profile_name] = role_arn
         
         if keyword is not None and keyword in role_arn:
             last_selected_profiles.append(profile_name)
     
     answers = prompt(roles_selection(profiles.keys(), last_selected_profiles), style=custom_style)
     if answers.get("roles"):
-        
-        configs = load_saml2aws_config(filename=SAML2AWS_CONFIG)
-        uname = configs.get("username")
         if uname is None:
-            uname = input("Username: ")
-        else:
-            logging.info(f"Username: {uname}")
-        upass = getpass.getpass("Password: ")
+            uname, upass = get_credentials()
         
         for profile_name in answers["roles"]:
             item = profiles[profile_name]
             role_arn, account_name = item[0], item[1]
             run_saml2aws_login(role_arn, profile_name, uname, upass, session_duration)
     else:
-        print("Nothing selected. Aborted.")
+        logging.info("Nothing selected. Aborted.")
     
     # Dump the last selected options
     with open(LAST_SELECTED_FILE, "w") as f:
