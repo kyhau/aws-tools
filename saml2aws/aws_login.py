@@ -31,6 +31,15 @@ custom_style = style_from_dict({
 })
 
 
+def profile_selection(profiles):
+    return [{
+        "choices": profiles,
+        "message": "Please choose the profile",
+        "name": "profile",
+        "type": "list",
+    }]
+
+
 def roles_selection(roles, last_selected_profiles):
     return [{
         "choices": [dict({
@@ -138,26 +147,25 @@ def run_saml2aws_list_roles(uname, upass):
 
 @click.command()
 @click.option("--keyword", "-k", help="Pre-select roles with the given keyword")
-@click.option("--profile", "-p", help="Set the given profile as the default profile")
 @click.option("--refresh-cached-roles", "-r", is_flag=True)
-@click.option("--session-duration", "-s", help="Session duration in seconds")
+@click.option("--session-duration", "-t", help="Session duration in seconds")
+@click.option("--switch-profile", "-s", is_flag=True)
 @click.option("--debug", "-d", is_flag=True)
-def main(keyword, profile, refresh_cached_roles, session_duration, debug):
+def main(keyword, refresh_cached_roles, session_duration, switch_profile, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
     
-    if profile:
-        if profile == "dafault":
-            logging.info("Cannot set default to default. Aborted.")
+    if switch_profile is True:
+        config = get_aws_profiles()
+        options = [profile for profile in config.sections() if profile != "default"]
+        if options:
+            answer = prompt(profile_selection(options), style=custom_style)
+            profile = answer.get("profile")
+            config["default"] = config[profile]
+            write_aws_profiles(config)
+            logging.info(f"Set the default profile to {profile}")
         else:
-            config = get_aws_profiles()
-            logging.info(f"Profiles: {config.sections()}")
-            if profile not in config:
-                logging.info(f"Profile {profile} cannot be found")
-            else:
-                config["default"] = config[profile]
-                logging.info(f"Set the default profile to {profile}")
-                write_aws_profiles(config)
+            logging.info("No non default aws profile found. Aborted.")
         return
     
     last_selected_profiles = read_lines_from_file(LAST_SELECTED_FILE)
