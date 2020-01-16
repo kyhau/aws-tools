@@ -3,6 +3,8 @@
 
 ARKI_REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+alias aws-acm-list-certificates='python ${ARKI_REPO_HOME}/ACM/list_certificates.py'
+
 alias aws-ami-latest-ecs-optimized-ami-id='. ${ARKI_REPO_HOME}/AMI/get_latest_ecs_optimized_ami.sh'
 alias aws-ami-latest-eks-optimized-ami-id='. ${ARKI_REPO_HOME}/AMI/get_latest_eks_optimized_ami.sh'
 
