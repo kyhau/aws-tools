@@ -19,6 +19,8 @@ alias aws-ec2-instances='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_instances.py'
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 
+alias aws-rds-instances='python ${ARKI_REPO_HOME}/RDS/list_rds_instances.py'
+
 alias aws-s3-size='. ${ARKI_REPO_HOME}/S3/s3_size.sh'
 
 alias aws-subnet-available-ip-address-count='. ${ARKI_REPO_HOME}/EC2-VPC/available_ip_address_count.sh'
