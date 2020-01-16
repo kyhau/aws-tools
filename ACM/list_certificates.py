@@ -37,7 +37,7 @@ def list_action(session, aws_region):
         return
     accounts_processed.append(account_id)
 
-    regions = session.get_available_regions("ec2") if aws_region == "all" else [aws_region]
+    regions = session.get_available_regions("acm") if aws_region == "all" else [aws_region]
     for region in regions:
         logging.debug(f"Checking {account_id} {region}")
         try:
