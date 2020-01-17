@@ -32,7 +32,7 @@ def dump_data(response, account_id, region):
             i['Engine'],
             i['Endpoint']['Address'],
             str(i['Endpoint']['Port']),
-            i['CACertificateIdentifier'],
+            i.get('CACertificateIdentifier', 'None'),
         ]
         print(",".join(data))
 
@@ -61,6 +61,8 @@ def list_action(session, instanceid, aws_region):
             error_code = e.response["Error"]["Code"]
             if error_code in ["AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
+            elif error_code == "AccessDenied":
+                logging.warning(f"Unable to process account {account_id}: {e}")
             elif error_code == "InvalidInstanceID.NotFound":
                 pass
             else:
