@@ -27,12 +27,13 @@ def dump_data(response, account_id, region):
         data = [
             account_id,
             region,
-            i['DBInstanceIdentifier'],
-            i['DBInstanceStatus'],
-            i['Engine'],
-            i['Endpoint']['Address'],
-            str(i['Endpoint']['Port']),
-            i.get('CACertificateIdentifier', 'None'),
+            i["DBInstanceIdentifier"],
+            i["DBInstanceStatus"],
+            i["Engine"],
+            i["Endpoint"]["Address"],
+            str(i["Endpoint"]["Port"]),
+            "MultiAZ" if i["MultiAZ"] else "SingleAZ",
+            i.get("CACertificateIdentifier", "None"),
         ]
         print(",".join(data))
 
