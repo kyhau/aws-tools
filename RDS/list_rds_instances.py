@@ -22,11 +22,12 @@ except Exception as e:
 accounts_processed = []
 
 
-def dump_data(response, account_id, region):
+def dump_data(response, account_id, region, profile):
     for i in response["DBInstances"]:
         data = [
             account_id,
             region,
+            profile,
             i["DBInstanceIdentifier"],
             i["DBInstanceStatus"],
             i["Engine"],
@@ -38,7 +39,7 @@ def dump_data(response, account_id, region):
         print(",".join(data))
 
 
-def list_action(session, instanceid, aws_region):
+def list_action(session, instanceid, aws_region, profile):
     account_id = session.client("sts").get_caller_identity()["Account"]
     if account_id in accounts_processed:
         return
@@ -52,10 +53,10 @@ def list_action(session, instanceid, aws_region):
             if instanceid is None:
                 paginator = client.get_paginator("describe_db_instances")
                 for page in paginator.paginate():
-                    dump_data(page, account_id, region)
+                    dump_data(page, account_id, region, profile)
             else:
                 ret = client.describe_db_instances(InstanceIds=[instanceid])
-                dump_data(ret, account_id, region)
+                dump_data(ret, account_id, region, profile)
                 return ret
 
         except ClientError as e:
@@ -85,7 +86,7 @@ def main(profile, instanceid, region):
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            ret = list_action(session, instanceid, region)
+            ret = list_action(session, instanceid, region, profile_name)
             if ret is not None:
                 break
 
