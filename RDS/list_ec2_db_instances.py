@@ -35,7 +35,10 @@ def process_data(response, account_id, region, profile, session):
         if ports_matched:
             client = session.client("ec2", region_name=region)
             ret = client.describe_network_interfaces(Filters=[{"Name": "group-id", "Values": [sg["GroupId"]]}])
-            instance_ids = { r["Attachment"]["InstanceId"] for r in ret["NetworkInterfaces"] if "Attachment" in r and "InstanceId" in r["Attachment"]}
+            instance_ids = {
+                r["Attachment"]["InstanceId"] for r in ret["NetworkInterfaces"]
+                if "Attachment" in r and "InstanceId" in r["Attachment"]
+            }
             if instance_ids:
                 data = [
                     account_id,
