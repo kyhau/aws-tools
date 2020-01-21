@@ -29,18 +29,26 @@ except Exception as e:
 accounts_processed = []
 
 
-def process_data(response, account_id, region, session):
+def process_data(response, account_id, region, profile, session):
     for sg in response["SecurityGroups"]:
-        ports_matched = [i.get("FromPort") for i in sg["IpPermissions"] if i.get("FromPort") in common_db_server_ports]
+        ports_matched = {i.get("FromPort") for i in sg["IpPermissions"] if i.get("FromPort") in common_db_server_ports}
         if ports_matched:
             client = session.client("ec2", region_name=region)
             ret = client.describe_network_interfaces(Filters=[{"Name": "group-id", "Values": [sg["GroupId"]]}])
             instance_ids = { r["Attachment"]["InstanceId"] for r in ret["NetworkInterfaces"] if "Attachment" in r and "InstanceId" in r["Attachment"]}
-            for instance_id in instance_ids:
-                print(f"{account_id}, {region}, {instance_id}, {sg['GroupId']}, {ports_matched}")
+            if instance_ids:
+                data = [
+                    account_id,
+                    region,
+                    profile,
+                    sg["GroupId"],
+                    "|".join(map(str, ports_matched)),
+                    "|".join(instance_ids),
+                ]
+                print(",".join(data))
 
 
-def list_action(session, groupid, aws_region):
+def list_action(session, groupid, aws_region, profile):
     account_id = session.client("sts").get_caller_identity()["Account"]
     if account_id in accounts_processed:
         return
@@ -54,17 +62,17 @@ def list_action(session, groupid, aws_region):
             if groupid is None:
                 paginator = client.get_paginator("describe_security_groups")
                 for page in paginator.paginate():
-                    process_data(page, account_id, region, session)
+                    process_data(page, account_id, region, profile, session)
             else:
                 ret = client.describe_security_groups(GroupIds=[groupid])
-                process_data(ret, account_id, region, session)
+                process_data(ret, account_id, region, profile, session)
                 return ret
 
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
             if error_code in ["AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
-            elif error_code == "AccessDenied":
+            elif error_code in ["AccessDenied", "UnauthorizedOperation", "RequestExpired"]:
                 logging.warning(f"Unable to process account {account_id}: {e}")
             else:
                 raise
@@ -85,13 +93,13 @@ def main(profile, groupid, region):
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            ret = list_action(session, groupid, region)
+            ret = list_action(session, groupid, region, profile_name)
             if ret is not None:
                 break
 
         except ClientError as e:
             if e.response["Error"]["Code"] == "ExpiredToken":
-                logging.warning(f"{profile_name} token expired. Skipped")
+                logging.warning(f"Profile [{profile_name}] token expired. Skipped")
             else:
                 raise
 
