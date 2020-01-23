@@ -8,6 +8,8 @@ alias aws-acm-list-certificates='python ${ARKI_REPO_HOME}/ACM/list_certificates.
 alias aws-ami-latest-ecs-optimized-ami-id='. ${ARKI_REPO_HOME}/AMI/get_latest_ecs_optimized_ami.sh'
 alias aws-ami-latest-eks-optimized-ami-id='. ${ARKI_REPO_HOME}/AMI/get_latest_eks_optimized_ami.sh'
 
+alias aws-apis-test='python ${ARKI_REPO_HOME}/API/check_aws_apis.py'
+
 alias aws-canonical-user-id='. ${ARKI_REPO_HOME}/CloudFront-S3/get_canonical_user_id.sh'
 
 alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
@@ -15,6 +17,7 @@ alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
 alias aws-config-query='python ${ARKI_REPO_HOME}/Config/query_configservice.py'
 
 alias aws-ec2-instances='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_instances.py'
+alias aws-ec2-db-instances='python ${ARKI_REPO_HOME}/RDS/list_ec2_db_instances.py'
 
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
