@@ -17,7 +17,6 @@ API_TESTS = {
     "apigateway": ("get_rest_apis", {"limit": 1}),
     "apigatewayv2": ("get_apis", {"MaxResults": "1"}),
     "athena": ("list_work_groups", {}),
-    
     "autoscaling": ("describe_auto_scaling_instances", {"MaxRecords": 1}),
     "backup": ("list_backup_jobs", {"MaxResults": 1}),
     "cloudformation": ("list_stacks", {}),
@@ -57,10 +56,10 @@ API_TESTS = {
     "kafka": ("list_clusters", {"MaxResults": 1}),
     "kinesis": ("list_streams", {"Limit": 1}),
     "kms": ("list_aliases", {"Limit": 1}),
+    "lakeformation": ("list_resources", {"MaxResults": 1}),
     "lambda": ("list_functions", {"MaxItems": 1}),
     "logs": ("describe_log_groups", {"limit": 1}),
     #"macie": ("list_member_accounts", {"maxResults": 1}),
-    
     "organizations": ("list_accounts", {"MaxResults": 1}),
     "rds": ("describe_db_instances", {"MaxRecords": 20}),
     "redshift": ("describe_clusters", {"MaxRecords": 20}),
