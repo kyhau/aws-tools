@@ -13,69 +13,73 @@ logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 API_TESTS = {
-    "acm": ("list_certificates", {"MaxItems": 1}),
-    "apigateway": ("get_rest_apis", {"limit": 1}),
-    "apigatewayv2": ("get_apis", {"MaxResults": "1"}),
-    "athena": ("list_work_groups", {}),
-    "autoscaling": ("describe_auto_scaling_instances", {"MaxRecords": 1}),
-    "backup": ("list_backup_jobs", {"MaxResults": 1}),
-    "cloudformation": ("list_stacks", {}),
-    "cloudfront": ("list_distributions", {"MaxItems": "1"}),
-    "cloudtrail": ("describe_trails", {}),
-    "cloudwatch": ("describe_alarms", {"MaxRecords": 1}),
-    "codebuild": ("list_projects", {}),
-    "codecommit": ("list_repositories", {}),
-    "codedeploy": ("list_applications", {}),
-    "codepipeline": ("list_pipelines", {}),
-    "codestar": ("list_projects", {"maxResults": 1}),
-    "config": ("describe_config_rules", {}),
-    "datapipeline": ("list_pipelines", {}),
-    "datasync": ("list_locations", {"MaxResults": 1}),
-    "dax": ("describe_clusters", {"MaxResults": 20}),
-    "directconnect": ("describe_direct_connect_gateways", {"maxResults": 1}),
-    "dynamodb": ("list_tables", {"Limit": 1}),
-    "ec2": ("describe_instances", {"MaxResults": 5}),
-    "ecr": ("describe_repositories", {"maxResults": 1}),
-    "ecs": ("list_clusters", {"maxResults": 1}),
-    "efs": ("describe_file_systems", {"MaxItems": 1}),
-    "eks": ("list_clusters", {"maxResults": 1}),
-    "elasticache": ("describe_cache_clusters", {"MaxRecords": 20}),
-    "elasticbeanstalk": ("describe_environments", {"MaxRecords": 1}),
-    "elb": ("describe_load_balancers", {"PageSize": 1}),
-    "elbv2": ("describe_load_balancers", {"PageSize": 1}),
-    "emr": ("list_clusters", {}),
-    "es": ("list_domain_names", {}),
-    "events": ("list_event_buses", {"Limit": 1}),
-    "firehose": ("list_delivery_streams", {"Limit": 1}),
-    "fms": ("list_member_accounts", {"MaxResults": 1}),
-    "glacier": ("list_vaults", {"limit": "1"}),
-    "glue": ("list_jobs", {"MaxResults": 1}),
-    "guardduty": ("list_detectors", {"MaxResults": 1}),
-    "iam": ("list_roles", {"MaxItems": 1}),
-    "inspector": ("list_findings", {"maxResults": 1}),
-    "kafka": ("list_clusters", {"MaxResults": 1}),
-    "kinesis": ("list_streams", {"Limit": 1}),
-    "kms": ("list_aliases", {"Limit": 1}),
-    "lakeformation": ("list_resources", {"MaxResults": 1}),
-    "lambda": ("list_functions", {"MaxItems": 1}),
-    "logs": ("describe_log_groups", {"limit": 1}),
-    #"macie": ("list_member_accounts", {"maxResults": 1}),
-    "organizations": ("list_accounts", {"MaxResults": 1}),
-    "rds": ("describe_db_instances", {"MaxRecords": 20}),
-    "redshift": ("describe_clusters", {"MaxRecords": 20}),
-    "route53": ("list_hosted_zones", {"MaxItems": "1"}),
-    "route53resolver": ("list_resolver_endpoints", {"MaxResults": 1}),
-    "s3": ("list_buckets", {"Buckets": []}),
-    "secretsmanager": ("list_secrets", {"MaxResults": 1}),
-    "sns": ("list_topics", {}),
-    "sqs": ("list_queues", {}),
-    "ssm": ("list_commands", {"MaxResults": 1}),
-    "storagegateway": ("list_gateways", {"Limit": 1}),
-    "waf": ("list_rules", {"Limit": 1}),
-    "waf-regional": ("list_rules", {"Limit": 1}),
-    "wafv2": ("list_ip_sets", {"Limit": 1}),
-    "workspaces": ("describe_workspaces", {"Limit": 1}),
-    "xray": ("get_sampling_rules", {}),
+    "acm": [("list_certificates", {"MaxItems": 1})],
+    "apigateway": [("get_rest_apis", {"limit": 1})],
+    "apigatewayv2": [("get_apis", {"MaxResults": "1"})],
+    "athena": [("list_work_groups", {})],
+    "autoscaling": [("describe_auto_scaling_instances", {"MaxRecords": 1})],
+    "backup": [("list_backup_jobs", {"MaxResults": 1})],
+    "cloudformation": [("list_stacks", {})],
+    "cloudfront": [("list_distributions", {"MaxItems": "1"})],
+    "cloudtrail": [("describe_trails", {})],
+    "cloudwatch": [("describe_alarms", {"MaxRecords": 1})],
+    "codebuild": [("list_projects", {})],
+    "codecommit": [("list_repositories", {})],
+    "codedeploy": [("list_applications", {})],
+    "codepipeline": [("list_pipelines", {})],
+    "codestar": [("list_projects", {"maxResults": 1})],
+    "config": [("describe_config_rules", {})],
+    "datapipeline": [("list_pipelines", {})],
+    "datasync": [("list_locations", {"MaxResults": 1})],
+    "dax": [("describe_clusters", {"MaxResults": 20})],
+    "directconnect": [("describe_direct_connect_gateways", {"maxResults": 1})],
+    "dynamodb": [("list_tables", {"Limit": 1})],
+    "ec2": [
+        ("describe_instances", {"MaxResults": 5}),
+        ("describe_network_acls", {"MaxResults": 5}),
+        ("describe_route_tables", {"MaxResults": 5}),
+    ],
+    "ecr": [("describe_repositories", {"maxResults": 1})],
+    "ecs": [("list_clusters", {"maxResults": 1})],
+    "efs": [("describe_file_systems", {"MaxItems": 1})],
+    "eks": [("list_clusters", {"maxResults": 1})],
+    "elasticache": [("describe_cache_clusters", {"MaxRecords": 20})],
+    "elasticbeanstalk": [("describe_environments", {"MaxRecords": 1})],
+    "elb": [("describe_load_balancers", {"PageSize": 1})],
+    "elbv2": [("describe_load_balancers", {"PageSize": 1})],
+    "emr": [("list_clusters", {})],
+    "es": [("list_domain_names", {})],
+    "events": [("list_event_buses", {"Limit": 1})],
+    "firehose": [("list_delivery_streams", {"Limit": 1})],
+    "fms": [("list_member_accounts", {"MaxResults": 1})],
+    "glacier": [("list_vaults", {"limit": "1"})],
+    "glue": [("list_jobs", {"MaxResults": 1})],
+    "guardduty": [("list_detectors", {"MaxResults": 1})],
+    "iam": [("list_roles", {"MaxItems": 1})],
+    "inspector": [("list_findings", {"maxResults": 1})],
+    "kafka": [("list_clusters", {"MaxResults": 1})],
+    "kinesis": [("list_streams", {"Limit": 1})],
+    "kms": [("list_aliases", {"Limit": 1})],
+    "lakeformation": [("list_resources", {"MaxResults": 1})],
+    "lambda": [("list_functions", {"MaxItems": 1})],
+    "logs": [("describe_log_groups", {"limit": 1})],
+    #"macie": [("list_member_accounts", {"maxResults": 1})],
+    "organizations": [("list_accounts", {"MaxResults": 1})],
+    "rds": [("describe_db_instances", {"MaxRecords": 20})],
+    "redshift": [("describe_clusters", {"MaxRecords": 20})],
+    "route53": [("list_hosted_zones", {"MaxItems": "1"})],
+    "route53resolver": [("list_resolver_endpoints", {"MaxResults": 1})],
+    "s3": [("list_buckets", {"Buckets": []})],
+    "secretsmanager": [("list_secrets", {"MaxResults": 1})],
+    "sns": [("list_topics", {})],
+    "sqs": [("list_queues", {})],
+    "ssm": [("list_commands", {"MaxResults": 1})],
+    "storagegateway": [("list_gateways", {"Limit": 1})],
+    "waf": [("list_rules", {"Limit": 1})],
+    "waf-regional": [("list_rules", {"Limit": 1})],
+    "wafv2": [("list_ip_sets", {"Limit": 1})],
+    "workspaces": [("describe_workspaces", {"Limit": 1})],
+    "xray": [("get_sampling_rules", {})],
 }
 
 
@@ -90,21 +94,28 @@ def check_aws_apis(session, service, aws_region):
             logging.debug(f"Checking {service} {region}")
             try:
                 client = session.client(service, region_name=region)
-                func_name, params = API_TESTS[service]
-                response = getattr(client, func_name)(**params)
-
-                logging.debug(response)
-                assert response["ResponseMetadata"]["HTTPStatusCode"] == 200
-                print(f'{service} ({region}): {response["ResponseMetadata"]["HTTPStatusCode"]}')
+                
+                for test_case in API_TESTS[service]:
+                    func_name, params = test_case
     
+                    try:
+                        response = getattr(client, func_name)(**params)
+                        logging.debug(response)
+                        assert response["ResponseMetadata"]["HTTPStatusCode"] == 200
+                        print(f'{service}.{func_name} ({region}): {response["ResponseMetadata"]["HTTPStatusCode"]}')
+                    except ClientError as e:
+                        error_code = e.response["Error"]["Code"]
+                        if error_code == "InternalError":
+                            logging.error(f"AWS {service} API Internal Error: {e}")
+                        elif error_code in ["AccessDenied", "AccessDeniedException"]:
+                            logging.warning(f"Failed to test {service}: {e}")
+                        else:
+                            logging.error(f"Failed to test {service}.{func_name}: {error_code}")
+                            raise
             except ClientError as e:
                 error_code = e.response["Error"]["Code"]
-                if error_code == "InternalError":
-                    logging.error(f"AWS {service} API Internal Error: {e}")
-                elif error_code in ["AuthFailure", "UnrecognizedClientException"]:
+                if error_code in ["AuthFailure", "UnrecognizedClientException"]:
                     logging.warning(f"Failed to test region {region}: {error_code}")
-                elif error_code in ["AccessDenied", "AccessDeniedException"]:
-                    logging.warning(f"Failed to test {service}: {e}")
                 else:
                     logging.error(f"Failed to test {service}: {error_code}")
                     raise
