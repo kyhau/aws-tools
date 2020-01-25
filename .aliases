@@ -30,6 +30,7 @@ alias aws-subnet-available-ip-address-count='. ${ARKI_REPO_HOME}/EC2-VPC/availab
 
 alias aws-secretsmanager-get-secret='python ${ARKI_REPO_HOME}/SecretManager/get_secret.py'
 
+alias aws-vpcendpoint-list-prefix='aws ec2 describe-prefix-lists'
 alias aws-vpcendpoint-list-supported-services='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh'
 alias aws-vpcendpoint-list-supported-services-name-only='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh --name-only'
 
