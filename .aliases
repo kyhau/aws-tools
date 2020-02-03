@@ -24,7 +24,7 @@ alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynam
 
 alias aws-rds-instances='python ${ARKI_REPO_HOME}/RDS/list_rds_instances.py'
 
-alias aws-s3-size='. ${ARKI_REPO_HOME}/S3/s3_size.sh'
+alias aws-s3-size='aws s3 ls --summarize --human-readable --recursive s3://'
 
 alias aws-secretsmanager-get-secret='python ${ARKI_REPO_HOME}/SecretManager/get_secret.py'
 
