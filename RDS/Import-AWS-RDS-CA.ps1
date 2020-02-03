@@ -5,4 +5,4 @@
 Invoke-WebRequest -Uri https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.p7b -OutFile 'rds-combined-ca-bundle.p7b'
 
 "Import rds certificate bundle"
-Import-Certificate –filepath rds-combined-ca-bundle.p7b –certStorelocation Cert:\LocalMachine\Root
+Import-Certificate –FilePath rds-combined-ca-bundle.p7b –CertStorelocation Cert:\LocalMachine\Root
