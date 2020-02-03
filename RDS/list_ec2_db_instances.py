@@ -29,26 +29,48 @@ except Exception as e:
 accounts_processed = []
 
 
+def subnet_names(client, subnet_ids):
+    ret = {}
+    for subnet in client.describe_subnets(SubnetIds=subnet_ids)["Subnets"]:
+        if "Tags" in subnet:
+            name = None
+            for tag in subnet["Tags"]:
+                if tag["Key"] == "Name":
+                    name = tag["Value"]
+            if name is not None:
+                ret[subnet["SubnetId"]] = name
+    return ret
+
+
 def process_data(response, account_id, region, profile, session):
     for sg in response["SecurityGroups"]:
         ports_matched = {i.get("FromPort") for i in sg["IpPermissions"] if i.get("FromPort") in common_db_server_ports}
         if ports_matched:
             client = session.client("ec2", region_name=region)
             ret = client.describe_network_interfaces(Filters=[{"Name": "group-id", "Values": [sg["GroupId"]]}])
-            instance_ids = {
-                r["Attachment"]["InstanceId"] for r in ret["NetworkInterfaces"]
+
+            instance_id_subnet_set = {
+                (r["Attachment"]["InstanceId"], r["SubnetId"])
+                for r in ret["NetworkInterfaces"]
                 if "Attachment" in r and "InstanceId" in r["Attachment"]
             }
-            if instance_ids:
-                data = [
-                    account_id,
-                    region,
-                    profile,
-                    sg["GroupId"],
-                    "|".join(map(str, ports_matched)),
-                    "|".join(instance_ids),
-                ]
-                print(",".join(data))
+
+            if instance_id_subnet_set:
+                subnet_ids = {y for (x, y) in instance_id_subnet_set}
+    
+                subnet_id_dict_data = subnet_names(client, list(subnet_ids))
+    
+                for (instance_id, subnet_id) in instance_id_subnet_set:
+                    data = [
+                        account_id,
+                        region,
+                        profile,
+                        sg["GroupId"],
+                        "|".join(map(str, ports_matched)),
+                        instance_id,
+                        subnet_id_dict_data[subnet_id],  # subnet name
+                    ]
+                    print(",".join(data))
 
 
 def list_action(session, groupid, aws_region, profile):
