@@ -41,7 +41,7 @@ def list_action(session, instanceid, aws_region, profile):
 
     regions = session.get_available_regions("ec2") if aws_region == "all" else [aws_region]
     for region in regions:
-        logging.debug(f"Checking {account_id} {region}")
+        logging.debug(f"Checking {account_id} {profile} {region}")
         try:
             client = session.client("ec2", region_name=region)
             if instanceid is None:
@@ -93,5 +93,6 @@ def main(profile, instanceid, region):
                 logging.warning(f"{profile_name} token expired. Skipped")
             else:
                 raise
+
 
 if __name__ == "__main__": main()
