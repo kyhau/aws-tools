@@ -18,6 +18,7 @@ alias aws-config-query='python ${ARKI_REPO_HOME}/Config/query_configservice.py'
 
 alias aws-ec2-instances='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_instances.py'
 alias aws-ec2-db-instances='python ${ARKI_REPO_HOME}/RDS/list_ec2_db_instances.py'
+alias aws-ec2-unreachable='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
 
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
