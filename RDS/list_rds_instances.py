@@ -34,6 +34,7 @@ def dump_data(response, account_id, region, profile):
             i["Endpoint"]["Address"],
             str(i["Endpoint"]["Port"]),
             "MultiAZ" if i["MultiAZ"] else "SingleAZ",
+            i["PreferredMaintenanceWindow"],  # UTC
             i.get("CACertificateIdentifier", "None"),
         ]
         print(",".join(data))
