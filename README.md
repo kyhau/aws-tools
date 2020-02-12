@@ -13,7 +13,7 @@ virtualenv env -p python3.8
 pip install -r requirements.txt
 ```
 
-# Table of content
+# Categories
 - [AWS SDKs and CLIs](#aws-sdks-and-clis)
   - [CloudFormation](#cloudformation)
   - [Serverless](#serverless)
