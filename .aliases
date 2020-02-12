@@ -12,6 +12,9 @@ alias aws-apis-test='python ${ARKI_REPO_HOME}/API/check_aws_apis.py'
 
 alias aws-canonical-user-id='. ${ARKI_REPO_HOME}/CloudFront-S3/get_canonical_user_id.sh'
 
+alias browser='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
+alias aws-cloudtrail-event-names='browser https://gist.github.com/pkazi/8b5a1374771f6efa5d55b92d8835718c'
+
 alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
 
 alias aws-config-query='python ${ARKI_REPO_HOME}/Config/query_configservice.py'
