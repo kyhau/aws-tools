@@ -1,0 +1,122 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Custom SSM Document for EC2-Processes Inventory
+
+Resources:
+  CustomDocumentProcesses:
+    Type: AWS::SSM::Document
+    Properties:
+      DocumentType: "Command"
+      Content:
+        schemaVersion: "2.2"
+        description: Run a script to find specific processes running in EC2 instances.
+        parameters:
+          windowsProcessNames:
+            type: String
+            description: "Specify the process names (comma-separated) to be searched on the instance."
+          linuxProcessNames:
+            type: String
+            description: "Specify the process names (comma-separated) to be searched on the instance."
+        mainSteps:
+        - action: aws:runPowerShellScript
+          name: RunPowershellScript
+          precondition:
+            StringEquals:
+            - platformType
+            - Windows
+          inputs:
+            runCommand:
+              - |
+                $processKeywords = "{{ windowsProcessNames }}"
+                $instanceId = Invoke-RestMethod -uri http://169.254.169.254/latest/meta-data/instance-id
+                $filepath = "C:\ProgramData\Amazon\SSM\InstanceData\" + $instanceId + "\inventory\custom\Processes.json"
+                if (-NOT (Test-Path $filepath)) {
+                  New-Item $filepath -ItemType file
+                }
+
+                $names = [System.Collections.ArrayList]@()
+                ForEach ($processKeyword in $processKeywords.Split(",")) {
+                  Get-Process "*$($processKeyword.Trim())*" -ErrorAction SilentlyContinue | ForEach-Object {
+                    if (-NOT ($names.Contains($_.Name))) {
+                      $names.Add($_.Name) > $null
+                    }
+                  }
+                }
+                $data = ''
+                if ($names.Count -gt 0) {
+                  $data = '{{"ProcessName": "{0}"}}' -f ($names -join '"},{"ProcessName": "')
+                }
+
+                $content = "{`"SchemaVersion`" : `"1.0`", `"TypeName`": `"Custom:Processes`", `"Content`": [$data]}"
+                Set-Content -Path $filepath -Value $content
+                # Dump the file for debugging
+                Get-Content -Path $filepath
+
+        - action: aws:runShellScript
+          name: RunShellScript
+          precondition:
+            StringEquals:
+            - platformType
+            - Linux
+          inputs:
+            runCommand:
+              - |
+                IFS="," process_keywords=( {{ linuxProcessNames }} )
+
+                instanceId=`curl http://169.254.169.254/latest/meta-data/instance-id`
+                filepath="/var/lib/amazon/ssm/$instanceId/inventory/custom/Processes.json"
+                [[ -f ${filepath} ]] || touch $filepath
+
+                declare -a results
+                for process_keyword in ${process_keywords[@]}; do
+                  ret=$(ps -A -o cmd --no-headers | grep ${process_keyword} | grep -v 'grep' | awk -vORS=, '{print $0}')
+                  IFS=","
+                  for p in ${ret}; do
+                    [[ "${results[@]}" =~ ${p} ]] || results+=($p)
+                  done
+                done
+
+                # Write to file
+                cat > ${filepath} << EOF
+                {
+                  "SchemaVersion": "1.0",
+                  "TypeName": "Custom:Processes",
+                  "Content": [
+                EOF
+                for p in "${results[@]}"; do
+                  cat >> ${filepath} << EOF
+                      {"ProcessName": "${p}"},
+                EOF
+                done
+                # Replace the last comma (if exists)
+                sed -i '$s/,$//' ${filepath}
+                cat >> ${filepath} << EOF
+                  ]
+                }
+                EOF
+                # Dump the file for debugging
+                cat ${filepath}
+
+  InventoryProcesses:
+    DependsOn: CustomDocumentProcesses
+    Type: AWS::SSM::Association
+    Properties:
+      AssociationName: Custom-Inventory-Processes
+      Name: !Ref CustomDocumentProcesses
+      Parameters:
+        windowsProcessNames:
+          - "sql,postgres,redis,memcached"
+        linuxProcessNames:
+          - "sql,postgres,redis,memcached"
+      ScheduleExpression: "rate(30 days)"
+      Targets:
+        - Key: InstanceIds
+          Values:
+            - "*"
+
+Outputs:
+  SSMCustomDocument:
+    Export:
+      Name: !Sub ${AWS::StackName}-document-custom
+    Value: !Ref CustomDocumentProcesses
+
