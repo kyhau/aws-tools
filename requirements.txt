@@ -30,6 +30,7 @@ click~=7.0
 PyInquirer~=1.0     # for aws_login.py
 #black
 #pipdeptree
+pytz
 #pyyaml~=5.1
 #pypiwin32==220
 #toml~=0.10
