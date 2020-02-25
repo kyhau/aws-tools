@@ -20,15 +20,48 @@ except Exception as e:
     logging.error(e)
 
 accounts_processed = []
+amis_known = {}
 
 
-def dump_data(response, account_id, region, profile):
+def get_tag_value(tags, key="Name"):
+    for tag in tags:
+        if tag["Key"] == key:
+            return tag["Value"]
+    return ""
+
+
+def get_image(ami_id, client):
+    if ami_id not in amis_known:
+        try:
+            image = client.describe_images(ImageIds=[ami_id])["Images"][0]
+            amis_known[ami_id] = [
+                image.get("Name", "NoName"),
+                "Public" if image["Public"] is True else "Private",
+            ]
+        except:
+            amis_known[ami_id] = ["NoAMIName", "UnknownAMI"]
+    return amis_known[ami_id]
+
+
+def process_data(response, account_id, region, profile, client, detailed):
     for item in response["Reservations"]:
         for i in item["Instances"]:
-            print(f"{account_id}, {region}, {profile}, {i['InstanceId']}, {i.get('PrivateIpAddress')}, {i.get('PublicIpAddress')}")
+            data = [
+                account_id,
+                region,
+                profile,
+                i["InstanceId"],
+                get_tag_value(i["Tags"]),
+                i.get("Platform", "Linux/UNIX"),
+                i.get("PrivateIpAddress"),
+                i.get("PublicIpAddress", "NoPublicIP"),
+            ]
+            if detailed:
+                data += get_image(i["ImageId"], client)
+            print(",".join(data))
 
 
-def list_action(session, instanceid, aws_region, profile):
+def list_action(session, instanceid, aws_region, profile, detailed):
     account_id = session.client("sts").get_caller_identity()["Account"]
     if account_id in accounts_processed:
         return
@@ -42,10 +75,10 @@ def list_action(session, instanceid, aws_region, profile):
             if instanceid is None:
                 paginator = client.get_paginator("describe_instances")
                 for page in paginator.paginate():
-                    dump_data(page, account_id, region, profile)
+                    process_data(page, account_id, region, profile, client, detailed)
             else:
                 ret = client.describe_instances(InstanceIds=[instanceid])
-                dump_data(ret, account_id, region, profile)
+                process_data(ret, account_id, region, profile, client, detailed)
                 return ret
 
         except ClientError as e:
@@ -60,6 +93,8 @@ def list_action(session, instanceid, aws_region, profile):
                 raise
         except Exception as e:
             logging.error(e)
+            import traceback
+            traceback.print_exc()
 
 
 ################################################################################
@@ -69,7 +104,8 @@ def list_action(session, instanceid, aws_region, profile):
 @click.option("--profile", "-p", help="AWS profile name")
 @click.option("--instanceid", "-i", help="EC2 instance ID", default=None)
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(profile, instanceid, region):
+@click.option("--detailed", "-d", is_flag=True)
+def main(profile, instanceid, region, detailed):
     """
     Output: account_id, region, instance_id, private_ip, public_ip
     """
@@ -78,7 +114,7 @@ def main(profile, instanceid, region):
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            ret = list_action(session, instanceid, region, profile_name)
+            ret = list_action(session, instanceid, region, profile_name, detailed)
             if ret is not None:
                 break
 
