@@ -27,6 +27,7 @@ boto3~=1.9
 
 # None aws related packages
 click~=7.0
+dataclasses-json
 PyInquirer~=1.0     # for aws_login.py
 #black
 #pipdeptree
