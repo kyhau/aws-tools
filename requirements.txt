@@ -25,9 +25,11 @@ boto3~=1.9
 #aws-cdk.aws-lambda
 #cdk-watchful
 
-# None aws related packages
+# Non aws related packages
+apispec           # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
+dataclasses-json  # provides a simple API for encoding and decoding dataclasses to and from JSON
+
 click~=7.0
-dataclasses-json
 PyInquirer~=1.0     # for aws_login.py
 #black
 #pipdeptree
