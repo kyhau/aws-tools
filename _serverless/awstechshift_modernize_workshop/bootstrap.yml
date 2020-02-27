@@ -1,0 +1,124 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: can contain only ASCII characters.
+
+  SSHLocation:
+    Description: 'The IP address range that can be used to SSH to the EC2 instances'
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+    Default: 0.0.0.0/0
+
+  ChildStackName:
+    Description: The name for the CloudFormation stack that will be created and updated by this CodePipeline
+    Type: String
+    MinLength: '5'
+    MaxLength: '18'
+    Default: TSAGallery
+
+  DataBucketName:
+    Description: The name for the S3 Bucket the will store the data
+    Type: String
+    MinLength: '3'
+    MaxLength: '63'
+    AllowedPattern: '(?=^.{3,63}$)(?!^(\d+\.)+\d+$)(^(([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])\.)*([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])$)'
+    Default: tsagallery.companyname.com
+
+Resources:
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+                - cloudformation.amazonaws.com
+                - codebuild.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: CloudPipelinePolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
+
+  StackData:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref DataBucketName
+      VersioningConfiguration:
+        Status: Enabled
+
+  PipelineArtifacts:
+    Type: AWS::S3::Bucket
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: !Join ['', [!Ref 'AWS::StackName', '-Pipeline'] ]
+      ArtifactStore:
+        Type: S3
+        Location: !Ref PipelineArtifacts
+      RoleArn: !GetAtt [PipelineRole, Arn]
+      Stages:
+        -
+          Name: Source
+          Actions:
+            -
+              Name: SourceAction
+              RunOrder: 1
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              Configuration:
+                S3Bucket: !Ref DataBucketName
+                PollForSourceChanges: true
+                S3ObjectKey: cloudformation/infra.yml.zip
+              OutputArtifacts:
+                - Name: SourceArtifact
+        -
+          Name: Deploy
+          Actions:
+            -
+              Name: DeployAction
+              RunOrder: 2
+              InputArtifacts:
+                - Name: SourceArtifact
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                RoleArn: !GetAtt [PipelineRole, Arn]
+                Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
+                StackName: !Ref ChildStackName
+                TemplatePath: SourceArtifact::infra.yml
+                ParameterOverrides:
+                  !Sub
+                  - |
+                    {
+                      "KeyName": "${KeyName}",
+                      "SSHLocation": "${SSHLocation}"
+                    }
+                  -
+                    KeyName: !Ref KeyName
+                    SSHLocation: !Ref SSHLocation
+Outputs:
+  StackDataBucket:
+    Description: The name of the bucket used to store all the stack assets
+    Value: !Ref DataBucketName
+    Export:
+      Name: !Sub "TSAGallery-DataBucket"
