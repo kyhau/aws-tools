@@ -6,11 +6,11 @@ Parameters:
   LinuxProcessKeywords:
     Description: Comma-separated keywords to be searched on running processes in an EC2 instance.
     Type: String
-    Default: "sqlservr,mysql,postgres,redis,memcached"
+    Default: "cassandra,dse,mysql,postgres,redis,memcached"
   WindowsProcessKeywords:
     Description: Comma-separated keywords to be searched on running processes in an EC2 instance.
     Type: String
-    Default: "sqlservr,mysql,postgres,redis,memcached"
+    Default: "sqlservr,cassandra,dse,mysql,postgres,redis,memcached"
   ScheduleExpressionCron:
     Description: A cron expression that specifies a schedule when the association runs.
     Type: String
