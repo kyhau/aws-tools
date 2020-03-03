@@ -13,6 +13,7 @@ logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 # TODO Change inventory_type_name and processes below
+# inventory_type_name = "Custom:Processes"
 inventory_type_name = "Custom:DatabaseProcesses"
 processes = ["sqlservr", "cassandra", "dse", "mysql", "postgres", "redis", "memcached", "oninit"]
 
@@ -46,7 +47,7 @@ def get_instances_from_inventory(client):
 
 
 def get_instances(ec2, instance_id=None):
-    """Approach 2: retrieving current ec2 (running, stopping, stopped)
+    """Approach 2: retrieving current ec2 (running, stopping, stopped). Faster than approach 1.
     """
     def get_tag_value(tags, key="Name"):
         for tag in tags:
@@ -114,6 +115,9 @@ def list_action(session, instanceid, aws_region, profile):
                     str(v),
                 ]
                 print(",".join(data))
+
+            if results and instanceid is not None:  # can stop searching
+                return True
         
         except botocore.exceptions.ClientError as e:
             error_code = e.response["Error"]["Code"]

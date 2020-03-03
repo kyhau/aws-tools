@@ -2,6 +2,20 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Custom SSM Document for EC2-Processes Inventory
 
+Parameters:
+  LinuxProcessKeywords:
+    Description: Comma-separated keywords to be searched on running processes in an EC2 instance.
+    Type: String
+    Default: "sqlservr,mysql,postgres,redis,memcached"
+  WindowsProcessKeywords:
+    Description: Comma-separated keywords to be searched on running processes in an EC2 instance.
+    Type: String
+    Default: "sqlservr,mysql,postgres,redis,memcached"
+  ScheduleExpressionCron:
+    Description: A cron expression that specifies a schedule when the association runs.
+    Type: String
+    Default: "rate(30 days)"
+
 Resources:
   CustomDocumentProcesses:
     Type: AWS::SSM::Document
@@ -104,11 +118,11 @@ Resources:
       AssociationName: Custom-Inventory-Processes
       Name: !Ref CustomDocumentProcesses
       Parameters:
-        windowsProcessNames:
-          - "sqlservr,mysql,postgres,redis,memcached"
         linuxProcessNames:
-          - "sqlservr,mysql,postgres,redis,memcached"
-      ScheduleExpression: "rate(30 days)"
+          - !Ref LinuxProcessKeywords
+        windowsProcessNames:
+          - !Ref WindowsProcessKeywords
+      ScheduleExpression: !Ref ScheduleExpressionCron
       Targets:
         - Key: InstanceIds
           Values:
