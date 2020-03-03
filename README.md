@@ -121,3 +121,6 @@ pip install -r requirements.txt
 | :--- | :--- |
 | Regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript | [regex101.com](https://regex101.com/) |
 | Subnet Calculator - MxToolbox | [mxtoolbox.com](https://mxtoolbox.com/subnetcalculator.aspx) |
+
+## Workshops
+- https://redshift-immersion.workshop.aws
