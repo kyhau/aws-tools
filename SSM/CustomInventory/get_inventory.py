@@ -12,6 +12,7 @@ logging.getLogger("botocore").setLevel(logging.CRITICAL)
 logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
+# TODO Change inventory_type_name and processes below
 inventory_type_name = "Custom:DatabaseProcesses"
 processes = ["sqlservr", "cassandra", "dse", "mysql", "postgres", "redis", "memcached", "oninit"]
 
@@ -27,15 +28,41 @@ accounts_processed = []
 
 
 def get_instances_from_inventory(client):
+    """
+    Approach 1: retrieving ec2 instances from inventory.
+    This approach will return data for all existing instances in record, including previous terminated instances.
+    """
     ret = {}
     paginator = client.get_paginator("get_inventory")
-    for page in paginator.paginate():
+    for page in paginator.paginate(
+            Filters=[{"Key": "AWS:Service.Status", "Values": ["Running", "Stopped"], "Type":"Equal"}]):
         for item in page["Entities"]:
             try:
                 for i in item["Data"]["AWS:InstanceInformation"]["Content"]:
                     ret[i["InstanceId"]] = [i["ComputerName"], i["IpAddress"]]
             except KeyError as e:
                 pass
+    return ret
+
+
+def get_instances(ec2, instance_id=None):
+    """Approach 2: retrieving current ec2 (running, stopping, stopped)
+    """
+    def get_tag_value(tags, key="Name"):
+        for tag in tags:
+            if tag["Key"] == key:
+                return tag["Value"]
+        return ""
+    data = lambda x: [get_tag_value(x.tags), x.private_ip_address]
+    
+    ret = {}
+    if instance_id is None:
+        for instance in ec2.instances.filter(
+                Filters=[{"Name": "instance-state-name", "Values": ["running", "stopping", "stopped"]}]):
+            ret[instance.id] = data(instance)
+    else:
+        instance = ec2.instances.filter(InstanceIds=[instance_id])
+        ret[instance.id] = data(instance)
     return ret
 
 
@@ -49,12 +76,11 @@ def list_action(session, instanceid, aws_region, profile):
     for region in regions:
         logging.debug(f"Checking {account_id} {profile} {region}")
         try:
-            client = session.client("ssm", region_name=region)
-            if instanceid is None:
-                instances = get_instances_from_inventory(client)
-            else:
-                instances = {instanceid: [None, None]}
+            ec2 = session.resource("ec2", region_name=region)
+            instances = get_instances(ec2, instanceid)
+            logging.debug(f"Number of instances to check: {len(instances)}")
 
+            client = session.client("ssm", region_name=region)
             results = {}
             try:
                 for instance_id in instances.keys():
@@ -67,18 +93,24 @@ def list_action(session, instanceid, aws_region, profile):
                                 results[instance_id, i] = cap_time1 if cap_time0 is None else max(cap_time1, cap_time0)
             except botocore.errorfactory.ClientError as e:
                 if e.response["Error"]["Code"] == "InvalidTypeNameException":
+                    logging.warning(e)
+                else:
+                    raise
+            except botocore.exceptions.ClientError as e:
+                if e.response["Error"]["Code"] == "ThrottlingException":
                     logging.error(e)
                 else:
                     raise
     
-            for k, v in results.items():
+            for k in sorted(results.keys()):
                 instance_id, key = k
+                v = results[k]
                 data = [
                     profile,
                     instance_id,
+                    key,
                     instances[instance_id][0],    # ComputerName
                     instances[instance_id][1],    # IpAddress
-                    key,
                     str(v),
                 ]
                 print(",".join(data))

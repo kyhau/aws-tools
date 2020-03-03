@@ -105,9 +105,9 @@ Resources:
       Name: !Ref CustomDocumentProcesses
       Parameters:
         windowsProcessNames:
-          - "sql,postgres,redis,memcached"
+          - "sqlservr,mysql,postgres,redis,memcached"
         linuxProcessNames:
-          - "sql,postgres,redis,memcached"
+          - "sqlservr,mysql,postgres,redis,memcached"
       ScheduleExpression: "rate(30 days)"
       Targets:
         - Key: InstanceIds
