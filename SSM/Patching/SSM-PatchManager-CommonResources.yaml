@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create common resources for an AWS account using SSM Patch Manager.
+
+Parameters:
+  BucketName:
+    Description: The name of the S3 bucket to be created.
+    Type: String
+  NotificationEmailAddress:
+    Description: Email address for the notification of Patch Management events.
+    Type: String
+
+Resources:
+  PatchManagerLogBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref BucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: Billing
+          Value: PatchManagement
+
+  PatchManagerSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: PatchManagerNotification
+      Subscription:
+        - Endpoint: !Ref NotificationEmailAddress
+          Protocol: email
+      Tags:
+        - Key: Billing
+          Value: PatchManagement
+
+Outputs:
+  BucketArn:
+    Description: ARN of the S3 bucket for Patch Manager logging
+    Value: !GetAtt PatchManagerLogBucket.Arn
+    Export:
+      Name: PatchManagerLogBucketArn
+  BucketId:
+    Description: Name of the S3 bucket for Patch Manager logging
+    Value: !Ref PatchManagerLogBucket
+    Export:
+      Name: PatchManagerLogBucketId
+  SNSTopicArn:
+    Description: ARN of the SNS Topic for Patch Manager notification
+    Value: !Ref PatchManagerSNSTopic
+    Export:
+      Name: PatchManagerSnsTopicArn

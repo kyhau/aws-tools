@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Scan patches from a patch baseline to a Linux or Windows operating system.
+
+Resources:
+  RunPatchBaseline:
+    Type: AWS::SSM::Association
+    Properties:
+      AssociationName: RunPatchBaseline-Scan-All
+      Name: AWS-RunPatchBaseline
+      Parameters:
+        Operation:
+          - Scan
+      ScheduleExpression: "rate(6 hours)"
+      Targets:
+        - Key: InstanceIds
+          Values: 
+            - "*"

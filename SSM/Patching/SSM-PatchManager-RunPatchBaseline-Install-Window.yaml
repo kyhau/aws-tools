@@ -1,0 +1,231 @@
+# StackName: PatchManager-RunPatchBaseline-(Mon1am)
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >-
+  Create a maintenance window for defining a schedule for patching operations.
+  Each maintenance window has a schedule, a duration, a set of registered targets, and a set of registered tasks.
+
+Parameters:
+  DocumentHash:
+    Description: >-
+      Document hash of AWS-RunPatchBaseline.
+      This value tends to not change from Account to Account unless it is updated by AWS.
+      You can verify it here: AWS Systems Manager/Documents/Document Name: AWS-RunPatchBaseline.
+    Type: String
+    Default: 7fe2f2bc4494ad06537fa13b9b59e1671d9adce4571708316a323eafcc1e398a
+  NotificationEmailAddress:
+    Description: Email address for the notification of Patch Management events.
+    Type: String
+  PatchGroupValue:
+    Description: Optional. The value of the "Patch Group" EC2 tag.
+    Type: String
+  ScheduleTimeZoneIana:
+    Description: The time zone that the scheduled maintenance window executions are based on, in IANA format.
+    Type: String
+    Default: "Australia/Melbourne"
+  ScheduleWindowName:
+    Description: The name of the maintenance window.
+    Type: String
+    Default: Mon1am
+    AllowedValues:
+      - Mon1am
+      - Tue1am
+    ConstraintDescription: must be a supported schedule
+
+Conditions:
+  PatchGroupSpecified: !Not [!Equals [!Ref PatchGroupValue, ""]]
+
+Mappings:
+  Schedules:
+    Every15min:
+    Mon1am:
+      Schedule: "cron(0 1 ? * MON *)"
+      TagMaintenanceWindow: "Mon 1am"
+    Tue1am:
+      Schedule: "cron(0 1 ? * TUE *)"
+      TagMaintenanceWindow: "Tue 1am"
+
+Resources:
+  MaintenanceWindow:
+    Type: AWS::SSM::MaintenanceWindow
+    Properties:
+      AllowUnassociatedTargets: true
+      # The number of hours before the end of the maintenance window that Systems Manager stops scheduling new tasks
+      # for execution (0-23).
+      Cutoff: 2
+      Description: !Join ["", [
+        "Maintenance window (",
+        !FindInMap [Schedules, !Ref ScheduleWindowName, TagMaintenanceWindow],
+        ") for performing patching operations on instances using AWS-RunPatchBaseline"]]
+      # The duration of the maintenance window in hours (1-24).
+      Duration: 3
+      Name: !Sub ${AWS::StackName}-Window
+      Schedule: !FindInMap [Schedules, !Ref ScheduleWindowName, Schedule]
+      ScheduleTimezone: !Ref ScheduleTimeZoneIana
+      Tags:
+        - Key: Project
+          Value: PatchManagement
+        - Key: Group
+          Value: PatchManagement
+        - Key: Description
+          Value: Perform patching operations on instances using AWS-RunPatchBaseline
+        - Key: User
+          Value: !Ref NotificationEmailAddress
+        - Key: CostCentre
+          Value: PatchManagement
+
+  MaintenanceWindowTarget:
+    Type: AWS::SSM::MaintenanceWindowTarget
+    DependsOn: MaintenanceWindow
+    Properties:
+      Name: !Sub ${AWS::StackName}-Target
+      Description: !Join ["", [
+        "Patch EC2 instances with tag Maintenance Window (",
+        !FindInMap [Schedules, !Ref ScheduleWindowName, TagMaintenanceWindow],
+        ")"]]
+      WindowId: !Ref MaintenanceWindow
+      ResourceType: INSTANCE
+      Targets:
+        - Key: "tag:Maintenance Window"
+          Values:
+            - !FindInMap [Schedules, !Ref ScheduleWindowName, TagMaintenanceWindow]
+        - !If
+          - PatchGroupSpecified
+          - Key: "tag:Patch Group"
+            Values:
+              - !Ref PatchGroupValue
+          - !Ref AWS::NoValue
+
+  MaintenanceWindowServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+                - ssm.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonSSMMaintenanceWindowRole
+      Policies:
+        - PolicyName: PassRole
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource:
+                  - "*"
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:PubObject*
+                Resource:
+                  - !ImportValue PatchManagerLogBucketArn
+                  - !Join [/, [!ImportValue PatchManagerLogBucketArn, "*"]]
+      Tags:
+        - Key: Project
+          Value: PatchManagement
+        - Key: Group
+          Value: PatchManagement
+        - Key: Description
+          Value: Perform patching operations on instances using AWS-RunPatchBaseline
+        - Key: User
+          Value: !Ref NotificationEmailAddress
+        - Key: CostCentre
+          Value: PatchManagement
+
+  RunCommandSnsNotificationServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ssm.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: SNSPublishPermissions
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource:
+                  - "*"
+      Tags:
+        - Key: Project
+          Value: PatchManagement
+        - Key: Group
+          Value: PatchManagement
+        - Key: Description
+          Value: Perform patching operations on instances using AWS-RunPatchBaseline
+        - Key: User
+          Value: !Ref NotificationEmailAddress
+        - Key: CostCentre
+          Value: PatchManagement
+
+  MaintenanceWindowRunCommandTask:
+    Type: AWS::SSM::MaintenanceWindowTask
+    DependsOn: [MaintenanceWindow, MaintenanceWindowTarget, MaintenanceWindowServiceRole, RunCommandSnsNotificationServiceRole]
+    Properties:
+      Description: Install patches from a patch baseline to a Linux or Windows instances using AWS-RunPatchBaseline.
+      MaxConcurrency: 50%
+      MaxErrors: 25%
+      Name: !Sub ${AWS::StackName}-Task
+      Priority: 1    # Job Priority (0-5)
+      ServiceRoleArn: !GetAtt MaintenanceWindowServiceRole.Arn
+      Targets:
+        - Key: WindowTargetIds
+          Values:
+            - !Ref MaintenanceWindowTarget
+      TaskArn: AWS-RunPatchBaseline
+      TaskInvocationParameters:
+        MaintenanceWindowRunCommandParameters:
+          Comment: Install patches from a patch baseline to a Linux or Windows instances using AWS-RunPatchBaseline.
+          DocumentHash: !Ref DocumentHash
+          DocumentHashType: Sha256
+          NotificationConfig:
+            NotificationArn: !ImportValue PatchManagerSnsTopicArn
+            NotificationEvents:  # Valid values: All, InProgress, Success, TimedOut, Cancelled, Failed
+              - TimedOut
+              - Failed
+              - Success
+            NotificationType: Command
+          OutputS3BucketName: !ImportValue PatchManagerLogBucketId
+          OutputS3KeyPrefix: RunPatchBaseline
+          Parameters:
+            Operation:
+              - Install
+            RebootOption:
+              - RebootIfNeeded
+          # Note that ServiceRoleArn here is the ARN of the IAM service role to use to publish SNS notifications
+          # for maintenance window Run Command tasks. Not the "Maintenance Windows service role".
+          ServiceRoleArn: !GetAtt RunCommandSnsNotificationServiceRole.Arn
+      TaskType: RUN_COMMAND
+      WindowId: !Ref MaintenanceWindow
+
+Outputs:
+  MaintenanceWindowTargetID:
+    Description: Maintenance window target ID
+    Value: !Ref MaintenanceWindowTarget
+  MaintenanceWindowTaskID:
+    Description: Maintenance window task ID
+    Value: !Ref MaintenanceWindowRunCommandTask
+  MaintenanceWindowID:
+    Description: Maintenance window ID
+    Value: !Ref MaintenanceWindow
+  RunCommandSnsNotificationServiceRoleArn:
+    Description: ARN of the IAM service role to use to publish SNS notifications for maintenance window Run Command tasks.
+    Value: !GetAtt RunCommandSnsNotificationServiceRole.Arn

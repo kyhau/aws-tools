@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Define custom patch baseline
+
+Resources:
+  WindowsDefaultPatchBaseline:
+    Type: AWS::SSM::PatchBaseline
+    Properties:
+      Name: SB-WindowsDefaultPatchBaseline
+      Description: Baseline containing all updates approved for Windows instances
+      OperatingSystem: WINDOWS
+      PatchGroups:
+      - TODO
+      ApprovalRules:
+        PatchRules:
+        - PatchFilterGroup:
+            PatchFilters:
+            - Values:
+              - Critical
+              - Important
+              Key: MSRC_SEVERITY
+            - Values:
+              - SecurityUpdates
+              - CriticalUpdates
+              Key: CLASSIFICATION
+          ApproveAfterDays: 7
+          ComplianceLevel: CRITICAL
+
+  AmazonLinux2DefaultPatchBaseline:
+    Type: AWS::SSM::PatchBaseline
+    Properties:
+      Name: SB-AmazonLinux2DefaultPatchBaseline
+      Description: Baseline containing all updates approved for Amazon Linux 2 instances
+      OperatingSystem: AMAZON_LINUX_2
+      PatchGroups:
+      - TODO
+      ApprovalRules:
+        PatchRules:
+        - PatchFilterGroup:
+            PatchFilters:
+            - Values:
+              - Critical
+              - Important
+              Key: MSRC_SEVERITY
+            - Values:
+              - SecurityUpdates
+              - CriticalUpdates
+              Key: CLASSIFICATION
+          ApproveAfterDays: 7
+          ComplianceLevel: CRITICAL
+        - PatchFilterGroup:
+            PatchFilters:
+            - Values:
+              - Bugfix
+              Key: CLASSIFICATION
+          ApproveAfterDays: 7
+          ComplianceLevel: CRITICAL
