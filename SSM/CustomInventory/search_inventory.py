@@ -62,8 +62,8 @@ def get_instances(ec2, instance_id=None):
                 Filters=[{"Name": "instance-state-name", "Values": ["running", "stopping", "stopped"]}]):
             ret[instance.id] = data(instance)
     else:
-        instance = ec2.instances.filter(InstanceIds=[instance_id])
-        ret[instance.id] = data(instance)
+        for instance in ec2.instances.filter(InstanceIds=[instance_id]):
+            ret[instance.id] = data(instance)
     return ret
 
 
