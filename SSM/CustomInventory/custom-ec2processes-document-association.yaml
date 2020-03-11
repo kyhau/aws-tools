@@ -83,11 +83,16 @@ Resources:
 
                 declare -a results
                 for process_keyword in ${process_keywords[@]}; do
-                  ret=$(ps -A -o cmd --no-headers | grep ${process_keyword} | grep -v 'grep' | awk -vORS=, '{print $0}')
-                  IFS=","
-                  for p in ${ret}; do
-                    [[ "${results[@]}" =~ ${p} ]] || results+=($p)
-                  done
+                  if [ "$(ps -A -o cmd --no-headers | grep -i ${process_keyword} | grep -v grep -c)" -ge 1 ]; then
+                    [[ "${results[@]}" =~ "${process_keyword}" ]] || results+=($process_keyword)
+                  fi
+
+                  # Approach 2: log the entire process string
+                  # ret=$(ps -A -o cmd --no-headers | grep ${process_keyword} | grep -v 'grep' | awk -vORS=, '{print $0}')
+                  # IFS=","
+                  # for p in ${ret}; do
+                  #   [[ "${results[@]}" =~ ${p} ]] || results+=($p)
+                  # done
                 done
 
                 # Write to file
