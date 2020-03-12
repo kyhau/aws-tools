@@ -6,11 +6,11 @@ Parameters:
   LinuxProcessKeywords:
     Description: Comma-separated keywords to be searched on running processes in an EC2 instance.
     Type: String
-    Default: "cassandra,dse,mysql,postgres,redis,memcached"
+    Default: "CassandraDaemon,dse cassandra,mysql,postgres,redis-server,redis-sentinel,memcached"
   WindowsProcessKeywords:
     Description: Comma-separated keywords to be searched on running processes in an EC2 instance.
     Type: String
-    Default: "sqlservr,cassandra,dse,mysql,postgres,redis,memcached"
+    Default: "sqlservr,cassandra,mysql,postgres,redis-server,redis-sentinel,memcached"
   ScheduleExpressionCron:
     Description: A cron expression that specifies a schedule when the association runs.
     Type: String
@@ -75,16 +75,17 @@ Resources:
           inputs:
             runCommand:
               - |
-                IFS="," process_keywords=( {{ linuxProcessNames }} )
+                IFS="," read -ra process_keywords <<< "{{ linuxDbProcessNames }}"
 
                 instanceId=`curl http://169.254.169.254/latest/meta-data/instance-id`
                 filepath="/var/lib/amazon/ssm/$instanceId/inventory/custom/Processes.json"
                 [[ -f ${filepath} ]] || touch $filepath
 
                 declare -a results
-                for process_keyword in ${process_keywords[@]}; do
-                  if [ "$(ps -A -o cmd --no-headers | grep -i ${process_keyword} | grep -v grep -c)" -ge 1 ]; then
-                    [[ "${results[@]}" =~ "${process_keyword}" ]] || results+=($process_keyword)
+                for process_keyword in "${process_keywords[@]}"; do
+                  echo "Checking ${process_keyword}"
+                  if [[ $(ps -A -o cmd --no-headers | grep -i "${process_keyword}" | grep -v grep -c) -ge 1 ]]; then
+                    [[ "${results[@]}" =~ "${process_keyword}" ]] || results+=("$process_keyword")
                   fi
 
                   # Approach 2: log the entire process string
