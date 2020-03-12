@@ -15,7 +15,7 @@ logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 # TODO Change inventory_type_name and processes below
 # inventory_type_name = "Custom:Processes"
 inventory_type_name = "Custom:DatabaseProcesses"
-processes = ["sqlservr", "cassandra", "dse", "mysql", "postgres", "redis", "memcached", "oninit"]
+processes = ["sqlservr", "dse cassandra", "CassandraDaemon", "mysql", "postgres", "redis-server", "redis-sentinel", "memcached", "oninit"]
 
 aws_profiles = []
 try:
