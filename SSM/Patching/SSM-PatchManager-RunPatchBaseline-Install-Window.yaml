@@ -6,14 +6,7 @@ Description: >-
   Each maintenance window has a schedule, a duration, a set of registered targets, and a set of registered tasks.
 
 Parameters:
-  DocumentHash:
-    Description: >-
-      Document hash of AWS-RunPatchBaseline.
-      This value tends to not change from Account to Account unless it is updated by AWS.
-      You can verify it here: AWS Systems Manager/Documents/Document Name: AWS-RunPatchBaseline.
-    Type: String
-    Default: 7fe2f2bc4494ad06537fa13b9b59e1671d9adce4571708316a323eafcc1e398a
-  NotificationEmailAddress:
+  NotificationEmail:
     Description: Email address for the notification of Patch Management events.
     Type: String
   PatchGroupValue:
@@ -28,6 +21,7 @@ Parameters:
     Type: String
     Default: Mon1am
     AllowedValues:
+      - Every15min
       - Mon1am
       - Tue1am
     ConstraintDescription: must be a supported schedule
@@ -38,12 +32,14 @@ Conditions:
 Mappings:
   Schedules:
     Every15min:
+      Schedule: "cron(0/15 * * * ? *)"
+      TagValue: "Every 15min"
     Mon1am:
       Schedule: "cron(0 1 ? * MON *)"
-      TagMaintenanceWindow: "Mon 1am"
+      TagValue: "Mon 1am"
     Tue1am:
       Schedule: "cron(0 1 ? * TUE *)"
-      TagMaintenanceWindow: "Tue 1am"
+      TagValue: "Tue 1am"
 
 Resources:
   MaintenanceWindow:
@@ -55,7 +51,7 @@ Resources:
       Cutoff: 2
       Description: !Join ["", [
         "Maintenance window (",
-        !FindInMap [Schedules, !Ref ScheduleWindowName, TagMaintenanceWindow],
+        !FindInMap [Schedules, !Ref ScheduleWindowName, TagValue],
         ") for performing patching operations on instances using AWS-RunPatchBaseline"]]
       # The duration of the maintenance window in hours (1-24).
       Duration: 3
@@ -63,32 +59,23 @@ Resources:
       Schedule: !FindInMap [Schedules, !Ref ScheduleWindowName, Schedule]
       ScheduleTimezone: !Ref ScheduleTimeZoneIana
       Tags:
-        - Key: Project
-          Value: PatchManagement
-        - Key: Group
-          Value: PatchManagement
-        - Key: Description
-          Value: Perform patching operations on instances using AWS-RunPatchBaseline
-        - Key: User
-          Value: !Ref NotificationEmailAddress
-        - Key: CostCentre
+        - Key: Billing
           Value: PatchManagement
 
   MaintenanceWindowTarget:
     Type: AWS::SSM::MaintenanceWindowTarget
-    DependsOn: MaintenanceWindow
     Properties:
       Name: !Sub ${AWS::StackName}-Target
       Description: !Join ["", [
         "Patch EC2 instances with tag Maintenance Window (",
-        !FindInMap [Schedules, !Ref ScheduleWindowName, TagMaintenanceWindow],
+        !FindInMap [Schedules, !Ref ScheduleWindowName, TagValue],
         ")"]]
       WindowId: !Ref MaintenanceWindow
       ResourceType: INSTANCE
       Targets:
         - Key: "tag:Maintenance Window"
           Values:
-            - !FindInMap [Schedules, !Ref ScheduleWindowName, TagMaintenanceWindow]
+            - !FindInMap [Schedules, !Ref ScheduleWindowName, TagValue]
         - !If
           - PatchGroupSpecified
           - Key: "tag:Patch Group"
@@ -130,15 +117,7 @@ Resources:
                   - !ImportValue PatchManagerLogBucketArn
                   - !Join [/, [!ImportValue PatchManagerLogBucketArn, "*"]]
       Tags:
-        - Key: Project
-          Value: PatchManagement
-        - Key: Group
-          Value: PatchManagement
-        - Key: Description
-          Value: Perform patching operations on instances using AWS-RunPatchBaseline
-        - Key: User
-          Value: !Ref NotificationEmailAddress
-        - Key: CostCentre
+        - Key: Billing
           Value: PatchManagement
 
   RunCommandSnsNotificationServiceRole:
@@ -165,20 +144,11 @@ Resources:
                 Resource:
                   - "*"
       Tags:
-        - Key: Project
-          Value: PatchManagement
-        - Key: Group
-          Value: PatchManagement
-        - Key: Description
-          Value: Perform patching operations on instances using AWS-RunPatchBaseline
-        - Key: User
-          Value: !Ref NotificationEmailAddress
-        - Key: CostCentre
+        - Key: Billing
           Value: PatchManagement
 
   MaintenanceWindowRunCommandTask:
     Type: AWS::SSM::MaintenanceWindowTask
-    DependsOn: [MaintenanceWindow, MaintenanceWindowTarget, MaintenanceWindowServiceRole, RunCommandSnsNotificationServiceRole]
     Properties:
       Description: Install patches from a patch baseline to a Linux or Windows instances using AWS-RunPatchBaseline.
       MaxConcurrency: 50%
@@ -194,8 +164,6 @@ Resources:
       TaskInvocationParameters:
         MaintenanceWindowRunCommandParameters:
           Comment: Install patches from a patch baseline to a Linux or Windows instances using AWS-RunPatchBaseline.
-          DocumentHash: !Ref DocumentHash
-          DocumentHashType: Sha256
           NotificationConfig:
             NotificationArn: !ImportValue PatchManagerSnsTopicArn
             NotificationEvents:  # Valid values: All, InProgress, Success, TimedOut, Cancelled, Failed
@@ -226,6 +194,9 @@ Outputs:
   MaintenanceWindowID:
     Description: Maintenance window ID
     Value: !Ref MaintenanceWindow
+  MaintenanceWindowServiceRoleArn:
+    Description: ARN of the IAM service role that allows Maintenance Windows to interact with other AWS services.
+    Value: !GetAtt MaintenanceWindowServiceRole.Arn
   RunCommandSnsNotificationServiceRoleArn:
     Description: ARN of the IAM service role to use to publish SNS notifications for maintenance window Run Command tasks.
     Value: !GetAtt RunCommandSnsNotificationServiceRole.Arn
