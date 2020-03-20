@@ -26,6 +26,8 @@ alias aws-ec2-unreachable='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_unreachable
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 
+alias aws-guardduty-findings='python ${ARKI_REPO_HOME}/GuardDuty/list_findings.py'
+
 alias aws-rds-instances='python ${ARKI_REPO_HOME}/RDS/list_rds_instances.py'
 
 alias aws-s3-size='aws s3 ls --summarize --human-readable --recursive s3://'

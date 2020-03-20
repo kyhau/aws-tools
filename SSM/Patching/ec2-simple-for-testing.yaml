@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create EC2 instance for testing
+
+Parameters:
+  ImageId:
+    Description: AMI ID.
+    Type: String
+  InstanceName:
+    Description: Instance Name.
+    Type: String
+    Default: PatchManagementTest-1
+  InstanceProfile:
+    Description: Instance Profile, with permission for ssm agent to write to the SSM log bucket.
+    Type: String
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance.
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  SubnetId:
+    Description: The subnet ID to be attached to the EC2 instance.
+    Type: AWS::EC2::Subnet::Id
+  MaintenanceWindowTagValue:
+    Description: Value of the tag.
+    Type: String
+    Default: Every 15min
+  VpcId:
+    Description: VPC ID to be referenced in the security group.
+    Type: AWS::EC2::VPC::Id
+
+Resources:
+#  InstanceRole:
+#    Type: AWS::IAM::Role
+#    Properties:
+#      AssumeRolePolicyDocument:
+#        Version: 2012-10-17
+#        Statement:
+#          - Effect: Allow
+#            Principal:
+#              Service:
+#                - ec2.amazonaws.com
+#            Action:
+#              - sts:AssumeRole
+#        Path: /
+#        Policies:
+#          - PolicyName: TestRolePolicy
+#            PolicyDocument:
+#              Version: 2012-10-17
+#              Statement:
+#                - Effect: Allow
+#                  Action: '*'
+#                  Resource: '*'
+#  InstanceProfile:
+#    Type: AWS::IAM::InstanceProfile
+#    DependsOn: InstanceRole
+#    Properties:
+#      Path: /
+#      Roles:
+#        - !Ref InstanceRole
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Testing
+      GroupName: !Ref InstanceName
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Billing
+          Value: PatchManagement
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: ap-southeast-2a
+      IamInstanceProfile: !Ref InstanceProfile
+      ImageId: !Ref ImageId
+      InstanceType: t3.medium
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !GetAtt SecurityGroup.GroupId
+      SubnetId: !Ref SubnetId
+      Tags:
+        - Key: Billing
+          Value: PatchManagement
+        - Key: Maintenance Window
+          Value: !Ref MaintenanceWindowTagValue
+
+Outputs:
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref EC2Instance
+  InstanceAZ:
+    Description: Availability Zone of the newly created EC2 instance
+    Value: !GetAtt EC2Instance.AvailabilityZone
+  InstancePrivateIP:
+    Description: Private IP address of the newly created EC2 instance
+    Value: !GetAtt EC2Instance.PrivateIp

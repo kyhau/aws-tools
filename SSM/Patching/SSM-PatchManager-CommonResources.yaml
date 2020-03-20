@@ -6,13 +6,14 @@ Parameters:
   BucketName:
     Description: The name of the S3 bucket to be created.
     Type: String
-  NotificationEmailAddress:
+  NotificationEmail:
     Description: Email address for the notification of Patch Management events.
     Type: String
 
 Resources:
   PatchManagerLogBucket:
     Type: AWS::S3::Bucket
+    UpdateReplacePolicy: Retain
     DeletionPolicy: Retain
     Properties:
       BucketName: !Ref BucketName
@@ -34,7 +35,7 @@ Resources:
     Properties:
       TopicName: PatchManagerNotification
       Subscription:
-        - Endpoint: !Ref NotificationEmailAddress
+        - Endpoint: !Ref NotificationEmail
           Protocol: email
       Tags:
         - Key: Billing
