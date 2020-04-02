@@ -25,10 +25,8 @@ try:
 except Exception as e:
     logging.error(e)
 
-accounts_processed = []
 
-
-def process_data(instance_id, account_id, region, profile, session):
+def process_data(session, region, instance_id):
     client = session.client("ssm", region_name=region)
     resp = client.list_inventory_entries(InstanceId=instance_id, TypeName="AWS:Application")
     for entry in resp["Entries"]:
@@ -37,15 +35,10 @@ def process_data(instance_id, account_id, region, profile, session):
             print(f"{instance_id}, {entry['Name']}")
 
 
-def list_action(session, aws_region, profile, instance_id):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id in accounts_processed:
-        return
-    accounts_processed.append(account_id)
-
+def process_account(session, profile, aws_region, instance_id):
     regions = session.get_available_regions("ec2") if aws_region == "all" else [aws_region]
     for region in regions:
-        logging.debug(f"Checking {account_id} {region}")
+        logging.debug(f"Checking {profile} {region}")
         try:
             if instance_id:
                 instance_ids = [instance_id]
@@ -54,18 +47,20 @@ def list_action(session, aws_region, profile, instance_id):
                 instance_ids = [instance.id for instance in ec2.instances.all()]
 
             for instance_id in instance_ids:
-                process_data(instance_id, account_id, region, profile, session)
+                process_data(session, region, instance_id)
 
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
-            if error_code in ["AuthFailure", "UnrecognizedClientException"]:
+            if error_code in [
+                "AuthFailure", "UnrecognizedClientException", "AccessDenied", "UnauthorizedOperation", "RequestExpired"
+            ]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
-            elif error_code in ["AccessDenied", "UnauthorizedOperation", "RequestExpired"]:
-                logging.warning(f"Unable to process account {account_id}: {e}")
             else:
                 raise
         except Exception as e:
             logging.error(e)
+            import traceback
+            traceback.print_exc()
 
 
 ################################################################################
@@ -76,18 +71,24 @@ def list_action(session, aws_region, profile, instance_id):
 @click.option("--instance", "-i", help="EC2 instance ID")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
 def main(profile, instance, region):
+    accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
     
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            ret = list_action(session, region, profile_name, instance)
-            if ret is not None:
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
+            
+            if process_account(session, profile_name, region, instance) is not None:
                 break
 
         except ClientError as e:
-            if e.response["Error"]["Code"] == "ExpiredToken":
-                logging.warning(f"Profile [{profile_name}] token expired. Skipped")
+            error_code = e.response["Error"]["Code"]
+            if error_code == "ExpiredToken":
+                logging.warning(f'{profile_name} {error_code}. Skipped')
             else:
                 raise
 

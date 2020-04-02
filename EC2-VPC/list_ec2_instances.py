@@ -19,7 +19,6 @@ try:
 except Exception as e:
     logging.error(e)
 
-accounts_processed = []
 amis_known = {}
 
 
@@ -61,23 +60,18 @@ def process_data(response, account_id, region, profile, client, detailed):
             print(",".join(data))
 
 
-def list_action(session, instanceid, aws_region, profile, detailed):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id in accounts_processed:
-        return
-    accounts_processed.append(account_id)
-
+def process_account(session, profile, account_id, aws_region, instance_id, detailed):
     regions = session.get_available_regions("ec2") if aws_region == "all" else [aws_region]
     for region in regions:
         logging.debug(f"Checking {account_id} {profile} {region}")
         try:
             client = session.client("ec2", region_name=region)
-            if instanceid is None:
+            if instance_id is None:
                 paginator = client.get_paginator("describe_instances")
                 for page in paginator.paginate():
                     process_data(page, account_id, region, profile, client, detailed)
             else:
-                ret = client.describe_instances(InstanceIds=[instanceid])
+                ret = client.describe_instances(InstanceIds=[instance_id])
                 process_data(ret, account_id, region, profile, client, detailed)
                 return ret
 
@@ -85,8 +79,6 @@ def list_action(session, instanceid, aws_region, profile, detailed):
             error_code = e.response["Error"]["Code"]
             if error_code in ["AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
-            elif error_code == "AccessDenied":
-                logging.warning(f"Unable to process account {account_id}: {e}")
             elif error_code == "InvalidInstanceID.NotFound":
                 pass
             else:
@@ -109,18 +101,24 @@ def main(profile, instanceid, region, detailed):
     """
     Output: account_id, region, instance_id, private_ip, public_ip
     """
+    accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
     
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            ret = list_action(session, instanceid, region, profile_name, detailed)
-            if ret is not None:
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
+            
+            if process_account(session, profile_name, account_id, region, instanceid, detailed) is not None:
                 break
 
         except ClientError as e:
-            if e.response["Error"]["Code"] == "ExpiredToken":
-                logging.warning(f"{profile_name} token expired. Skipped")
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["ExpiredToken", "AccessDenied"]:
+                logging.warning(f"{profile_name} {error_code}. Skipped")
             else:
                 raise
 
