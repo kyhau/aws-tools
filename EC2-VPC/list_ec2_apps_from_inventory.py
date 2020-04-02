@@ -51,9 +51,7 @@ def process_account(session, profile, aws_region, instance_id):
 
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
-            if error_code in [
-                "AuthFailure", "UnrecognizedClientException", "AccessDenied", "UnauthorizedOperation", "RequestExpired"
-            ]:
+            if error_code in ["AuthFailure", "UnrecognizedClientException", "UnauthorizedOperation", "RequestExpired"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
             else:
                 raise
@@ -87,8 +85,8 @@ def main(profile, instance, region):
 
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
-            if error_code == "ExpiredToken":
-                logging.warning(f'{profile_name} {error_code}. Skipped')
+            if error_code in ["ExpiredToken", "AccessDenied"]:
+                logging.warning(f"{profile_name} {error_code}. Skipped")
             else:
                 raise
 
