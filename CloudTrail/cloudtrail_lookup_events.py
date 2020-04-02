@@ -98,8 +98,9 @@ def main(profile, eventname, username, starttime, endtime, maxresults, region):
             process_account(session, profile_name, region, starttime, endtime, eventname, username, maxresults)
         
         except ClientError as e:
-            if e.response["Error"]["Code"] in ["ExpiredToken", "InvalidClientTokenId", "AccessDeniedException"]:
-                logging.warning(f'{profile_name} {e.response["Error"]["Code"]}. Skipped')
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["ExpiredToken", "InvalidClientTokenId", "AccessDeniedException"]:
+                logging.warning(f'{profile_name} {error_code}. Skipped')
             else:
                 raise
 
