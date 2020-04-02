@@ -118,8 +118,7 @@ def main(profile, groupid, region):
                 continue
             accounts_processed.append(account_id)
 
-            ret = process_account(session, profile_name, account_id, region, groupid)
-            if ret is not None:
+            if process_account(session, profile_name, account_id, region, groupid) is not None:
                 break
 
         except ClientError as e:

@@ -79,7 +79,7 @@ def main(profile, region):
 
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
-            if e.response["Error"]["Code"] == "ExpiredToken":
+            if error_code == "ExpiredToken":
                 logging.warning(f'{profile_name} {error_code}. Skipped')
             else:
                 raise

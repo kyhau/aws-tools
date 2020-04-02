@@ -115,8 +115,7 @@ def main(profile, region, findingid, num, findingtype, severity):
                 continue
             accounts_processed.append(account_id)
             
-            ret = process_account(session, profile_name, region, findingid, num, findingtype, severity)
-            if ret is not None:
+            if process_account(session, profile_name, region, findingid, num, findingtype, severity) is not None:
                 break
 
         except ClientError as e:
