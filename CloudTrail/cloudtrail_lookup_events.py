@@ -21,44 +21,44 @@ try:
 except Exception as e:
     logging.error(e)
 
-accounts_processed = []
 
-
-def process_account(session, event_name, user_name, start_time, end_time, max_results, aws_region, profile):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id in accounts_processed:
-        return
-    accounts_processed.append(account_id)
-
+def new_operation_params(start_time, end_time, event_name, user_name):
     end_dt = datetime.now() if end_time is None else datetime.strptime(end_time, "%Y-%m-%d")
     start_dt = end_dt - timedelta(hours=24) if start_time is None else datetime.strptime(start_time, "%Y-%m-%d")
-
+    
     lookup_attributes = []  # If more than one attribute, they are evaluated as "OR".
     if event_name is not None:
         lookup_attributes.append({"AttributeKey": "EventName", "AttributeValue": event_name})
     if user_name is not None:
         lookup_attributes.append({"AttributeKey": "Username", "AttributeValue": user_name})
-
+    
     operation_params = {"StartTime": start_dt, "EndTime": end_dt}
     if lookup_attributes:
         operation_params["LookupAttributes"] = lookup_attributes
+    return operation_params
 
+
+def process_region(client, operation_params, max_results):
+    paginator = client.get_paginator("lookup_events")
+    cnt = 0
+    for page in paginator.paginate(**operation_params):
+        for event in page["Events"]:
+            print("--------------------------------------------------------------------------------")
+            print(yaml.dump(event))
+            cnt += 1
+            if max_results is not None and cnt >= int(max_results):
+                return
+
+
+def process_account(session, profile, aws_region, start_time, end_time, event_name, user_name, max_results):
+    operation_params = new_operation_params(start_time, end_time, event_name, user_name)
+    
     regions = session.get_available_regions("cloudtrail") if aws_region == "all" else [aws_region]
     for region in regions:
-        logging.debug(f"Checking {account_id} {profile} {region}")
+        logging.debug(f"Checking {profile} {region}")
         try:
             client = session.client("cloudtrail", region_name=region)
-            paginator = client.get_paginator("lookup_events")
-            cnt = 0
-            for page in paginator.paginate(**operation_params):
-                for event in page["Events"]:
-                    print("--------------------------------------------------------------------------------")
-                    print(yaml.dump(event))
-                    cnt += 1
-                    if max_results is not None and cnt >= int(max_results):
-                        break
-                if max_results is not None and cnt >= int(max_results):  # enough results for this region
-                    break
+            process_region(client, operation_params, max_results)
         
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
@@ -84,12 +84,18 @@ def process_account(session, event_name, user_name, start_time, end_time, max_re
 @click.option("--maxresults", "-m", help="Number of events to return for each account/region; unlimited if not specified.", default=None)
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions.", default="ap-southeast-2")
 def main(profile, eventname, username, starttime, endtime, maxresults, region):
+    accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
     
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            process_account(session, eventname, username, starttime, endtime, maxresults, region, profile_name)
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
+            
+            process_account(session, profile_name, region, starttime, endtime, eventname, username, maxresults)
         
         except ClientError as e:
             if e.response["Error"]["Code"] in ["ExpiredToken", "InvalidClientTokenId", "AccessDeniedException"]:
