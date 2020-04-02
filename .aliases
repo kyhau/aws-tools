@@ -14,6 +14,7 @@ alias aws-canonical-user-id='. ${ARKI_REPO_HOME}/CloudFront-S3/get_canonical_use
 
 alias browser='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 alias aws-cloudtrail-event-names='browser https://gist.github.com/pkazi/8b5a1374771f6efa5d55b92d8835718c'
+alias aws-cloudtrail-lookup-events='ython ${ARKI_REPO_HOME}/CloudTrail/cloudtrail_lookup_events.py'
 
 alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
 
@@ -43,6 +44,8 @@ alias aws-subnet-available-ip-address-count='. ${ARKI_REPO_HOME}/EC2-VPC/availab
 alias aws-vpcendpoint-list-prefix='aws ec2 describe-prefix-lists'
 alias aws-vpcendpoint-list-supported-services='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh'
 alias aws-vpcendpoint-list-supported-services-name-only='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh --name-only'
+
+alias aws-whoami='python ${ARKI_REPO_HOME}/Security/whoami.py'
 
 alias arki-ls-common-ip-protocols='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-protocols.md'
 alias arki-ls-common-ip-ranges='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-ranges.md'
