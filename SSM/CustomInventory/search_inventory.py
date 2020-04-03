@@ -25,8 +25,6 @@ try:
 except Exception as e:
     logging.error(e)
 
-accounts_processed = []
-
 
 def get_instances_from_inventory(client):
     """
@@ -67,12 +65,7 @@ def get_instances(ec2, instance_id=None):
     return ret
 
 
-def list_action(session, instanceid, aws_region, profile):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id in accounts_processed:
-        return
-    accounts_processed.append(account_id)
-    
+def process_account(session, account_id, profile, aws_region, instanceid):
     regions = session.get_available_regions("ssm") if aws_region == "all" else [aws_region]
     for region in regions:
         logging.debug(f"Checking {account_id} {profile} {region}")
@@ -123,8 +116,6 @@ def list_action(session, instanceid, aws_region, profile):
             error_code = e.response["Error"]["Code"]
             if error_code in ["AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
-            elif error_code == "AccessDenied":
-                logging.warning(f"Unable to process account {account_id}: {e}")
             elif error_code == "InvalidInstanceID.NotFound":
                 pass
             else:
@@ -143,18 +134,24 @@ def list_action(session, instanceid, aws_region, profile):
 @click.option("--instanceid", "-i", help="EC2 instance ID", default=None)
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
 def main(profile, instanceid, region):
+    accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
     
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            ret = list_action(session, instanceid, region, profile_name)
-            if ret is not None:
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
+            
+            if process_account(session, account_id, profile_name, region, instanceid) is not None:
                 break
         
         except botocore.exceptions.ClientError as e:
-            if e.response["Error"]["Code"] == "ExpiredToken":
-                logging.warning(f"{profile_name} token expired. Skipped")
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["ExpiredToken", "AccessDenied"]:
+                logging.warning(f"{profile_name} {error_code}. Skipped")
             else:
                 raise
 

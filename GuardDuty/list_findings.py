@@ -20,7 +20,6 @@ try:
 except Exception as e:
     logging.error(e)
 
-accounts_processed = []
 
 # See https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings.html#guardduty_findings-severity
 severity_defaults = {
@@ -57,21 +56,16 @@ def get_finding_ids(client, detector_id, num, finding_type, severity):
     ).get("FindingIds", [])
 
 
-def list_action(session, aws_region, profile, finding_id, num, finding_type, severity):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id in accounts_processed:
-        return
-    accounts_processed.append(account_id)
-
+def process_account(session, profile, aws_region, finding_id, num, finding_type, severity):
     regions = session.get_available_regions("guardduty") if aws_region == "all" else [aws_region]
     for region in regions:
-        logging.debug(f"Checking {account_id} {profile} {region}")
+        logging.debug(f"Checking {profile} {region}")
         try:
             client = session.client("guardduty", region_name=region)
             
             detector_ids = list_detectors(client)
             if not detector_ids:
-                logging.info(f"No detector is found. Skipped {account_id} {region}.")
+                logging.info(f"No detector is found. Skipped {profile} {region}.")
                 continue
             
             for detector_id in detector_ids:
@@ -88,8 +82,6 @@ def list_action(session, aws_region, profile, finding_id, num, finding_type, sev
             error_code = e.response["Error"]["Code"]
             if error_code in ["AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
-            elif error_code == "AccessDenied":
-                logging.warning(f"Unable to process account {account_id}: {e}")
             elif error_code == "InvalidInstanceID.NotFound":
                 pass
             else:
@@ -112,18 +104,24 @@ def list_action(session, aws_region, profile, finding_id, num, finding_type, sev
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions. Default: ap-southeast-2.", default="ap-southeast-2")
 #@click.option("--detailed", "-d", is_flag=True)
 def main(profile, region, findingid, num, findingtype, severity):
+    accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
     
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
-            ret = list_action(session, region, profile_name, findingid, num, findingtype, severity)
-            if ret is not None:
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
+            
+            if process_account(session, profile_name, region, findingid, num, findingtype, severity) is not None:
                 break
 
         except ClientError as e:
-            if e.response["Error"]["Code"] == "ExpiredToken":
-                logging.warning(f"{profile_name} token expired. Skipped")
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["ExpiredToken", "AccessDenied"]:
+                logging.warning(f"{profile_name} {error_code}. Skipped")
             else:
                 raise
 
