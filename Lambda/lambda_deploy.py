@@ -4,11 +4,11 @@ import click
 import logging
 from os.path import basename
 
-from arki_common.aws import check_response
 from arki_common.configs import (
     init_wrapper,
     default_config_file_path,
 )
+from arki_common.utils import check_response
 
 APP_NAME = basename(__file__).split(".")[0]
 
@@ -22,6 +22,7 @@ DEFAULT_CONFIGS = {
     "aws.lambda.handler": {"required": True},
     "aws.lambda.memory": {"required": True},
     "aws.lambda.timeout": {"required": True},
+    "aws.lambda.tracingconfig": {"required": True},  # Active or PassThrough
     "aws.lambda.role.arn": {"required": True},
     "aws.lambda.environment": {"multilines": True},
 }
@@ -39,6 +40,7 @@ def prepare_func_configuration_args(settings, description):
         "Runtime": settings["aws.lambda.runtime"],
         "MemorySize": int(settings["aws.lambda.memory"]),
         "Timeout": int(settings["aws.lambda.timeout"]),
+        "TracingConfig": {"Mode": settings["aws.lambda.tracingconfig"]},
     }
 
     kms_key_arn = settings.get("aws.lambda.kmskey.arn")
