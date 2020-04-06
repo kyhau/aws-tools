@@ -22,7 +22,7 @@ DEFAULT_CONFIGS = {
     "aws.lambda.handler": {"required": True},
     "aws.lambda.memory": {"required": True},
     "aws.lambda.timeout": {"required": True},
-    "aws.lambda.tracingconfig": {"required": True},  # Active or PassThrough
+    "aws.lambda.tracingconfig": {"required": False, "default": "Active"},  # Active or PassThrough
     "aws.lambda.role.arn": {"required": True},
     "aws.lambda.environment": {"multilines": True},
 }
@@ -121,6 +121,9 @@ def process(*args, **kwargs):
     logging.debug(kwargs)
 
     try:
+        if kwargs.get("is_init"):
+            return 0
+        
         settings = kwargs.get("_arki_settings")
         zipfile = kwargs.get("zipfile")
         description = kwargs.get("description")
@@ -140,16 +143,21 @@ def process(*args, **kwargs):
 
 @click.command()
 @click.argument("config_file", required=False, default=DEFAULT_CONFIG_FILE)
+@click.option("--init", "-i", is_flag=True)
 @click.option("--config_section", "-s", required=False, default=APP_NAME, help=f"E.g. {APP_NAME}.staging")
-@click.option("--zipfile", "-z", required=True, help="Zip file of the lambda function code")
-@click.option("--description", "-d", required=True, help="Description of the deployment")
-def lambda_deploy(config_file, config_section, zipfile, description):
+@click.option("--zipfile", "-z", required=False, help="Zip file of the lambda function code")
+@click.option("--description", "-d", required=False, help="Description of the deployment")
+def lambda_deploy(config_file, init, config_section, zipfile, description):
 
     process(
         app_name=APP_NAME,
         config_file=config_file,
+        is_init=init,
         default_configs=DEFAULT_CONFIGS,
         config_section=config_section,
         zipfile=zipfile,
         description=description,
     )
+
+
+if __name__ == "__main__": lambda_deploy()

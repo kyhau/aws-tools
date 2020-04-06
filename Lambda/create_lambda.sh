@@ -22,6 +22,7 @@ aws lambda create-function \
   --handler "lambda_function.lambda_handler" \
   --runtime "python3.7" \
   --role "$ROLE_ARN" \
-  --region "$AWS_REGION"
+  --region "$AWS_REGION" \
+  --tracing-config "Active"
 
 rm lambda_function.py lambda_function.zip
