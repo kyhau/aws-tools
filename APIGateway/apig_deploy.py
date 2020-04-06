@@ -33,6 +33,7 @@ DEFAULT_CONFIGS = {
     "aws.apigateway.datatraceenabled": {"default": True},
     "aws.apigateway.logginglevel": {"default": "ERROR"},
     "aws.apigateway.metricsenabled": {"default": True},
+    "aws.apigateway.tracingenabled": {"default": True},
     "aws.apigateway.stagevariables": {"multilines": True},
     "aws.apigateway.integrations.lambdas": {"multilines": True},
 }
@@ -95,7 +96,7 @@ def check_if_stage_exists(apig_client, apiid, stage_name):
 
 
 def create_deployment(
-        apig_client, rest_api_id, stage_name, description, stage_variables_dict,
+        apig_client, rest_api_id, stage_name, description, stage_variables_dict, tracing_enabled,
         cache_cluster_enabled=False, cache_cluster_size=0
 ):
     """Create or update a deployment stage
@@ -112,7 +113,8 @@ def create_deployment(
         description=description,
         cacheClusterEnabled=cache_cluster_enabled,
         cacheClusterSize=cache_cluster_size,
-        variables=stage_variables_dict
+        tracingEnabled=tracing_enabled,
+        variables=stage_variables_dict,
     )
     return check_response(resp)
 
@@ -155,6 +157,7 @@ def process(*args, **kwargs):
         log_level = settings["aws.apigateway.logginglevel"]
         data_trace_enabled = settings["aws.apigateway.datatraceenabled"]
         metrics_enabled = settings["aws.apigateway.metricsenabled"]
+        tracing_enabled = settings["aws.apigateway.tracingenabled"]
 
         # Put the rest api to AWS
         if put_rest_api(apig_client, rest_api_id, swagger_file_yaml) is False:
@@ -170,6 +173,7 @@ def process(*args, **kwargs):
                 cache_cluster_enabled=cache_cluster_enabled,
                 cache_cluster_size=cache_cluster_size,
                 description=description,
+                tracing_enabled=tracing_enabled,
             )
             if ret:
                 ret = update_stage_logging(
