@@ -1,9 +1,7 @@
 from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
-from configparser import ConfigParser
 import logging
-from os.path import expanduser, join
 import re
 import time
 
@@ -12,14 +10,6 @@ logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger("botocore").setLevel(logging.CRITICAL)
 logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3").setLevel(logging.CRITICAL)
-
-aws_profiles = []
-try:
-    cp = ConfigParser()
-    cp.read(join(expanduser("~"), ".aws", "credentials"))
-    aws_profiles = cp.sections()
-except Exception as e:
-    logging.error(e)
 
 
 def read_sql(filename):
