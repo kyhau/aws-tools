@@ -142,6 +142,9 @@ def update_stage_logging(apig_client, rest_api_id, stage_name, data_trace_enable
 @init_wrapper
 def process(*args, **kwargs):
     try:
+        if kwargs.get("is_init"):
+            return 0
+        
         settings = kwargs.get("_arki_settings")
         deploy = kwargs.get("deploy")
         description = kwargs.get("description")
@@ -200,10 +203,11 @@ def process(*args, **kwargs):
 
 @click.command()
 @click.argument("config_file", required=False)
+@click.option("--init", "-i", is_flag=True)
 @click.option("--config_section", "-s", required=False, default=APP_NAME, help=f"E.g. {APP_NAME}.staging")
 @click.option("--deploy", "-d", required=False, help="Deploy the current rest api to a stage. Choices: [test, staging, v1]")
 @click.option("--description", required=False, help="Deployment description")
-def main(config_file, config_section, deploy, description):
+def main(config_file, init, config_section, deploy, description):
     """
     Reimport the API Swagger template to AWS.
 
@@ -212,6 +216,7 @@ def main(config_file, config_section, deploy, description):
     """
     process(
         app_name=APP_NAME,
+        is_init=init,
         config_file=config_file,
         default_configs=DEFAULT_CONFIGS,
         config_section=config_section,
