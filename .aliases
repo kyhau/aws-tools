@@ -16,6 +16,9 @@ alias browser='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 alias aws-cloudtrail-event-names='browser https://gist.github.com/pkazi/8b5a1374771f6efa5d55b92d8835718c'
 alias aws-cloudtrail-lookup-events='python ${ARKI_REPO_HOME}/CloudTrail/cloudtrail_lookup_events.py'
 
+alias aws-cloudwatch-insights-run-query='python ${ARKI_REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights_run_query.py'
+alias aws-cloudwatch-insights-list-queries='python ${ARKI_REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights_list_queries.py'
+
 alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
 
 alias aws-config-query='python ${ARKI_REPO_HOME}/Config/query_configservice.py'
