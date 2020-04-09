@@ -15,4 +15,20 @@ Remove-Item SessionManagerPluginSetup.exe
 
 Write-Host "Removed SessionManagerPluginSetup.exe"
 
-Write-Host "TODO: Add this to PATH ->   C:\Program Files\Amazon\SessionManagerPlugin\bin\"
+Param([string]$BinDirectory = "C:\Program Files\Amazon\SessionManagerPlugin\bin")
+$currentPath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+if ($currentPath -notlike "*$BinDirectory*")
+{
+    Write-Host "Adding $BinDirectory to path."
+    $newPath = $currentPath
+    if (-not ($newPath.EndsWith(";")))
+    {
+        $newPath = $newPath + ";"
+    }
+    $newPath = $newPath + $BinDirectory
+    [Environment]::SetEnvironmentVariable("PATH", $newPath, "Machine")
+}
+else
+{
+    Write-Host "$BinDirectory already in Path."
+}
