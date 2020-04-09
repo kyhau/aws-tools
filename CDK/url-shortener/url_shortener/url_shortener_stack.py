@@ -32,7 +32,9 @@ class UrlShortenerStack(Stack):
             code=aws_lambda.Code.asset("./lambda"),
             handler="handler.main",
             timeout=Duration.minutes(5),
-            runtime=aws_lambda.Runtime.PYTHON_3_7)
+            runtime=aws_lambda.Runtime.PYTHON_3_7,
+            tracing=aws_lambda.Tracing.ACTIVE,
+        )
         
         table.grant_read_write_data(function)
         
