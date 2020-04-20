@@ -9,6 +9,7 @@ boto3~=1.9
 #aws-encryption-sdk
 #aws-xray-sdk
 #pyathena
+#rdklib      # Lib for running custom AWS Config Rules at scale using Lambda Layer.
 #sagemaker
 #stepfunctions
 #AWSIoTPythonSDK
