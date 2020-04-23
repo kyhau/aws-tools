@@ -50,6 +50,8 @@ alias aws-vpcendpoint-list-supported-services-name-only='. ${ARKI_REPO_HOME}/EC2
 
 alias aws-whoami='python ${ARKI_REPO_HOME}/Security/whoami.py'
 
+alias aws-workspaces-list-connections='python ${ARKI_REPO_HOME}/Workspaces/list_workspaces_connections.py'
+
 alias arki-ls-common-ip-protocols='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-protocols.md'
 alias arki-ls-common-ip-ranges='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-ranges.md'
 alias arki-ls-common-ports='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ports.md'
