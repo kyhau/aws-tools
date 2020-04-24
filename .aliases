@@ -44,9 +44,9 @@ alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwarding
 
 alias aws-subnet-available-ip-address-count='. ${ARKI_REPO_HOME}/EC2-VPC/available_ip_address_count.sh'
 
-alias aws-vpcendpoint-list-prefix='aws ec2 describe-prefix-lists'
-alias aws-vpcendpoint-list-supported-services='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh'
-alias aws-vpcendpoint-list-supported-services-name-only='. ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/list_vpc_endpoint_services_supported.sh --name-only'
+alias aws-vpc-endpoints='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoints.py'
+alias aws-vpc-endpoint-gateway-prefix-list='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
+alias aws-vpc-endpoint-services='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoint_services.py'
 
 alias aws-whoami='python ${ARKI_REPO_HOME}/Security/whoami.py'
 
