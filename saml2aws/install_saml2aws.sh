@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=2.22.1
+VERSION=2.25.0
 ZIP_FILE="https://github.com/Versent/saml2aws/releases/download/v${VERSION}/saml2aws_${VERSION}_linux_amd64.tar.gz"
 
 echo "Downloading saml2aws_${VERSION}_linux_amd64.tar.gz to home directory..."

@@ -1,10 +1,12 @@
 # Install saml2aws
 # https://github.com/Versent/saml2aws/releases
 
+Param([string]$version = "2.25.0")
+
 Write-Host "Downloading ..."
 
 Invoke-WebRequest `
-  https://github.com/Versent/saml2aws/releases/download/v2.22.1/saml2aws_2.22.1_windows_amd64.tar.gz `
+  https://github.com/Versent/saml2aws/releases/download/v$($version)/saml2aws_$($version)_windows_amd64.tar.gz `
   -outfile saml2aws.tar.gz -UseBasicParsing
 
 Write-Host "Unziping ..."
