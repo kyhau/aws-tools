@@ -3,7 +3,7 @@ from botocore.exceptions import ClientError
 import click
 from configparser import ConfigParser
 import logging
-from os.path import exists, expanduser, join
+from os.path import basename, exists, expanduser, join
 from shutil import rmtree
 
 # Update the root logger to get messages at DEBUG and above
@@ -31,7 +31,7 @@ def dump(data, output_filename, to_console=True):
 def list_action(session, sql_statement, sqlfile):
     account_id = session.client("sts").get_caller_identity()["Account"]
     
-    output_filename = f'{account_id}_{sqlfile.replace(".sql", "")}.txt'
+    output_filename = f'{account_id}_{basename(sqlfile).replace(".sql", "")}.txt'
     if exists(output_filename):
         rmtree(output_filename)
 
