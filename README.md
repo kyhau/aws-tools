@@ -63,10 +63,10 @@ pip install -r requirements.txt
 | Description | Repo/Link |
 | :--- | :--- |
 | AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
+| AWS CloudFormation CLI (cloudformation-cli) | [aws-cloudformation/aws-cloudformation-cli](https://github.com/aws-cloudformation/cloudformation-cli) |
 | AWS CloudFormation Linter (cfn-lint)  | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
 | AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
-| AWS CloudFormation Resource Provider Development Kit (cloudformation-cli) | [aws-cloudformation/aws-cloudformation-rpdk](https://github.com/aws-cloudformation/aws-cloudformation-rpdk) |
-| AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/aws-cloudformation-rpdk-python-plugin](https://github.com/aws-cloudformation/aws-cloudformation-rpdk-python-plugin) |
+| AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) |
 | AWS CloudFormation Template Flip (cfn-flip) | [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) |
 | CloudMapper | [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper) |
 | CloudFormer | [CloudFormer for creating templates from existing AWS resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html) |
