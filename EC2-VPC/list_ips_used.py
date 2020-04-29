@@ -14,7 +14,6 @@ from configparser import ConfigParser
 import logging
 from os.path import expanduser, join
 
-#from arki_common.utils import print_json
 
 # Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
@@ -47,20 +46,16 @@ def get_ec2_tag_value(resp, tag="Name"):
     return None
 
 
-def list_action(session):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-
+def list_action(session, aws_region, account_id):
     output_filename = f"{account_id}_ips_used.csv"
     titles = [
         "PrivateIpAddress", "PrivateDnsName", "IsPrimary", "PublicIp", "PublicDnsName", "InstanceId", "Description",
         "AccountId", "Region"]
     dump(titles, output_filename, append=False)
 
-    for region in session.get_available_regions("ec2"):
+    regions = session.get_available_regions("ec2") if aws_region == "all" else [aws_region]
+    for region in regions:
         try:
-            #if region != "ap-southeast-2":
-            #    continue
-            
             logging.debug(f"Checking {account_id} {region}")
             
             client = session.client("ec2", region_name=region)
@@ -93,12 +88,19 @@ def list_action(session):
 
 @click.command()
 @click.option("--profile", "-p", help="AWS profile name")
-def main(profile):
+@click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
+def main(profile, region):
+    accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
     
     for profile_name in profile_names:
         session = Session(profile_name=profile_name)
-        list_action(session)
+        account_id = session.client("sts").get_caller_identity()["Account"]
+        if account_id in accounts_processed:
+            continue
+        accounts_processed.append(account_id)
+        
+        list_action(session, region, account_id)
 
 
 if __name__ == "__main__": main()
