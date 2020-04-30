@@ -12,6 +12,10 @@ sed -i "s/ap-southeast-2_UsrPlId/${userPoolId}/g" "$REPO_HOME/Front-End/src/App.
 sed -i "s/123usrPoolWebClientID456/${userPoolWebClientId}/g" "$REPO_HOME/Front-End/src/App.js"
 sed -i "s/abcd1234/${apidId}/g" "$REPO_HOME/Front-End/src/App.js"
 
+# You may also need
+# npm install -g @aws-amplify/cli
+# npm install react-scripts --save
+
 pushd ${REPO_HOME}/Front-End/
 yarn
 yarn start
