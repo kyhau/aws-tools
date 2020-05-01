@@ -82,12 +82,9 @@ def process_account(session, profile, aws_region, finding_id, num, finding_type,
             error_code = e.response["Error"]["Code"]
             if error_code in ["AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
-            elif error_code == "InvalidInstanceID.NotFound":
-                pass
             else:
                 raise
         except Exception as e:
-            logging.error(e)
             import traceback
             traceback.print_exc()
 
