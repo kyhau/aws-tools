@@ -49,6 +49,8 @@ alias aws-vpc-endpoints='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoints
 alias aws-vpc-endpoint-gateway-prefix-list='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
 alias aws-vpc-endpoint-services='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoint_services.py'
 
+alias aws-vpn-connections='python ${ARKI_REPO_HOME}/EC2-VPC/list_vpn_connections.py'
+
 alias aws-whoami='python ${ARKI_REPO_HOME}/Security/whoami.py'
 
 alias aws-workspaces-list-connections='python ${ARKI_REPO_HOME}/Workspaces/list_workspaces_connections.py'
