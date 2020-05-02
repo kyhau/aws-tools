@@ -33,6 +33,9 @@ alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynam
 
 alias aws-guardduty-findings='python ${ARKI_REPO_HOME}/GuardDuty/list_findings.py'
 
+alias aws-msk-cluster-bootstrap-broker-string='aws kafka get-bootstrap-brokers --query BootstrapBrokerStringTls --cluster-arn '
+alias aws-msk-cluster-zookeeper-connect-string='aws kafka describe-cluster --query ClusterInfo.ZookeeperConnectString --cluster-arn '
+
 alias aws-rds-instances='python ${ARKI_REPO_HOME}/RDS/list_rds_instances.py'
 
 alias aws-s3-size='aws s3 ls --summarize --human-readable --recursive s3://'
