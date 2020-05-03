@@ -7,23 +7,24 @@ set -e
 # Run as ec2-user
 
 # TODOs - update variables
-MSK-cluster-name="TODO"
-bootstrap-broker-host-port-pair-1="TODO"
-bootstrap-broker-host-port-pair-2="TODO"
-bootstrap-broker-host-port-pair-3="TODO"
-ZooKeeper-host-port-pair-1="TODO"
-ZooKeeper-host-port-pair-2="TODO"
-ZooKeeper-host-port-pair-3="TODO"
+MSK_CLUSTER_NAME="TODO"
+BOOTSTRAP_BROKER_HOST_PORT_PAIR_1="TODO"
+BOOTSTRAP_BROKER_HOST_PORT_PAIR_2="TODO"
+BOOTSTRAP_BROKER_HOST_PORT_PAIR_3="TODO"
+ZOOKEEPER_HOST_PORT_PAIR_1="TODO"
+ZOOKEEPER_HOST_PORT_PAIR_2="TODO"
+ZOOKEEPER_HOST_PORT_PAIR_3="TODO"
 
 ################################################################################
 echo "Installing Burrow to /home/ec2-user/..."
 pushd /home/ec2-user
 
-sudo yum install go
+sudo yum -y install go git
 go get github.com/linkedin/Burrow
 curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 pushd /home/ec2-user/go/src/github.com/linkedin/Burrow
+/home/ec2-user/go/bin/dep init
 /home/ec2-user/go/bin/dep ensure
 go install
 popd
@@ -36,7 +37,7 @@ mv /home/ec2-user/go/src/github.com/linkedin/Burrow/config/burrow.toml /home/ec2
 
 cat > /home/ec2-user/go/src/github.com/linkedin/Burrow/config/burrow.toml << EOF
 [zookeeper]
-servers=[ "${ZooKeeper-host-port-pair-1}", "${ZooKeeper-host-port-pair-2}", "${ZooKeeper-host-port-pair-3}" ]
+servers=[ "${ZOOKEEPER_HOST_PORT_PAIR_1}", "${ZOOKEEPER_HOST_PORT_PAIR_2}", "${ZOOKEEPER_HOST_PORT_PAIR_3}" ]
 timeout=6
 root-path="/burrow"
 
@@ -44,25 +45,25 @@ root-path="/burrow"
 client-id="burrow-test"
 kafka-version="0.10.0"
 
-[cluster.${MSK-cluster-name}]
+[cluster.${MSK_CLUSTER_NAME}]
 class-name="kafka"
-servers=[ "${bootstrap-broker-host-port-pair-1}", "${bootstrap-broker-host-port-pair-2}", "${bootstrap-broker-host-port-pair-3}" ]
+servers=[ "${BOOTSTRAP_BROKER_HOST_PORT_PAIR_1}", "${BOOTSTRAP_BROKER_HOST_PORT_PAIR_2}", "${BOOTSTRAP_BROKER_HOST_PORT_PAIR_3}" ]
 client-profile="test"
 topic-refresh=120
 offset-refresh=30
 
-[consumer.${MSK-cluster-name}]
+[consumer.${MSK_CLUSTER_NAME}]
 class-name="kafka"
-cluster="${MSK-cluster-name}"
-servers=[ "${bootstrap-broker-host-port-pair-1}", "${bootstrap-broker-host-port-pair-2}", "${bootstrap-broker-host-port-pair-3}" ]
+cluster="${MSK_CLUSTER_NAME}"
+servers=[ "${BOOTSTRAP_BROKER_HOST_PORT_PAIR_1}", "${BOOTSTRAP_BROKER_HOST_PORT_PAIR_2}", "${BOOTSTRAP_BROKER_HOST_PORT_PAIR_3}" ]
 client-profile="test"
 group-blacklist="^(console-consumer-|python-kafka-consumer-|quick-).*$"
 group-whitelist=""
 
-[consumer.${MSK-cluster-name}_zk]
+[consumer.${MSK_CLUSTER_NAME}_zk]
 class-name="kafka_zk"
-cluster="${MSK-cluster-name}"
-servers=[ "${ZooKeeper-host-port-pair-1}", "${ZooKeeper-host-port-pair-2}", "${ZooKeeper-host-port-pair-3}" ]
+cluster="${MSK_CLUSTER_NAME}"
+servers=[ "${ZOOKEEPER_HOST_PORT_PAIR_1}", "${ZOOKEEPER_HOST_PORT_PAIR_2}", "${ZOOKEEPER_HOST_PORT_PAIR_3}" ]
 zookeeper-path="/kafka-cluster"
 zookeeper-timeout=30
 group-blacklist="^(console-consumer-|python-kafka-consumer-|quick-).*$"
@@ -74,10 +75,6 @@ pushd /home/ec2-user/go/bin
 ./Burrow --config-dir /home/ec2-user/go/src/github.com/linkedin/Burrow/config
 popd
 
-# Check for errors
-# cat bin/log/burrow.log
-
-# Test your setup:
-# curl -XGET 'HTTP://your-localhost-ip:8000/v3/kafka'
-
-# For all of the supported HTTP requests and links, see https://github.com/linkedin/Burrow/wiki/HTTP-Endpoint.
+echo "Check for errors: bin/log/burrow.log"
+echo "Test your setup: curl -XGET 'HTTP://your-localhost-ip:8000/v3/kafka'"
+echo "For all of the supported HTTP requests and links, see https://github.com/linkedin/Burrow/wiki/HTTP-Endpoint"
