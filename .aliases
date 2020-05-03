@@ -35,6 +35,7 @@ alias aws-guardduty-findings='python ${ARKI_REPO_HOME}/GuardDuty/list_findings.p
 
 alias aws-msk-cluster-bootstrap-broker-string='aws kafka get-bootstrap-brokers --query BootstrapBrokerStringTls --cluster-arn '
 alias aws-msk-cluster-zookeeper-connect-string='aws kafka describe-cluster --query ClusterInfo.ZookeeperConnectString --cluster-arn '
+alias aws-msk-list-nodes='python ${ARKI_REPO_HOME}/MSK/msk_list_nodes.py'
 
 alias aws-rds-instances='python ${ARKI_REPO_HOME}/RDS/list_rds_instances.py'
 
