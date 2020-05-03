@@ -40,6 +40,8 @@ EOF
 
 aws kafka create-cluster --cli-input-json file://clusterinfo.json
 
-# Wait for few minutes, then try
-#
-# $ aws kafka describe-cluster --cluster-arn "Your-ClusterArn"
+echo "Wait for few minutes, then try:"
+echo "aws kafka describe-cluster --cluster-arn ClusterArn"
+
+echo "To delete the cluster, run:"
+echo "aws kafka delete-cluster -cluster-arn ClusterArn"
