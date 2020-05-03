@@ -7,7 +7,6 @@ set -e
 # Run as ec2-user
 
 # TODOs - update variables
-CLUSTER_ARN="TODO"
 MSK-cluster-name="TODO"
 bootstrap-broker-host-port-pair-1="TODO"
 bootstrap-broker-host-port-pair-2="TODO"
