@@ -24,6 +24,9 @@ pushd kafka_2.12-2.2.1/bin
 
 # If the command succeeds, you see the following message: Created topic $KAFKA_TOPIC.
 
+echo "To list topics: ./kafka-topics.sh --list --zookeeper ${ZOOKEEPER_CONNECT_STR}"
+echo "To delete this topic: ./kafka-topics.sh --delete --topic ${KAFKA_TOPIC} --zookeeper ${ZOOKEEPER_CONNECT_STR}"
+
 ################################################################################
 echo "Setting up client.properties file in /opt/kafka_xxx/bin/..."
 
