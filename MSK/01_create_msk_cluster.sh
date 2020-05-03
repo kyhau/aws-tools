@@ -33,6 +33,16 @@ cat > clusterinfo.json << EOF
     }
   },
   "EnhancedMonitoring": "PER_TOPIC_PER_BROKER",
+  "OpenMonitoring": {
+    "Prometheus": {
+      "JmxExporter": {
+        "EnabledInBroker": true
+      },
+      "NodeExporter": {
+        "EnabledInBroker": true
+      }
+    }
+  },
   "KafkaVersion": "2.2.1",
   "NumberOfBrokerNodes": 3
 }
