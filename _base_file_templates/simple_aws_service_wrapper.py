@@ -4,6 +4,7 @@ A simple script to ...
 from boto3.session import Session
 import click
 import yaml
+#boto3.setup_default_session(profile_name=AWS_PROFILE)
 
 
 @click.command()

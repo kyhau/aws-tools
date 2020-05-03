@@ -6,11 +6,7 @@ from datetime import datetime
 import logging
 from os.path import expanduser, join
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 # TODO Change inventory_type_name and processes below
 # inventory_type_name = "Custom:Processes"
@@ -120,23 +116,18 @@ def process_account(session, account_id, profile, aws_region, instanceid):
                 pass
             else:
                 raise
-        except Exception as e:
-            logging.error(e)
+        except Exception:
             import traceback
             traceback.print_exc()
 
 
-################################################################################
-# Entry point
-
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--instanceid", "-i", help="EC2 instance ID", default=None)
+@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(profile, instanceid, region):
+def main(instanceid, profile, region):
     accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
-    
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
@@ -147,7 +138,6 @@ def main(profile, instanceid, region):
             
             if process_account(session, account_id, profile_name, region, instanceid) is not None:
                 break
-        
         except botocore.exceptions.ClientError as e:
             error_code = e.response["Error"]["Code"]
             if error_code in ["ExpiredToken", "AccessDenied"]:

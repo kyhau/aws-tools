@@ -6,11 +6,7 @@ import logging
 from os.path import basename, exists, expanduser, join
 from shutil import rmtree
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 aws_profiles = []
 try:
@@ -18,7 +14,7 @@ try:
     cp.read(join(expanduser("~"), ".aws", "credentials"))
     aws_profiles = cp.sections()
 except Exception as e:
-    print(e)
+    logging.error(e)
 
 
 def dump(data, output_filename, to_console=True):
@@ -64,7 +60,6 @@ def list_action(session, sql_statement, sqlfile):
 @click.option("--profile", "-p", help="AWS profile name")
 @click.option("--sqlfile", "-s", required=True, help="File containing the sql statement (.sql)")
 def main(profile, sqlfile):
-    
     with open(sqlfile, "r") as f:
         sql_statement = f.read()
 

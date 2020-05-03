@@ -6,11 +6,7 @@ from botocore.exceptions import ClientError
 import click
 import logging
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.INFO)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 API_TESTS = {
     # service: [(func_name, {params}, [validation_funcs]]
@@ -140,7 +136,6 @@ def check_aws_apis(session, service, aws_region):
 def main(profile, service, region, listservices):
     try:
         session = Session(profile_name=profile)
-        
         if listservices:
             print(session.get_available_services())
         else:

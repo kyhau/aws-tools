@@ -5,14 +5,9 @@ from configparser import ConfigParser
 import logging
 from os.path import expanduser, join
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 instance_ids = [
-    
 ]
 commands_to_run = [
     "tasklist | findstr sql"
@@ -65,17 +60,13 @@ def do_something(session, profile, aws_region, instanceid):
             logging.error(e)
 
 
-################################################################################
-# Entry point
-
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--instanceid", "-i", help="EC2 instance ID", default=None)
+@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(profile, instanceid, region):
+def main(instanceid, profile, region):
     accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
-    
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
@@ -86,7 +77,6 @@ def main(profile, instanceid, region):
             
             if do_something(session, profile_name, region, instanceid) is not None:
                 break
-
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
             if error_code in ["ExpiredToken", "AccessDenied"]:

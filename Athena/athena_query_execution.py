@@ -5,11 +5,7 @@ import logging
 import re
 import time
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 
 def read_sql(filename):
@@ -46,9 +42,6 @@ def athena_to_s3(session, region, database, sqlfile, output, max_execution=60):
         else:
             logging.error("Unable to get_query_execution")
 
-
-################################################################################
-# Entry point
 
 @click.command()
 @click.option("--profile", "-p", help="AWS profile name.", default="default")
