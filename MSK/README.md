@@ -8,3 +8,4 @@
 - https://github.com/apache/kafka/tree/trunk/connect/mirror
 - https://cwiki.apache.org/confluence/display/KAFKA/KIP-382%3A+MirrorMaker+2.0
 - Kafka Python Client https://github.com/confluentinc/confluent-kafka-python
+- https://sookocheff.com/post/kafka/kafka-in-a-nutshell/
