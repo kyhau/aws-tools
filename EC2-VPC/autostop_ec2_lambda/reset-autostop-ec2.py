@@ -1,13 +1,19 @@
 #!/usr/bin/env python
-from __future__ import absolute_import
 import argparse
 import boto3
+import logging
+
+# Update the root logger to get messages at DEBUG and above
+logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger("botocore").setLevel(logging.CRITICAL)
+logging.getLogger("boto3").setLevel(logging.CRITICAL)
+logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 
 # App defaults
 DEFAULTS = {
-    'ec2_regions': ['ap-southeast-2'],
-    'autostop_tag_key': 'AutoStop'
+    "ec2_regions": ["ap-southeast-2"],
+    "autostop_tag_key": "AutoStop"
 }
 
 class ResetAutoStop(object):
@@ -16,16 +22,16 @@ class ResetAutoStop(object):
         self._loaded = False
         self.profile_name = profile_name
         self.ec2_regions = list()
-        self.autostop_tag_key = DEFAULTS['autostop_tag_key']
+        self.autostop_tag_key = DEFAULTS["autostop_tag_key"]
 
     def _load_config(self):
         if self._loaded:
             return
 
-        parser = argparse.ArgumentParser(description='Create backups for EC2 instances with Tag [Service]')
-        parser.add_argument('--regions', metavar='region', nargs='*',
-                            help='EC2 Region(s) to process for snapshots',
-                            default=DEFAULTS['ec2_regions'])
+        parser = argparse.ArgumentParser(description="Create backups for EC2 instances with Tag [Service]")
+        parser.add_argument("--regions", metavar="region", nargs="*",
+                            help="EC2 Region(s) to process for snapshots",
+                            default=DEFAULTS["ec2_regions"])
         settings = parser.parse_args()
 
         for region in settings.regions:
@@ -53,21 +59,21 @@ class ResetAutoStop(object):
         try:
             ec2_client = self.ec2_resource(region=region, profile_name=self.profile_name)
 
-            # find all ec2 instances which are tagged as 'vm'
+            # find all ec2 instances which are tagged as "vm"
 
             ret = ec2_client.instances.filter(
                 Filters=[
-                    {'Name': 'tag:Service', 'Values': ['vm']}
+                    {"Name": "tag:Service", "Values": ["vm"]}
                 ]
             ).create_tags(
-                Tags=[{'Key': self.autostop_tag_key, 'Value': 'True'}]
+                Tags=[{"Key": self.autostop_tag_key, "Value": "True"}]
             )
 
-            if ret[0]['ResponseMetadata']['HTTPStatusCode'] != 200:
-                print('Error: Failed to reset autostop: {}'.format(ret))
+            if ret[0]["ResponseMetadata"]["HTTPStatusCode"] != 200:
+                print("Error: Failed to reset autostop: {}".format(ret))
 
         except Exception as e:
-            print('Error: Failed to reset autostop')
+            print("Error: Failed to reset autostop")
             print(e)
 
     @staticmethod
@@ -76,10 +82,10 @@ class ResetAutoStop(object):
         Return a EC2 client
         """
         if profile_name is None:
-            ec2 = boto3.resource('ec2', region_name=region)
+            ec2 = boto3.resource("ec2", region_name=region)
         else:
             session = boto3.session.Session(profile_name=profile_name)
-            ec2 = session.resource('ec2', region)
+            ec2 = session.resource("ec2", region)
         return ec2
 
 
@@ -92,10 +98,10 @@ def lambda_handler(event, context):
     helper.start_process()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """
     Entry point for running from command line
     """
     # TODO change profile_name
-    helper = ResetAutoStop(profile_name='default-profile')
+    helper = ResetAutoStop(profile_name="default")
     helper.start_process()

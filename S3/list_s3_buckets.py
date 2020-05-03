@@ -1,37 +1,44 @@
 from boto3.session import Session
+from botocore.exceptions import ClientError
 import click
+from configparser import ConfigParser
+import logging
+from os.path import expanduser, join
 
-from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_ARNS_FILE
+logging.getLogger().setLevel(logging.DEBUG)
 
+aws_profiles = []
+try:
+    cp = ConfigParser()
+    cp.read(join(expanduser("~"), ".aws", "credentials"))
+    aws_profiles = cp.sections()
+except Exception as e:
+    logging.error(e)
 
-def list_action(session, results):
-    account_id = session.client("sts").get_caller_identity()["Account"]
-    if account_id in results:
-        return
-
-    for bucket in session.resource("s3").buckets.all():
-        results[account_id] = bucket.name
-
-
-################################################################################
-# Entry point
 
 @click.command()
 @click.option("--profile", "-p", help="AWS profile name")
-@click.option("--rolesfile", "-f", default=DEFAULT_ROLE_ARNS_FILE, help="Files containing Role ARNs")
-def main(profile, rolesfile):
-    results = {}    # { account_id: bucket_name }
+@click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
+def main(profile, region):
+    accounts_processed = []
+    profile_names = [profile] if profile else aws_profiles
+    for profile_name in profile_names:
+        try:
+            session = Session(profile_name=profile_name)
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
 
-    if profile is not None:
-        session = Session(profile_name=profile)
-        list_action(session, results)
+            for bucket in session.resource("s3").buckets.all():
+                print(f"{account_id}, {bucket.name}")
 
-    for role_arn in read_role_arns_from_file(filename=rolesfile):
-        session = assume_role(role_arn=role_arn)
-        list_action(session, results)
-
-    for account_id, bucket_name in results.items():
-        print(f"{account_id}, {bucket_name}")
+        except ClientError as e:
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["ExpiredToken", "AccessDenied"]:
+                logging.warning(f"{profile_name} {error_code}. Skipped")
+            else:
+                raise
 
 
 if __name__ == "__main__": main()

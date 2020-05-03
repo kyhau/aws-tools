@@ -19,26 +19,23 @@ except Exception as e:
     logging.error(e)
 
 
-def process_data(item):
-    mask = int(item["CidrBlock"].split("/")[1])
-    usable_ip_cnt = 2 ** (32 - mask) - 5
-    available_ip_cnt = item["AvailableIpAddressCount"]
-    
-    data = [
-        f"{item['SubnetId']}: {item['CidrBlock']}",
-        f"usable={usable_ip_cnt}",
-        f"used={usable_ip_cnt - available_ip_cnt}",
-        f"available={available_ip_cnt}",
-    ]
-    print(", ".join(data))
-
-
 def process_region(client, operation_params):
     cnt = 0
     paginator = client.get_paginator("describe_subnets")
     for page in paginator.paginate(**operation_params):
         for item in page["Subnets"]:
-            process_data(item)
+            
+            mask = int(item["CidrBlock"].split("/")[1])
+            usable_ip_cnt = 2 ** (32 - mask) - 5
+            available_ip_cnt = item["AvailableIpAddressCount"]
+            data = [
+                f"{item['SubnetId']}: {item['CidrBlock']}",
+                f"usable={usable_ip_cnt}",
+                f"used={usable_ip_cnt - available_ip_cnt}",
+                f"available={available_ip_cnt}",
+            ]
+            print(", ".join(data))
+            
             cnt += 1
     return cnt
 
@@ -84,7 +81,6 @@ def main(subnetid, detailed, profile, region):
             
             if process_account(session, profile_name, account_id, region, subnetid) is not None:
                 break
-
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
             if error_code in ["ExpiredToken", "AccessDenied"]:

@@ -2,9 +2,13 @@
 List UserArn, CreateDate, PasswordLastUsed, AccessKeyMetadata
 """
 from boto3.session import Session
+from botocore.exceptions import ClientError
 import click
 from configparser import ConfigParser
+import logging
 from os.path import expanduser, join
+
+logging.getLogger().setLevel(logging.DEBUG)
 
 aws_profiles = []
 try:
@@ -12,10 +16,10 @@ try:
     cp.read(join(expanduser("~"), ".aws", "credentials"))
     aws_profiles = cp.sections()
 except Exception as e:
-    print(e)
+    logging.error(e)
 
 
-def list_action(session):
+def process_account(session):
     try:
         paginator = session.client("iam").get_paginator("list_users")
         for page in paginator.paginate():
@@ -28,38 +32,31 @@ def list_action(session):
                     "AccessKeyMetadata": ret.get("AccessKeyMetadata"),
                 }
                 print(data)
-                
     except Exception as e:
-        print(e)
+        logging.error(e)
 
-
-################################################################################
-# Entry point
 
 @click.command()
 @click.option("--profile", "-p", help="AWS profile name")
-@click.option("--rolesfile", "-r", help="Files containing Role ARNs")
-def main(profile, rolesfile):
-    
-    if rolesfile:
-        from arki_common.aws import assume_role, read_role_arns_from_file
+def main(profile):
+    accounts_processed = []
+    profile_names = [profile] if profile else aws_profiles
+    for profile_name in profile_names:
         try:
-            for role_arn in read_role_arns_from_file(filename=rolesfile):
-                session = assume_role(role_arn=role_arn)
-                list_action(session)
-        except Exception as e:
-            print(e)
-
-    else:
-        profile_names = [profile] if profile else aws_profiles
-        
-        for profile_name in profile_names:
-            try:
-                print(f"Checking {profile_name}")
-                session = Session(profile_name=profile_name)
-                list_action(session)
-            except Exception as e:
-                print(e)
+            session = Session(profile_name=profile_name)
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
+            
+            logging.debug(f"Checking {account_id} {profile}")
+            process_account(session)
+        except ClientError as e:
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["ExpiredToken", "AccessDenied"]:
+                logging.warning(f"{profile_name} {error_code}. Skipped")
+            else:
+                raise
 
 
 if __name__ == "__main__": main()

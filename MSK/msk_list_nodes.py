@@ -7,8 +7,8 @@ import yaml
 
 
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name", default="default")
 @click.option("--clusterarn", "-c", help="ARN of MSK cluster", required=True)
+@click.option("--profile", "-p", help="AWS profile name", default="default")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
 def main(profile, clusterarn, region):
     session = Session(profile_name=profile)

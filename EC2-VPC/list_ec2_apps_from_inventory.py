@@ -5,11 +5,7 @@ from configparser import ConfigParser
 import logging
 from os.path import expanduser, join
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 app_names = [
     "Microsoft SQL Server",  # MS SQL Server
@@ -55,23 +51,18 @@ def process_account(session, profile, aws_region, instance_id):
                 logging.warning(f"Unable to process region {region}: {error_code}")
             else:
                 raise
-        except Exception as e:
-            logging.error(e)
+        except Exception:
             import traceback
             traceback.print_exc()
 
 
-################################################################################
-# Entry point
-
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--instance", "-i", help="EC2 instance ID")
+@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(profile, instance, region):
+def main(instance, profile, region):
     accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
-    
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
@@ -82,7 +73,6 @@ def main(profile, instance, region):
             
             if process_account(session, profile_name, region, instance) is not None:
                 break
-
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
             if error_code in ["ExpiredToken", "AccessDenied"]:

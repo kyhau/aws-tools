@@ -14,12 +14,7 @@ from configparser import ConfigParser
 import logging
 from os.path import expanduser, join
 
-
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 aws_profiles = []
 try:
@@ -27,7 +22,7 @@ try:
     cp.read(join(expanduser("~"), ".aws", "credentials"))
     aws_profiles = cp.sections()
 except Exception as e:
-    print(e)
+    logging.error(e)
 
 
 def dump(data, output_filename, append=True, to_console=True):
@@ -46,7 +41,7 @@ def get_ec2_tag_value(resp, tag="Name"):
     return None
 
 
-def list_action(session, aws_region, account_id):
+def process_account(session, aws_region, account_id):
     output_filename = f"{account_id}_ips_used.csv"
     titles = [
         "PrivateIpAddress", "PrivateDnsName", "IsPrimary", "PublicIp", "PublicDnsName", "InstanceId", "Description",
@@ -92,7 +87,6 @@ def list_action(session, aws_region, account_id):
 def main(profile, region):
     accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
-    
     for profile_name in profile_names:
         session = Session(profile_name=profile_name)
         account_id = session.client("sts").get_caller_identity()["Account"]
@@ -100,7 +94,7 @@ def main(profile, region):
             continue
         accounts_processed.append(account_id)
         
-        list_action(session, region, account_id)
+        process_account(session, region, account_id)
 
 
 if __name__ == "__main__": main()

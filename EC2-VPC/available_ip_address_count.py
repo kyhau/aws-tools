@@ -5,11 +5,7 @@ from configparser import ConfigParser
 import logging
 from os.path import expanduser, join
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 aws_profiles = []
 try:
@@ -62,13 +58,10 @@ def process_account(session, profile, account_id, aws_region, subnet_id, thresho
                 logging.warning(f"Unable to process region {region}: {error_code}")
             else:
                 raise
-        except Exception as e:
+        except Exception:
             import traceback
             traceback.print_exc()
 
-
-################################################################################
-# Entry point
 
 @click.command()
 @click.option("--profile", "-p", help="AWS profile name")
@@ -78,7 +71,6 @@ def process_account(session, profile, account_id, aws_region, subnet_id, thresho
 def main(profile, subnetid, threshold, region):
     accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
-    
     for profile_name in profile_names:
         try:
             session = Session(profile_name=profile_name)
