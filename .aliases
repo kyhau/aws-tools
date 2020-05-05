@@ -33,6 +33,8 @@ alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynam
 
 alias aws-guardduty-findings='python ${ARKI_REPO_HOME}/GuardDuty/list_findings.py'
 
+alias aws-ip-lookup='python ${ARKI_REPO_HOME}/EC2-VPC/find_subnet_for_ip.py'
+
 alias aws-msk-cluster-bootstrap-broker-string='aws kafka get-bootstrap-brokers --query BootstrapBrokerStringTls --cluster-arn '
 alias aws-msk-cluster-zookeeper-connect-string='aws kafka describe-cluster --query ClusterInfo.ZookeeperConnectString --cluster-arn '
 alias aws-msk-list-nodes='python ${ARKI_REPO_HOME}/MSK/msk_list_nodes.py'
@@ -47,7 +49,7 @@ alias aws-sts-decode-authorization-message='aws sts decode-authorization-message
 
 alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["3389"],"localPortNumber"=["9999"] --target '
 
-alias aws-subnet-available-ip-address-count='python ${ARKI_REPO_HOME}/EC2-VPC/available_ip_address_count.py'
+alias aws-subnet-ip-count='python ${ARKI_REPO_HOME}/EC2-VPC/available_ip_address_count.py'
 
 alias aws-vpc-endpoints='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoints.py'
 alias aws-vpc-endpoint-gateway-prefix-list='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
