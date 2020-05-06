@@ -1,3 +1,7 @@
+"""
+Output:
+subnet_id: CidrBlock, usable=(num), used=(num), available=(num),
+"""
 from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
@@ -64,11 +68,11 @@ def process_account(session, profile, account_id, aws_region, subnet_id, thresho
 
 
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--subnetid", "-s", help="ID of the subnet. Default: Describe all subnets.", default=None)
 @click.option("--threshold", "-t", help="Highlight subnet count if number of available IP address is less than this threshold. Default: 8.", default=8)
+@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(profile, subnetid, threshold, region):
+def main(subnetid, threshold, profile, region):
     accounts_processed = []
     profile_names = [profile] if profile else aws_profiles
     for profile_name in profile_names:
