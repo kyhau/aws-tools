@@ -28,6 +28,7 @@ def process_region(client, operation_params, threshold):
 
             mask = int(item["CidrBlock"].split("/")[1])
             # 5 addresses reserved per subnet: .0 network, .1 VPC router, .2 DNS, .3 future, .255 broadcast
+            # https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html
             usable_ip_cnt = 2**(32-mask) - 5
             available_ip_cnt = item["AvailableIpAddressCount"]
 
