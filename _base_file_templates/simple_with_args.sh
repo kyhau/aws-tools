@@ -1,9 +1,8 @@
 #!/bin/bash
-
 # Set to fail script if any command fails.
 set -e
 
-function finish {
+finish() {
   # Delete any tmp file
   [[ -f tmp.json ]] && rm tmp.json
   echo "Goodbye"
@@ -12,6 +11,10 @@ trap finish EXIT
 
 # Define constants
 SCRIPT_DIR=$(dirname $(realpath $0))
+
+print_line() {
+  printf "$(date +%Y-%m-%dT%H:%M:%S%z): $1\n"
+}
 
 # Define the help menu
 help_menu() {
@@ -35,3 +38,5 @@ esac; shift; done
 
 [[ ! -z "$BUILD_NUMBER" ]] || (echo "Error: BUILD_NUMBER is not provided. Aborted." && exit 1)
 
+
+print_line "Completed"
