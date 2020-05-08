@@ -1,7 +1,7 @@
 """
 bash:
-aws ssm get-parameters-by-path --path "/aws/service/ami-amazon-linux-latest" --output json | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
-aws ssm get-parameters-by-path --path "/aws/service/ami-windows-latest" --output json | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
+aws ssm get-parameters-by-path --path "/aws/service/ami-amazon-linux-latest" | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
+aws ssm get-parameters-by-path --path "/aws/service/ami-windows-latest" | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
 """
 from boto3.session import Session
 import click
@@ -12,13 +12,12 @@ import click
 @click.option("--list-windows-amis", "-w", is_flag=True, help="List all Windows AMIs.")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions; default ap-southeast-2.", default="ap-southeast-2")
 def main(list_linux_amis, list_windows_amis, region):
+    operation_params = {
+        "Path": f"/aws/service/{'ami-windows-latest' if list_windows_amis is True else 'ami-amazon-linux-latest'}"
+    }
+
     session = Session()
     regions = session.get_available_regions("ssm") if region == "all" else [region]
-
-    operation_params = {"Path": "/aws/service/ami-amazon-linux-latest"}
-    if list_windows_amis is True:
-        operation_params["Path"] = "/aws/service/ami-windows-latest"
-
     for region in regions:
         try:
             client = session.client("ssm", region_name=region)
