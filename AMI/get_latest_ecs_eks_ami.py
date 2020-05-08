@@ -4,22 +4,15 @@ aws ssm get-parameters "$@" --names /aws/service/ecs/optimized-ami/amazon-linux-
 aws ssm get-parameters "$@" --names /aws/service/eks/optimized-ami/1.14/amazon-linux-2/recommended/image_id --query "Parameters[0].Value" --output text
 """
 from boto3.session import Session
-import click
 import json
+import typer
 import yaml
 
+app = typer.Typer(help="List the latest AWS managed AMIs.")
 
-@click.command()
-@click.option("--latest-ecs-optimized-ami", "-c", is_flag=True, help="Print the latest ECS Optimised Amazon Linux 2 AMI.")
-@click.option("--latest-eks-optimized-ami", "-k", is_flag=True, help="Print the latest EKS Optimised Amazon Linux 2 AMI.")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions; default ap-southeast-2.", default="ap-southeast-2")
-def main(latest_ecs_optimized_ami, latest_eks_optimized_ami, region):
-    if latest_eks_optimized_ami is True:
-        param_path = "/aws/service/eks/optimized-ami/1.14/amazon-linux-2/recommended"
-    else:
-        param_path = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended"
+
+def process(param_path, region):
     operation_params = {"Names": [param_path]}
-
     session = Session()
     regions = session.get_available_regions("ssm") if region == "all" else [region]
     for region in regions:
@@ -35,4 +28,21 @@ def main(latest_ecs_optimized_ami, latest_eks_optimized_ami, region):
             print(f"Skip region {region} due to error: {e}")
 
 
-if __name__ == "__main__": main()
+@app.command()
+def ecs_optimized_ami(
+    region: str = typer.Option("ap-southeast-2", help="AWS Region; use 'all' for all regions.", show_default=True)
+):
+    """Print the latest ECS Optimised Amazon Linux 2 AMI."""
+    process(param_path="/aws/service/ecs/optimized-ami/amazon-linux-2/recommended", region=region)
+
+
+@app.command()
+def eks_optimized_ami(
+    region: str = typer.Option("ap-southeast-2", help="AWS Region; use 'all' for all regions.", show_default=True)
+):
+    """Print the latest EKS Optimised Amazon Linux 2 AMI."""
+    process(param_path="/aws/service/eks/optimized-ami/1.14/amazon-linux-2/recommended", region=region)
+
+
+if __name__ == "__main__":
+    app()

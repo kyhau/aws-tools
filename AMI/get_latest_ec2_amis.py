@@ -4,18 +4,13 @@ aws ssm get-parameters-by-path --path "/aws/service/ami-amazon-linux-latest" | j
 aws ssm get-parameters-by-path --path "/aws/service/ami-windows-latest" | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
 """
 from boto3.session import Session
-import click
+import typer
+
+app = typer.Typer(help="List the latest AWS managed AMIs.")
 
 
-@click.command()
-@click.option("--list-linux-amis", "-l", is_flag=True, help="List all Linux AMIs.")
-@click.option("--list-windows-amis", "-w", is_flag=True, help="List all Windows AMIs.")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions; default ap-southeast-2.", default="ap-southeast-2")
-def main(list_linux_amis, list_windows_amis, region):
-    operation_params = {
-        "Path": f"/aws/service/{'ami-windows-latest' if list_windows_amis is True else 'ami-amazon-linux-latest'}"
-    }
-
+def process(param_path, region):
+    operation_params = {"Path": param_path}
     session = Session()
     regions = session.get_available_regions("ssm") if region == "all" else [region]
     for region in regions:
@@ -29,4 +24,21 @@ def main(list_linux_amis, list_windows_amis, region):
             print(f"Skip region {region} due to error: {e}")
 
 
-if __name__ == "__main__": main()
+@app.command()
+def linux_amis(
+    region: str = typer.Option("ap-southeast-2", help="AWS Region; use 'all' for all regions.", show_default=True)
+):
+    """List all Linux AMIs."""
+    process(param_path="/aws/service/ami-amazon-linux-latest", region=region)
+
+
+@app.command()
+def windows_amis(
+    region: str = typer.Option("ap-southeast-2", help="AWS Region; use 'all' for all regions.", show_default=True)
+):
+    """List all Windows AMIs."""
+    process(param_path="/aws/service/ami-windows-latest", region=region)
+
+
+if __name__ == "__main__":
+    app()
