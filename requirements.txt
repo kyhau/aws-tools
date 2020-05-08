@@ -32,9 +32,10 @@ dataclasses-json  # provides a simple API for encoding and decoding dataclasses 
 
 click~=7.0
 PyInquirer~=1.0     # for aws_login.py
+pytz
+typer~=0.2
 #black
 #pipdeptree
-pytz
 #pyyaml~=5.1
 #pypiwin32==220
 #toml~=0.10

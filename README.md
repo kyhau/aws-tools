@@ -21,6 +21,7 @@ pip install -r requirements.txt
   - [Security](#security)
 - [Some useful tools required deployment](#some-useful-tools-required-deployment)
 - [Other tools](#other-tools)
+- [Workshops](#workshops)
 - [kyhau/aws-notebook](https://github.com/kyhau/aws-notebook)
 
 ---
@@ -125,6 +126,7 @@ pip install -r requirements.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
+| FastAPI | [tiangolo/fastapi](https://github.com/tiangolo/fastapi) |
 | Regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript | [regex101.com](https://regex101.com/) |
 | Subnet Calculator - MxToolbox | [mxtoolbox.com](https://mxtoolbox.com/subnetcalculator.aspx) |
 
