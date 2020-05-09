@@ -20,6 +20,7 @@ pip install -r requirements.txt
   - [Serverless](#serverless)
   - [Security](#security)
 - [Some useful tools required deployment](#some-useful-tools-required-deployment)
+  - [Networking](#networking)
 - [Other tools](#other-tools)
 - [Workshops](#workshops)
 - [kyhau/aws-notebook](https://github.com/kyhau/aws-notebook)
@@ -94,6 +95,8 @@ pip install -r requirements.txt
 | Description | Repo/Link |
 | :--- | :--- |
 | Open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
+| AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
+| AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
 | AWS Security Benchmark | [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark) |
 | AWS Security Hub Multiaccount Scripts | [awslabs/aws-securityhub-multiaccount-scripts](https://github.com/awslabs/aws-securityhub-multiaccount-scripts) |
 | Import AWS Config Findings into AWS Security Hub | [aws-samples/aws-securityhub-config-integration](https://github.com/aws-samples/aws-securityhub-config-integration) |
@@ -110,14 +113,17 @@ pip install -r requirements.txt
 | :--- | :--- |
 | Amazon DynamoDB NoSQL Workbench | [NoSQL Workbench for Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html) |
 | AWS Auto Scaling Custom Resources | [aws/aws-auto-scaling-custom-resource](https://github.com/aws/aws-auto-scaling-custom-resource) |
-| AWS CIDR Finder | [aws-samples/aws-cidr-finder](https://github.com/aws-samples/aws-cidr-finder) | 
 | AWS Deployment Framework (ADF) | [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework) |
 | AWS Distributed Load Testing | [awslabs/distributed-load-testing-on-aws](https://github.com/awslabs/distributed-load-testing-on-aws) |
-| AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
 | AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
 | AWS Multi Account Viewer | [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer) |
-| AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
+
+### Networking
+
+| Description | Repo/Link |
+| :--- | :--- |
+| AWS CIDR Finder | [aws-samples/aws-cidr-finder](https://github.com/aws-samples/aws-cidr-finder) | 
 | [Serverless Transit Network Orchestrator](https://aws.amazon.com/solutions/serverless-transit-network-orchestrator/) | [awslabs/serverless-transit-network-orchestrator](https://github.com/awslabs/serverless-transit-network-orchestrator) |
 | TGW (Transit Gateway) Migrator Tool | [TGW Migrator Tool](https://aws.amazon.com/blogs/networking-and-content-delivery/migrate-from-transit-vpc-to-aws-transit-gateway/) |
 | TGW to solve overlapping CIDRs | [aws-samples/aws-transit-gateway-overlapping-cidrs](https://github.com/aws-samples/aws-transit-gateway-overlapping-cidrs) |
