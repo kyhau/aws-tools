@@ -137,4 +137,5 @@ pip install -r requirements.txt
 | Subnet Calculator - MxToolbox | [mxtoolbox.com](https://mxtoolbox.com/subnetcalculator.aspx) |
 
 ## Workshops
+- https://github.com/aws-samples/asynchronous-messaging-workshop
 - https://redshift-immersion.workshop.aws
