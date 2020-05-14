@@ -1,10 +1,10 @@
 -e _common/.
 
 #virtualenv~=16.4
-#pip~=19.0
+pip
 
 # AWS related packages
-boto3~=1.9
+boto3~=1.13
 #aws-embedded-metrics
 #aws-encryption-sdk
 #aws-xray-sdk
@@ -27,10 +27,10 @@ boto3~=1.9
 #cdk-watchful
 
 # Non aws related packages
-apispec           # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
-dataclasses-json  # provides a simple API for encoding and decoding dataclasses to and from JSON
+apispec~=3.3           # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
+dataclasses-json~=0.4  # provides a simple API for encoding and decoding dataclasses to and from JSON
 
-click~=7.0
+click~=7.1
 PyInquirer~=1.0     # for aws_login.py
 pytz
 typer~=0.2
