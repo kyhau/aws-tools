@@ -1,7 +1,7 @@
 # Install saml2aws
 # https://github.com/Versent/saml2aws/releases
 
-Param([string]$version = "2.25.0")
+Param([string]$version = "2.26.1")
 
 Write-Host "Downloading ..."
 
