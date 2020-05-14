@@ -60,11 +60,16 @@ pip install -r requirements.txt
 | kubectl | [kubernetes/kubectl](https://github.com/kubernetes/kubectl) |
 | Warrant a Python library for using AWS Cognito with support for SRP| [capless/warrant](https://github.com/capless/warrant) |
 
+### CDK
+| Description | Repo/Link |
+| :--- | :--- |
+| AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
+| [CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [awslabs/cdk8s](https://github.com/awslabs/cdk8s) |
+
 ### CloudFormation
 
 | Description | Repo/Link |
 | :--- | :--- |
-| AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
 | AWS CloudFormation CLI (cloudformation-cli) | [aws-cloudformation/aws-cloudformation-cli](https://github.com/aws-cloudformation/cloudformation-cli) |
 | AWS CloudFormation Linter (cfn-lint)  | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
 | AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
@@ -137,5 +142,6 @@ pip install -r requirements.txt
 | Subnet Calculator - MxToolbox | [mxtoolbox.com](https://mxtoolbox.com/subnetcalculator.aspx) |
 
 ## Workshops
-- https://github.com/aws-samples/asynchronous-messaging-workshop
-- https://redshift-immersion.workshop.aws
+- [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop)
+- [CDK](https://cdkworkshop.com/)
+- [Redshift Immersion](https://redshift-immersion.workshop.aws)
