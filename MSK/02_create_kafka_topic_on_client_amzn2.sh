@@ -9,17 +9,11 @@ set -e
 CLUSTER_ARN="TODO"
 KAFKA_TOPIC="AWSKafkaTutorialTopic"
 
+BOOTSTRAP_BROKER_STR=$(aws kafka get-bootstrap-brokers --query BootstrapBrokerStringTls --cluster-arn ${CLUSTER_ARN})
 ZOOKEEPER_CONNECT_STR=$(aws kafka describe-cluster --query ClusterInfo.ZookeeperConnectString --cluster-arn ${CLUSTER_ARN})
 
-################################################################################
-echo "Installing Kafka to /opt/kafka_xxx..."
 
-pushd /opt
-sudo yum -y install java-1.8.0
-wget https://archive.apache.org/dist/kafka/2.2.1/kafka_2.12-2.2.1.tgz
-tar -xzf kafka_2.12-2.2.1.tgz
-
-pushd kafka_2.12-2.2.1/bin
+pushd /home/ec2-user/kafka_2.12-2.2.1/bin
 ./kafka-topics.sh --create --replication-factor 3 --partitions 1 --topic ${KAFKA_TOPIC} --zookeeper ${ZOOKEEPER_CONNECT_STR}
 
 # If the command succeeds, you see the following message: Created topic $KAFKA_TOPIC.
@@ -27,18 +21,4 @@ pushd kafka_2.12-2.2.1/bin
 echo "To list topics: ./kafka-topics.sh --list --zookeeper ${ZOOKEEPER_CONNECT_STR}"
 echo "To delete this topic: ./kafka-topics.sh --delete --topic ${KAFKA_TOPIC} --zookeeper ${ZOOKEEPER_CONNECT_STR}"
 
-################################################################################
-echo "Setting up client.properties file in /opt/kafka_xxx/bin/..."
-
-cat > client.properties << EOF
-security.protocol=SSL
-ssl.truststore.location=/tmp/kafka.client.truststore.jks
-EOF
-
-################################################################################
-echo "Preparing kafka.client.truststore.jks..."
-
-cp /usr/lib/jvm/jre-1.8.0-openjdk-1.8.0.242.b08-0.amzn2.0.1.x86_64/lib/security/cacerts /tmp/kafka.client.truststore.jks
-
-popd
 popd
