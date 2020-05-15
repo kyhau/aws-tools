@@ -1,6 +1,7 @@
 """
-Who am I?
+Given a user profile, look up what linked IAM identities it has,
 """
+import boto3
 from boto3.session import Session
 import click
 from collections import defaultdict
@@ -8,16 +9,12 @@ import json
 import logging
 from os.path import basename
 
-from arki_common.aws import assume_role, read_role_arns_from_file, DEFAULT_ROLE_ARNS_FILE
-from arki_common import init_logging
-
 
 APP_NAME = basename(__file__).split(".")[0]
 DEFAULT_SESSION_NAME = "AssumeRoleSession-ListIamUsers-local"
 OUTPUT_FILE = f"{APP_NAME}.json"
-LOG_FILE = None    # or LOG_FILE = f"{APP_NAME}.log"
 
-logger = init_logging(name=APP_NAME, log_level=logging.INFO, log_file=LOG_FILE)
+logging.getLogger().setLevel(logging.DEBUG)
 
 
 class ResultSet:
@@ -50,7 +47,20 @@ class ResultSet:
         """Print data to file"""
         with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             json.dump(self.data, f, ensure_ascii=False, indent=2, sort_keys=True)
-        logger.info(f"Output file: {OUTPUT_FILE}")
+        logging.info(f"Output file: {OUTPUT_FILE}")
+
+
+def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600):
+    resp = boto3.client("sts").assume_role(
+        RoleArn=role_arn,
+        RoleSessionName=session_name,
+        DurationSeconds=duration_secs,  # 15 mins to 1 hour or 12 hours
+    )
+    return Session(
+        aws_access_key_id=resp["Credentials"]["AccessKeyId"],
+        aws_secret_access_key=resp["Credentials"]["SecretAccessKey"],
+        aws_session_token=resp["Credentials"]["SessionToken"]
+    )
 
 
 def process_identity(session, result):
@@ -60,7 +70,7 @@ def process_identity(session, result):
         account_id = this_identity["Account"]
         arn = this_identity["Arn"]
 
-        logger.info(f"Started processing identity {arn}")
+        logging.info(f"Started processing identity {arn}")
 
         result[account_id][arn] = defaultdict(lambda: defaultdict(list))
         result[account_id][arn].update({"UserId": this_identity["UserId"]})
@@ -79,7 +89,7 @@ def process_identity(session, result):
             # 2. Retrieve policies of attached group(s)
             group_names = []
             for group in iam_client.list_groups_for_user(UserName=user_name)["Groups"]:
-                logger.info(f"Processing group {group['GroupName']}")
+                logging.info(f"Processing group {group['GroupName']}")
                 group_names.append(group["GroupName"])
                 retrieve_managed_policy_permissions(sub_result, iam_client, group["GroupName"], "group")
                 retrieve_inline_policy_permissions(sub_result, iam_client, group["GroupName"], "group")
@@ -93,7 +103,7 @@ def process_identity(session, result):
                         role_arns.add(statement["Resource"])
             sub_result["Roles"] = list(role_arns)
             for role_arn in role_arns:
-                logger.info(f"Processing assume_role {role_arn}")
+                logging.info(f"Processing assume_role {role_arn}")
                 session_1 = assume_role(role_arn=role_arn, session_name=DEFAULT_SESSION_NAME)
                 process_identity(session_1, result)
 
@@ -111,10 +121,10 @@ def process_identity(session, result):
             retrieve_managed_policy_permissions(sub_result, iam_client, role_name, "role")
             retrieve_inline_policy_permissions(sub_result, iam_client, role_name, "role")
         else:
-            logger.error(f"TODO: {arn}")
+            logging.error(f"TODO: {arn}")
 
     except Exception as e:
-        logger.error(e)
+        logging.error(e)
 
 
 def retrieve_managed_policy_permissions(result, iam_client, name, type):
@@ -128,7 +138,7 @@ def retrieve_managed_policy_permissions(result, iam_client, name, type):
         operation_name = "list_attached_group_policies"
         operation_params = {"GroupName": name}
 
-    logger.info("Retrieving managed policies")
+    logging.info("Retrieving managed policies")
 
     managed_policy_arns = set()
     paginator = iam_client.get_paginator(operation_name)
@@ -136,7 +146,7 @@ def retrieve_managed_policy_permissions(result, iam_client, name, type):
         for policy in page["AttachedPolicies"]:
             managed_policy_arns.add(policy["PolicyArn"])
 
-    logger.info("Retrieving policy document of managed policies")
+    logging.info("Retrieving policy document of managed policies")
 
     for managed_policy_arn in managed_policy_arns:
         policy = iam_client.get_policy(PolicyArn=managed_policy_arn)
@@ -161,7 +171,7 @@ def retrieve_inline_policy_permissions(result, iam_client, name, type):
         operation_params = {"GroupName": name}
         get_policy_func = iam_client.get_group_policy
 
-    logger.info("Retrieving inline policies")
+    logging.info("Retrieving inline policies")
 
     inline_policy_names = set()
     paginator = iam_client.get_paginator(operation_name)
@@ -169,7 +179,7 @@ def retrieve_inline_policy_permissions(result, iam_client, name, type):
         for policy_name in page["PolicyNames"]:
             inline_policy_names.add(policy_name)
 
-    logger.info("Retrieving policy document of inline policies")
+    logging.info("Retrieving policy document of inline policies")
 
     for inline_policy_name in inline_policy_names:
         operation_params.update({"PolicyName": inline_policy_name})
@@ -177,22 +187,12 @@ def retrieve_inline_policy_permissions(result, iam_client, name, type):
         result["AttachedInlinePolicies"][inline_policy_name] = policy["PolicyDocument"]["Statement"]
 
 
-################################################################################
-# Entry point
-
 @click.command()
 @click.option("--profile", "-p", default="default", help="AWS profile name")
 def main(profile):
     result = ResultSet()
-
     session = Session(profile_name=profile)
     process_identity(session, result.data)
-
-    #for role_arn in read_role_arns_from_file(filename=DEFAULT_ROLE_ARNS_FILE):
-    #    session = assume_role(role_arn=role_arn, session_name=DEFAULT_SESSION_NAME)
-    #    process_identity(session)
-
-    logger.info(f"Log file: {LOG_FILE}")
 
 
 if __name__ == "__main__": main()
