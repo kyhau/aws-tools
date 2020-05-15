@@ -8,8 +8,9 @@ boto3~=1.13
 #aws-embedded-metrics
 #aws-encryption-sdk
 #aws-xray-sdk
+#chalice            # AWS Chalice
 #pyathena
-#rdklib      # Lib for running custom AWS Config Rules at scale using Lambda Layer.
+#rdklib             # Lib for running custom AWS Config Rules at scale using Lambda Layer.
 #sagemaker
 #stepfunctions
 #AWSIoTPythonSDK
@@ -27,11 +28,11 @@ boto3~=1.13
 #cdk-watchful
 
 # Non aws related packages
-apispec~=3.3           # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
-dataclasses-json~=0.4  # provides a simple API for encoding and decoding dataclasses to and from JSON
+apispec~=3.3            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
+dataclasses-json~=0.4   # provides a simple API for encoding and decoding dataclasses to and from JSON
 
 click~=7.1
-PyInquirer~=1.0     # for aws_login.py
+PyInquirer~=1.0         # for saml2aws/aws_login.py
 pytz
 typer~=0.2
 #black

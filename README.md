@@ -93,7 +93,8 @@ pip install -r requirements.txt
 | Serverless Framework | [serverless/serverless](https://github.com/serverless/serverless) |
 | Serverless Components | [serverless/components](https://github.com/serverless/components) |
 | Serverless Components CLI | [serverless/cli](https://github.com/serverless/cli) |
-| Stelligent mu (a tool for managing your microservices platform) | [stelligent/mu](https://github.com/stelligent/mu)|
+| Stelligent mu (a tool for managing your microservices platform) | [stelligent/mu](https://github.com/stelligent/mu) |
+| Zappa Serverless Python | [Miserlou/Zappa](https://github.com/Miserlou/Zappa) |
 
 ### Security
 
