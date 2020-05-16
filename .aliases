@@ -26,6 +26,7 @@ alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
 alias aws-config-query='python ${ARKI_REPO_HOME}/Config/query_configservice.py'
 
 alias aws-ec2-instances='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_instances.py'
+alias aws-ec2-check-userdata='python ${ARKI_REPO_HOME}/EC2-VPC/UserData/check_UserData.py'
 alias aws-ec2-db-instances='python ${ARKI_REPO_HOME}/RDS/list_ec2_db_instances.py'
 alias aws-ec2-unreachable='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
 alias aws-ec2-security-groups='python ${ARKI_REPO_HOME}/EC2-VPC/list_security_groups.py'
