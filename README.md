@@ -22,7 +22,7 @@ pip install -r requirements.txt
 - [Some useful tools required deployment](#some-useful-tools-required-deployment)
   - [Networking](#networking)
 - [Other tools](#other-tools)
-- [Best Practices Guides]()
+- [Best Practices Guides](#best-practices-guides)
 - [Workshops](#workshops)
 - [kyhau/aws-notebook](https://github.com/kyhau/aws-notebook)
 
