@@ -32,6 +32,9 @@ def convert_floats_to_decimals(data):
     return json.loads(json.dumps(data), parse_float=Decimal)
 
 
+# Note: May not need this function anymore -
+# Since 2020-05-18 DynamoDB supports empty values for non-key String and Binary attributes in DynamoDB tables
+# https://aws.amazon.com/about-aws/whats-new/2020/05/amazon-dynamodb-now-supports-empty-values-for-non-key-string-and-binary-attributes-in-dynamodb-tables/
 def convert_empty_string_to_none(data):
     """
     Nullify empty strings in `data`.

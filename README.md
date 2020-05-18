@@ -22,6 +22,7 @@ pip install -r requirements.txt
 - [Some useful tools required deployment](#some-useful-tools-required-deployment)
   - [Networking](#networking)
 - [Other tools](#other-tools)
+- [Best Practices Guides]()
 - [Workshops](#workshops)
 - [kyhau/aws-notebook](https://github.com/kyhau/aws-notebook)
 
@@ -141,6 +142,9 @@ pip install -r requirements.txt
 | FastAPI | [tiangolo/fastapi](https://github.com/tiangolo/fastapi) |
 | Regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript | [regex101.com](https://regex101.com/) |
 | Subnet Calculator - MxToolbox | [mxtoolbox.com](https://mxtoolbox.com/subnetcalculator.aspx) |
+
+## Best Practices Guides
+- [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/), AWS
 
 ## Workshops
 - [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop)
