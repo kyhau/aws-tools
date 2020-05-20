@@ -29,9 +29,10 @@ boto3~=1.13
 
 # Non aws related packages
 apispec~=3.3            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
-dataclasses-json~=0.4   # provides a simple API for encoding and decoding dataclasses to and from JSON
-
 click~=7.1
+#confluent_kafka         # https://docs.confluent.io/current/clients/python.html
+dataclasses-json~=0.4   # provides a simple API for encoding and decoding dataclasses to and from JSON
+#faker
 PyInquirer~=1.0         # for saml2aws/aws_login.py
 pytz
 typer~=0.2
