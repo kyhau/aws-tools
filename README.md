@@ -75,6 +75,7 @@ pip install -r requirements.txt
 | AWS CloudFormation Linter (cfn-lint)  | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
 | AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
 | AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) |
+| AWS CloudFormation Sample Templates | [awslabs/aws-cloudformation-templates](https://github.com/awslabs/aws-cloudformation-templates) |
 | AWS CloudFormation Template Flip (cfn-flip) | [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) |
 | CloudMapper | [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper) |
 | CloudFormer | [CloudFormer for creating templates from existing AWS resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html) |
@@ -101,6 +102,7 @@ pip install -r requirements.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
+| A Secure Cloud - Repository of customizable AWS security configurations and best practices | [asecure.cloud/](https://asecure.cloud/) |
 | Open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
 | AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
 | AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
@@ -149,4 +151,5 @@ pip install -r requirements.txt
 ## Workshops
 - [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop)
 - [CDK](https://cdkworkshop.com/)
+- [CI/CD for Serverless Applications](https://cicd.serverlessworkshops.io/)
 - [Redshift Immersion](https://redshift-immersion.workshop.aws)
