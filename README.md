@@ -86,6 +86,7 @@ pip install -r requirements.txt
 | Description | Repo/Link |
 | :--- | :--- |
 | AWS Chalice - Python Serverless Microframework for AWS | [aws/chalice](https://github.com/aws/chalice) |
+| AWS Lambda Power Tuning | [alexcasalboni/aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning) |
 | AWS Serverless Application Model (SAM) | [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model) |
 | AWS Serverless Application Model (SAM) CLI | [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli) 
 | AWS Serverless Application Repository | [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/) |
@@ -147,9 +148,11 @@ pip install -r requirements.txt
 | Subnet Calculator - MxToolbox | [mxtoolbox.com](https://mxtoolbox.com/subnetcalculator.aspx) |
 
 ## Best Practices Guides
+
 - [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/), AWS
 
 ## Workshops
+
 - [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop)
 - [CDK](https://cdkworkshop.com/)
 - [CI/CD for Serverless Applications](https://cicd.serverlessworkshops.io/)
