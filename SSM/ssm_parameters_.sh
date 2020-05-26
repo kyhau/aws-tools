@@ -2,7 +2,10 @@
 # https://aws.amazon.com/blogs/aws/new-query-for-aws-regions-endpoints-and-more-using-aws-systems-manager-parameter-store/
 set -e
 
-# Define the help menu
+echo $1
+echo $2
+echo "what"
+
 help_menu() {
   echo "Usage:
   ${0##*/}
@@ -12,19 +15,19 @@ help_menu() {
   exit
 }
 
-# Parse arguments
-DO_BUILD=false
-
 while [[ "$#" > 0 ]]; do case $1 in
-    --build-image)       DO_BUILD=true                     ;;
-    --build-number)      BUILD_NUMBER="${2}"       ; shift ;;
-    -h|--help)           help_menu                         ;;
-    *)                   echo "Invalid option: ${1}" && help_menu ;;
+    -r|--region)    region="${2}"   ; shift ;;
+    -s|--service)   service="${2}"  ; shift ;;
+    -h|--help)      help_menu               ;;
+    *)            echo "Invalid option: ${1}" && help_menu ;;
 esac; shift; done
 
-[[ ! -z "$BUILD_NUMBER" ]] || (echo "Error: BUILD_NUMBER is not provided. Aborted." && exit 1)
+#[[ ! -z "$BUILD_NUMBER" ]] || (echo "Error: BUILD_NUMBER is not provided. Aborted." && exit 1)
 
-aws ssm get-parameters-by-path --path /aws/service/global-infrastructure/regions --output json | jq .Parameters[].Name | sort
+if [[ $region = "all" ]]; then
+  aws ssm get-parameters-by-path --path /aws/service/global-infrastructure/regions --output json | jq .Parameters[].Name | sort
+  exit 0
+fi
 
 aws ssm get-parameters-by-path --path /aws/service/global-infrastructure/services --output json | jq .Parameters[].Name | sort
 
