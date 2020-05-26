@@ -54,6 +54,7 @@ alias aws-secretsmanager-get-secret='python ${ARKI_REPO_HOME}/SecretManager/get_
 
 alias aws-sts-decode-authorization-message='aws sts decode-authorization-message --encoded-message'
 
+alias aws-ssm-parameters-list-global-infrastructure='. ${ARKI_REPO_HOME}/SSM/ssm_parameters_list.sh'
 alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["3389"],"localPortNumber"=["9999"] --target '
 
 alias aws-subnet-ip-count='python ${ARKI_REPO_HOME}/EC2-VPC/available_ip_address_count.py'
