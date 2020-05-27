@@ -4,6 +4,7 @@
 - [Examples](https://github.com/awslabs/serverless-application-model/tree/master/examples/2016-10-31)
 - Example `sam-app`'s source can be found [here](
   https://aws.amazon.com/blogs/aws/aws-serverless-application-model-sam-command-line-interface-build-test-and-debug-serverless-apps-locally/)
+- [Create a Step Functions State Machine Using AWS SAM ](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-state-machine-using-sam.html)
 
 **Note:** 
 If docker volume mounting is required, need to use Windows cmd instead of WSL, 
