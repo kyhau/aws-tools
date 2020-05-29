@@ -85,17 +85,16 @@ Resources:
               - lambda:PublishVersion
               - lambda:InvokeFunction
             Resource:
-              - !GetAtt 'LambdaFunction.Arn'
+              - !GetAtt LambdaFunction.Arn
           - Effect: Allow
             Action:
               - iam:Passrole
-            Resource: !GetAtt 'LambdaExecutionRole.Arn'
-
+            Resource: !GetAtt LambdaExecutionRole.Arn
 
 Outputs:
   LambdaFunctionName:
     Description: Lambda function name
-    Value: !Ref 'LambdaFunction'
+    Value: !Ref LambdaFunction
   LambdaFunctionArn:
     Description: The ARN of the Lambda function
-    Value: !GetAtt 'LambdaFunction.Arn'
+    Value: !GetAtt LambdaFunction.Arn
