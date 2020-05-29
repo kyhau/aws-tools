@@ -24,6 +24,7 @@ echo "Setting up client.properties file in /opt/kafka_xxx/bin/..."
 
 pushd /home/ec2-user/kafka_2.12-2.2.1/bin
 cat > client.properties << EOF
+bootstrap.servers=$BOOTSTRAP_BROKERS_STR
 security.protocol=SSL
 ssl.truststore.location=/tmp/kafka.client.truststore.jks
 EOF
