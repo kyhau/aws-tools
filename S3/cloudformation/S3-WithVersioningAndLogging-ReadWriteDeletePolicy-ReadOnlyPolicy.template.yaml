@@ -60,9 +60,17 @@ Resources:
     Condition: LoggingEnabled
     Properties:
       AccessControl: LogDeliveryWrite
-      BucketName: !Join ['-', [!Ref BucketName, 'logs']]
-      VersioningConfiguration:
-        Status: Suspended
+      BucketName: !Sub ${BucketName}-logs
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfter14Days
+            Status: Enabled
+            ExpirationInDays: 14
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
 
   S3Bucket:
     Type: AWS::S3::Bucket
@@ -78,6 +86,11 @@ Resources:
                   KMSMasterKeyID: !Ref KMSMasterKeyID
                 - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
         - !Ref AWS::NoValue
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfter30Days
+            Status: Enabled
+            ExpirationInDays: 30
       LoggingConfiguration: !If
         - LoggingEnabled
         - DestinationBucketName: !Ref S3BucketLogs
@@ -120,7 +133,7 @@ Resources:
               - s3:PutObject*
               - s3:GetObject
               - s3:DeleteObject
-            Resource: !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+            Resource: !Sub ${S3Bucket.Arn}/*
       Groups:
         - !If
           - ReadWriteDeleteGroupNameSpecified
@@ -156,7 +169,7 @@ Resources:
           - Effect: Allow
             Action:
               - s3:GetObject
-            Resource: !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+            Resource: !Sub ${S3Bucket.Arn}/*
       Groups:
         - !If
           - ReadOnlyGroupNameSpecified

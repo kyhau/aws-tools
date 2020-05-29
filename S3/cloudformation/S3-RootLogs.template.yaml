@@ -14,6 +14,11 @@ Resources:
     Properties:
       AccessControl: LogDeliveryWrite
       BucketName: !Ref RootLogName
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfter1Day
+            Status: 'Enabled'
+            ExpirationInDays: 1
       Tags:
         - Key: Billing
           Value: !Ref RootLogBillingTag
