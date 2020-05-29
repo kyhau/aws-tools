@@ -5,7 +5,3 @@ Cross-accounts S3 with KMS
 - https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-store-kms-encrypted-objects/
 - https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-access-default-encryption/
 - https://www.1strategy.com/blog/2018/10/30/how-to-copy-encrypted-s3-objects-across-accounts/
-
-CDK
-
-- https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_iam/PolicyStatement.html#aws_cdk.aws_iam.PolicyStatement.add_actions

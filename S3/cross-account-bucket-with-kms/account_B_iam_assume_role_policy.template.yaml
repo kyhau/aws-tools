@@ -54,7 +54,7 @@ Resources:
             StringEquals:
               s3:x-amz-acl: bucket-owner-full-control
           Resource:
-            - !Join ['/',[!Ref AccountABucketArn, '*']]
+            - !Sub "${AccountABucketArn}/*"
 
           # Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
           # permission on the key policy for the download to work.

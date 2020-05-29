@@ -1,0 +1,127 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create S3 bucket and create bucket policy to enforce encryption.
+
+Parameters:
+  BucketName:
+    Description: Name of the S3 bucket, which must be globally unique
+    Type: String
+  DeleteContentAfterDays:
+    Description: The number of days to keep the objects.
+    Type: Number
+    Default: 7
+  KMSMasterKeyID:
+    Description: KMS Master Key ID. Required only if selecting aws:kms in ServerSideEncryptionAlgorithm.
+    Type: String
+  ServerSideEncryptionAlgorithm:
+    Description: Specify server side encryption. Choose None to disable server side encryption.
+    Type: String
+    AllowedValues: [AES256, 'aws:kms']
+    Default: AES256
+
+Conditions:
+  UseKms: !Equals ['aws:kms', !Ref ServerSideEncryptionAlgorithm]
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: !If
+              - UseKms
+              - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+                KMSMasterKeyID: !Ref KMSMasterKeyID
+              - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfterDays
+            Status: Enabled
+            ExpirationInDays: !Ref DeleteContentAfterDays
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  BucketPolicy:
+    DependsOn:
+      - S3Bucket
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Statement:
+          - Sid: DenyPublishingUnencryptedResources
+            Action: s3:PutObject
+            Condition:
+              'Null':
+                's3:x-amz-server-side-encryption': true
+            Effect: Deny
+            Principal: '*'
+            Resource: !Sub 'arn:${AWS::Partition}:s3:::${S3Bucket}/*'
+
+          - Sid: DenyIncorrectEncryptionHeader
+            Action: s3:PutObject
+            Condition:
+              'ForAllValues:StringNotEquals':
+                's3:x-amz-server-side-encryption':
+                  - AES256
+                  - 'aws:kms'
+            Effect: Deny
+            Principal: '*'
+            Resource: !Sub 'arn:${AWS::Partition}:s3:::${S3Bucket}/*'
+
+          - Sid: DenyUnencryptedConnections
+            Action:
+              - s3:GetObject
+              - s3:PutObject
+            Condition:
+              Bool:
+                'aws:SecureTransport': false
+            Effect: Deny
+            Principal: '*'
+            Resource: !Sub 'arn:${AWS::Partition}:s3:::${S3Bucket}/*'
+
+          - Sid: DenyPublicReadAcl
+            Action:
+              - s3:PutBucketAcl
+              - s3:PutObject
+              - s3:PutObjectAcl
+            Condition:
+              StringEquals:
+                's3:x-amz-acl':
+                  - authenticated-read
+                  - public-read
+                  - public-read-write
+            Effect: Deny
+            Principal: '*'
+            Resource:
+              - !Sub 'arn:${AWS::Partition}:s3:::${S3Bucket}'
+              - !Sub 'arn:${AWS::Partition}:s3:::${S3Bucket}/*'
+
+          - Sid: DenyGrantingPublicRead
+            Action:
+              - s3:PutBucketAcl
+              - s3:PutObject
+              - s3:PutObjectAcl
+            Condition:
+              StringLike:
+                's3:x-amz-grant-read':
+                  - '*http://acs.amazonaws.com/groups/global/AllUsers*'
+                  - '*http://acs.amazonaws.com/groups/global/AuthenticatedUsers*'
+            Effect: Deny
+            Principal: '*'
+            Resource:
+              - !Sub 'arn:${AWS::Partition}:s3:::${S3Bucket}'
+              - !Sub 'arn:${AWS::Partition}:s3:::${S3Bucket}/*'
+
+Outputs:
+  BucketArn:
+    Description: ARN of the bucket.
+    Value: !GetAtt S3Bucket.Arn
+  BucketName:
+    Description: Name of the bucket.
+    Value: !Ref S3Bucket
+    #Export:
+    #  Name: !Ref BucketExportName

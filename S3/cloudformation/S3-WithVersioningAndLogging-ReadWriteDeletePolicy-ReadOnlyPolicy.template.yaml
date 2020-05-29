@@ -1,5 +1,4 @@
 AWSTemplateFormatVersion: '2010-09-09'
-
 Description: >-
   Create S3 bucket with logging enabled (also optionally enable versioning,
   create managed policies for Read-Only and Read-Write-Delete accesses).
@@ -8,34 +7,28 @@ Parameters:
   BucketName:
     Description: The name of the S3 bucket to be created.
     Type: String
-
   EnableLogging:
     Description: Enable logging.
     Type: String
     AllowedValues: [Enabled, Suspended]
     Default: Suspended
-
   EnableVersioning:
     Description: Enable versioning (Enabled or Suspended).
     Type: String
     AllowedValues: [Enabled, Suspended]
     Default: Suspended
-
   ServerSideEncryptionAlgorithm:
     Description: Specify server side encryption. Choose None to disable server side encryption.
     Type: String
     AllowedValues: [None, AES256, 'aws:kms']
     Default: AES256
-
   KMSMasterKeyID:
     Description: KMS Master Key ID. Required only if selecting aws:kms in ServerSideEncryptionAlgorithm.
     Type: String
-
   ReadOnlyGroupName:
     Description: Optional. Name of the Group to be created and given Read-only access to the given bucket.
     Type: String
     Default: ''
-
   ReadWriteDeleteGroupName:
     Description: Optional. Name of the Group to be created and given Read-Write-Delete access to the given bucket.
     Type: String
@@ -43,15 +36,10 @@ Parameters:
 
 Conditions:
   SSEEnabled: !Not [!Equals [None, !Ref ServerSideEncryptionAlgorithm]]
-
   UseKms: !Equals ['aws:kms', !Ref ServerSideEncryptionAlgorithm]
-
   LoggingEnabled: !Equals [Enabled, !Ref EnableLogging]
-
   VersioningEnabled: !Equals [Enabled, !Ref EnableVersioning]
-
   ReadOnlyGroupNameSpecified: !Not [!Equals ['', !Ref ReadOnlyGroupName]]
-
   ReadWriteDeleteGroupNameSpecified: !Not [!Equals ['', !Ref ReadWriteDeleteGroupName]]
 
 Resources:
@@ -175,3 +163,10 @@ Resources:
           - ReadOnlyGroupNameSpecified
           - !Ref ReadOnlyGroupName
           - !Ref AWS::NoValue
+
+Outputs:
+  BucketName:
+    Description: Name of the logs bucket.
+    Value: !Ref LogsBucket
+    Export:
+      Name: !Ref BucketExportName

@@ -47,7 +47,7 @@ Resources:
           - Sid: "Enable IAM User Permissions"
             Effect: "Allow"
             Principal:
-              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
             Action: "kms:*"
             Resource: "*"
 
@@ -92,7 +92,7 @@ Resources:
     Type: AWS::KMS::Alias
     DependsOn: KmsKey
     Properties:
-      AliasName: !Join ["", ["alias/", !Ref BucketName, "-kms"]]
+      AliasName: !Sub "alias/${BucketName}-kms"
       TargetKeyId: !Ref KmsKey
 
   S3Bucket:
@@ -117,7 +117,7 @@ Resources:
     Type: AWS::S3::BucketPolicy
     DependsOn: S3Bucket
     Properties:
-      Bucket: !Ref "S3Bucket"
+      Bucket: !Ref S3Bucket
       PolicyDocument:
         Statement:
         - Effect: Allow
@@ -141,7 +141,7 @@ Resources:
             StringEquals:
               s3:x-amz-acl: bucket-owner-full-control
           Resource:
-            - !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+            - !GetAtt S3Bucket.Arn
 
         - Effect: Deny
           Principal: "*"
@@ -151,7 +151,7 @@ Resources:
             StringNotLike:
               s3:x-amz-server-side-encryption-aws-kms-key-id: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
           Resource:
-            - !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+            - !Sub ${S3Bucket.Arn}/*
 
   S3ReadPolicy:
     Type: AWS::IAM::ManagedPolicy
@@ -173,7 +173,7 @@ Resources:
             Action:
               - s3:GetObject
             Resource:
-              - !Join ['/',[!GetAtt S3Bucket.Arn, '*']]
+              - !Sub ${S3Bucket.Arn}/*
 
           # Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
           # permission on the key policy for the download to work.
