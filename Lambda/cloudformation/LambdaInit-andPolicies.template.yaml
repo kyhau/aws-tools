@@ -6,29 +6,33 @@ Parameters:
   LambdaFunctionName:
     Description: Name of the Lambda function to be created or updated.
     Type: String
-    Default: TodoServiceFunction
-  LambdaExecuteRoleName:
-    Description: Name of the Role for executing the Lambda function.
-    Type: String
-    Default: TodoService-Lambda-ExecuteRole
+    Default: LambdaFunction
 
 Resources:
-  TodoServiceFunction:
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${LambdaFunctionName}'
+      RetentionInDays: 7  # days
+
+  LambdaFunction:
     Type: AWS::Lambda::Function
     DependsOn: LambdaExecutionRole
     Properties:
-      FunctionName: !Ref 'LambdaFunctionName'
+      FunctionName: !Ref LambdaFunctionName
+      Description: TODO
       Runtime: python3.7
-      Handler: TodoServiceFunction.lambda_handler
+      Handler: !Sub ${LambdaFunctionName}.lambda_handler
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              # This function will be updated through CI/CD
+              return "Hello from Lambda!"
       MemorySize: 1024
       Timeout: 30
-      Role: !GetAtt 'LambdaExecutionRole.Arn'
-      Code:
-        ZipFile: !Join
-          - ''
-          - - 'def lambda_handler(event, context):'
-            - '   # This function will be updated through CI/CD'
-            - '   return ''Hello from Lambda!'''
+      Role: !GetAtt LambdaExecutionRole.Arn
+      TracingConfig:
+        Mode: Active
       Tags:
         - Key: Billing
           Value: TodoService
@@ -36,7 +40,7 @@ Resources:
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Ref 'LambdaExecuteRoleName'
+      RoleName: !Sub ${LambdaFunctionName}-ExecutionRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -48,16 +52,15 @@ Resources:
               - sts:AssumeRole
       Path: /
       Policies:
-        - PolicyName: !Join
-            - '-'
-            - - !Ref 'LambdaExecuteRoleName'
-              - Logging
+        - PolicyName: !Sub ${LambdaFunctionName}-Logging
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
-                  - logs:*
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
                 Resource: arn:aws:logs:*:*:*
 
   LambdaManagedPolicy:
@@ -82,7 +85,7 @@ Resources:
               - lambda:PublishVersion
               - lambda:InvokeFunction
             Resource:
-              - !GetAtt 'TodoServiceFunction.Arn'
+              - !GetAtt 'LambdaFunction.Arn'
           - Effect: Allow
             Action:
               - iam:Passrole
@@ -92,7 +95,7 @@ Resources:
 Outputs:
   LambdaFunctionName:
     Description: Lambda function name
-    Value: !Ref 'TodoServiceFunction'
+    Value: !Ref 'LambdaFunction'
   LambdaFunctionArn:
     Description: The ARN of the Lambda function
-    Value: !GetAtt 'TodoServiceFunction.Arn'
+    Value: !GetAtt 'LambdaFunction.Arn'
