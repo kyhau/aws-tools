@@ -6,7 +6,7 @@ Resources:
   WindowsDefaultPatchBaseline:
     Type: AWS::SSM::PatchBaseline
     Properties:
-      Name: SB-WindowsDefaultPatchBaseline
+      Name: CustomWindowsDefaultPatchBaseline
       Description: Baseline containing all updates approved for Windows instances
       OperatingSystem: WINDOWS
       PatchGroups:
@@ -29,7 +29,7 @@ Resources:
   AmazonLinux2DefaultPatchBaseline:
     Type: AWS::SSM::PatchBaseline
     Properties:
-      Name: SB-AmazonLinux2DefaultPatchBaseline
+      Name: CustomAmazonLinux2DefaultPatchBaseline
       Description: Baseline containing all updates approved for Amazon Linux 2 instances
       OperatingSystem: AMAZON_LINUX_2
       PatchGroups:
