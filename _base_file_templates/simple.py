@@ -7,8 +7,10 @@ logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger("botocore").setLevel(logging.CRITICAL)
 logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
+
 logging.info(f"boto3.__version__: {boto3.__version__}")
 
+# boto3.setup_default_session(profile_name=profile_name)
 AWS_PROFILE="default"
 AWS_DEFAULT_REGION="ap-southeast-2"
 
