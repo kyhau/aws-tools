@@ -15,13 +15,30 @@ DATA_BUCKET = os.getenv("DATA_BUCKET")
 s3 = Session(profile_name="default").client("s3")
 
 
-def write_to_s3(data, key):
+def write_to_s3(data, s3_key, bucket=DATA_BUCKET, encrypt_mode=None, kms_key=None):
+    """
+    :param encrypt_mode: None, AES256, or aws:kms
+    :param kms_key: None or arn or alias arn
+    """
+
+    # Athena requires output each item to separate line
+    # No outer bracket, no commas at the end of the line
+    # {"k1": "v1"}
+    # {"k1": "v2"}
     bdata = "\n".join([json.dumps(item) for item in data])
-    s3.put_object(
-        Body=bdata, Key=key, Bucket=DATA_BUCKET, ACL="bucket-owner-full-control",
-        # TODO enforce encryption when KMS key is ready
-        # ServerSideEncryption="aws:kms", SSEKMSKeyId="TODO-KMS_ALIAS_ARN",
-    )
+    
+    params = {
+        "Body": data,
+        "Key": s3_key,
+        "Bucket": bucket,
+        "ACL": "bucket-owner-full-control",
+    }
+    if encrypt_mode is not None:
+        params["ServerSideEncryption"] = encrypt_mode
+    if kms_key is not None:
+        params["SSEKMSKeyId"] = kms_key
+    
+    return s3.put_object(**params)
 
 
 data = [
@@ -29,7 +46,3 @@ data = [
     {"k1": "v2"},
 ]
 
-# Athena requires output each item to separate line
-# No outer bracket, no commas at the end of the line
-# {"k1": "v1"}
-# {"k1": "v2"}
