@@ -31,6 +31,8 @@ alias aws-ec2-db-instances='python ${ARKI_REPO_HOME}/RDS/list_ec2_db_instances.p
 alias aws-ec2-unreachable='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
 alias aws-ec2-security-groups='python ${ARKI_REPO_HOME}/EC2-VPC/list_security_groups.py'
 
+alias aws-database-status-check='python ${ARKI_REPO_HOME}/RDS/databases_status_check.py'
+
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 
@@ -58,6 +60,8 @@ alias aws-ssm-parameters-list-global-infrastructure='. ${ARKI_REPO_HOME}/SSM/ssm
 alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["3389"],"localPortNumber"=["9999"] --target '
 
 alias aws-subnet-ip-count='python ${ARKI_REPO_HOME}/EC2-VPC/available_ip_address_count.py'
+
+alias aws-tag-list='python ${ARKI_REPO_HOME}/Security/list_tags.py'
 
 alias aws-vpc-endpoints='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoints.py'
 alias aws-vpc-endpoint-gateway-prefix-list='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
