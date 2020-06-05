@@ -31,6 +31,8 @@ alias aws-ec2-db-instances='python ${ARKI_REPO_HOME}/RDS/list_ec2_db_instances.p
 alias aws-ec2-unreachable='python ${ARKI_REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
 alias aws-ec2-security-groups='python ${ARKI_REPO_HOME}/EC2-VPC/list_security_groups.py'
 
+alias aws-database-status-check='python ${ARKI_REPO_HOME}/RDS/databases_status_check.py'
+
 alias aws-ddb-start-localddb='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 

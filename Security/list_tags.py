@@ -244,11 +244,6 @@ def main(service, profile, region):
                 continue
             accounts_processed.append(account_id)
             process_account(session, account_id, service.lower(), region)
-    except ClientError as e:
-        if e.response["Error"]["Code"] in ["InvalidClientTokenId"]:
-            logging.warning(f"Unable to process {service} with {profile_name}: {e}")
-        else:
-            raise
     finally:
         logging.info(f"Lambda execution time: {time() - start}s")
 
