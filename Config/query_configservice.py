@@ -1,20 +1,27 @@
 from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
-from configparser import ConfigParser
 import logging
-from os.path import basename, exists, expanduser, join
+from os.path import basename, exists
 from shutil import rmtree
+from time import time
 
+# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger("botocore").setLevel(logging.CRITICAL)
+logging.getLogger("boto3").setLevel(logging.CRITICAL)
+logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
-aws_profiles = []
-try:
-    cp = ConfigParser()
-    cp.read(join(expanduser("~"), ".aws", "credentials"))
-    aws_profiles = cp.sections()
-except Exception as e:
-    logging.error(e)
+
+def read_aws_profile_names():
+    from configparser import ConfigParser
+    from os.path import expanduser, join
+    try:
+        cp = ConfigParser()
+        cp.read(join(expanduser("~"), ".aws", "credentials"))
+        return cp.sections()
+    except Exception as e:
+        logging.error(e)
 
 
 def dump(data, output_filename, to_console=True):
@@ -24,18 +31,16 @@ def dump(data, output_filename, to_console=True):
         f.write(f'{data}\n')
 
 
-def list_action(session, sql_statement, sqlfile):
+def list_action(session, sql_statement, sqlfile, aws_region):
     account_id = session.client("sts").get_caller_identity()["Account"]
     
     output_filename = f'{account_id}_{basename(sqlfile).replace(".sql", "")}.txt'
     if exists(output_filename):
         rmtree(output_filename)
 
-    for region in session.get_available_regions("config"):
+    regions = session.get_available_regions("config") if aws_region == "all" else [aws_region]
+    for region in regions:
         try:
-            if region != "ap-southeast-2":
-                continue
-            
             logging.debug(f"Checking {account_id} {region}")
     
             client = session.client("config", region_name=region)
@@ -51,23 +56,31 @@ def list_action(session, sql_statement, sqlfile):
                     dump(item, output_filename)
 
         except ClientError as e:
-            if e.response["Error"]["Code"] == "UnrecognizedClientException":
-                logging.warning(f"Unable to process region {region}")
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["UnrecognizedClientException"]:
+                logging.warning(f"Unable to process region {region}: {error_code}")
             else:
                 raise
 
+
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name")
 @click.option("--sqlfile", "-s", required=True, help="File containing the sql statement (.sql)")
-def main(profile, sqlfile):
-    with open(sqlfile, "r") as f:
-        sql_statement = f.read()
+@click.option("--profile", "-p", help="AWS profile name")
+@click.option("--region", "-r", help="AWS Region; use 'all' for all regions.", default="ap-southeast-2")
+def main(sqlfile, profile, region):
+    start = time()
+    try:
+        with open(sqlfile, "r") as f:
+            sql_statement = f.read()
+    
+        profile_names = [profile] if profile else read_aws_profile_names()
+    
+        for profile_name in profile_names:
+            session = Session(profile_name=profile_name)
+            list_action(session, sql_statement, sqlfile, region)
+    finally:
+        logging.info(f"Total execution time: {time() - start}s")
 
-    profile_names = [profile] if profile else aws_profiles
 
-    for profile_name in profile_names:
-        session = Session(profile_name=profile_name)
-        list_action(session, sql_statement, sqlfile)
-
-
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

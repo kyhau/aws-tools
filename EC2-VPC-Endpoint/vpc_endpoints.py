@@ -4,20 +4,26 @@ A helper script to call describe_vpc_endpoints as well as lookup ENI IPs.
 from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
-from configparser import ConfigParser
 import logging
-from os.path import expanduser, join
+from time import time
 import yaml
 
+# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger("botocore").setLevel(logging.CRITICAL)
+logging.getLogger("boto3").setLevel(logging.CRITICAL)
+logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
-aws_profiles = []
-try:
-    cp = ConfigParser()
-    cp.read(join(expanduser("~"), ".aws", "credentials"))
-    aws_profiles = cp.sections()
-except Exception as e:
-    logging.error(e)
+
+def read_aws_profile_names():
+    from configparser import ConfigParser
+    from os.path import expanduser, join
+    try:
+        cp = ConfigParser()
+        cp.read(join(expanduser("~"), ".aws", "credentials"))
+        return cp.sections()
+    except Exception as e:
+        logging.error(e)
 
 
 def new_operation_params(endpoint_id, service_name, vpc_id):
@@ -63,7 +69,7 @@ def process_account(session, profile, aws_region, operation_params, endpoint_typ
         
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
-            if error_code in ["AuthFailure", "UnrecognizedClientException"]:
+            if error_code in ["AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
             else:
                 raise
@@ -72,39 +78,40 @@ def process_account(session, profile, aws_region, operation_params, endpoint_typ
             traceback.print_exc()
 
 
-################################################################################
-# Entry point
-
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name.")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions.", default="ap-southeast-2")
 @click.option("--endpointid", "-e", help="VPC endpoint ID. Optional. E.g. vpce-123456789012")
 @click.option("--endpointtype", "-t", help="VPC endpoint type (Gateway|Interface). Return all if not specified.")
 @click.option("--servicename", "-s", help="Service name. Optional. E.g. com.amazonaws.ap-southeast-2.s3")
 @click.option("--vpcid", "-v", help="VPC ID. Optional. E.g. vpc-123456789012")
-def main(profile, region, endpointid, endpointtype, servicename, vpcid):
-    accounts_processed = []
-    profile_names = [profile] if profile else aws_profiles
+@click.option("--profile", "-p", help="AWS profile name.")
+@click.option("--region", "-r", help="AWS Region; use 'all' for all regions.", default="ap-southeast-2")
+def main(endpointid, endpointtype, servicename, vpcid, profile, region):
+    start = time()
+    try:
+        accounts_processed = []
 
-    operation_params = new_operation_params(endpointid, servicename, vpcid)
-    endpointtype = endpointtype if endpointtype is None else endpointtype.lower()
-    
-    for profile_name in profile_names:
-        try:
-            session = Session(profile_name=profile_name)
-            account_id = session.client("sts").get_caller_identity()["Account"]
-            if account_id in accounts_processed:
-                continue
-            accounts_processed.append(account_id)
-            
-            process_account(session, profile_name, region, operation_params, endpointtype)
-        
-        except ClientError as e:
-            error_code = e.response["Error"]["Code"]
-            if error_code in ["ExpiredToken", "InvalidClientTokenId", "AccessDeniedException"]:
-                logging.warning(f'{profile_name} {error_code}. Skipped')
-            else:
-                raise
+        operation_params = new_operation_params(endpointid, servicename, vpcid)
+        endpointtype = endpointtype if endpointtype is None else endpointtype.lower()
+
+        profile_names = [profile] if profile else read_aws_profile_names()
+        for profile_name in profile_names:
+            try:
+                session = Session(profile_name=profile_name)
+                account_id = session.client("sts").get_caller_identity()["Account"]
+                if account_id in accounts_processed:
+                    continue
+                accounts_processed.append(account_id)
+
+                process_account(session, profile_name, region, operation_params, endpointtype)
+            except ClientError as e:
+                error_code = e.response["Error"]["Code"]
+                if error_code in ["ExpiredToken", "InvalidClientTokenId"]:
+                    logging.warning(f"{profile_name} {error_code}. Skipped")
+                else:
+                    raise
+    finally:
+        logging.info(f"Total execution time: {time() - start}s")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

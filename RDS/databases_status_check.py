@@ -1,3 +1,20 @@
+"""
+List databases status.
+Supported: DocumentDB | DynamoDB | ElastiCache | Neptune | RDS/Aurora | Redshift
+Output: [
+    {
+        "AccountId": in-string,
+        "Region": in-string,
+        "Service": docdb | dynamodb | elasticache | neptune | rds | redshift
+        "Engine": dynamodb | aurora | aurora-* | mariadb | oracle-* | postgres | sqlserver-* | neptune | docdb | memcached | redis
+        "Id": in-string,
+        "BackupRetentionPeriod": in-days,
+        "MultiAZ": True | False,
+        "EncryptedAtRest": True | False,
+        "PubliclyAccessible": True | False,  # not available for Dynamodb and ElastiCache
+    },
+]
+"""
 from abc import ABC, abstractmethod
 from boto3.session import Session
 from botocore.exceptions import ClientError
@@ -12,7 +29,7 @@ logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
 
-def read_profile_names():
+def read_aws_profile_names():
     from configparser import ConfigParser
     from os.path import expanduser, join
     try:
@@ -62,24 +79,21 @@ class Helper(ABC):
         return ret
 
 
-class RdsHelper(Helper):
-    """Neptune, DocumentDB info are also returned from rds.describe_db_instances."""
+class DynamoDBHelper(Helper):
     def __init__(self):
-        super().__init__("rds", "describe_db_instances")
+        super().__init__("dynamodb", "list_tables")
 
     def process_response(self, item):
-        if item.get("DBInstanceStatus") == "available":
-
-            # Engine: aurora, aurora-mysql, aurora-postgresql, mariadb, oracle-*, postgres, sqlserver-*, neptune, docdb
-            return {
-                "Service": item["Engine"] if item["Engine"] in ["neptune", "docdb"] else "rds",
-                "Engine": item["Engine"],
-                "Id": item["DBInstanceIdentifier"],
-                "BackupRetentionPeriod": item.get("BackupRetentionPeriod", 0),
-                "MultiAZ": item["MultiAZ"],
-                "EncryptedAtRest": item["StorageEncrypted"],
-                "PublicFacing": item["PubliclyAccessible"],
-            }
+        cb = self._client.describe_continuous_backups(TableName=item)    # item == table_name
+        piir = cb["ContinuousBackupsDescription"]["PointInTimeRecoveryDescription"]["PointInTimeRecoveryStatus"] == "ENABLED"
+        return {
+            "Service": self.name,
+            "Engine": self.name,
+            "Id": item,
+            "BackupRetentionPeriod": 35 if piir else 0,
+            "MultiAZ": True,             # Always true
+            "EncryptedAtRest": True,     # Always on
+        }
 
 
 class ElastiCacheHelper(Helper):
@@ -98,6 +112,25 @@ class ElastiCacheHelper(Helper):
             }
 
 
+class RdsHelper(Helper):
+    """Neptune, DocumentDB info are also returned from rds.describe_db_instances."""
+    def __init__(self):
+        super().__init__("rds", "describe_db_instances")
+
+    def process_response(self, item):
+        if item.get("DBInstanceStatus") == "available":
+            # Engine: aurora, aurora-mysql, aurora-postgresql, mariadb, oracle-*, postgres, sqlserver-*, neptune, docdb
+            return {
+                "Service": item["Engine"] if item["Engine"] in ["neptune", "docdb"] else "rds",
+                "Engine": item["Engine"],
+                "Id": item["DBInstanceIdentifier"],
+                "BackupRetentionPeriod": item.get("BackupRetentionPeriod", 0),
+                "MultiAZ": item["MultiAZ"],
+                "EncryptedAtRest": item["StorageEncrypted"],
+                "PubliclyAccessible": item["PubliclyAccessible"],
+            }
+
+
 class RedshiftHelper(Helper):
     def __init__(self):
         super().__init__("redshift", "describe_clusters")
@@ -111,30 +144,12 @@ class RedshiftHelper(Helper):
                 "BackupRetentionPeriod": item.get("AutomatedSnapshotRetentionPeriod", 0),
                 "MultiAZ": False,    # Redshift only supports Single-AZ deployments (last checked 2020-06-02)
                 "EncryptedAtRest": item["Encrypted"],
-                "PublicFacing": item["PubliclyAccessible"],
-
+                "PubliclyAccessible": item["PubliclyAccessible"],
             }
 
 
-class DynamoDBHelper(Helper):
-    def __init__(self):
-        super().__init__("dynamodb", "list_tables")
-
-    def process_response(self, item):
-        cb = self._client.describe_continuous_backups(TableName=item)    # item == table_name
-        piir = cb["ContinuousBackupsDescription"]["PointInTimeRecoveryDescription"]["PointInTimeRecoveryStatus"] == "ENABLED"
-        return {
-            "Service": self.name,
-            "Engine": self.name,
-            "Id": item,
-            "BackupRetentionPeriod": 35 if piir else 0,
-            "MultiAZ": True,             # Always true
-            "EncryptedAtRest": True,     # Always on
-        }
-
-
 def process_account(session, account_id, aws_region):
-    for service in [RdsHelper(), DynamoDBHelper(), ElastiCacheHelper(), RedshiftHelper()]:
+    for service in [DynamoDBHelper(), ElastiCacheHelper(), RdsHelper(), RedshiftHelper()]:
         regions = session.get_available_regions(service.name) if aws_region == "all" else [aws_region]
         ret = []
         for region in regions:
@@ -143,10 +158,9 @@ def process_account(session, account_id, aws_region):
                 items = service.process_request(session, region, account_id)
                 ret.extend(items)
             except ClientError as e:
-                if e.response["Error"]["Code"] in [
-                    "AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"
-                ]:
-                    logging.warning(f"Unable to process {account_id} {service.name} in region {region}")
+                err_code = e.response["Error"]["Code"]
+                if err_code in ["AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"]:
+                    logging.warning(f"Unable to process {account_id} {service.name} in region {region}: {err_code}")
                 else:
                     raise
             finally:
@@ -163,7 +177,7 @@ def main(profile, region):
     start = time()
     try:
         accounts_processed = []
-        profile_names = [profile] if profile else read_profile_names()
+        profile_names = [profile] if profile else read_aws_profile_names()
         for profile_name in profile_names:
             session = Session(profile_name=profile_name)
             account_id = session.client("sts").get_caller_identity()["Account"]
@@ -172,7 +186,8 @@ def main(profile, region):
             accounts_processed.append(account_id)
             process_account(session, account_id, region)
     finally:
-        logging.info(f"Lambda execution time: {time() - start}s")
+        logging.info(f"Total execution time: {time() - start}s")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

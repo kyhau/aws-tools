@@ -15,7 +15,7 @@ logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
 
-def read_profile_names():
+def read_aws_profile_names():
     from configparser import ConfigParser
     from os.path import expanduser, join
     try:
@@ -236,7 +236,7 @@ def main(service, profile, region):
     start = time()
     try:
         accounts_processed = []
-        profile_names = [profile] if profile else read_profile_names()
+        profile_names = [profile] if profile else read_aws_profile_names()
         for profile_name in profile_names:
             session = Session(profile_name=profile_name)
             account_id = session.client("sts").get_caller_identity()["Account"]
@@ -245,7 +245,8 @@ def main(service, profile, region):
             accounts_processed.append(account_id)
             process_account(session, account_id, service.lower(), region)
     finally:
-        logging.info(f"Lambda execution time: {time() - start}s")
+        logging.info(f"Total execution time: {time() - start}s")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

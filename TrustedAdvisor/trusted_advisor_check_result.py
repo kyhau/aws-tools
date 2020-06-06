@@ -11,7 +11,7 @@ logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
 
-def read_profile_names():
+def read_aws_profile_names():
     from configparser import ConfigParser
     from os.path import expanduser, join
     try:
@@ -62,10 +62,9 @@ def process_account(session, account_id):
     try:
         items = TrustedAdvisorHelper(session).process_request(session,account_id)
     except ClientError as e:
-        if e.response["Error"]["Code"] in [
-            "AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"
-        ]:
-            logging.warning(f"Unable to process {account_id}")
+        error_code = e.response["Error"]["Code"]
+        if error_code in ["AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"]:
+            logging.warning(f"Unable to process {account_id}: {error_code}")
         else:
             raise
     finally:
@@ -80,7 +79,7 @@ def main(profile):
     start = time()
     try:
         accounts_processed = []
-        profile_names = [profile] if profile else read_profile_names()
+        profile_names = [profile] if profile else read_aws_profile_names()
         for profile_name in profile_names:
             session = Session(profile_name=profile_name)
             account_id = session.client("sts").get_caller_identity()["Account"]
@@ -89,7 +88,8 @@ def main(profile):
             accounts_processed.append(account_id)
             process_account(session, account_id)
     finally:
-        logging.info(f"Lambda execution time: {time() - start}s")
+        logging.info(f"Total execution time: {time() - start}s")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

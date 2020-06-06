@@ -1,20 +1,26 @@
 from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
-from configparser import ConfigParser
 import logging
-from os.path import expanduser, join
+from time import time
 import yaml
 
+# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger("botocore").setLevel(logging.CRITICAL)
+logging.getLogger("boto3").setLevel(logging.CRITICAL)
+logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
-aws_profiles = []
-try:
-    cp = ConfigParser()
-    cp.read(join(expanduser("~"), ".aws", "credentials"))
-    aws_profiles = cp.sections()
-except Exception as e:
-    logging.error(e)
+
+def read_aws_profile_names():
+    from configparser import ConfigParser
+    from os.path import expanduser, join
+    try:
+        cp = ConfigParser()
+        cp.read(join(expanduser("~"), ".aws", "credentials"))
+        return cp.sections()
+    except Exception as e:
+        logging.error(e)
 
 
 # See https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings.html#guardduty_findings-severity
@@ -76,7 +82,7 @@ def process_account(session, profile, aws_region, finding_id, num, finding_type,
                 
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
-            if error_code in ["AuthFailure", "UnrecognizedClientException"]:
+            if error_code in ["AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"]:
                 logging.warning(f"Unable to process region {region}: {error_code}")
             else:
                 raise
@@ -86,31 +92,36 @@ def process_account(session, profile, aws_region, finding_id, num, finding_type,
 
 
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name.")
 @click.option("--findingid", "-i", help="Finding ID. Optional.", default=None)
 @click.option("--num", "-n", help="Number of records returned for each detector/account/region. Default: 5.", default=5)
 @click.option("--findingtype", "-t", help="Recon Finding Type (e.g. Recon:IAMUser/UserPermissions). Optional.", default=None)
 @click.option("--severity", "-s", help="Severity: high, medium, low. Default: high.", default="high")
+@click.option("--profile", "-p", help="AWS profile name.")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions. Default: ap-southeast-2.", default="ap-southeast-2")
-def main(profile, region, findingid, num, findingtype, severity):
-    accounts_processed = []
-    profile_names = [profile] if profile else aws_profiles
-    for profile_name in profile_names:
-        try:
-            session = Session(profile_name=profile_name)
-            account_id = session.client("sts").get_caller_identity()["Account"]
-            if account_id in accounts_processed:
-                continue
-            accounts_processed.append(account_id)
-            
-            if process_account(session, profile_name, region, findingid, num, findingtype, severity) is not None:
-                break
-        except ClientError as e:
-            error_code = e.response["Error"]["Code"]
-            if error_code in ["ExpiredToken", "AccessDenied"]:
-                logging.warning(f"{profile_name} {error_code}. Skipped")
-            else:
-                raise
+def main(findingid, num, findingtype, severity, profile, region):
+    start = time()
+    try:
+        accounts_processed = []
+        profile_names = [profile] if profile else read_aws_profile_names()
+        for profile_name in profile_names:
+            try:
+                session = Session(profile_name=profile_name)
+                account_id = session.client("sts").get_caller_identity()["Account"]
+                if account_id in accounts_processed:
+                    continue
+                accounts_processed.append(account_id)
+
+                if process_account(session, profile_name, region, findingid, num, findingtype, severity) is not None:
+                    break
+            except ClientError as e:
+                error_code = e.response["Error"]["Code"]
+                if error_code in ["ExpiredToken", "InvalidClientTokenId"]:
+                    logging.warning(f"{profile_name} {error_code}. Skipped")
+                else:
+                    raise
+    finally:
+        logging.info(f"Total execution time: {time() - start}s")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
