@@ -32,9 +32,8 @@ def check_response(resp):
 
 
 def read_function_configuration(config_file):
-    with open(config_file, "r") as input_file:
-        data = input_file.read()
-        return json.loads(data)
+    with open(config_file, "r") as f:
+        return json.load(f)
 
 
 def _lambda_deploy(session, region, function_name, config_file, zip_file, description, lambda_alias):
