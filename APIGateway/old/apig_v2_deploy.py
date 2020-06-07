@@ -1,5 +1,5 @@
 """
-This script deploys API Gateway REST API using API Gateway Version 1.
+This script deploys WebSocket/HTTP API Gateway using API Gateway Version 2.
 
 Note: According to https://docs.aws.amazon.com/apigateway/latest/developerguide/api-ref.html
 (still true on 2019-02-05)

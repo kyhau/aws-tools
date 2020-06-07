@@ -59,50 +59,43 @@ def check_if_stage_exists(apig_client, api_id, stage_name):
     except apig_client.exceptions.NotFoundException as e:
         logging.debug(e)
 
-    logging.info(f"Creating a new stage [{stage_name}]...")
-    resp = apig_client.create_deployment(
-        ApiId=api_id,
-        Description=f"A new deployment for creating new stage: {stage_name}"
-    )
+    logging.info(f"Creating a new stage [{stage_name}] for {api_id}...")
+    resp = apig_client.create_deployment(restApiId=api_id, description=f"Initial deployment for stage: {stage_name}")
     if check_response(resp) is False:
         return False
 
-    resp = apig_client.create_stage(
-        ApiId=api_id,
-        StageName=stage_name,
-        DeploymentId=resp["DeploymentId"]
-    )
+    resp = apig_client.create_stage(restApiId=api_id, stageName=stage_name, deploymentId=resp["id"])
     return check_response(resp)
 
 
-def create_deployment(apig_client, api_id, config):
+def create_deployment(apig_client, api_id, stage_name, stage_config, description):
     """Create or update a deployment stage"""
-    stage_name = config["stageName"]
     logging.info(f"Creating or updating deployment stage [{stage_name}] of api gateway [{api_id}]...")
     
-    resp = apig_client.create_deployment(
-        restApiId=api_id,
-        stageName=config["stageName"],
-        stageDescription=config["description"],
-        description=config["description"],
-        cacheClusterEnabled=config.get("cacheClusterEnabled", False),
-        cacheClusterSize=config.get("cacheClusterSize", 0.5),
-        variables=config.get("variables", {}),
-        canarySettings=config.get("canarySettings", {}),
-        tracingEnabled=config.get("tracingEnabled", False),
-    )
-    return check_response(resp)
+    # Pop/remove 'methodSettings` from stage_config if exists
+    method_settings = stage_config.pop("methodSettings", {}).get("*/*", {})
 
-
-def update_stage_logging(apig_client, api_id, config):
-    """
-    Update logging settings of a stage.
-    Note that this implemention supports only loglevel, dataTrace and metrics/enabled.
-    """
-    stage_name = config["stageName"]
-    logging.info(f"Updating stage [{stage_name}] logging settings...")
+    # Update and keep attributes required
+    stage_config.update({
+        "restApiId": api_id,
+        "stageName": stage_name,
+        "stageDescription": description,
+        "description": description,
+    })
+    for d in ["cacheClusterStatus", "createdDate", "deploymentId", "lastUpdatedDate"]:
+        if d in stage_config:
+            del stage_config[d]
+    if stage_config.get("canarySettings", {}).get("deploymentId") is not None:
+        del stage_config["canarySettings"]["deploymentId"]
     
-    method_settings = config.get("methodSettings", {}).get("*/*", {})
+    resp = apig_client.create_deployment(**stage_config)
+    if check_response(resp) is False:
+        return False
+
+    # Update logging settings of a stage.
+    # Note that this implementation supports only loglevel, dataTrace and metrics/enabled.
+    logging.info(f"Updating logging settings of stage [{stage_name}]...")
+    
     log_level = method_settings.get("loggingLevel", "OFF")
     data_trace_enabled = method_settings.get("dataTraceEnabled", False)
     metrics_enabled = method_settings.get("metricsEnabled", False)
@@ -114,9 +107,9 @@ def update_stage_logging(apig_client, api_id, config):
             # Set Log level: OFF, ERROR, or INFO
             {"op": "replace", "path": "/*/*/logging/loglevel", "value": log_level},
             # Enable full request/response logging for all resources/methods in an API's stage
-            {"op": "replace", "path": "/*/*/logging/dataTrace", "value": data_trace_enabled},
+            {"op": "replace", "path": "/*/*/logging/dataTrace", "value": str(data_trace_enabled)},
             # Enable CloudWatch metric
-            {"op": "replace", "path": "/*/*/metrics/enabled", "value": metrics_enabled},
+            {"op": "replace", "path": "/*/*/metrics/enabled", "value": str(metrics_enabled)},
         ]
     )
     return check_response(resp)
@@ -158,43 +151,34 @@ def update_api(ctx, api_id, swagger_file):
         raise Exception("Failed to reimport the api swagger file. Aborted")
 
 
-@cli_main.command(help="Deploy a lambda function")
+@cli_main.command(help="Deploy a REST API to the specified stage")
 @click.argument("api_id", required=True)
-@click.option("--config-file", "-c", required=False, help="Json file containing lambda function configuration")
-@click.option("--description", "-d", default="", help="Description of the deployment")
+@click.option("--description", "-d", default="", help="Description of the new deployment")
+@click.option("--stage-config-file", "-f", required=True, help="Json file containing same info from get_stage")
+@click.option("--stage-name", "-n", required=True, help="Stage name, no space")
 @click.pass_context
-def deploy(ctx, api_id, config_file, description):
+def deploy(ctx, api_id, description, stage_config_file, stage_name):
     apig_client = ctx.obj["apig_client"]
-    config = get_json_data_from_file(config_file)
-    stage_name = config_file["stageName"]
-    config["description"] = description
-
-    logging.info(f"Create or update deployment stage [{stage_name}] of api gateway [{api_id}]...")
+    stage_config = get_json_data_from_file(stage_config_file)
     
     if check_if_stage_exists(apig_client, api_id, stage_name) is False:
         raise Exception("Failed to create a new stage for deployment")
-    
-    if create_deployment(apig_client, api_id, config) is False:
+
+    if create_deployment(apig_client, api_id, stage_name, stage_config, description) is False:
         raise Exception("Failed to create a new deployment")
 
-    if update_stage_logging(apig_client, api_id, config) is False:
-        raise Exception("Failed to update stage logging")
-
-    if config.get("cacheClusterEnabled", False) is True and flush_cache(apig_client, api_id, deploy) is False:
+    if stage_config.get("cacheClusterEnabled", False) is True and flush_cache(apig_client, api_id, deploy) is False:
         raise Exception("Failed to flush cache.")
 
 
-@cli_main.command(help="Export configuration of a REST API to restApdId-stageName-deploymentId.json")
+@cli_main.command(help="Export stage info (get_stage) of a REST API to restApiId-stageName-deploymentId.json")
 @click.argument("api_id", required=True)
 @click.pass_context
 def get_stages(ctx, api_id):
     apig_client = ctx.obj["apig_client"]
     resp = apig_client.get_stages(restApiId=api_id)
     if check_response(resp) is False:
-        raise Exception("Failed to get stage info")
-
-    for d in ["ResponseMetadata"]:
-        del resp[d]    # keep data needed
+        raise Exception("Failed to get stage configuration")
 
     for item in resp["item"]:
         logging.debug(item)
