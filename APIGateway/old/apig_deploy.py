@@ -1,10 +1,10 @@
 """
-This script deploys API Gateway REST/HTTP API using API Gateway Version 1.
+This script deploys API Gateway REST API using API Gateway Version 1.
 
 Note: According to https://docs.aws.amazon.com/apigateway/latest/developerguide/api-ref.html
 (still true on 2019-02-05)
-* Amazon API Gateway Version 1 API Reference (for creating and deploying HTTP APIs)
-* Amazon API Gateway Version 2 API Reference (for creating and deploying WebSocket APIs)
+* Amazon API Gateway Version 1 API Reference (for creating and deploying REST APIs)
+* Amazon API Gateway Version 2 API Reference (for creating and deploying WebSocket/HTTP APIs)
 """
 import boto3
 import click
