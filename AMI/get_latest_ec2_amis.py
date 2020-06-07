@@ -4,41 +4,45 @@ aws ssm get-parameters-by-path --path "/aws/service/ami-amazon-linux-latest" | j
 aws ssm get-parameters-by-path --path "/aws/service/ami-windows-latest" | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
 """
 from boto3.session import Session
-import typer
-
-app = typer.Typer(help="List the latest AWS managed AMIs.")
+import click
 
 
-def process(param_path, region):
-    operation_params = {"Path": param_path}
-    session = Session()
-    regions = session.get_available_regions("ssm") if region == "all" else [region]
-    for region in regions:
+def process(param_path, region, session):
+    for region in session.get_available_regions("ssm") if region == "all" else [region]:
         try:
             client = session.client("ssm", region_name=region)
-            paginator = client.get_paginator("get_parameters_by_path")
-            for page in paginator.paginate(**operation_params):
+            for page in client.get_paginator("get_parameters_by_path").paginate(Path=param_path):
                 for p in page["Parameters"]:
                     print(f'{p["Value"]}, {p["Version"]}, {p["LastModifiedDate"]}, {p["ARN"]}')
         except Exception as e:
             print(f"Skip region {region} due to error: {e}")
 
 
-@app.command()
-def linux_amis(
-    region: str = typer.Option("ap-southeast-2", help="AWS Region; use 'all' for all regions.", show_default=True)
-):
+@click.group(help="List the lastest AWS managed AMIs")
+@click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS region")
+@click.pass_context
+def cli_main(ctx, profile, region):
+    session = Session(profile_name=profile)
+    ctx.obj = {"session": session, "region": region}
+    print("AmiId, Version, LastModifiedDate, ARN")
+
+
+@cli_main.command(help="List all Linux AMIs")
+@click.pass_context
+def linux(ctx):
     """List all Linux AMIs."""
-    process(param_path="/aws/service/ami-amazon-linux-latest", region=region)
+    region, session = ctx.obj["region"], ctx.obj["session"]
+    process(param_path="/aws/service/ami-amazon-linux-latest", region=region, session=session)
 
 
-@app.command()
-def windows_amis(
-    region: str = typer.Option("ap-southeast-2", help="AWS Region; use 'all' for all regions.", show_default=True)
-):
+@cli_main.command(help="List all Windows AMIs")
+@click.pass_context
+def windows(ctx):
     """List all Windows AMIs."""
-    process(param_path="/aws/service/ami-windows-latest", region=region)
+    region, session = ctx.obj["region"], ctx.obj["session"]
+    process(param_path="/aws/service/ami-windows-latest", region=region, session=session)
 
 
 if __name__ == "__main__":
-    app()
+    cli_main(obj={})

@@ -34,7 +34,7 @@ dataclasses-json~=0.4   # provides a simple API for encoding and decoding datacl
 #faker
 PyInquirer~=1.0         # for saml2aws/aws_login.py
 pytz
-typer~=0.2
+#typer~=0.2             # click alternative
 #black
 #pipdeptree
 #pyyaml~=5.1
@@ -43,5 +43,5 @@ typer~=0.2
 #warrant~=0.6
 
 # Kafka
-#confluent_kafka         # https://docs.confluent.io/current/clients/python.html
+#confluent_kafka        # https://docs.confluent.io/current/clients/python.html
 #kafka-python
