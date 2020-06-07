@@ -7,11 +7,11 @@ import yaml
 #boto3.setup_default_session(profile_name=AWS_PROFILE)
 
 
-@click.command()
-@click.option("--clusterarn", "-c", help="ARN of MSK cluster", required=True)
-@click.option("--profile", "-p", help="AWS profile name", default="default")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-@click.option("--detailed", "-d", is_flag=True)
+@click.command(help="Help 1")
+@click.option("--clusterarn", "-c", required=True, help="ARN of MSK cluster")
+@click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region; use 'all' for all regions")
+@click.option("--detailed", "-d", show_default=True, is_flag=True)
 def main(clusterarn, profile, region, detailed):
     session = Session(profile_name=profile)
     client = session.client("kafka", region_name=region)
@@ -23,4 +23,5 @@ def main(clusterarn, profile, region, detailed):
             print(yaml.dump(item))
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

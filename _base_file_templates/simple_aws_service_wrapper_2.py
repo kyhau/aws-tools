@@ -1,7 +1,7 @@
 import click
 
 
-@click.group()
+@click.group(help="Help 1")
 def cli1():
     pass
 
@@ -18,4 +18,5 @@ def cmd2(user):
     click.echo(f"Chosen user is {user}")
 
 
-if __name__ == "__main__": cli1()
+if __name__ == "__main__":
+    cli1()
