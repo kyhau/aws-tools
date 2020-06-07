@@ -4,6 +4,8 @@ Some utility functions for interacting with DynamoDB
 from decimal import Decimal
 import json
 
+# See also https://stackoverflow.com/questions/43755888/how-to-convert-a-boto3-dynamo-db-item-to-a-regular-dictionary-in-python/46738251#46738251
+
 
 def convert_data_for_dynamodb(data):
     """

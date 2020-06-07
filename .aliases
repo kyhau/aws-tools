@@ -21,6 +21,8 @@ alias aws-cloudtrail-lookup-events='python ${ARKI_REPO_HOME}/CloudTrail/cloudtra
 alias aws-cloudwatch-insights-run-query='python ${ARKI_REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights_run_query.py'
 alias aws-cloudwatch-insights-list-queries='python ${ARKI_REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights_list_queries.py'
 
+alias aws-dynamodb-search='python ${ARKI_REPO_HOME}/DynamoDB/search_dynamodb.py'
+
 alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
 
 alias aws-config-query='python ${ARKI_REPO_HOME}/Config/query_configservice.py'

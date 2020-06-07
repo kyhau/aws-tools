@@ -9,28 +9,19 @@ HTTPS_OK_CODES = [200, 201, 202]
 
 
 class DefaultEncoder(json.JSONEncoder):
-    """Encode for the json
-    """
+    """Encode for the json"""
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return int(mktime(obj.timetuple()))
-
         return json.JSONEncoder.default(self, obj)
 
 
-def print_json(json_data, logger=None):
-    """Print json data nicely
-    """
-    ret = json.dumps(json_data, cls=DefaultEncoder, sort_keys=True, indent=2)
-    if logger is None:
-        print(ret)
-    else:
-        logger.info(ret)
+dump_json = lambda x: json.dumps(x, cls=DefaultEncoder, sort_keys=True, indent=2)
+
 
 
 def check_response(resp):
-    """Check response and log message if needed
-    """
+    """Check response and log message if needed"""
     ret = resp["ResponseMetadata"]["HTTPStatusCode"] in HTTPS_OK_CODES
     if ret is False:
         logging.error(f"Response:\n{json.dumps(resp, cls=DefaultEncoder, sort_keys=True, indent=2)}")
