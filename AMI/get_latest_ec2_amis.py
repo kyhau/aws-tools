@@ -31,7 +31,6 @@ def cli_main(ctx, profile, region):
 @cli_main.command(help="List all Linux AMIs")
 @click.pass_context
 def linux(ctx):
-    """List all Linux AMIs."""
     region, session = ctx.obj["region"], ctx.obj["session"]
     process(param_path="/aws/service/ami-amazon-linux-latest", region=region, session=session)
 
@@ -39,7 +38,6 @@ def linux(ctx):
 @cli_main.command(help="List all Windows AMIs")
 @click.pass_context
 def windows(ctx):
-    """List all Windows AMIs."""
     region, session = ctx.obj["region"], ctx.obj["session"]
     process(param_path="/aws/service/ami-windows-latest", region=region, session=session)
 

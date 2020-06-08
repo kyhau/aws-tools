@@ -40,10 +40,10 @@ def get_secret(secret_name, region_name, profile):
 
 
 @click.command()
-@click.option("--profile", "-p", default="default", help="AWS profile name")
 @click.option("--secret_name", "-s", required=True, help="Secret name")
+@click.option("--profile", "-p", default="default", help="AWS profile name")
 @click.option("--region", "-r", default="ap-southeast-2", help="AWS region")
-def main(profile, secret_name, region):
+def main(secret_name, profile, region):
     print(get_secret(secret_name, region, profile))
 
 
