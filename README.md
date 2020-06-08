@@ -161,3 +161,5 @@ pip install -r requirements.txt
 - [CDK](https://cdkworkshop.com/)
 - [CI/CD for Serverless Applications](https://cicd.serverlessworkshops.io/)
 - [Redshift Immersion](https://redshift-immersion.workshop.aws)
+- [Spot Instances Workshops](https://ec2spotworkshops.com/)
+- [Spot Instances with EKS](https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks.html)
