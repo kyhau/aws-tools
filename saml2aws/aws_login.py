@@ -77,8 +77,7 @@ def read_lines_from_file(filename):
 
 def load_saml2aws_config(filename):
     configs = {}
-    rows = read_csv(filename, "=")
-    for row in rows:
+    for row in read_csv(filename, "="):
         w = [f.strip() for f in row]
         if len(w) > 1 and w[1]:
             configs[w[0]] = w[1]
@@ -145,31 +144,14 @@ def run_saml2aws_list_roles(uname, upass):
     return roles
 
 
-@click.command(help="Get credentials for multiple accounts with saml2aws")
-@click.option("--keyword", "-k", help="Pre-select roles with the given keyword")
+@click.group(invoke_without_command=True, help="Get credentials for multiple accounts with saml2aws")
+@click.option("--keyword", "-k", multiple=True, help="Pre-select roles with the given keyword(s)")
 @click.option("--refresh-cached-roles", "-r", is_flag=True, show_default=True)
 @click.option("--session-duration", "-t", help="Session duration in seconds")
-@click.option("--switch-profile", "-s", is_flag=True, show_default=True)
 @click.option("--debug", "-d", is_flag=True, show_default=True)
-def main(keyword, refresh_cached_roles, session_duration, switch_profile, debug):
+def main_cli(keyword, refresh_cached_roles, session_duration, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
-    
-    if switch_profile is True:
-        config = get_aws_profiles()
-        options = [profile for profile in config.sections() if profile != "default"]
-        if options:
-            answer = prompt(profile_selection(options), style=custom_style)
-            profile = answer.get("profile")
-            if profile is not None:
-                config["default"] = config[profile]
-                write_aws_profiles(config)
-                logging.info(f"Set the default profile to {profile}")
-            else:
-                logging.info("Nothing selected. Aborted.")
-        else:
-            logging.info("No non default aws profile found. Aborted.")
-        return
     
     last_selected_profiles = read_lines_from_file(LAST_SELECTED_FILE)
     uname, upass = None, None
@@ -205,5 +187,22 @@ def main(keyword, refresh_cached_roles, session_duration, switch_profile, debug)
         logging.info("Nothing selected. Aborted.")
 
 
+@main_cli.command(help="Switch default profile")
+def switch():
+    config = get_aws_profiles()
+    options = [profile for profile in config.sections() if profile != "default"]
+    if options:
+        answer = prompt(profile_selection(options), style=custom_style)
+        profile = answer.get("profile")
+        if profile is not None:
+            config["default"] = config[profile]
+            write_aws_profiles(config)
+            logging.info(f"Set the default profile to {profile}")
+        else:
+            logging.info("Nothing selected. Aborted.")
+    else:
+        logging.info("No non default aws profile found. Aborted.")
+
+
 if __name__ == "__main__":
-    main()
+    main_cli()
