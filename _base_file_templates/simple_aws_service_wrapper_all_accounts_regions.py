@@ -65,35 +65,46 @@ def process_account(session, profile, account_id, aws_region, subnet_id):
             traceback.print_exc()
 
 
-@click.command(help="TODO help 1")
+@click.group(invoke_without_command=True, help="TODO help 1")
 @click.option("--subnetid", "-s", help="Subnet ID, or show all if not specified.", default=None, show_default=True)
 @click.option("--detailed", "-d", is_flag=True, show_default=True)
 @click.option("--profile", "-p", help="AWS profile name")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2", show_default=True)
-def main(subnetid, detailed, profile, region):
+@click.pass_context
+def main_cli(ctx, subnetid, detailed, profile, region):
+    ctx.obj = {"subnetid": subnetid, "region": region}
     start = time()
     try:
-        accounts_processed = []
-        profile_names = [profile] if profile else read_aws_profile_names()
-        for profile_name in profile_names:
-            try:
-                session = Session(profile_name=profile_name)
-                account_id = session.client("sts").get_caller_identity()["Account"]
-                if account_id in accounts_processed:
-                    continue
-                accounts_processed.append(account_id)
-                
-                if process_account(session, profile_name, account_id, region, subnetid) is not None:
-                    break
-            except ClientError as e:
-                error_code = e.response["Error"]["Code"]
-                if error_code in ["ExpiredToken"]:
-                    logging.warning(f"{profile_name} {error_code}. Skipped")
-                else:
-                    raise
+        if ctx.invoked_subcommand is not None:
+            session = Session(profile_name=profile)
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            process_account(session, profile, account_id, region, subnetid)
     finally:
         logging.info(f"Total execution time: {time() - start}s")
+    
+
+@main_cli.command(help="Process all accounts of the profiles in .aws/credentials")
+@click.pass_context
+def all(ctx):
+    region, subnet_id = ctx.obj["region"], ctx.obj["subnetid"]
+    accounts_processed = []
+    for profile_name in read_aws_profile_names():
+        try:
+            session = Session(profile_name=profile_name)
+            account_id = session.client("sts").get_caller_identity()["Account"]
+            if account_id in accounts_processed:
+                continue
+            accounts_processed.append(account_id)
+            
+            if process_account(session, profile_name, account_id, region, subnet_id) is not None:
+                break
+        except ClientError as e:
+            error_code = e.response["Error"]["Code"]
+            if error_code in ["ExpiredToken"]:
+                logging.warning(f"{profile_name} {error_code}. Skipped")
+            else:
+                raise
 
 
 if __name__ == "__main__":
-    main()
+    main_cli(obj={})

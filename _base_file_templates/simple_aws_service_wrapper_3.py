@@ -3,14 +3,14 @@ import click
 
 @click.group(invoke_without_command=True, help="TODO Help 1")
 @click.pass_context
-def cli1(ctx):
+def main_cli(ctx):
     if ctx.invoked_subcommand is not None:
         click.echo('I am about to invoke %s' % ctx.invoked_subcommand)
         return
     click.echo('I was invoked without subcommand')
 
 
-@cli1.command(help="TODO cmd1")
+@main_cli.command(help="TODO cmd1")
 @click.argument("var1", type=click.STRING)
 @click.pass_context
 def cmd1(ctx, var1):
@@ -18,7 +18,7 @@ def cmd1(ctx, var1):
     click.echo(f"cmd1: {var1}, {ctx.obj}")
 
 
-@cli1.command(help="TODO cmd2")
+@main_cli.command(help="TODO cmd2")
 @click.argument("var2", type=click.STRING)
 @click.pass_context
 def cmd2(ctx, var2):
@@ -26,4 +26,4 @@ def cmd2(ctx, var2):
 
 
 if __name__ == "__main__":
-    cli1(obj={"debug": "true"})
+    main_cli(obj={"debug": "true"})
