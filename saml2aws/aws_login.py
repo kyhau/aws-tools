@@ -169,8 +169,10 @@ def main_cli(keyword, refresh_cached_roles, session_duration, debug):
         profile_name = role_arn.split("role/")[-1].replace("/", "-")
         profiles[profile_name] = role_arn
         
-        if keyword is not None and keyword in role_arn:
-            last_selected_profiles.append(profile_name)
+        for k in keyword:
+            if k in role_arn:
+                last_selected_profiles.append(profile_name)
+                break
     
     answers = prompt(roles_selection(profiles.keys(), last_selected_profiles), style=custom_style)
     if answers.get("roles"):
