@@ -145,12 +145,12 @@ def run_saml2aws_list_roles(uname, upass):
     return roles
 
 
-@click.command()
+@click.command(help="Get credentials for multiple accounts with saml2aws")
 @click.option("--keyword", "-k", help="Pre-select roles with the given keyword")
-@click.option("--refresh-cached-roles", "-r", is_flag=True)
+@click.option("--refresh-cached-roles", "-r", is_flag=True, show_default=True)
 @click.option("--session-duration", "-t", help="Session duration in seconds")
-@click.option("--switch-profile", "-s", is_flag=True)
-@click.option("--debug", "-d", is_flag=True)
+@click.option("--switch-profile", "-s", is_flag=True, show_default=True)
+@click.option("--debug", "-d", is_flag=True, show_default=True)
 def main(keyword, refresh_cached_roles, session_duration, switch_profile, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -205,4 +205,5 @@ def main(keyword, refresh_cached_roles, session_duration, switch_profile, debug)
         logging.info("Nothing selected. Aborted.")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
