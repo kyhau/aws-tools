@@ -94,18 +94,12 @@ def create_deployment(apig_client, api_id, stage_name, stage_config, description
     return check_response(resp)
 
 
-@click.group(invoke_without_command=True, help="List WebSocket/HTTP APIs if no command specified")
-@click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--region", "-r", default="ap-southeast-2", help="AWS region")
+@click.group(help="API Gateway V2 deployment helper")
+@click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS region")
 @click.pass_context
 def cli_main(ctx, profile, region):
-    apig_client = Session(profile_name=profile).client("apigatewayv2", region)
-    ctx.obj["apig_client"] = apig_client
-    if ctx.invoked_subcommand is None:
-        logging.info("List WebSocket/HTTP APIs")
-        for page in apig_client.get_paginator("get_apis").paginate().result_key_iters():
-            for item in page:
-                print(item)
+    ctx.obj["apig_client"] = Session(profile_name=profile).client("apigatewayv2", region)
 
 
 @cli_main.command(help="Deploy a WebSocket/HTTP API to the specified stage")
@@ -137,6 +131,14 @@ def get_stages(ctx, api_id):
             logging.debug(item)
             with open(f"{api_id}-{item['StageName']}-{item['DeploymentId']}.json", "w") as outfile:
                 json.dump(item, outfile, cls=DefaultEncoder, sort_keys=True, indent=2)
+
+
+@cli_main.command(help="List all WebSocket/HTTP APIs")
+@click.pass_context
+def ls(ctx):
+    for page in ctx.obj["apig_client"].get_paginator("get_apis").paginate().result_key_iters():
+        for item in page:
+            print(item)
 
 
 if __name__ == "__main__":

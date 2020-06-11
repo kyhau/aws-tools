@@ -121,34 +121,20 @@ def flush_cache(apig_client, api_id, stage_name):
     return check_response(resp)  # Return 202 if succeeded
 
 
-@click.group(invoke_without_command=True, help="List REST APIs if no command specified")
-@click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--region", "-r", default="ap-southeast-2", help="AWS region")
+@click.group(help="API Gateway deployment helper")
+@click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS region")
 @click.pass_context
 def cli_main(ctx, profile, region):
-    apig_client = Session(profile_name=profile).client("apigateway", region)
-    ctx.obj["apig_client"] = apig_client
-    if ctx.invoked_subcommand is None:
-        logging.info("List REST APIs")
-        for page in apig_client.get_paginator("get_rest_apis").paginate().result_key_iters():
-            for item in page:
-                print(item)
+    ctx.obj["apig_client"] = Session(profile_name=profile).client("apigateway", region)
 
 
-@cli_main.command(help="Reimport api swagger file to AWS api gateway")
-@click.argument("api_id", required=True)
-@click.option("--swagger-file", "-f", required=True, help="Swagger file in yaml (.yaml)")
+@cli_main.command(help="List all REST APIs")
 @click.pass_context
-def update_api(ctx, api_id, swagger_file):
-    apig_client = ctx.obj["apig_client"]
-
-    # Retrieve content of the api swagger template
-    json_data = get_json_data_from_file(swagger_file)
-
-    logging.info(f"Reimport API swagger file to api gateway {api_id}...")
-    resp = apig_client.put_rest_api(restApiId=api_id, mode="overwrite", body=json_data)
-    if check_response(resp) is False:
-        raise Exception("Failed to reimport the api swagger file. Aborted")
+def ls(ctx):
+    for page in ctx.obj["apig_client"].get_paginator("get_rest_apis").paginate().result_key_iters():
+        for item in page:
+            print(item)
 
 
 @cli_main.command(help="Deploy a REST API to the specified stage")
@@ -184,6 +170,22 @@ def get_stages(ctx, api_id):
         logging.debug(item)
         with open(f"{api_id}-{item['stageName']}-{item['deploymentId']}.json", "w") as outfile:
             json.dump(item, outfile, cls=DefaultEncoder, sort_keys=True, indent=2)
+
+
+@cli_main.command(help="Reimport api swagger file to AWS api gateway")
+@click.argument("api_id", required=True)
+@click.option("--swagger-file", "-f", required=True, help="Swagger file in yaml (.yaml)")
+@click.pass_context
+def update_api(ctx, api_id, swagger_file):
+    apig_client = ctx.obj["apig_client"]
+
+    # Retrieve content of the api swagger template
+    json_data = get_json_data_from_file(swagger_file)
+
+    logging.info(f"Reimport API swagger file to api gateway {api_id}...")
+    resp = apig_client.put_rest_api(restApiId=api_id, mode="overwrite", body=json_data)
+    if check_response(resp) is False:
+        raise Exception("Failed to reimport the api swagger file. Aborted")
 
 
 if __name__ == "__main__":

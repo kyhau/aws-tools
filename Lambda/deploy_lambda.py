@@ -103,20 +103,13 @@ def _lambda_deploy(session, region, function_name, config_file, zip_file, descri
     logging.info(f"Updated alias on Version={resp['FunctionVersion']}: AliasArn={resp['AliasArn']}")
 
 
-@click.group(invoke_without_command=True, help="List name of lambda functions if no command specified")
-@click.option("--profile", "-p", default="default", help="AWS profile name")
-@click.option("--region", "-r", default="ap-southeast-2", help="AWS region")
+@click.group(help="Lambda deployment helper")
+@click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS region")
 @click.pass_context
 def cli_main(ctx, profile, region):
     ctx.obj["session"] = Session(profile_name=profile)
     ctx.obj["region"] = region
-    if ctx.invoked_subcommand is None:
-        logging.info("List functions")
-        client = ctx.obj["session"].client("lambda", region)
-        paginator = client.get_paginator("list_functions")
-        for page in paginator.paginate():
-            for f in page["Functions"]:
-                print(f["FunctionName"])
 
 
 @cli_main.command(help="Deploy a lambda function")
@@ -156,6 +149,39 @@ def export_config(ctx, function_name, qualifier, output_file):
     
     with open(output_file, "w") as outfile:
         json.dump(resp, outfile, indent=2)
+
+
+
+@cli_main.command(help="List all lambda function names")
+@click.pass_context
+def ls(ctx):
+    client = ctx.obj["session"].client("lambda", ctx.obj["region"])
+    paginator = client.get_paginator("list_functions")
+    for page in paginator.paginate().result_key_iters():
+        for f in page:
+            print(f["FunctionName"])
+
+
+@cli_main.command(help="List all aliases of a Lambda function")
+@click.option("--function-name", "-f", help="Function name", required=True)
+@click.pass_context
+def aliases(ctx, function_name):
+    client = ctx.obj["session"].client("lambda", ctx.obj["region"])
+    paginator = client.get_paginator("list_aliases")
+    for page in paginator.paginate(FunctionName=function_name).result_key_iters():
+        for item in page:
+            print(item)
+
+
+@cli_main.command(help="List all versions of a Lambda function")
+@click.option("--function-name", "-f", help="Function name", required=True)
+@click.pass_context
+def versions(ctx, function_name):
+    client = ctx.obj["session"].client("lambda", ctx.obj["region"])
+    paginator = client.get_paginator("list_versions_by_function")
+    for page in paginator.paginate(FunctionName=function_name).result_key_iters():
+        for item in page:
+            print(item)
 
 
 if __name__ == "__main__":
