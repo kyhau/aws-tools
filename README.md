@@ -111,6 +111,7 @@ pip install -r requirements.txt
 | AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
 | AWS Security Benchmark | [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark) |
 | AWS Security Hub Multiaccount Scripts | [awslabs/aws-securityhub-multiaccount-scripts](https://github.com/awslabs/aws-securityhub-multiaccount-scripts) |
+| AWS SSM Chaos Runner | [amzn/awsssmchaosrunner](https://github.com/amzn/awsssmchaosrunner) |
 | Import AWS Config Findings into AWS Security Hub | [aws-samples/aws-securityhub-config-integration](https://github.com/aws-samples/aws-securityhub-config-integration) |
 | amazon-detective-multiaccount-scripts | [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts) |
 | aws-securityhub-to-email | [aws-samples/aws-securityhub-to-email](https://github.com/aws-samples/aws-securityhub-to-email) |
@@ -153,7 +154,7 @@ pip install -r requirements.txt
 
 ## Best Practices Guides
 
-- [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/), AWS
+- [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/)
 
 ## Workshops
 

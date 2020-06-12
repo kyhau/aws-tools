@@ -42,6 +42,6 @@ Resources:
       SourceArn: !Sub ${ScheduledEventsRule.Arn}
 
 Outputs:
-  EventRuleId:
+  EventsRuleId:
     Description: The ID of the Events Rule
     Value: !Ref ScheduledEventsRule

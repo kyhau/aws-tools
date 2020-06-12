@@ -3,10 +3,13 @@ Description: Create Athena Workgroup
 
 Parameters:
   OutputLocation:
-    Description: E.g. s3://sample-query-results/collection-a/
+    Description: The location in S3 where your query results are stored, e.g. s3://path/to/query/bucket/.
     Type: String
   WorkgroupName:
-    Description: Name of the Athena Workgroup
+    Description: The Athena workgroup name.
+    Type: String
+  WorkgroupDescription:
+    Description: The Athena workgroup description.
     Type: String
 
 Resources:
@@ -14,7 +17,7 @@ Resources:
     Type: AWS::Athena::WorkGroup
     Properties:
       Name: !Ref WorkgroupName
-      Description: Workgroup for CDO Dashboard
+      Description: !Ref WorkgroupDescription
       State: ENABLED
       WorkGroupConfigurationUpdates:
         ResultConfigurationUpdates:
