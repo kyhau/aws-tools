@@ -28,7 +28,7 @@ def write_to_s3(data, s3_key, bucket=DATA_BUCKET, encrypt_mode=None, kms_key=Non
     bdata = "\n".join([json.dumps(item) for item in data])
     
     params = {
-        "Body": data,
+        "Body": bdata,
         "Key": s3_key,
         "Bucket": bucket,
         "ACL": "bucket-owner-full-control",
