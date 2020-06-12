@@ -2,7 +2,8 @@ from boto3.session import Session
 from botocore.exceptions import ClientError
 import click
 import logging
-import re
+from os.path import join
+from os import walk
 import time
 
 logging.getLogger().setLevel(logging.DEBUG)
@@ -12,6 +13,13 @@ def read_sql(filename):
     with open(filename, "r") as sql_file:
         content = sql_file.read()
     return content.replace("\n", " ").replace(";", "")
+
+
+def get_sql_files(root_dir):
+    sql_files = []
+    for root, dir, files in walk(root_dir):
+        sql_files.extend(join(root, file) for file in files if file.endswith(".sql"))
+    return sql_files
 
 
 def athena_to_s3(session, region, database, sqlfile, output, max_execution=60):
@@ -35,8 +43,7 @@ def athena_to_s3(session, region, database, sqlfile, output, max_execution=60):
             state = response["QueryExecution"]["Status"]["State"]
             if state == "SUCCEEDED":
                 s3_path = response["QueryExecution"]["ResultConfiguration"]["OutputLocation"]
-                filename = re.findall(".*\/(.*)", s3_path)[0]
-                print(filename)
+                print("Execution Result: {} {}".format(state, response["QueryExecution"]["ResultConfiguration"]["OutputLocation"]))
             elif state == "RUNNING":
                 time.sleep(1)
         else:
@@ -47,7 +54,9 @@ def athena_to_s3(session, region, database, sqlfile, output, max_execution=60):
 @click.option("--profile", "-p", help="AWS profile name.", default="default")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions.", default="ap-southeast-2")
 @click.option("--database", "-d", help="Database name.", required=True)
-@click.option("--sqlfile", "-s", help="File containing a SQL statement.", required=True)
+@click.option("--sqldir", help="Directory containing .sql files")
+@click.option("--sqlfile", help="File containing a SQL statement.")
+@click.option("--workgroup", "-w", help="Athena Workgroup name")
 @click.option("--output", "-o", help="S3 output location: e.g. s3://path/to/query/bucket/", required=True)
 def main(profile, region, database, sqlfile, output):
     try:
@@ -62,4 +71,5 @@ def main(profile, region, database, sqlfile, output):
             raise
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

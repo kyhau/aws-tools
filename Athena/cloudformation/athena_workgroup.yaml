@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Athena Workgroup
+
+Parameters:
+  OutputLocation:
+    Description: E.g. s3://sample-query-results/collection-a/
+    Type: String
+  WorkgroupName:
+    Description: Name of the Athena Workgroup
+    Type: String
+
+Resources:
+  AthenaWorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Ref WorkgroupName
+      Description: Workgroup for CDO Dashboard
+      State: ENABLED
+      WorkGroupConfigurationUpdates:
+        ResultConfigurationUpdates:
+          OutputLocation: !Ref OutputLocation
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain

@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Athena Named Queries
+
+Parameters:
+  Database:
+    Description: The database to which the query belongs.
+    Type: String
+
+Resources:
+  AthenaNamedQuery:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: !Ref Database
+      Description: A query that selects all aggregated data
+      Name: MostExpensiveWorkflow
+      QueryString: >
+        CREATE OR REPLACE VIEW sample_view1 AS
+        SELECT service, id
+        FROM sample_database.sample_table_a
+        UNION
+        SELECT service, id
+        FROM sample_database.sample_table_b
