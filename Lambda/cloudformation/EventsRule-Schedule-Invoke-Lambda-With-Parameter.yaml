@@ -21,7 +21,7 @@ Resources:
     Type: AWS::Events::Rule
     Properties:
       Description: !Sub "Schedule to run ${LambdaFunctionName}"
-      Name: !Sub "${LambdaFunctionName}-${CollectorName}"
+      Name: !Sub "${LambdaFunctionName}-${LambdaParameter}"
       ScheduleExpression: !Ref EventsRuleSchedule
       State: ENABLED
       Targets:
