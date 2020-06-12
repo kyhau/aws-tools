@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Events Rule for triggering a Lambda function with parameter.
+
+Parameters:
+  EventsRuleSchedule:
+    Description: Schedule Expression in UTC e.g. cron(0 1 ? * MON *)
+    Type: String
+    Default: "cron(0 21 ? * TUE *)"
+  LambdaFunctionArn:
+    Description: ARN of the Lambda function.
+    Type: String
+  LambdaFunctionName:
+    Description: Name of the Lambda function.
+    Type: String
+  LambdaParameter:
+    Description: Value passing to Lambda
+    Type: String
+
+Resources:
+  ScheduledEventsRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: !Sub "Schedule to run ${LambdaFunctionName}"
+      Name: !Sub "${LambdaFunctionName}-${LambdaParameter}"
+      ScheduleExpression: !Ref EventsRuleSchedule
+      State: ENABLED
+      Targets:
+        - Arn: !Ref LambdaFunctionArn
+          Id: !Sub "${LambdaFunctionName}-${LambdaParameter}"
+          Input:
+            !Sub |
+            {
+                "custom_operation": "${LambdaParameter}"
+            }
+  PermissionForEventsToInvokeLambda:
+    DependsOn: ScheduledEventsRule
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref LambdaFunctionName
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !Sub ${ScheduledEventsRule.Arn}
+
+Outputs:
+  EventsRuleId:
+    Description: The ID of the Events Rule
+    Value: !Ref ScheduledEventsRule

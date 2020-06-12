@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Athena Workgroup
+
+Parameters:
+  OutputLocation:
+    Description: The location in S3 where your query results are stored, e.g. s3://path/to/query/bucket/.
+    Type: String
+  WorkgroupName:
+    Description: The Athena workgroup name.
+    Type: String
+  WorkgroupDescription:
+    Description: The Athena workgroup description.
+    Type: String
+
+Resources:
+  AthenaWorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Ref WorkgroupName
+      Description: !Ref WorkgroupDescription
+      State: ENABLED
+      WorkGroupConfigurationUpdates:
+        ResultConfigurationUpdates:
+          OutputLocation: !Ref OutputLocation
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
