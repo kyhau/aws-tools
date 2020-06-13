@@ -31,11 +31,12 @@ def read_aws_profile_names():
         logging.error(e)
 
 
-def dump(data, output_filename, append=True, to_console=True):
-    if to_console is True:
-        print(data)
-    with open(output_filename, "a" if append else "w") as f:
-        f.write(f'{",".join(list(map(str, data)))}\n')
+def dump(items, output_filename, to_console=True):
+    with open(output_filename, "w") as f:
+        for data in items:
+            if to_console is True:
+                print(data)
+            f.write(f'{",".join(list(map(str, data)))}\n')
 
 
 def get_ec2_tag_value(resp, tag="Name"):
@@ -48,12 +49,7 @@ def get_ec2_tag_value(resp, tag="Name"):
 
 
 def process_account(session, aws_region, account_id):
-    output_filename = f"{account_id}_ips_used.csv"
-    titles = [
-        "PrivateIpAddress", "PrivateDnsName", "IsPrimary", "PublicIp", "PublicDnsName", "InstanceId", "Description",
-        "AccountId", "Region"]
-    dump(titles, output_filename, append=False)
-
+    results = []
     regions = session.get_available_regions("ec2") if aws_region == "all" else [aws_region]
     for region in regions:
         try:
@@ -70,21 +66,28 @@ def process_account(session, aws_region, account_id):
                     d2 = ni["Description"] if d1 is None else get_ec2_tag_value(client.describe_instances(InstanceIds=[d1]))
     
                     for data in ni["PrivateIpAddresses"]:
-                        ret = [
+                        results.append([
                             data["PrivateIpAddress"],
                             data["PrivateDnsName"],
                             data["Primary"],
                             data["Association"].get("PublicIp") if "Association" in data else None,
                             data["Association"].get("PublicDnsName") if "Association" in data else None,
                             d1, d2, account_id, region
-                        ]
-                        dump(ret, output_filename)
-    
+                        ])
         except ClientError as e:
-            if e.response["Error"]["Code"] in ["UnrecognizedClientException", "AuthFailure"]:
-                logging.warning(f"Unable to process region {region}")
+            err_code = e.response["Error"]["Code"]
+            if err_code in ["UnauthorizedOperation", "UnrecognizedClientException", "AuthFailure"]:
+                logging.warning(f"Unable to process {account_id} {region}: {err_code}")
             else:
                 raise
+
+    if results:
+        output_filename = f"{account_id}_ips_used.csv"
+        titles = [
+            "PrivateIpAddress", "PrivateDnsName", "IsPrimary", "PublicIp", "PublicDnsName", "InstanceId", "Description",
+            "AccountId", "Region"]
+        results.insert(0, titles)
+        dump(results, output_filename)
 
 
 @click.command()
