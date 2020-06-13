@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+A helper script using saml2aws to login and retrieve AWS temporary credentials for multiple roles in different accounts.
+"""
 import click
 from collections import OrderedDict
 from configparser import ConfigParser
@@ -6,6 +9,7 @@ import csv
 import getpass
 import logging
 from os.path import abspath, dirname, exists, join
+from os import makedirs
 from pathlib import Path
 from PyInquirer import style_from_dict, Token, prompt
 import subprocess
@@ -15,10 +19,10 @@ logging.getLogger().setLevel(logging.INFO)
 
 AWS_CRED = join(str(Path.home()), ".aws", "credentials")
 SAML2AWS_CONFIG = join(str(Path.home()), ".saml2aws")
-
+USER_DATA_HOME = join(str(Path.home()), ".arki")
 # role_arn, account_name
-ALL_ROLES_FILE = join(dirname(abspath(__file__)), "data", "roles_all.csv")
-LAST_SELECTED_FILE = join(dirname(abspath(__file__)), "data", "aws_login_last_selected.txt")
+ALL_ROLES_FILE = join(USER_DATA_HOME, "aws_login_roles.csv")
+LAST_SELECTED_FILE = join(USER_DATA_HOME, "aws_login_last_selected.txt")
 
 custom_style = style_from_dict({
     Token.Separator: "#6C6C6C",
@@ -53,6 +57,7 @@ def roles_selection(roles, last_selected_profiles):
 
 
 def write_csv(output_filename, data_list):
+    makedirs(dirname(output_filename), exist_ok=True)
     with open(output_filename, "w") as f:
         csv_out = csv.writer(f)
         for item in data_list:
@@ -153,40 +158,46 @@ def main_cli(keyword, refresh_cached_roles, session_duration, debug):
     if debug:
         logging.getLogger().setLevel(logging.DEBUG)
     
-    last_selected_profiles = read_lines_from_file(LAST_SELECTED_FILE)
-    uname, upass = None, None
-    
-    if refresh_cached_roles or not exists(ALL_ROLES_FILE):
-        uname, upass = get_credentials()
-        roles = run_saml2aws_list_roles(uname, upass)
-        write_csv(ALL_ROLES_FILE, roles)
-    else:
-        roles = read_csv(ALL_ROLES_FILE)
-    
-    profiles = OrderedDict()
-    for item in roles:
-        role_arn, account_name = item[0], item[1]
-        profile_name = role_arn.split("role/")[-1].replace("/", "-")
-        profiles[profile_name] = role_arn
+    try:
+        last_selected_profiles = read_lines_from_file(LAST_SELECTED_FILE)
+        uname, upass = None, None
         
-        for k in keyword:
-            if k in role_arn:
-                last_selected_profiles.append(profile_name)
-                break
-    
-    answers = prompt(roles_selection(profiles.keys(), last_selected_profiles), style=custom_style)
-    if answers.get("roles"):
-        if uname is None:
+        if refresh_cached_roles or not exists(ALL_ROLES_FILE):
             uname, upass = get_credentials()
+            roles = run_saml2aws_list_roles(uname, upass)
+            write_csv(ALL_ROLES_FILE, roles)
+        else:
+            roles = read_csv(ALL_ROLES_FILE)
         
-        for profile_name in answers["roles"]:
-            run_saml2aws_login(profiles[profile_name], profile_name, uname, upass, session_duration)
-
-        # Dump the last selected options
-        with open(LAST_SELECTED_FILE, "w") as f:
-            f.write("\n".join(answers["roles"]))
-    else:
-        logging.info("Nothing selected. Aborted.")
+        profiles = OrderedDict()
+        for item in roles:
+            role_arn, account_name = item[0], item[1]
+            profile_name = role_arn.split("role/")[-1].replace("/", "-")
+            profiles[profile_name] = role_arn
+            
+            for k in keyword:
+                if k in role_arn:
+                    last_selected_profiles.append(profile_name)
+                    break
+        
+        answers = prompt(roles_selection(profiles.keys(), last_selected_profiles), style=custom_style)
+        if answers.get("roles"):
+            if uname is None:
+                uname, upass = get_credentials()
+            
+            for profile_name in answers["roles"]:
+                run_saml2aws_login(profiles[profile_name], profile_name, uname, upass, session_duration)
+    
+            # Dump the last selected options
+            with open(LAST_SELECTED_FILE, "w") as f:
+                f.write("\n".join(answers["roles"]))
+        else:
+            logging.info("Nothing selected. Aborted.")
+    except FileNotFoundError as e:
+        if e.filename == SAML2AWS_CONFIG:
+            logging.error(f"{e}. See https://github.com/Versent/saml2aws to create one.")
+        else:
+            logging.error(e)
 
 
 @main_cli.command(help="Switch default profile")
