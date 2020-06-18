@@ -7,14 +7,17 @@ set -e
 echo "node version: $(node --version)"
 echo "npm version: $(npm --version)"
 
+# Optional: useful for cdk-patterns/serverless
+#npm config set registry http://registry.npmjs.org/
+echo "npx version: $(npx --version)"
+sudo npm install -g npx
+
 #echo "Uninstalling the AWS CDK.
 #sudo npm uninstall -g aws-cdk
-
-#npm config set registry http://registry.npmjs.org/
 
 echo "Installing the AWS CDK..."
 sudo npm install -g aws-cdk
 echo "cdk version: $(cdk --version)"
 
 # Updating Your Language (Python) Dependencies
-#pip install --upgrade aws-cdk.core
+pip install -U aws-cdk.core
