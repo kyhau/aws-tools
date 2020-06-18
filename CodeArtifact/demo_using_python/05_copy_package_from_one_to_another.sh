@@ -9,3 +9,8 @@ aws codeartifact copy-package-versions --domain ${DOMAIN} --domain-owner ${ACCOU
   --destination-repository ${SHARED_REPO_2} \
   --package warrant --format pypi \
   --versions '["0.6.1"]'
+
+
+# npm : A Node Package Manager (npm) package.
+# pypi : A Python Package Index (PyPI) package.
+# maven : A Maven package that contains compiled code in a distributable format, such as a JAR file.
