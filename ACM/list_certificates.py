@@ -34,21 +34,31 @@ def json_serial(obj):
     raise TypeError("Type %s not serializable" % type(obj))
 
 
-def process_account(session, account_id, aws_region):
+def process_account(session, account_id, aws_region, detailed):
     regions = session.get_available_regions("acm") if aws_region == "all" else [aws_region]
     for region in regions:
         logging.debug(f"Checking {account_id} {region}")
         try:
             client = session.client("acm", region_name=region)
             data_list = []
-            
-            paginator = client.get_paginator("list_certificates")
-            for page in paginator.paginate():
+            for page in client.get_paginator("list_certificates").paginate():
                 data_list.extend(page["CertificateSummaryList"])
             
             for data in data_list:
-                ret = client.describe_certificate(CertificateArn=data["CertificateArn"])
-                print(json.dumps(ret["Certificate"], indent=2, sort_keys=True, default=json_serial))
+                item = client.describe_certificate(CertificateArn=data["CertificateArn"])["Certificate"]
+                
+                data = item if detailed else {
+                    "AccountId": account_id,
+                    "Region": region,
+                    "CertificateArn": item["CertificateArn"],
+                    "DomainName": item["DomainName"],
+                    "NotAfter": item["NotAfter"].strftime("%Y-%m-%d %H:%M:%S"),
+                    "InUseByCnt": len(item["InUseBy"]),
+                    "Issuer": item["Issuer"],
+                    "Status": item["Status"],
+                    "Type": item["Type"],
+                }
+                print(json.dumps(data, indent=2, sort_keys=True, default=json_serial))
 
         except ClientError as e:
             error_code = e.response["Error"]["Code"]
@@ -62,9 +72,10 @@ def process_account(session, account_id, aws_region):
 
 
 @click.command()
+@click.option("--detailed", "-d", show_default=True, is_flag=True)
 @click.option("--profile", "-p", help="AWS profile name.")
 @click.option("--region", "-r", help="AWS Region; use 'all' for all regions.", default="ap-southeast-2")
-def main(profile, region):
+def main(detailed, profile, region):
     start = time()
     try:
         accounts_processed = []
@@ -77,7 +88,7 @@ def main(profile, region):
                     continue
                 accounts_processed.append(account_id)
         
-                process_account(session, account_id, region)
+                process_account(session, account_id, region, detailed)
             except ClientError as e:
                 error_code = e.response["Error"]["Code"]
                 if error_code in ["ExpiredToken", "InvalidClientTokenId"]:
