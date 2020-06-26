@@ -10,6 +10,16 @@ logging.getLogger("botocore").setLevel(logging.CRITICAL)
 logging.getLogger("boto3").setLevel(logging.CRITICAL)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
+TARGETS = [
+    "Auto Scaling Group Resources",
+    "Amazon EBS Public Snapshots",
+    "Amazon RDS Public Snapshots",
+    "Amazon S3 Bucket Permissions",
+    "CloudFront Custom SSL Certificates in the IAM Certificate Store",
+    "CloudFront SSL Certificate on the Origin Server",
+    "IAM Access Key Rotation",
+]
+
 
 def read_aws_profile_names():
     from configparser import ConfigParser
@@ -22,45 +32,31 @@ def read_aws_profile_names():
         logging.error(e)
 
 
-class TrustedAdvisorHelper():
-    def __init__(self, session):
-        self._client = session.client("support", region_name="us-east-1")
+def process_request(session, account_id):
+    # Trusted Advisor only works in "us-east-1" or no region
+    client = session.client("support", region_name="us-east-1")
 
-    def process_response(self, item):
-        result = self._client.describe_trusted_advisor_check_result(checkId=item["id"], language="en")["result"]
-        if result["status"] in ["error", "warning"]:  # "ok" (green), "warning" (yellow), "error" (red), "not_available"
-            return {
+    ret = []
+    for item in [x for x in client.describe_trusted_advisor_checks(language="en")["checks"] if x["name"] in TARGETS]:
+        result = client.describe_trusted_advisor_check_result(checkId=item["id"], language="en")["result"]
+        if result["status"] in ["error", "warning"]:  
+            # "ok" (green), "warning" (yellow), "error" (red), "not_available"
+            data = {
+                "AccountId": account_id,
                 "Category": item["category"],
                 "Id": item["id"],
                 "Name": item["name"],
                 "ResourcesFlaggedCnt": result.get("resourcesSummary", {}).get("resourcesFlagged", 0),
                 "ResourcesFlagged": result.get("flaggedResources", []),
             }
-
-    def process_request(self, session, account_id):
-        # Trusted Advisor only works in "us-east-1" or no region
-        ret = []
-        for item in self._client.describe_trusted_advisor_checks(language="en")["checks"]:
-            if (item["category"], item["name"]) in [
-                ("fault_tolerance", "Auto Scaling Group Resources"),
-                ("security", "Amazon EBS Public Snapshots"),
-                ("security", "Amazon RDS Public Snapshots"),
-                ("security", "Amazon S3 Bucket Permissions"),
-                ("security", "CloudFront Custom SSL Certificates in the IAM Certificate Store"),
-                ("security", "CloudFront SSL Certificate on the Origin Server"),
-                ("security", "IAM Access Key Rotation"),
-            ]:
-                data = self.process_response(item)
-                if data:
-                    data.update({"AccountId": account_id})
-                    ret.append(data)
-        return ret
+            ret.append(data)
+    return ret
 
 
 def process_account(session, account_id):
     start, items = time(), []
     try:
-        items = TrustedAdvisorHelper(session).process_request(session,account_id)
+        items = process_request(session, account_id)
     except ClientError as e:
         error_code = e.response["Error"]["Code"]
         if error_code in ["AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"]:
@@ -70,7 +66,7 @@ def process_account(session, account_id):
     finally:
         logging.info(f"{account_id}, cnt={len(items)}, time={time() - start}s")
         for item in items:
-            logging.debug(item)
+            logging.info(item)
 
 
 @click.command()
