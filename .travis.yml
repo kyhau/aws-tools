@@ -20,9 +20,12 @@ before_install:
 
 # command to install dependencies
 install:
-  - pip install -r _common/requirements-build.txt
+  - pip install -r _lib/requirements-build.txt
 
 # command to run tests
 script:
-  - cd _common
+  - cd _lib
+  # autoformat code following most of the rules in PEP 8
+  #- black --line-length=79 arki_common/
+  # run pytest, codecov, mypy and flake8 with Tox
   - tox -r
