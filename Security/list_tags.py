@@ -2,38 +2,37 @@
 Return tags of a supported service.
 """
 from abc import ABC
-from boto3.session import Session
-from botocore.exceptions import ClientError
 import click
 import logging
-from time import time
+from arki_common.aws import AwsApiHelper
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
+
+SERVICES = ["documentdb", "dynamodb", "ec2", "efs", "elasticache", "elb", "es", "neptune", "rds", "redshift", "s3"]
 
 
-def read_aws_profile_names():
-    from configparser import ConfigParser
-    from os.path import expanduser, join
-    try:
-        cp = ConfigParser()
-        cp.read(join(expanduser("~"), ".aws", "credentials"))
-        return cp.sections()
-    except Exception as e:
-        logging.error(e)
+class MainHelper(AwsApiHelper):
+    def __init__(self, service_helper):
+        super().__init__()
+        self._service_helper = service_helper
+        self._results = []
+
+    def process_request(self, session, account_id, region, kwargs):
+        items = self._service_helper.process_request(session, region, account_id,  kwargs.get("Key"))
+        self._results.extend(items)
+    
+    def post_process(self):
+        for item in self._results:
+            logging.debug(item)
 
 
-def get_tag_value(tags, tag, default="Unspecified", to_lower=False):
-    for t in tags:
-        if t["Key"] == tag:
-            return t["Value"].lower() if to_lower else t["Value"]
-    return default
+def get_tag_value(tags, key):
+    for tag in tags:
+        if tag["Key"].lower() == key.lower():
+            return tag
 
 
-def request_data(client, func_name, result_key=None):
+def paginate(client, func_name, result_key=None):
     for page in client.get_paginator(func_name).paginate().result_key_iters():
         for item in page:
             if result_key is None:
@@ -53,6 +52,7 @@ class Helper(ABC):
         self._region = None
         self._account_id = None
         self._label = label if label is not None else name
+        self._tag_key = None
     
     @property
     def name(self):
@@ -65,17 +65,23 @@ class Helper(ABC):
         return item.get("Engine", self._label) if self._key_id_field is not None else self._label
 
     def process_response(self, item):
-        return {
-            "Service": self.service_name(item),
-            "Id": item if self._key_id_field is None else item[self._key_id_field],
-            "Tags": self.get_tags(item),
-        }
+        tags = self.get_tags(item)
+        if tags and self._tag_key:
+            tags = [get_tag_value(tags, self._tag_key)]
+        
+        if tags:
+            return {
+                "Service": self.service_name(item),
+                "Id": item if self._key_id_field is None else item[self._key_id_field],
+                "Tags": tags,
+            }
 
-    def process_request(self, session, region, account_id):
+    def process_request(self, session, region, account_id, tag_key):
         self._client = session.client(self.name, region_name=region)
         self._region, self._account_id = region, account_id
+        self._tag_key = tag_key
         ret = []
-        for item in request_data(self._client, self._request_func, self._result_key):
+        for item in paginate(self._client, self._request_func, self._result_key):
             data = self.process_response(item)
             if data:
                 data.update({"AccountId": account_id, "Region": region})
@@ -138,9 +144,10 @@ class EsHelper(Helper):
     def get_tags(self, item):
         return self._client.list_tags(ARN=item["ARN"])["TagList"]
     
-    def process_request(self, session, region, account_id):
+    def process_request(self, session, region, account_id, tag_key):
         self._client = session.client(self.name, region_name=region)
         self._region, self._account_id = region, account_id
+        self._tag_key = tag_key
         ret = []
         domain_names = [x["DomainName"] for x in self._client.list_domain_names()["DomainNames"]]
         if domain_names:
@@ -180,9 +187,10 @@ class S3Helper(Helper):
         except:
             return []
     
-    def process_request(self, session, region, account_id):
+    def process_request(self, session, region, account_id, tag_key):
         self._client = session.client(self.name, region_name=region)
         self._region, self._account_id = region, account_id
+        self._tag_key = tag_key
         ret = []
         for bucket_name in [x["Name"] for x in self._client.list_buckets()["Buckets"]]:
             data = self.process_response(bucket_name)
@@ -192,60 +200,35 @@ class S3Helper(Helper):
         return ret
 
 
-
-def process_account(session, account_id, service_name, aws_region):
-    service = None
-    if service_name in ["documentdb",  "neptune", "rds"]:   service = RdsHelper()
-    elif service_name == "dynamodb":    service = DynamoDBHelper()
-    elif service_name == "ec2":         service = EC2Helpher()
-    elif service_name == "efs":         service = EfsHelper()
-    elif service_name == "elasticache": service = ElastiCacheHelper()
-    elif service_name == "elb":         service = ElbHelper()
-    elif service_name == "es":          service = EsHelper()
-    elif service_name == "redshift":    service = RedshiftHelper()
-    elif service_name == "s3":          service = S3Helper()
-
-    regions = session.get_available_regions(service.name) if aws_region == "all" else [aws_region]
-    ret = []
-    for region in regions:
-        start, items = time(), []
-        try:
-            items = service.process_request(session, region, account_id)
-            ret.extend(items)
-        except ClientError as e:
-            if e.response["Error"]["Code"] in [
-                "AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"
-            ]:
-                logging.warning(f"Unable to process {account_id} {service.name} in region {region}")
-            else:
-                raise
-        finally:
-            logging.info(f"{service.name}: {account_id}, {region}, cnt={len(items)}, time={time() - start}s")
-
-    for item in ret:
-        logging.debug(item)
-
-
 @click.command()
-@click.option("--service", "-s", required=True, type=click.Choice([
-    "documentdb", "dynamodb", "ec2", "efs", "elasticache", "elb", "es", "neptune", "rds", "redshift", "s3",
-], case_sensitive=False))
-@click.option("--profile", "-p", help="AWS profile name")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(service, profile, region):
-    start = time()
-    try:
-        accounts_processed = []
-        profile_names = [profile] if profile else read_aws_profile_names()
-        for profile_name in profile_names:
-            session = Session(profile_name=profile_name)
-            account_id = session.client("sts").get_caller_identity()["Account"]
-            if account_id in accounts_processed:
-                continue
-            accounts_processed.append(account_id)
-            process_account(session, account_id, service.lower(), region)
-    finally:
-        logging.info(f"Total execution time: {time() - start}s")
+@click.option("--service", "-s", required=True, type=click.Choice(SERVICES, case_sensitive=False))
+@click.option("--tagkey", "-t", help="Tag key. Return all tags if not specified")
+@click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
+def main(service, tagkey, profile, region):
+    service_name = service.lower()
+    if service_name in ["documentdb", "neptune", "rds"]:
+        helper = RdsHelper()
+    elif service_name == "dynamodb":
+        helper = DynamoDBHelper()
+    elif service_name == "ec2":
+        helper = EC2Helpher()
+    elif service_name == "efs":
+        helper = EfsHelper()
+    elif service_name == "elasticache":
+        helper = ElastiCacheHelper()
+    elif service_name == "elb":
+        helper = ElbHelper()
+    elif service_name == "es":
+        helper = EsHelper()
+    elif service_name == "redshift":
+        helper = RedshiftHelper()
+    elif service_name == "s3":
+        helper = S3Helper()
+    else:
+        helper = None
+    
+    MainHelper(helper).start(profile, region, helper.name, {"Key": tagkey})
 
 
 if __name__ == "__main__":
