@@ -25,7 +25,4 @@ install:
 # command to run tests
 script:
   - cd _lib
-  # autoformat code following most of the rules in PEP 8
-  #- black --line-length=79 arki_common/
-  # run pytest, codecov, mypy and flake8 with Tox
   - tox -r
