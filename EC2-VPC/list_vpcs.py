@@ -10,7 +10,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 
 class Helper(AwsApiHelper):
-    def process_request(self, session, region, kwargs):
+    def process_request(self, session, account_id, region, kwargs):
         client = session.client("ec2", region_name=region)
         for item in AwsApiHelper.paginate(client,"describe_vpcs", kwargs):
             print("--------------------------------------------------------------------------------")

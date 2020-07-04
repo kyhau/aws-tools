@@ -1,27 +1,9 @@
-from boto3.session import Session
-from botocore.exceptions import ClientError
 import click
 import logging
-from time import time
 import yaml
+from arki_common.aws import AwsApiHelper
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
-
-
-def read_aws_profile_names():
-    from configparser import ConfigParser
-    from os.path import expanduser, join
-    try:
-        cp = ConfigParser()
-        cp.read(join(expanduser("~"), ".aws", "credentials"))
-        return cp.sections()
-    except Exception as e:
-        logging.error(e)
-
 
 # See https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings.html#guardduty_findings-severity
 severity_defaults = {
@@ -31,96 +13,67 @@ severity_defaults = {
 }
 
 
-def list_detectors(client):
-    ret = []
-    paginator = client.get_paginator("list_detectors")
-    for page in paginator.paginate():
-        l = page.get("DetectorIds")
-        if l is not None:
-            ret.extend(l)
-    return ret
+class Helper(AwsApiHelper):
+    def __init__(self, finding_id):
+        super().__init__()
+        self._finding_id = finding_id
 
+    @staticmethod
+    def list_detectors(client):
+        ret = []
+        for page in  client.get_paginator("list_detectors").paginate():
+            l = page.get("DetectorIds")
+            if l is not None:
+                ret.extend(l)
+        return ret
 
-def get_finding_ids(client, detector_id, num, finding_type, severity):
-    finding_criteria = {
-        "Criterion": {
-            "severity": {"Gte": severity_defaults[severity]},
+    @staticmethod
+    def create_list_findings_params(finding_type, severity, num):
+        params = {
+            "FindingCriteria": {
+                "Criterion": {
+                    "severity": {"Gte": severity_defaults[severity]},
+                }
+            },
+            "SortCriteria": {"AttributeName": "createdAt", "OrderBy": "DESC"},
+            "MaxResults": num,
         }
-    }
-    if finding_type:
-        finding_criteria["Criterion"]["type"] = {"Eq": [finding_type]}
+        if finding_type:
+            params["Criterion"]["type"] = {"Eq": [finding_type]}
+        return params
+
+    def process_request(self, session, account_id, region, kwargs):
+        client = session.client("guardduty", region_name=region)
     
-    return client.list_findings(
-        DetectorId=detector_id,
-        FindingCriteria=finding_criteria,
-        SortCriteria={"AttributeName": "createdAt", "OrderBy": "DESC"},
-        MaxResults=num,
-    ).get("FindingIds", [])
-
-
-def process_account(session, profile, aws_region, finding_id, num, finding_type, severity):
-    regions = session.get_available_regions("guardduty") if aws_region == "all" else [aws_region]
-    for region in regions:
-        logging.debug(f"Checking {profile} {region}")
-        try:
-            client = session.client("guardduty", region_name=region)
+        detector_ids = Helper.list_detectors(client)
+        if not detector_ids:
+            logging.info(f"No detector is found. Skipped {account_id} {region}.")
+            return
+    
+        for detector_id in detector_ids:
+            kwargs["DetectorId"] = detector_id
+            finding_ids = [self._finding_id] if self._finding_id else \
+                client.list_findings(**kwargs).get("FindingIds", [])
             
-            detector_ids = list_detectors(client)
-            if not detector_ids:
-                logging.info(f"No detector is found. Skipped {profile} {region}.")
-                continue
-            
-            for detector_id in detector_ids:
-                finding_ids = [finding_id] if finding_id else get_finding_ids(client, detector_id, num, finding_type, severity)
-                findings = client.get_findings(DetectorId=detector_id, FindingIds=finding_ids).get("Findings", [])
-                for finding in findings:
-                    print("--------------------------------------------------------------------------------")
-                    print(yaml.dump(finding))
-                
-                if finding_id and findings:
-                    return findings[0]
-                
-        except ClientError as e:
-            error_code = e.response["Error"]["Code"]
-            if error_code in ["AccessDenied", "AccessDeniedException", "AuthFailure", "UnrecognizedClientException"]:
-                logging.warning(f"Unable to process region {region}: {error_code}")
-            else:
-                raise
-        except Exception:
-            import traceback
-            traceback.print_exc()
+            findings = client.get_findings(DetectorId=detector_id, FindingIds=finding_ids).get("Findings", [])
+            for finding in findings:
+                print("--------------------------------------------------------------------------------")
+                print(yaml.dump(finding))
+        
+            if self._finding_id and findings:
+                return findings[0]
 
 
 @click.command()
-@click.option("--findingid", "-i", help="Finding ID. Optional.", default=None)
-@click.option("--num", "-n", help="Number of records returned for each detector/account/region. Default: 5.", default=5)
-@click.option("--findingtype", "-t", help="Recon Finding Type (e.g. Recon:IAMUser/UserPermissions). Optional.", default=None)
-@click.option("--severity", "-s", help="Severity: high, medium, low. Default: high.", default="high")
-@click.option("--profile", "-p", help="AWS profile name.")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions. Default: ap-southeast-2.", default="ap-southeast-2")
+@click.option("--findingid", "-i", help="Finding ID.")
+@click.option("--num", "-n", default=5, show_default=True, help="Number of records returned for each detector/account/region.")
+@click.option("--findingtype", "-t", help="Recon Finding Type (e.g. Recon:IAMUser/UserPermissions).")
+@click.option("--severity", "-s", default="high", show_default=True, help="Severity: high, medium, low.")
+@click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
 def main(findingid, num, findingtype, severity, profile, region):
-    start = time()
-    try:
-        accounts_processed = []
-        profile_names = [profile] if profile else read_aws_profile_names()
-        for profile_name in profile_names:
-            try:
-                session = Session(profile_name=profile_name)
-                account_id = session.client("sts").get_caller_identity()["Account"]
-                if account_id in accounts_processed:
-                    continue
-                accounts_processed.append(account_id)
-
-                if process_account(session, profile_name, region, findingid, num, findingtype, severity) is not None:
-                    break
-            except ClientError as e:
-                error_code = e.response["Error"]["Code"]
-                if error_code in ["ExpiredToken", "InvalidClientTokenId"]:
-                    logging.warning(f"{profile_name} {error_code}. Skipped")
-                else:
-                    raise
-    finally:
-        logging.info(f"Total execution time: {time() - start}s")
+    kwargs = Helper.create_list_findings_params(findingtype, severity, num)
+    Helper(findingid).start(profile, region, "guardduty", kwargs)
 
 
 if __name__ == "__main__":

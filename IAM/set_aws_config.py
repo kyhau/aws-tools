@@ -39,4 +39,5 @@ def main():
         print(f"Appended profile {credential_data[2]} to {cred_file}.")
 
 
-if  __name__ =="__main__": sys.exit(main())
+if  __name__ =="__main__":
+    sys.exit(main())

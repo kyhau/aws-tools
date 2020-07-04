@@ -5,7 +5,10 @@ from time import time
 
 
 class AwsApiHelper():
-    AUTH_ERRORS = ["AccessDenied", "AuthFailure", "UnauthorizedOperation", "UnrecognizedClientException"]
+    AUTH_ERRORS = [
+        "AccessDenied", "AccessDeniedException", "AuthFailure",
+        "UnauthorizedOperation", "UnrecognizedClientException"
+    ]
     CRED_ERRORS = ["ExpiredToken", "InvalidClientTokenId"]
     
     def __init__(self):
@@ -13,22 +16,21 @@ class AwsApiHelper():
         logging.getLogger("botocore").setLevel(logging.CRITICAL)
         logging.getLogger("boto3").setLevel(logging.CRITICAL)
         logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
-    
-    def start(self, profile, region, service, kwargs):
-        start = time()
-        try:
-            for (session, account_id, profile_name) in MultiAccountHelper().sessions(profile):
-                if self.process_account(session, account_id, region, service, kwargs) is not None:
-                    break
-        finally:
-            logging.info(f"Total execution time: {time() - start}s")
-    
+
+    @staticmethod
+    def paginate(client, func_name, kwargs=None):
+        for page in client.get_paginator(func_name).paginate(**kwargs if kwargs else {}).result_key_iters():
+            for item in page:
+                yield item
+
     def process_account(self, session, account_id, aws_region, service, kwargs):
         """Process the request at the specified region or all regions"""
-        for region in session.get_available_regions(service) if aws_region == "all" else [aws_region]:
+        regions = session.get_available_regions(service) \
+            if aws_region is None or aws_region.lower() == "all" else [aws_region]
+        for region in regions:
             logging.debug(f"Checking {account_id} {region}")
             try:
-                if self.process_request(session, region, kwargs) is not None:
+                if self.process_request(session, account_id, region, kwargs) is not None:
                     return True
             except ClientError as e:
                 self.process_client_error(e, account_id, region)
@@ -43,15 +45,22 @@ class AwsApiHelper():
         else:
             raise
 
-    def process_request(self, session, region, kwargs):
+    def process_request(self, session, account_id, region, kwargs):
         """Process request for a region of an account"""
         pass
+    
+    def post_process(self):
+        pass
 
-    @staticmethod
-    def paginate(client, func_name, kwargs=None):
-        for page in client.get_paginator(func_name).paginate(**kwargs if kwargs else {}).result_key_iters():
-            for item in page:
-                yield item
+    def start(self, profile, region, service, kwargs=None):
+        start = time()
+        try:
+            for (session, account_id, profile_name) in MultiAccountHelper().sessions(profile):
+                if self.process_account(session, account_id, region, service, kwargs) is not None:
+                    break
+            self.post_process()
+        finally:
+            logging.info(f"Total execution time: {time() - start}s")
 
 
 class MultiAccountHelper():
@@ -97,3 +106,9 @@ def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600)
         aws_session_token=resp["Credentials"]["SessionToken"]
     )
 
+
+def get_tag_value(tags, key="Name"):
+    for tag in tags:
+        if tag["Key"] == key:
+            return tag["Value"]
+    return ""

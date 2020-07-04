@@ -11,112 +11,69 @@ Output:
     }
 }
 """
-from boto3.session import Session
-from botocore.exceptions import ClientError
 import click
 from collections import defaultdict
 import logging
-from time import time
+from arki_common.aws import AwsApiHelper
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
 
-def read_aws_profile_names():
-    from configparser import ConfigParser
-    from os.path import expanduser, join
-    try:
-        cp = ConfigParser()
-        cp.read(join(expanduser("~"), ".aws", "credentials"))
-        return cp.sections()
-    except Exception as e:
-        logging.error(e)
+class Helper(AwsApiHelper):
+    def __init__(self, ):
+        super().__init__()
+        self.results = defaultdict(dict)
 
+    def amis_used_by_ec2(self, session, region, region_dict):
+        """Find AMIs referenced in EC2 instances"""
+        client = session.client("ec2", region_name=region)
+        for item in self.paginate(client, "describe_instances"):
+            for instance in item["Instances"]:
+                if instance["State"]["Name"] in ["pending", "running"]:
+                    region_dict[instance["ImageId"]]["ec2"].add(instance["InstanceId"])
+        return region_dict
+    
+    def amis_used_by_asg(self, session, region, region_dict):
+        """Find AMIs referenced in Auto Scaling Groups"""
+        client = session.client("autoscaling", region_name=region)
 
-def process_account(session, account_id, aws_region):
-    results = defaultdict(dict)
-    regions = session.get_available_regions("ec2") if aws_region == "all" else [aws_region]
-    for region in regions:
-        logging.debug(f"Checking {account_id} {region}")
+        # Retrieve auto scaling groups' launch configuration names
+        launch_conf_asg = defaultdict(set)
+        for asg in self.paginate(client, "describe_auto_scaling_groups"):
+            launch_conf_asg[asg["LaunchConfigurationName"]].add(asg["AutoScalingGroupName"])
+    
+        paginator = client.get_paginator("describe_launch_configurations")
+        for page in paginator.paginate(LaunchConfigurationNames=list(launch_conf_asg.keys())):
+            for launch_config in page["LaunchConfigurations"]:
+                region_dict[launch_config["ImageId"]]["asg"] = launch_conf_asg[launch_config["LaunchConfigurationName"]]
+        return region_dict
+        
+    def process_request(self, session, account_id, region, kwargs):
         region_dict = defaultdict(lambda: defaultdict(set))
-
-        try:
-            ################################################################################
-            # Find AMIs referenced in EC2 instances
-            client = session.client("ec2", region_name=region)
-            paginator = client.get_paginator("describe_instances")
-            for page in paginator.paginate():
-                for item in page["Reservations"]:
-                    for instance in item["Instances"]:
-                        if instance['State']["Name"] in ["pending", "running"]:
-                            region_dict[instance["ImageId"]]["ec2"].add(instance['InstanceId'])
-            # Print
+        
+        def dump(region_dict, name):
             for ami_id, v in region_dict.items():
-                for iid in v["ec2"]:
-                    print(f"{account_id}, {region}, {ami_id}, ec2, {iid}")
+                for id in v[name]:
+                    print(f"{account_id}, {region}, {ami_id}, {name}, {id}")
+        
+        # Find AMIs referenced in EC2 instances
+        region_dict = self.amis_used_by_ec2(session, region, region_dict)
+        dump(region_dict, "ec2")
+    
+        # Find AMIs referenced in Auto Scaling Groups
+        region_dict = self.amis_used_by_asg(session, region, region_dict)
+        dump(region_dict, "asg")
 
-            ################################################################################
-            # Find AMIs referenced in Auto Scaling Groups
-            client = session.client("autoscaling", region_name=region)
-            # Retrieve auto scaling groups' launch configuration names
-            launch_conf_asg = defaultdict(set)
-            paginator = client.get_paginator("describe_auto_scaling_groups")
-            for page in paginator.paginate():
-                for asg in page["AutoScalingGroups"]:
-                    launch_conf_asg[asg["LaunchConfigurationName"]].add(asg["AutoScalingGroupName"])
-
-            paginator = client.get_paginator("describe_launch_configurations")
-            for page in paginator.paginate(LaunchConfigurationNames=list(launch_conf_asg.keys())):
-                for launch_config in page["LaunchConfigurations"]:
-                    region_dict[launch_config["ImageId"]]["asg"] = launch_conf_asg[launch_config["LaunchConfigurationName"]]
-
-            # Print
-            for ami_id, v in region_dict.items():
-                for asg_name in v["asg"]:
-                    print(f"{account_id}, {region}, {ami_id}, asg, {asg_name}")
-
-        except ClientError as e:
-            error_code = e.response["Error"]["Code"]
-            if error_code in ["AccessDenied", "AuthFailure", "UnrecognizedClientException"]:
-                logging.warning(f"Unable to process region {region}: {error_code}")
-            else:
-                raise
-        except Exception as e:
-            logging.error(e)
-
-        results[account_id][region] = region_dict
-
-    return results
+        self.results[account_id][region] = region_dict
 
 
 @click.command()
-@click.option("--profile", "-p", help="AWS profile name")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(profile, region):
-    start = time()
-    try:
-        accounts_processed = []
-        profile_names = [profile] if profile else read_aws_profile_names()
-        for profile_name in profile_names:
-            try:
-                session = Session(profile_name=profile_name)
-                account_id = session.client("sts").get_caller_identity()["Account"]
-                if account_id in accounts_processed:
-                    continue
-                accounts_processed.append(account_id)
-
-                process_account(session, account_id, region)
-            except ClientError as e:
-                error_code = e.response["Error"]["Code"]
-                if error_code in ["ExpiredToken", "InvalidClientTokenId"]:
-                    logging.warning(f"{profile_name} {error_code}. Skipped")
-                else:
-                    raise
-    finally:
-        logging.info(f"Total execution time: {time() - start}s")
+@click.option("--vpcid", "-v", help="VPC ID. Describe all VPCs if not specified.")
+@click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
+def main(vpcid, profile, region):
+    kwargs = {"VpcIds": [vpcid]} if vpcid else {}
+    Helper().start(profile, region, "ec2", kwargs)
 
 
 if __name__ == "__main__":
