@@ -1,29 +1,40 @@
-import datetime
+from datetime import date, datetime
+import decimal
 import json
-import logging
 from time import mktime
 
-# HTTP Status Codes considered as OK
-HTTPS_OK_CODES = [200, 201, 202]
+
+def json_serial(obj):
+    """
+    JSON serializer for objects not serializable by default json code
+    Usage example: json.dumps(data, default=json_serial, indent=2, sort_keys=True)
+    """
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError(f"Type {type(obj)} not serializable")
+
+
+dump_json = lambda x: json.dumps(x, default=json_serial, indent=2, sort_keys=True)
 
 
 class DefaultEncoder(json.JSONEncoder):
-    """Encode for the json"""
-
+    """
+    Encode for the json
+    Usage example: json.dumps(data, cls=DefaultEncoder, indent=2, sort_keys=True)
+    """
     def default(self, obj):
-        if isinstance(obj, datetime.datetime):
+        if isinstance(obj, datetime):
             return int(mktime(obj.timetuple()))
         return json.JSONEncoder.default(self, obj)
 
 
-dump_json = lambda x: json.dumps(x, cls=DefaultEncoder, sort_keys=True, indent=2)
 
-
-def check_response(resp):
-    """Check response and log message if needed"""
-    ret = resp["ResponseMetadata"]["HTTPStatusCode"] in HTTPS_OK_CODES
-    if ret is False:
-        logging.error(
-            f"Response:\n{json.dumps(resp, cls=DefaultEncoder, sort_keys=True, indent=2)}"
-        )
-    return ret
+class DecimalEncoder(json.JSONEncoder):
+    """Helper class to convert a DynamoDB item to JSON."""
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            if o % 1 > 0:
+                return float(o)
+            else:
+                return int(o)
+        return super(DecimalEncoder, self).default(o)
