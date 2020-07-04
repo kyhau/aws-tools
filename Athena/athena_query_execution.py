@@ -11,7 +11,7 @@ import time
 logging.getLogger().setLevel(logging.INFO)
 
 
-def read_sql(filename):
+def read_sql_file(filename):
     with open(filename, "r") as sql_file:
         content = sql_file.read()
     return content.replace("\n", " ").replace(";", "")
@@ -34,7 +34,7 @@ def athena_to_s3(session, region, database, output, workgroup, sql_file, max_exe
         params.update({"WorkGroup": workgroup})
     
     execution = client.start_query_execution(
-        QueryString=read_sql(sql_file),
+        QueryString=read_sql_file(sql_file),
         QueryExecutionContext={"Database": database},
         **params
     )
