@@ -9,7 +9,7 @@ from arki_common.aws import AwsApiHelper
 logging.getLogger().setLevel(logging.DEBUG)
 
 
-class VpcHelper(AwsApiHelper):
+class Helper(AwsApiHelper):
     def process_request(self, session, region, kwargs):
         client = session.client("ec2", region_name=region)
         for item in AwsApiHelper.paginate(client,"describe_vpcs", kwargs):
@@ -30,8 +30,8 @@ class VpcHelper(AwsApiHelper):
 @click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
 @click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
 def main(vpcid, profile, region):
-    kwargs = {} if vpcid is None else {"VpcIds": [vpcid]}
-    VpcHelper().start(profile, region, "ec2", kwargs)
+    kwargs = {"VpcIds": [vpcid]} if vpcid else {}
+    Helper().start(profile, region, "ec2", kwargs)
 
 
 if __name__ == "__main__":
