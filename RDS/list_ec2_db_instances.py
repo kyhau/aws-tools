@@ -1,7 +1,6 @@
 """
 Identify databases hosted in EC2 instances, by inspecting security groups for common database ports.
 """
-from botocore.exceptions import ClientError
 import click
 import logging
 from arki_common.aws import AwsApiHelper
