@@ -8,7 +8,20 @@ from arki_common.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-SERVICES = ["documentdb", "dynamodb", "ec2", "efs", "elasticache", "elb", "es", "neptune", "rds", "redshift", "s3"]
+SERVICES = [
+    "documentdb",
+    "dynamodb",
+    "ec2",
+    "efs",
+    "elasticache",
+    "elb",
+    "elbv2",
+    "es",
+    "neptune",
+    "rds",
+    "redshift",
+    "s3",
+]
 
 
 class MainHelper(AwsApiHelper):
@@ -126,15 +139,19 @@ class ElastiCacheHelper(Helper):
 
 
 class ElbHelper(Helper):
-    def __init__(self, v2=False):
-        super().__init__("elbv2" if v2 else "elb", "describe_load_balancers", "LoadBalancerName")
+    def __init__(self):
+        super().__init__("elb", "describe_load_balancers", "LoadBalancerName")
     
     def get_tags(self, item):
-        if self.name == "elb":
-            return self._client.describe_tags(LoadBalancerNames=[item["LoadBalancerName"]])["TagDescriptions"][0][
-                "Tags"]
-        if self.name == "elbv2":
-            return self._client.describe_tags(ResourceArns=[item["LoadBalancerArn"]])["TagDescriptions"][0]["Tags"]
+        return self._client.describe_tags(LoadBalancerNames=[item["LoadBalancerName"]])["TagDescriptions"][0]["Tags"]
+
+
+class ElbV2Helper(Helper):
+    def __init__(self):
+        super().__init__("elbv2", "describe_load_balancers", "LoadBalancerName")
+    
+    def get_tags(self, item):
+        return self._client.describe_tags(ResourceArns=[item["LoadBalancerArn"]])["TagDescriptions"][0]["Tags"]
 
 
 class EsHelper(Helper):
@@ -219,6 +236,8 @@ def main(service, tagkey, profile, region):
         helper = ElastiCacheHelper()
     elif service_name == "elb":
         helper = ElbHelper()
+    elif service_name == "elbv2":
+        helper = ElbV2Helper()
     elif service_name == "es":
         helper = EsHelper()
     elif service_name == "redshift":
