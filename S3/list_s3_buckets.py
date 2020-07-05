@@ -1,54 +1,114 @@
-from boto3.session import Session
+"""
+List details of a bucket or all buckets accessible by the profiles in .aws/.
+"""
 from botocore.exceptions import ClientError
 import click
 import logging
-from time import time
+import yaml
+from arki_common.aws import AwsApiHelper
 
-# Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.CRITICAL)
-logging.getLogger("boto3").setLevel(logging.CRITICAL)
-logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
 
 
-def read_aws_profile_names():
-    from configparser import ConfigParser
-    from os.path import expanduser, join
-    try:
-        cp = ConfigParser()
-        cp.read(join(expanduser("~"), ".aws", "credentials"))
-        return cp.sections()
-    except Exception as e:
-        logging.error(e)
+class Helper(AwsApiHelper):
+    def process_request(self, session, account_id, region, kwargs):
+        client = session.client("s3", region_name=region)
+        target_bucket = kwargs.get("Bucket")
 
+        def rm_meta(response):
+            del response["ResponseMetadata"]
+            return response
 
-@click.command()
-@click.option("--profile", "-p", help="AWS profile name")
-@click.option("--region", "-r", help="AWS Region; use 'all' for all regions", default="ap-southeast-2")
-def main(profile, region):
-    start = time()
-    try:
-        accounts_processed = []
-        profile_names = [profile] if profile else read_aws_profile_names()
-        for profile_name in profile_names:
-            try:
-                session = Session(profile_name=profile_name)
-                account_id = session.client("sts").get_caller_identity()["Account"]
-                if account_id in accounts_processed:
-                    continue
-                accounts_processed.append(account_id)
+        for item in [{"Name": target_bucket}] if target_bucket else client.list_buckets()["Buckets"]:
+            bucket = item["Name"]
+            data = {
+                item["Name"]: {
+                    "account_id": account_id,
+                    "accelerate_configuration": rm_meta(client.get_bucket_accelerate_configuration(Bucket=bucket)),
+                    "acl": rm_meta(client.get_bucket_acl(Bucket=bucket)),
+                    "cors": self.get_bucket_cors(client, bucket),
+                    "encryption": self.get_bucket_encryption(client, bucket),
+                    "lifecycle_configuration": self.get_bucket_lifecycle_configuration(client, bucket),
+                    "location": client.get_bucket_location(Bucket=bucket)["LocationConstraint"],
+                    "logging": rm_meta(client.get_bucket_logging(Bucket=bucket)),
+                    "notification_configuration": rm_meta(client.get_bucket_notification_configuration(Bucket=bucket)),
+                    "policy": self.get_bucket_policy(client, bucket),
+                    "policy_status": self.get_bucket_policy_status(client, bucket),
+                    "replication": self.get_bucket_replication(client, bucket),
+                    "request_payment": client.get_bucket_request_payment(Bucket=bucket)["Payer"],
+                    "tagging": self.get_bucket_tagging(client, bucket),
+                    "versioning": rm_meta(client.get_bucket_versioning(Bucket=bucket)),
+                    "website": self.get_bucket_website(client, bucket),
+                }
+            }
+            print(yaml.dump(data, default_flow_style=False, sort_keys=False))
+            if kwargs.get("Bucket"):
+                return True
+
+    def get_bucket_cors(self, client, bucket):
+        try:
+            return client.get_bucket_cors(Bucket=bucket)["CORSRules"]
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NoSuchCORSConfiguration":
+                pass
     
-                for bucket in session.resource("s3").buckets.all():
-                    print(f"{account_id}, {bucket.name}")
-    
-            except ClientError as e:
-                error_code = e.response["Error"]["Code"]
-                if error_code in ["ExpiredToken", "AccessDenied"]:
-                    logging.warning(f"{profile_name} {error_code}. Skipped")
-                else:
-                    raise
-    finally:
-        logging.info(f"Total execution time: {time() - start}s")
+    def get_bucket_encryption(self, client, bucket):
+        try:
+            return client.get_bucket_encryption(Bucket=bucket)["ServerSideEncryptionConfiguration"]
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "ServerSideEncryptionConfigurationNotFoundError":
+                pass
+
+    def get_bucket_lifecycle_configuration(self, client, bucket):
+        try:
+            return client.get_bucket_lifecycle_configuration(Bucket=bucket)["Rules"]
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NoSuchLifecycleConfiguration":
+                pass
+
+    def get_bucket_replication(self, client, bucket):
+        try:
+            return client.get_bucket_replication(Bucket=bucket)["ReplicationConfiguration"],
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "ReplicationConfigurationNotFoundError":
+                pass
+
+    def get_bucket_policy(self, client, bucket):
+        try:
+            return client.get_bucket_policy(Bucket=bucket)["Policy"],
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NoSuchBucketPolicy":
+                pass
+
+    def get_bucket_policy_status(self, client, bucket):
+        try:
+            return client.get_bucket_policy_status(Bucket=bucket)["PolicyStatus"],
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NoSuchBucketPolicy":
+                pass
+
+    def get_bucket_tagging(self, client, bucket):
+        try:
+            return client.get_bucket_tagging(Bucket=bucket)["TagSet"],
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NoSuchTagSet":
+                pass
+
+    def get_bucket_website(self, client, bucket):
+        try:
+            return client.get_bucket_website(Bucket=bucket),
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NoSuchWebsiteConfiguration":
+                pass
+
+
+@click.command(help="List bucket(s) details.")
+@click.option("--bucket", "-b", help="Bucket name. Describe all buckets if not specified.")
+@click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
+def main(bucket, profile, region):
+    kwargs = {"Bucket": bucket} if bucket else {}
+    Helper().start(profile, region, "s3", kwargs)
 
 
 if __name__ == "__main__":
