@@ -1,7 +1,7 @@
 """
 aws resourcegroupstaggingapi get-resources --region
 
-See also Config/list_resources_with_resourcegroupstaggingapi.py
+See also Config/list_resources_with_configservice.py
 """
 import click
 import logging
