@@ -62,6 +62,9 @@ alias aws-msk-list-nodes='python ${ARKI_REPO_HOME}/MSK/msk_list_nodes.py'
 
 alias aws-rds-instances='python ${ARKI_REPO_HOME}/RDS/list_rds_instances.py'
 
+alias aws-resource-list-with-config='python ${ARKI_REPO_HOME}/Config/list_resources_with_configservice.py'
+alias aws-resource-list-with-resourcegroupstaggingapi='python ${ARKI_REPO_HOME}/_multi_services/list_resources_with_resourcegroupstaggingapi.py'
+
 alias aws-r53-hostedzones='python ${ARKI_REPO_HOME}/Route53/list_hosted_zones.py'
 
 alias aws-s3-buckets='python ${ARKI_REPO_HOME}/S3/list_s3_buckets.py'
