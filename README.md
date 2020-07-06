@@ -38,6 +38,7 @@ pip install -r requirements.txt
 | Amazon EKS-vended aws-iam-authenticator | [Amazon EKS-vended aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html) |
 | Amazon EKS-vended kubectl | [Amazon EKS-vended kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) |
 | Authorization Lambda@Edge (nodejs) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
+| AWS App2Container | [Containerize a Java or .NET app](https://docs.aws.amazon.com/app2container/latest/UserGuide/start-intro.html) |
 | AWS CLI | [aws/aws-cli](https://github.com/aws/aws-cli) |
 | AWS CLI interactive productivity booster (aws-shell) | [awslabs/aws-shell](https://github.com/awslabs/aws-shell) |
 | AWS Config Rules Development Kit (RDK) | [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) |
