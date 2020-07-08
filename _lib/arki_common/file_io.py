@@ -9,6 +9,14 @@ import yaml
 
 
 ################################################################################
+# CloudFormation template file
+
+def template_body(template_file):
+    with open(template_file, "r") as cf_file:
+        return cf_file.read()
+
+
+################################################################################
 # csv
 
 def read_csv_file(filename):
