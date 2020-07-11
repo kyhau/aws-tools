@@ -25,7 +25,7 @@ def read_csv_file(filename):
         with open(filename) as csv_file:
             reader = csv.reader(csv_file)
             return [
-                row for row in reader if row and not row[0].startswith("#")
+                list(map(str.strip, row)) for row in reader if row and not row[0].startswith("#")
             ]
 
 
