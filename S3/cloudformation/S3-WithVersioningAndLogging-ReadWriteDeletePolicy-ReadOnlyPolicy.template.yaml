@@ -167,6 +167,6 @@ Resources:
 Outputs:
   BucketName:
     Description: Name of the logs bucket.
-    Value: !Ref LogsBucket
-    Export:
-      Name: !Ref BucketExportName
+    Value: !Ref S3BucketLogs
+    #Export:
+    #  Name: !Ref BucketExportName
