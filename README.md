@@ -125,6 +125,7 @@ pip install -r requirements.txt
 | CloudGoat | [RhinoSecurityLabs/cloudgoat](https://github.com/RhinoSecurityLabs/cloudgoat) |
 | git-secrets | [awslabs/git-secrets](https://github.com/awslabs/git-secrets) |
 | Pacu an open source AWS exploitation framework | [RhinoSecurityLabs/Pacu](https://github.com/RhinoSecurityLabs/pacu) |
+| RedDolphin red team operations | [elitest/RedDolphin](https://github.com/elitest/RedDolphin) |
 
 ## Some useful tools
 
