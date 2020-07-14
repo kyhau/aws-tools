@@ -1,5 +1,5 @@
 """
-Functions for reading/writimg files
+Functions for reading/writing files
 """
 import io
 import json
