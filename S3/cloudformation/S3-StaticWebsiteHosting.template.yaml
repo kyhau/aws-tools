@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create S3 bucket and policies for static website hosting.
+
+Parameters:
+  AppBucketName:
+    Description: The name of the S3 bucket for static website hosting.
+    Type: String
+  EnableVersioning:
+    Description: Enable versioning (Enabled or Suspended).
+    Type: String
+    AllowedValues:
+      - Enabled
+      - Suspended
+    Default: Suspended
+  ErrorDoc:
+    Description: The file name of the error document (e.g. error.html, index.html).
+    Type: String
+    Default: index.html
+  IndexDoc:
+    Description: The file name of the index document.
+    Type: String
+    Default: index.html
+  LogBucketName:
+    Description: The name of existing Log bucket.
+    Type: String
+
+Conditions:
+  LoggingEnabled: !Not [!Equals [!Ref LogBucketName, None]]
+  VersioningEnabled: !Equals [!Ref EnableVersioning, Enabled]
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref AppBucketName
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: !Ref IndexDoc
+        ErrorDocument: !Ref ErrorDoc
+      LoggingConfiguration: !If
+        - LoggingEnabled
+        - DestinationBucketName: !Ref LogBucketName
+        - !Ref AWS::NoValue
+      VersioningConfiguration:
+        Status: !Ref EnableVersioning
+    DeletionPolicy: Delete
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn:
+      - S3Bucket
+    Properties:
+      Bucket: !Ref AppBucketName
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: !Sub 'arn:aws:s3:::${AppBucketName}/*'
+            Principal: '*'
+
+Outputs:
+  WebsiteURL:
+    Description: URL for website hosted on S3
+    Value: !GetAtt 'S3Bucket.WebsiteURL'
+  S3BucketSecureURL:
+    Description: Name of S3 bucket to hold website content
+    Value: !Join
+      - ''
+      - - https://
+        - !GetAtt S3Bucket.DomainName

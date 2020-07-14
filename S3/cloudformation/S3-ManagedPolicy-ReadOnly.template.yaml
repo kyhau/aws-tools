@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Managed Policy for reading a bucket.
+
+Parameters:
+  BucketName:
+    Description: The name of the S3 bucket.
+    Type: String
+  ReadOnlyGroupName:
+    Description: Optional. Name of the Group to be created and given Read-Only access to the S3 bucket.
+    Type: String
+    Default: ''
+
+Conditions:
+  ReadOnlyGroupNameSpecified: !Not [!Equals [!Ref ReadOnlyGroupName, '']]
+
+Resources:
+  IamGroupReadOnly:
+    Type: AWS::IAM::Group
+    Condition: ReadOnlyGroupNameSpecified
+    Properties:
+      GroupName: !Ref ReadOnlyGroupName
+
+  ManagedPolicyS3ReadOnly:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for accessing S3 bucket (read-only)
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListAllMyBuckets     # if need console access
+            Resource: arn:aws:s3:::*
+          - Effect: Allow
+            Action:
+              - s3:GetBucketLocation    # if need console access
+              - s3:ListBucket           # if need to list root-level items, folders in the given bucket
+            Resource: !Sub 'arn:aws:s3:::${BucketName}'
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+            Resource: !Sub 'arn:aws:s3:::${BucketName}/*'
+      Groups:
+        - !If
+          - ReadOnlyGroupNameSpecified
+          - !Ref ReadOnlyGroupName
+          - !Ref AWS::NoValue

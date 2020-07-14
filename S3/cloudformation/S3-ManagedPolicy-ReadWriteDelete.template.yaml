@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Managed Policy for managing a bucket (Read, Write, Delete).
+
+Parameters:
+  BucketName:
+    Description: The name of the S3 bucket.
+    Type: String
+  ReadWriteDeleteGroupName:
+    Description: Optional. Name of the Group to be created and given Read-Write-Delete access to the S3 bucket.
+    Type: String
+    Default: ''
+
+Conditions:
+  ReadWriteDeleteGroupNameSpecified: !Not [!Equals [!Ref ReadWriteDeleteGroupName, '']]
+
+Resources:
+  IamGroupReadWriteDelete:
+    Type: AWS::IAM::Group
+    Condition: ReadWriteDeleteGroupNameSpecified
+    Properties:
+      GroupName: !Ref ReadWriteDeleteGroupName
+
+  ManagedPolicyS3ReadWriteDelete:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for accessing S3 bucket (read/write/delete)
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListAllMyBuckets     # if need console access
+            Resource: arn:aws:s3:::*
+          - Effect: Allow
+            Action:
+              - s3:GetBucketLocation    # if need console access
+              - s3:ListBucket           # if need to list root-level items, folders in the given bucket
+            Resource: !Sub 'arn:aws:s3:::${BucketName}'
+          - Effect: Allow
+            Action:
+              - s3:PutObject*
+              - s3:GetObject
+              - s3:DeleteObject
+            Resource: !Sub 'arn:aws:s3:::${BucketName}/*'
+      Groups:
+        - !If
+          - ReadWriteDeleteGroupNameSpecified
+          - !Ref ReadWriteDeleteGroupName
+          - !Ref AWS::NoValue

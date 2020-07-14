@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create non-public S3 bucket.
+
+Parameters:
+  BucketName:
+    Description: The name of the S3 bucket to be created.
+    Type: String
+  EnableVersioning:
+    Description: Enable versioning (Enabled or Suspended).
+    Type: String
+    AllowedValues: [Enabled, Suspended]
+    Default: Suspended
+  LogBucketName:
+    Description: The name of existing Log bucket.
+    Type: String
+  KMSMasterKeyID:
+    Description: KMS Master Key ID. Required only if selecting aws:kms in ServerSideEncryptionAlgorithm.
+    Type: String
+  ServerSideEncryptionAlgorithm:
+    Description: Specify server side encryption. Choose None to disable server side encryption.
+    Type: String
+    AllowedValues: [None, AES256, 'aws:kms']
+    Default: AES256
+
+Conditions:
+  SSEEnabled: !Not [!Equals [None, !Ref ServerSideEncryptionAlgorithm]]
+  UseKms: !Equals ['aws:kms', !Ref ServerSideEncryptionAlgorithm]
+  LoggingEnabled: !Not [!Equals [!Ref LogBucketName, None]]
+  VersioningEnabled: !Equals [Enabled, !Ref EnableVersioning]
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      AccessControl: BucketOwnerFullControl
+      BucketEncryption: !If
+        - SSEEnabled
+        - ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault: !If
+                - UseKms
+                - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+                  KMSMasterKeyID: !Ref KMSMasterKeyID
+                - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+        - !Ref AWS::NoValue
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfter30Days
+            Status: Enabled
+            ExpirationInDays: 30
+      LoggingConfiguration: !If
+        - LoggingEnabled
+        - DestinationBucketName: !Ref LogBucketName
+        - !Ref AWS::NoValue
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: !Ref EnableVersioning
+    DeletionPolicy: Retain
+
+Outputs:
+  BucketArn:
+    Description: ARN of the S3 bucket.
+    Value: !GetAtt S3Bucket.Arn
+    #Export:
+    #  Name: !Ref BucketExportName
