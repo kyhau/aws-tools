@@ -3,6 +3,7 @@
 #virtualenv~=16.4
 pip
 
+################################################################################
 # AWS related packages
 boto3~=1.13
 #aws-embedded-metrics
@@ -15,9 +16,11 @@ boto3~=1.13
 #stepfunctions
 #AWSIoTPythonSDK
 
+################################################################################
 # AWS CloudFormation Resource Provider Python Plugin (preview)
 #git+https://github.com/aws-cloudformation/aws-cloudformation-rpdk-python-plugin.git#egg=cloudformation-cli-python-plugin
 
+################################################################################
 # AWS-CDK related packages
 #aws-cdk.core
 #aws-cdk.aws-apigateway
@@ -27,21 +30,23 @@ boto3~=1.13
 #aws-cdk.aws-lambda
 #cdk-watchful
 
+################################################################################
 # Non aws related packages
 apispec~=3.3            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
 click~=7.1
 dataclasses-json~=0.4   # provides a simple API for encoding and decoding dataclasses to and from JSON
-#faker
 PyInquirer~=1.0         # for saml2aws/aws_login.py
 pytz
-#typer~=0.2             # click alternative
 #black
+#faker
 #pipdeptree
 #pyyaml~=5.1
 #pypiwin32==220
 #toml~=0.10
+#typer~=0.2             # click alternative
 #warrant~=0.6
 
+################################################################################
 # Kafka
 #confluent_kafka        # https://docs.confluent.io/current/clients/python.html
 #kafka-python
