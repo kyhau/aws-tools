@@ -25,7 +25,7 @@ Parameters:
     Type: String
 
 Conditions:
-  LoggingEnabled: !Not [!Equals [!Ref LogBucketName, None]]
+  LoggingEnabled: !Not [!Equals [!Ref LogBucketName, '']]
   VersioningEnabled: !Equals [!Ref EnableVersioning, Enabled]
 
 Resources:

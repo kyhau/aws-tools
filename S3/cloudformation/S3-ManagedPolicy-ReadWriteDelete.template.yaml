@@ -8,7 +8,6 @@ Parameters:
   ReadWriteDeleteGroupName:
     Description: Optional. Name of the Group to be created and given Read-Write-Delete access to the S3 bucket.
     Type: String
-    Default: ''
 
 Conditions:
   ReadWriteDeleteGroupNameSpecified: !Not [!Equals [!Ref ReadWriteDeleteGroupName, '']]

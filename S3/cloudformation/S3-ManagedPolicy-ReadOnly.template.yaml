@@ -8,7 +8,6 @@ Parameters:
   ReadOnlyGroupName:
     Description: Optional. Name of the Group to be created and given Read-Only access to the S3 bucket.
     Type: String
-    Default: ''
 
 Conditions:
   ReadOnlyGroupNameSpecified: !Not [!Equals [!Ref ReadOnlyGroupName, '']]
