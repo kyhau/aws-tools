@@ -5,7 +5,7 @@ import datetime
 import decimal
 import json
 import logging
-from time import mktime
+from time import mktime, time
 
 logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger("botocore").setLevel(logging.CRITICAL)
@@ -88,6 +88,7 @@ def describe(ctx, table_name):
 @click.option("--field-value", "-v", help="Field value")
 @click.pass_context
 def scan(ctx, table_name, field_name, field_value):
+    start = time()
     table = ctx.obj["session"].resource("dynamodb", ctx.obj["region"]).Table(table_name)
 
     params = {}
@@ -103,6 +104,8 @@ def scan(ctx, table_name, field_name, field_value):
         resp = table.scan(**params)
         for item in resp["Items"]:
             print(item)
+
+    logging.info(f"Total execution time: {time() - start}s")
 
 
 if __name__ == "__main__":
