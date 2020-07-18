@@ -27,6 +27,7 @@ alias aws-cloudwatch-insights-run-query='python ${ARKI_REPO_HOME}/CloudWatch/Clo
 alias aws-cloudwatch-insights-list-queries='python ${ARKI_REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights_list_queries.py'
 
 alias aws-dynamodb-search='python ${ARKI_REPO_HOME}/DynamoDB/search_dynamodb.py'
+alias aws-dynamodb-table-delete-item='python ${ARKI_REPO_HOME}/DynamoDB/delete_table_items.py'
 
 alias aws-cognito='python ${ARKI_REPO_HOME}/Cognito/cognito.py'
 

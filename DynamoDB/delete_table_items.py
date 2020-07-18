@@ -36,9 +36,9 @@ def main(table_name, field_name, field_value, key_field_name):
 
             resp = table.scan(**params)
             for item in resp["Items"]:
+                count += 1
                 logging.debug(f"{count}: {item}")
                 batch.delete_item(Key={key_field_name: item[key_field_name]})
-                count += 1
 
     logging.info(f"Total execution time: {time() - start}s")
 
