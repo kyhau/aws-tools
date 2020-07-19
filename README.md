@@ -62,6 +62,7 @@ pip install -r requirements.txt
 | :--- | :--- |
 | AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
 | [CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [awslabs/cdk8s](https://github.com/awslabs/cdk8s) |
+| CDK Patterns | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
 | AWS Serverless architecture patterns built with CDK | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
 
 ### CloudFormation
