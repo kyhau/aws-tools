@@ -153,6 +153,7 @@ pip install -r requirements.txt
 | AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
 | AWS Multi Account Viewer | [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer) |
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
+| Chaos Injection for AWS resources using Amazon SSM Run Command and Automation | [adhorn/chaos-ssm-documents](https://github.com/adhorn/chaos-ssm-documents) |
 
 ### Networking
 
