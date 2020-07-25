@@ -94,7 +94,7 @@ alias aws-vpn-connections='python ${ARKI_REPO_HOME}/EC2-VPC/list_vpn_connections
 
 alias aws-workspaces-list-connections='python ${ARKI_REPO_HOME}/Workspaces/list_workspaces_connections.py'
 
-alias arki-ls-common-ip-protocols='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-protocols.md'
-alias arki-ls-common-ip-ranges='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ip-ranges.md'
-alias arki-ls-common-ports='cat ${ARKI_REPO_HOME}/Useful-tools/ls-common-ports.md'
+alias arki-ls-common-ip-protocols='cat ${ARKI_REPO_HOME}/Useful-tools/networking/ls-common-ip-protocols.md'
+alias arki-ls-common-ip-ranges='cat ${ARKI_REPO_HOME}/Useful-tools/networking/ls-common-ip-ranges.md'
+alias arki-ls-common-ports='cat ${ARKI_REPO_HOME}/Useful-tools/networking/ls-common-ports.md'
 alias arki-ls-timezones='python -c "import pytz;print(\"\n\".join(tz for tz in pytz.all_timezones))"'
