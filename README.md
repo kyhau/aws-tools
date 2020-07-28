@@ -170,6 +170,7 @@ pip install -r requirements.txt
 | Description | Repo/Link |
 | :--- | :--- |
 | FastAPI | [tiangolo/fastapi](https://github.com/tiangolo/fastapi) |
+| OpenFaaS | [openfaas/faas](https://github.com/openfaas/faas) |
 | Regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript | [regex101.com](https://regex101.com/) |
 | Subnet Calculator - MxToolbox | [mxtoolbox.com](https://mxtoolbox.com/subnetcalculator.aspx) |
 
