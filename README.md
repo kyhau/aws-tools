@@ -99,6 +99,7 @@ pip install -r requirements.txt
 | :--- | :--- |
 | AWS Chalice - Python Serverless Microframework for AWS | [aws/chalice](https://github.com/aws/chalice) |
 | AWS Lambda Developer Guide | [awsdocs/aws-lambda-developer-guide](https://github.com/awsdocs/aws-lambda-developer-guide) |
+| AWS Lambda Powertools | [awslabs/aws-lambda-powertools-python](https://github.com/awslabs/aws-lambda-powertools-python) |
 | AWS Lambda Power Tuning | [alexcasalboni/aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning) |
 | AWS Serverless Application Model (SAM) | [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model) |
 | AWS Serverless Application Model (SAM) CLI | [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli) 

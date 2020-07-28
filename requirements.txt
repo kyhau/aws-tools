@@ -8,6 +8,7 @@ pip
 boto3~=1.13
 #aws-embedded-metrics
 #aws-encryption-sdk
+#aws-lambda-powertools
 #aws-xray-sdk
 #chalice            # AWS Chalice
 #pyathena
