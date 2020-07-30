@@ -1,4 +1,6 @@
-# Lambda Tricks
+# About Lambda
+
+## Lambda Tricks
 
 - [Hit the 6MB Lambda payload limit? Here’s what you can do](
   https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
@@ -11,3 +13,13 @@
   - Technically you can do up to 10 seconds of work before it starts getting included in the billed duration. 
   - Also, you'll always have to pay something for the handler execution - the minimum billed execution time is 100ms.
  
+## Lambda Layers
+TODO
+
+## aws-lambda-powertools
+
+## Lambda destination
+TODO
+
+## Auto Scaling Lambda Provisioned Concurrency
+TODO

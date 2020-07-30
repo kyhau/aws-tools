@@ -7,6 +7,7 @@ awscli~=1.18
 awslimitchecker~=7.1
 #awsebcli~=3.15
 #c7n~=0.8                 # cloud-custodian
+#httpie
 yq~=2.10                  # Command-line YAML/XML processor - jq wrapper for YAML/XML documents
 
 ################################################################################
