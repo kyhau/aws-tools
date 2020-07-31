@@ -1,23 +1,23 @@
 pip
-awscli~=1.18
-#aws-shell~=0.2
-#aws-encryption-sdk-cli~=1.1    # CLI wrapper around aws-encryption-sdk-python
+awscli
+#aws-shell
+#aws-encryption-sdk-cli   # CLI wrapper around aws-encryption-sdk-python
 #aws-parallelcluster      # https://github.com/aws/aws-parallelcluster
 #awsebcli                 # AWS Elastic Beanstalk CLI
-awslimitchecker~=7.1
-#awsebcli~=3.15
-#c7n~=0.8                 # cloud-custodian
-#httpie
-yq~=2.10                  # Command-line YAML/XML processor - jq wrapper for YAML/XML documents
+awslimitchecker
+#awsebcli
+#c7n                      # cloud-custodian
+httpie
+yq                        # Command-line YAML/XML processor - jq wrapper for YAML/XML documents
 
 ################################################################################
 # Cloudformation
 
-aws-cdk.core~=1.38        # require npm aws-cdk
-cfn-flip~=1.2
-cfn-lint~=0.31            # require aws-sam-translator
-cloudformation-cli~=0.1   # https://github.com/aws-cloudformation/cloudformation-cli
-yamllint~=1.23
+aws-cdk.core              # require npm aws-cdk
+cfn-flip
+cfn-lint                  # require aws-sam-translator
+cloudformation-cli        # https://github.com/aws-cloudformation/cloudformation-cli
+yamllint
 
 ################################################################################
 # Serverless

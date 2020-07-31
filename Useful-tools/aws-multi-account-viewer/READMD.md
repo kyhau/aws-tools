@@ -1,5 +1,4 @@
 # Multi Account Viewer
 
-Install and set up **Multi Account Viewer** (https://github.com/awslabs/aws-multi-account-viewer)
-a single webpage to view multiple AWS Accounts/Regions.
-
+- Original repo https://github.com/awslabs/aws-multi-account-viewer
+- Forked repo: https://github.com/kyhau/aws-multi-account-viewer
