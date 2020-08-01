@@ -58,6 +58,7 @@ pip install -r requirements.txt
 | Warrant a Python library for using AWS Cognito with support for SRP| [capless/warrant](https://github.com/capless/warrant) |
 
 ### CDK
+
 | Description | Repo/Link |
 | :--- | :--- |
 | AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
@@ -120,6 +121,7 @@ pip install -r requirements.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
+| AWS Exposable Resources | [SummitRoute/aws_exposable_resources](https://github.com/SummitRoute/aws_exposable_resources) |
 | AWS Security Documentation by Category | [docs.aws.amazon.com/security](https://docs.aws.amazon.com/security/)|
 | A Secure Cloud - Repository of customizable AWS security configurations and best practices | [asecure.cloud/](https://asecure.cloud/) |
 | Open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
