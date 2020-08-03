@@ -55,4 +55,5 @@ def main(profile, loggroupname, starttime, endtime, queryfile, region):
         status = response.get("status")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
