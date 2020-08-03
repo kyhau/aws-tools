@@ -86,6 +86,7 @@ alias aws-tag-list='python ${ARKI_REPO_HOME}/Security/list_tags.py'
 
 alias aws-trustedadvisor-list-result='python ${ARKI_REPO_HOME}/TrustedAdvisor/trusted_advisor_check_result.py'
 
+alias aws-vpc-flow-logs='python ${ARKI_REPO_HOME}/EC2-VPC/vpc_flow_logs.py'
 alias aws-vpcs='python ${ARKI_REPO_HOME}/EC2-VPC/list_vpcs.py'
 
 alias aws-vpc-endpoints='python ${ARKI_REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoints.py'
