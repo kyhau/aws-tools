@@ -8,10 +8,8 @@ import logging
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-default_query_string = """
-fields @timestamp, @message
-| sort @timestamp desc
-""".replace("\n", " ").strip()
+
+LOOKUP_HOURS = 12
 
 
 @click.command(help="Retrieve VPC Flow Logs")
@@ -25,9 +23,8 @@ def main(profile, loggroupname, starttime, endtime, region):
     client = session.client("logs", region_name=region)
 
     end_dt = datetime.now() if endtime is None else datetime.strptime(endtime, "%Y-%m-%d")
-    start_dt = end_dt - timedelta(hours=24) if starttime is None else datetime.strptime(starttime, "%Y-%m-%d")
-    
-    query_string = default_query_string
+    start_dt = end_dt - timedelta(hours=LOOKUP_HOURS) if starttime is None else datetime.strptime(starttime, "%Y-%m-%d")
+    query_string = "fields @timestamp, @message | sort @timestamp desc"
     
     query_id = client.start_query(
         logGroupName=loggroupname,
