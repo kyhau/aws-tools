@@ -1,8 +1,9 @@
+from botocore.exceptions import ProfileNotFound
 import click
 from datetime import datetime, timedelta
 import logging
-import yaml
 from arki_common.aws import AwsApiHelper
+from arki_common.ser import dump_json
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -17,7 +18,7 @@ class Helper(AwsApiHelper):
         cnt = 0
         for event in self.paginate(client, "lookup_events", kwargs):
             print("--------------------------------------------------------------------------------")
-            print(yaml.dump(event))
+            print(dump_json(event))
             cnt += 1
             if self._max_results is not None and cnt >= int(self._max_results):
                 return
@@ -49,7 +50,11 @@ def new_operation_params(start_time, end_time, event_name, user_name):
 @click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
 def main(eventname, username, starttime, endtime, maxresults, profile, region):
     kwargs = new_operation_params(starttime, endtime, eventname, username)
-    Helper(maxresults).start(profile, region, "cloudtrail", kwargs)
+
+    try:
+        Helper(maxresults).start(profile, region, "cloudtrail", kwargs)
+    except ProfileNotFound as e:
+        logging.error(f"{e}. Aborted")
 
 
 if __name__ == "__main__":
