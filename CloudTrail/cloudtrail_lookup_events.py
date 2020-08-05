@@ -1,3 +1,6 @@
+"""
+Retrieve CloudTrail events
+"""
 from botocore.exceptions import ProfileNotFound
 import click
 from datetime import datetime, timedelta
@@ -6,6 +9,8 @@ from arki_common.aws import AwsApiHelper
 from arki_common.ser import dump_json
 
 logging.getLogger().setLevel(logging.DEBUG)
+
+LOOKUP_HOURS = 12
 
 
 class Helper(AwsApiHelper):
@@ -26,7 +31,7 @@ class Helper(AwsApiHelper):
 
 def new_operation_params(start_time, end_time, event_name, user_name):
     end_dt = datetime.now() if end_time is None else datetime.strptime(end_time, "%Y-%m-%d")
-    start_dt = end_dt - timedelta(hours=24) if start_time is None else datetime.strptime(start_time, "%Y-%m-%d")
+    start_dt = end_dt - timedelta(hours=LOOKUP_HOURS) if start_time is None else datetime.strptime(start_time, "%Y-%m-%d")
     
     lookup_attributes = []  # If more than one attribute, they are evaluated as "OR".
     if event_name is not None:
@@ -43,7 +48,7 @@ def new_operation_params(start_time, end_time, event_name, user_name):
 @click.command()
 @click.option("--eventname", "-n", help="Event name. If specify both eventname and username, the condition is OR.")
 @click.option("--username", "-u", help="User name. If specify both eventname and username, the condition is OR.")
-@click.option("--starttime", "-s", help="Start time (e.g. 2020-04-01); return last 1d records if not specified.")
+@click.option("--starttime", "-s", help=f"Start time (e.g. 2020-04-01); return last {LOOKUP_HOURS} records if not specified.")
 @click.option("--endtime", "-e", help="End time (e.g. 2020-04-01); now if not specified.")
 @click.option("--maxresults", "-m", help="Number of events to return for each account/region; unlimited if not specified.")
 @click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
