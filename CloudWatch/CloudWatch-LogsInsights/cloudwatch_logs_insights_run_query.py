@@ -7,6 +7,8 @@ import yaml
 
 logging.getLogger().setLevel(logging.DEBUG)
 
+LOOKUP_HOURS = 12
+
 default_query_string = """
 fields @timestamp, @message
 | sort @timestamp desc
@@ -23,7 +25,7 @@ def read_file(filename):
 @click.command()
 @click.option("--profile", "-p", help="AWS profile name.", default="default")
 @click.option("--loggroupname", "-l", help="Log Group name", required=True)
-@click.option("--starttime", "-s", help="Start time (e.g. 2020-04-01); return last 1d records if not specified", default=None)
+@click.option("--starttime", "-s", help=f"Start time (e.g. 2020-04-01); return last {LOOKUP_HOURS} records if not specified", default=None)
 @click.option("--endtime", "-e", help="End time (e.g. 2020-04-01); now if not specified.", default=None)
 @click.option("--queryfile", "-f", help="Query file.", default=None)
 @click.option("--region", "-r", help="AWS Region. Default ap-southeast-2", default="ap-southeast-2")
@@ -32,7 +34,7 @@ def main(profile, loggroupname, starttime, endtime, queryfile, region):
     client = session.client("logs", region_name=region)
 
     end_dt = datetime.now() if endtime is None else datetime.strptime(endtime, "%Y-%m-%d")
-    start_dt = end_dt - timedelta(hours=24) if starttime is None else datetime.strptime(starttime, "%Y-%m-%d")
+    start_dt = end_dt - timedelta(hours=LOOKUP_HOURS) if starttime is None else datetime.strptime(starttime, "%Y-%m-%d")
     
     query_string = read_file(queryfile) if queryfile else default_query_string
     
