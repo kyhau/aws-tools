@@ -4,11 +4,9 @@ awscli
 #aws-encryption-sdk-cli   # CLI wrapper around aws-encryption-sdk-python
 #aws-parallelcluster      # https://github.com/aws/aws-parallelcluster
 #awsebcli                 # AWS Elastic Beanstalk CLI
-awslimitchecker
+#awslimitchecker
 #awsebcli
 #c7n                      # cloud-custodian
-httpie
-yq                        # Command-line YAML/XML processor - jq wrapper for YAML/XML documents
 
 ################################################################################
 # Cloudformation
@@ -28,3 +26,10 @@ yamllint
 
 #awscli-local        # LocalStack AWS CLI - https://github.com/localstack/awscli-local
 #localstack          # Local AWS cloud stack - https://github.com/localstack/localstack
+
+################################################################################
+# Useful tools
+
+#demoshell                 # https://github.com/dhellmann/demoshell
+httpie
+yq                        # Command-line YAML/XML processor - jq wrapper for YAML/XML documents
