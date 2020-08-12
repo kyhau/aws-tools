@@ -13,13 +13,19 @@
   - Technically you can do up to 10 seconds of work before it starts getting included in the billed duration. 
   - Also, you'll always have to pay something for the handler execution - the minimum billed execution time is 100ms.
  
-## Lambda Layers
-TODO
-
 ## aws-lambda-powertools
 
+- https://awslabs.github.io/aws-lambda-powertools-python/core/logger/
+- https://awslabs.github.io/aws-lambda-powertools-python/core/metrics/
+- https://awslabs.github.io/aws-lambda-powertools-python/core/tracer/
+- https://awslabs.github.io/aws-lambda-powertools-python/utilities/middleware_factory/
+- https://aws.amazon.com/blogs/compute/building-well-architected-serverless-applications-understanding-application-health-part-2/
+
+## Lambda Layers
+
+- https://github.com/kyhau/cdk-lambda-layer-datetimenow
+- https://github.com/awsdocs/aws-lambda-developer-guide/tree/master/sample-apps/blank-python
+
 ## Lambda destination
-TODO
 
 ## Auto Scaling Lambda Provisioned Concurrency
-TODO
