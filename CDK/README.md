@@ -12,6 +12,13 @@
 - [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
 
 
+### My small examples for demo
+
+- https://github.com/kyhau/have-a-smile
+- https://github.com/kyhau/cdk-lambda-layer-datetimenow
+- https://github.com/kyhau/cdk-url-shortener-demo
+
+
 ---
 ### Quick start
 ```
@@ -21,7 +28,7 @@ cdk init --list
 # Start a new CDK project (app or library)
 cdk init --language python
 
-# E.g. Install package for S3 
+# E.g. Install package for S3
 pip install aws-cdk.aws-s3
 
 # Access the online documentation
@@ -39,7 +46,7 @@ cdk synth
 cdk diff
 
 # Deploy a stack into an AWS account
-cdk deploy 	
+cdk deploy
 
 # Deletes a stack from an AWS account
 cdk destroy
@@ -48,5 +55,5 @@ cdk destroy
 cdk bootstrap
 
 # Inspect the environment and produce information useful for troubleshooting
-cdk doctor 	
+cdk doctor
 ```

@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
+# See also https://stackoverflow.com/questions/60310607/amazon-aws-cli-not-allowing-valid-json-in-payload-parameter
+
 cat > event.json << EOF
 {
   "Records": [
@@ -27,8 +29,14 @@ EOF
 FUNCTION=$(aws cloudformation describe-stack-resource --stack-name blank-python --logical-resource-id function --query 'StackResourceDetail.PhysicalResourceId' --output text)
 
 while true; do
-  aws lambda invoke --function-name $FUNCTION --payload file://event.json out.json
-  cat out.json
+  aws lambda invoke --function-name SmileFunction \
+    --cli-binary-format raw-in-base64-out \
+    --payload file://event.json response.json
+
+  cat response.json
   echo ""
   sleep 2
 done
+
+rm event.json
+rm response.json

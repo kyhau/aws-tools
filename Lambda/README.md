@@ -29,6 +29,14 @@
 - https://stackoverflow.com/questions/55695187/import-libraries-in-lambda-layers
     > According to the video they should go in either /opt/python or /opt/python/lib/python3.6/site-packages. The video also gives the indication that if you're using 3.7 or above you have to use the second one but I tried it in just /opt/python with 3.8 and it seemed to work. I feel like for simplicity it would be easier to just put in /opt/python but if you're making a layer for multiple versions then maybe you would want to do the second.
 
+## Custom Lambda Runtime
+
+- https://github.com/kyhau/have-a-smile
+
 ## Lambda destination
 
 ## Auto Scaling Lambda Provisioned Concurrency
+
+## Invoke lambda with awscli
+
+- https://stackoverflow.com/questions/60310607/amazon-aws-cli-not-allowing-valid-json-in-payload-parameter
