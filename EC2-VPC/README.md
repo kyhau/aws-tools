@@ -5,6 +5,7 @@
         - append_dimensions, AutoScalingGroupName
         - metrics_collected, mem_used_percent, swap_used_percent
     - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-common-scenarios.html
+    - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html
     - https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AgentReference.html
     - https://stackoverflow.com/questions/55098841/cloudformation-output-of-cloudformation-init
 
