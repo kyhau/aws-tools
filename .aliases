@@ -49,6 +49,7 @@ alias aws-ddb-start-localddb-container='. ${ARKI_REPO_HOME}/DynamoDB/start_dynam
 alias aws-guardduty-findings='python ${ARKI_REPO_HOME}/GuardDuty/list_findings.py'
 
 alias aws-iam-account-authorization-details='python ${ARKI_REPO_HOME}/IAM/account_authorization_details.py'
+alias aws-iam-list-aws-managed-policies-to-files='python ${ARKI_REPO_HOME}/IAM/list_aws_managaed_policies_to_files.sh'
 alias aws-iam-list-users='python ${ARKI_REPO_HOME}/IAM/list_iam_users.py'
 alias aws-iam-lookup-identities='python ${ARKI_REPO_HOME}/Security/lookup_iam_identities.py'
 
