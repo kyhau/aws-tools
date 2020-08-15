@@ -94,6 +94,7 @@ pip install -r requirements.txt
 | AWS Copilot CLI - containerize apps on ECS/Fargate| [aws/copilot-cli](https://github.com/aws/copilot-cli) |
 | AWS Node Termination Handler | [aws/aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) |
 | Docker CLI plugin for ECS | [docker/ecs-plugin](https://github.com/docker/ecs-plugin) |
+| A simple terminal UI for both docker and docker-compose | [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) |
 
 ### Serverless
 
