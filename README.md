@@ -127,6 +127,7 @@ pip install -r requirements.txt
 | A Secure Cloud - Repository of customizable AWS security configurations and best practices | [asecure.cloud/](https://asecure.cloud/) |
 | Open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
 | AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
+| AWS Managed Policies (list/monitor) | [z0ph/aws_managed_policies](https://github.com/z0ph/aws_managed_policies/tree/master/policies) |
 | AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
 | AWS Security Benchmark | [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark) |
 | AWS Security Hub Multiaccount Scripts | [awslabs/aws-securityhub-multiaccount-scripts](https://github.com/awslabs/aws-securityhub-multiaccount-scripts) |
