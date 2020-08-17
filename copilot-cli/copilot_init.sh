@@ -1,11 +1,22 @@
 #!/bin/bash
 # https://github.com/aws/copilot-cli
+# https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started-aws-copilot-cli.html
 set -e
 
 # git clone git@github.com:aws-samples/aws-copilot-sample-service.git demo-app
 
 pushd demo-app
+
 copilot init --app demo --svc api --svc-type 'Load Balanced Web Service' --dockerfile './Dockerfile' --deploy
+#  -a, --app string          Name of the application.
+#      --deploy              Deploy your service to a "test" environment.
+#  -d, --dockerfile string   Path to the Dockerfile.
+#  -h, --help                help for init
+#      --port uint16         Optional. The port on which your service listens.
+#  -s, --svc string          Name of the service.
+#  -t, --svc-type string     Type of service to create. Must be one of:
+#                            "Load Balanced Web Service", "Backend Service"
+#      --tag string          Optional. The container image tag.
 
 # copilot app delete --env-profiles test=default
 popd
