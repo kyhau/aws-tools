@@ -4,6 +4,12 @@
     - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent-New-Instances-CloudFormation.html
         - append_dimensions, AutoScalingGroupName
         - metrics_collected, mem_used_percent, swap_used_percent
+    - https://aws.amazon.com/premiumsupport/knowledge-center/cloudformation-failed-signal/
+        - /var/log/cloud-init-output.log
+        - /var/log/cloud-init.log
+        - /var/log/cfn-init.log
+        - /var/log/cfn-init-cmd.log
+        - /var/log/cfn-wire.log
     - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-common-scenarios.html
     - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html
     - https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AgentReference.html
