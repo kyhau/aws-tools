@@ -54,6 +54,11 @@ def get_json_data_from_file(input_file):
             return json.load(f)
 
 
+def write_json_file(output_file, data, sort_keys=True, indent=0):
+    with open(output_file, "w") as outfile:
+        json.dump(data, outfile, sort_keys=sort_keys, indent=indent)
+
+
 ################################################################################
 # sql
 
