@@ -7,6 +7,17 @@ Parameters:
   AppBucketName:
     Description: Name of the s3 bucket to create for website source files.
     Type: String
+  AppBucketPathPattern1:
+    Description: >
+      The path pattern to be added to CloudFront Behaviours to route to the origin.
+      E.g. the path pattern "images/*.jpg" routes all requests for ".jpg" files in
+      the images directory and in all subdirectories below the images directory to
+      S3 bucket or the web server that you specify in Origin.
+    Type: String
+  AppBucketPathPattern2:
+    Description: >
+      The path pattern to be added to CloudFront Behaviours to route to the origin.
+    Type: String
   LogsBucketName:
     Description: Bucket name for the application logging
     Type: String
@@ -55,6 +66,35 @@ Resources:
             Id: !Sub "${S3Bucket}S3OriginId"
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOAI}"
+        CacheBehaviors:
+          - AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            DefaultTTL: 900
+            ForwardedValues:
+              QueryString: false
+              Cookies:
+                Forward: none
+            MaxTTL: 900
+            MinTTL: 0
+            PathPattern: !Ref AppBucketPathPattern1
+            TargetOriginId: !Sub "${S3Bucket}S3OriginId"
+            ViewerProtocolPolicy: redirect-to-https
+          - AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            DefaultTTL: 900
+            ForwardedValues:
+              QueryString: false
+              Cookies:
+                Forward: none
+            MaxTTL: 900
+            MinTTL: 0
+            PathPattern: !Ref AppBucketPathPattern2
+            TargetOriginId: !Sub "${S3Bucket}S3OriginId"
+            ViewerProtocolPolicy: redirect-to-https
         Comment: !Sub "CloudFront origin for ${AppBucketName}"
         CustomErrorResponses:
           - ErrorCode: 403
