@@ -176,6 +176,7 @@ pip install -r requirements.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
+| CNCF Cloud Native Interactive Landscape | [landscape.cncf.io](https://landscape.cncf.io/) |
 | FastAPI | [tiangolo/fastapi](https://github.com/tiangolo/fastapi) |
 | OpenFaaS | [openfaas/faas](https://github.com/openfaas/faas) |
 | Regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript | [regex101.com](https://regex101.com/) |
@@ -187,6 +188,7 @@ pip install -r requirements.txt
 
 ## Workshops
 
+- [Amplify Days ANZ](https://amplifydays.awsanz.com/)
 - [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop)
 - [CDK](https://cdkworkshop.com/)
 - [CI/CD for Serverless Applications](https://cicd.serverlessworkshops.io/)
