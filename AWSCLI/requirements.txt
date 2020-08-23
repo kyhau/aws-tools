@@ -1,0 +1,2 @@
+# CLI tools that are installed using pip
+aws-shell
