@@ -64,7 +64,9 @@ pip install -r requirements.txt
 | AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
 | [CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [awslabs/cdk8s](https://github.com/awslabs/cdk8s) |
 | [CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/) | [aws-samples/cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) |
-| AWS Serverless architecture patterns built with CDK | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
+| Awesome CDK | [kolomied/awesome-cdk](https://github.com/kolomied/awesome-cdk) |
+| CDK Patterns | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
+
 
 ### CloudFormation
 
