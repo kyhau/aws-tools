@@ -1,9 +1,11 @@
 """
 Output:
-SubnetId, CidrBlock, usable=(num), used=(num), available=(num),
+SubnetId, AvailabilityZone, CidrBlock, usable=(num), used=(num), available=(num),
 """
-import click
 import logging
+
+import click
+
 from arki_common.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
@@ -23,9 +25,10 @@ class Helper(AwsApiHelper):
             # https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html
             usable_ip_cnt = 2 ** (32 - mask) - 5
             available_ip_cnt = item["AvailableIpAddressCount"]
-    
+
             data = [
                 item["SubnetId"],
+                item["AvailabilityZone"],
                 item["CidrBlock"],
                 f"usable={usable_ip_cnt}",
                 f"used={usable_ip_cnt - available_ip_cnt}",
