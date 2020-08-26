@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Creating CloudFront Web Distribution with S3 using Custom Origin.
+Description: Creating CloudFront Web Distribution with S3 using S3 Origin.
 Parameters:
   BucketRootLogName:
     Description: The name of the existing S3 bucket for logging (see S3-RootLogs.template).
@@ -87,7 +87,6 @@ Resources:
         - StageMap
         - !Ref 'StageName'
         - RootBucketName
-      AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: !Ref 'IndexDoc'
         ErrorDocument: !Ref 'ErrorDoc'
@@ -111,25 +110,11 @@ Resources:
     DeletionPolicy: Delete
   StaticSiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
-    DependsOn:
-      - RootBucket
     Properties:
       Bucket: !Ref 'RootBucket'
       PolicyDocument:
         Statement:
-          - Sid: PublicReadGetObject
-            Effect: Allow
-            Principal: '*'
-            Action: s3:GetObject
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !FindInMap
-                  - StageMap
-                  - !Ref 'StageName'
-                  - RootBucketName
-                - /*
-          - Sid: CloudFrontOriginAccess
+          - Sid: Grant a CloudFront OAI access to support private content
             Action:
               - s3:GetObject
             Effect: Allow
@@ -205,6 +190,11 @@ Resources:
               - StageMap
               - !Ref 'StageName'
               - CloudFrontAlias1
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponsePagePath: /index.html
+            ResponseCode: 200
+            ErrorCachingMinTTL: 300
         DefaultCacheBehavior:
           TargetOriginId: !Join
             - '-'
@@ -227,11 +217,11 @@ Resources:
           MinTTL: !Ref 'MinTTL'
           MaxTTL: !Ref 'MaxTTL'
           DefaultTTL: !Ref 'DefaultTTL'
-          Compress: 'true'
+          Compress: true
         DefaultRootObject: !Ref 'IndexDoc'
         Enabled: true
         Logging:
-          IncludeCookies: 'false'
+          IncludeCookies: false
           Bucket: !Join
             - ''
             - - !Ref 'BucketRootLogName'
@@ -250,9 +240,7 @@ Resources:
                   - StageMap
                   - !Ref 'StageName'
                   - RootBucketName
-                - .s3-website-
-                - !Ref 'AWS::Region'
-                - .amazonaws.com
+                - .s3.amazonaws.com
             Id: !Join
               - '-'
               - - S3
@@ -260,8 +248,14 @@ Resources:
                   - StageMap
                   - !Ref 'StageName'
                   - RootBucketName
-            CustomOriginConfig:
-              OriginProtocolPolicy: http-only
+            S3OriginConfig:
+              OriginAccessIdentity: !Join
+                - ''
+                - - origin-access-identity/cloudfront/
+                  - !FindInMap
+                    - StageMap
+                    - !Ref 'StageName'
+                    - CloudFrontOAI
         HttpVersion: http2
         PriceClass: !Ref 'CloudFrontPriceClass'
         ViewerCertificate:

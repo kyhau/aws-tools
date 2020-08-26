@@ -21,15 +21,14 @@ Parameters:
 
 Resources:
   LambdaAlarmSnsTopic:
-    Type: 'AWS::SNS::Topic'
+    Type: AWS::SNS::Topic
     Properties:
       Subscription:
         - Endpoint: !Ref LambdaAlarmEmail
           Protocol: email
 
   LambdaErrorsAlarm:
-    Type: 'AWS::CloudWatch::Alarm'
-    DependsOn: LambdaAlarmSnsTopic
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
         - !Ref LambdaAlarmSnsTopic
@@ -50,9 +49,7 @@ Resources:
       TreatMissingData: notBreaching
 
   LambdaThrottlesAlarm:
-    Type: 'AWS::CloudWatch::Alarm'
-    DependsOn:
-      - LambdaAlarmSnsTopic
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
         - !Ref LambdaAlarmSnsTopic

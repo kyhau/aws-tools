@@ -13,15 +13,14 @@ Parameters:
 
 Resources:
   ApiGatewayAlarmSnsTopic:
-    Type: 'AWS::SNS::Topic'
+    Type: AWS::SNS::Topic
     Properties:
       Subscription:
         - Endpoint: !Ref ApiGatewayAlarmEmail
           Protocol: email
 
   ApiGateway4XXErrorAlarm:
-    Type: 'AWS::CloudWatch::Alarm'
-    DependsOn: ApiGatewayAlarmSnsTopic
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
         - !Ref ApiGatewayAlarmSnsTopic
@@ -42,9 +41,7 @@ Resources:
       TreatMissingData: notBreaching
 
   ApiGateway5XXErrorAlarm:
-    Type: 'AWS::CloudWatch::Alarm'
-    DependsOn:
-      - ApiGatewayAlarmSnsTopic
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
         - !Ref ApiGatewayAlarmSnsTopic
