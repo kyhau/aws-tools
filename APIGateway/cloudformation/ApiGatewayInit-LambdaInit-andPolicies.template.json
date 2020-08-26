@@ -57,7 +57,6 @@
     },
     "ApigInvokeLambdaPermission": {
       "Type": "AWS::Lambda::Permission",
-      "DependsOn": "TodoServiceFunction",
       "Properties": {
         "Action": "lambda:invokeFunction",
         "FunctionName": {"Fn::GetAtt": ["TodoServiceFunction", "Arn"]},
@@ -155,7 +154,6 @@
 
     "TodoServiceFunction": {
       "Type": "AWS::Lambda::Function",
-      "DependsOn": "LambdaExecutionRole",
       "Properties": {
         "FunctionName": {"Ref":"LambdaFunctionName"},
         "Runtime": "python3.6",
@@ -201,7 +199,6 @@
 
     "LambdaManagedPolicy": {
       "Type": "AWS::IAM::ManagedPolicy",
-      "DependsOn": ["LambdaExecutionRole"],
       "Properties": {
         "Description": "Managed Policy for creating/updating the specified lambda function",
         "ManagedPolicyName": {"Fn::Join": ["-", [{"Ref":"ApigName"}, "LambdaExecute"]]},

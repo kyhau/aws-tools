@@ -4,11 +4,11 @@ sudo apt install graphviz
 pip install cfn-lint pydot
 pip install click
 """
-import sys
 from os import makedirs, rename, system
 from os.path import basename, dirname, exists, join
 
 import click
+
 import pydot
 
 
@@ -22,7 +22,7 @@ def run(template, output_dir):
 
     ret = system(f"cfn-lint {template} -g")
     if ret != 0:
-        sys.exit(ret)
+       raise Exception("Failed to call cfn-lint")
 
     default_dot_file = f"{template}.dot"
     dot_file = join(output_dir, basename(default_dot_file))

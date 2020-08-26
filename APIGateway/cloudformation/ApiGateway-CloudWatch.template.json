@@ -13,7 +13,6 @@
   "Resources": {
     "ApigAccount": {
       "Type" : "AWS::ApiGateway::Account",
-      "DependsOn": "ApigCloudWatchLogRole",
       "Properties" : {
         "CloudWatchRoleArn": {"Fn::GetAtt": ["ApigCloudWatchLogRole", "Arn"]}
       }

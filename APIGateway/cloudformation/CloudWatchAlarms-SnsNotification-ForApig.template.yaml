@@ -23,8 +23,6 @@ Resources:
 
   ApiGateway4XXErrorAlarm:
     Type: 'AWS::CloudWatch::Alarm'
-    DependsOn:
-      - ApiGatewayAlarmSnsTopic
     Properties:
       AlarmActions:
         - !Ref ApiGatewayAlarmSnsTopic
@@ -46,8 +44,6 @@ Resources:
 
   ApiGateway5XXErrorAlarm:
     Type: 'AWS::CloudWatch::Alarm'
-    DependsOn:
-      - ApiGatewayAlarmSnsTopic
     Properties:
       AlarmActions:
         - !Ref ApiGatewayAlarmSnsTopic
