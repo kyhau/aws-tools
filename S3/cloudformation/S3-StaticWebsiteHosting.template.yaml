@@ -26,7 +26,6 @@ Parameters:
 
 Conditions:
   LoggingEnabled: !Not [!Equals [!Ref LogBucketName, '']]
-  VersioningEnabled: !Equals [!Ref EnableVersioning, Enabled]
 
 Resources:
   S3Bucket:

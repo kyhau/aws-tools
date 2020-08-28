@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Group and Managed Policy to use Amazon Polly.
+Parameters:
+  PollyDevGroupName:
+    Description: Name of the Group for accessing Polly.
+    Type: String
+    Default: PollyDev
+Resources:
+  PollyDevGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Ref PollyDevGroupName
+  PollyAllowAllActionsExceptDenyDelete:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for accessing Polly (AllowAllActionsExceptDenyDelete)
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowAllActionsExceptDenyDelete
+            Effect: Allow
+            Action:
+              - polly:DescribeVoices
+              - polly:GetLexicon
+              - polly:PutLexicon
+              - polly:SynthesizeSpeech
+              - polly:ListLexicons
+            Resource: '*'
+          - Sid: DenyDeleteLexicon
+            Effect: Deny
+            Action:
+              - polly:DeleteLexicon
+            Resource: '*'
+      Groups:
+        - !Ref PollyDevGroup

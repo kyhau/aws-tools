@@ -50,6 +50,7 @@ Parameters:
     Type: String
     Description: Master / Admin user password.
     MinLength: '8'
+    NoEcho: true
   DBPort:
     Type: Number
     Description: DB service port.
@@ -94,9 +95,6 @@ Resources:
           Value: !Join ['-', [!Ref DBAllowedCidrBlock, DB, !Ref DBName, Subnet2]]
   PSQLDBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
-    DependsOn:
-      - PSQLSubnet1
-      - PSQLSubnet2
     Properties:
       DBSubnetGroupDescription: !Join ['', ['Subnet group (32.0/24+33.0/24) for RDS ', !Ref DBName, ' in VPC: ', !Ref DBVpc]]
       SubnetIds:
@@ -104,24 +102,21 @@ Resources:
         - !Ref PSQLSubnet2
   PSQLGisDB:
     Type: AWS::RDS::DBInstance
-    DependsOn:
-      - PSQLVPCSecGroup
-      - PSQLDBSubnetGroup
     Properties:
       AllocatedStorage: '20'
-      BackupRetentionPeriod: '30'
+      BackupRetentionPeriod: 30
       DBInstanceClass: !Ref DBClass
       DBInstanceIdentifier: !Ref DBName
       DBName: !Ref DBName
       DBSubnetGroupName: !Ref PSQLDBSubnetGroup
       EnablePerformanceInsights: true
       Engine: postgres
-      EngineVersion: 11.5
+      EngineVersion: '11.5'
       LicenseModel: postgresql-license
       MasterUsername: !Ref DBAdmin
       MasterUserPassword: !Ref DBAdminPass
       MultiAZ: true
-      PerformanceInsightsRetentionPeriod: 30
+      PerformanceInsightsRetentionPeriod: 7
       PreferredBackupWindow: '09:00-10:00'
       PreferredMaintenanceWindow: Sat:11:00-Sun:00:00
       PubliclyAccessible: false

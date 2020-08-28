@@ -16,7 +16,6 @@ Parameters:
 Resources:
   S3Bucket:
     Type: 'AWS::S3::Bucket'
-    DeletionPolicy: Retain
     Properties:
       BucketName: !Ref BucketName
       AccessControl: BucketOwnerFullControl
@@ -35,3 +34,5 @@ Resources:
       Tags:
         - Key: Billing
           Value: !Ref 'BillingTag'
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain

@@ -26,7 +26,6 @@ Conditions:
   SSEEnabled: !Not [!Equals [None, !Ref ServerSideEncryptionAlgorithm]]
   UseKms: !Equals ['aws:kms', !Ref ServerSideEncryptionAlgorithm]
   LoggingEnabled: !Not [!Equals [!Ref LogBucketName, '']]
-  VersioningEnabled: !Equals [Enabled, !Ref EnableVersioning]
 
 Resources:
   S3Bucket:
@@ -60,6 +59,7 @@ Resources:
       VersioningConfiguration:
         Status: !Ref EnableVersioning
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
 
 Outputs:
   BucketArn:

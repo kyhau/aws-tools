@@ -15,8 +15,6 @@ Resources:
 
   IamPolicyPullOrcaECR:
     Type: AWS::IAM::ManagedPolicy
-    DependsOn:
-      - IamGroup
     Properties:
       Groups:
         - !Ref 'IamGroup'

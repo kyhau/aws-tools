@@ -10,7 +10,6 @@ Parameters:
 Resources:
   TaskStoppedHandler:
     Type: AWS::Lambda::Function
-    DependsOn: TaskStoppedHandlerExecutionRole
     Properties:
       FunctionName: !Ref TaskStoppedHandlerLambdaFunctionName
       Runtime: python3.6

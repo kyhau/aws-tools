@@ -23,8 +23,6 @@ Resources:
 
   LambdaErrorsAlarm:
     Type: AWS::CloudWatch::Alarm
-    DependsOn:
-      - LambdaAlarmSnsTopic
     Properties:
       AlarmActions:
         - !Ref LambdaAlarmSnsTopic
@@ -46,8 +44,6 @@ Resources:
 
   LambdaThrottlesAlarm:
     Type: AWS::CloudWatch::Alarm
-    DependsOn:
-      - LambdaAlarmSnsTopic
     Properties:
       AlarmActions:
         - !Ref LambdaAlarmSnsTopic

@@ -45,8 +45,6 @@ Resources:
         RestrictPublicBuckets: true
 
   BucketPolicy:
-    DependsOn:
-      - S3Bucket
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref S3Bucket

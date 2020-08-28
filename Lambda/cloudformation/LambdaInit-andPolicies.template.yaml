@@ -17,7 +17,6 @@ Resources:
 
   LambdaFunction:
     Type: AWS::Lambda::Function
-    DependsOn: LambdaExecutionRole
     Properties:
       FunctionName: !Ref LambdaFunctionName
       Description: TODO
@@ -65,8 +64,6 @@ Resources:
 
   LambdaManagedPolicy:
     Type: AWS::IAM::ManagedPolicy
-    DependsOn:
-      - LambdaExecutionRole
     Properties:
       Description: Managed Policy for creating/updating the specified lambda function
       PolicyDocument:

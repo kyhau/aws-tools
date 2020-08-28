@@ -15,7 +15,6 @@ Parameters:
 Resources:
   IamRole:
     Type: AWS::IAM::Role
-    Description: 'Allow to be assumed from another account to have Read access to this account'
     Properties:
       # Create Trust Relationship access control policy
       AssumeRolePolicyDocument:

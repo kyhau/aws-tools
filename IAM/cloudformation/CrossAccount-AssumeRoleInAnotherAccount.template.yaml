@@ -39,7 +39,6 @@ Resources:
   AddUsersToNewGroup:
     Type: AWS::IAM::UserToGroupAddition
     Condition: UserNameSpecified
-    DependsOn: IamGroup
     Properties:
       GroupName: !Ref 'IamGroup'
       Users:

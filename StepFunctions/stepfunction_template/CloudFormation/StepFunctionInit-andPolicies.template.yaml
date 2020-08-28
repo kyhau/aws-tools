@@ -41,8 +41,6 @@ Resources:
                 Resource: '*'
   StateMachine:
     Type: AWS::StepFunctions::StateMachine
-    DependsOn:
-      - StatesExecutionRole
     Properties:
       StateMachineName: !Ref 'StateMachineName'
       DefinitionString: '{ "StartAt": "Hello", "States": { "Hello" : { "Type": "Pass",

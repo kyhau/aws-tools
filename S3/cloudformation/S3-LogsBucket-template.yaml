@@ -10,10 +10,6 @@ Parameters:
     Description: The name of the logs bucket to be created for logging.
     Type: String
     Default: my-app-logs
-  DeleteContentAfterDays:
-    Description: The number of days to keep the objects.
-    Type: Number
-    Default: 7
   TagBillingValue:
     Description: The value of the Billing tag to be added to the S3 bucket.
     Type: String
@@ -38,6 +34,7 @@ Resources:
         - Key: Billing
           Value: !Ref TagBillingValue
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
 
 Outputs:
   BucketName:

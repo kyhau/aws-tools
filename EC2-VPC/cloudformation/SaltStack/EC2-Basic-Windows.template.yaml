@@ -1,0 +1,119 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a EC2 instance (Windows Server).
+Parameters:
+  EC2Name:
+    Type: String
+    Description: EC2 Name.
+  AMI:
+    Description: The AMI ID of the image that the EC2 instance to be created from
+      (check and update to use the latest Windows Server).
+    Type: AWS::EC2::Image::Id
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.medium
+    ConstraintDescription: must be a valid EC2 instance type.
+  VolumeType:
+    Description: The volume type. This can be gp2 for General Purpose SSD, or standard
+      for Magnetic volume (add io1 for Provisioned IOPS SSD, st1 for Throughput Optimized
+      HDD, sc1 for Cold HDD, if needed).
+    Type: String
+    Default: standard
+    AllowedValues:
+      - standard
+      - gp2
+  VolumeSize:
+    Description: The size of the volume, in gibibytes (GiBs).
+    Type: Number
+    Default: '10'
+  DeleteOnTermination:
+    Description: Delete on termination.
+    Type: String
+    Default: false
+    AllowedValues:
+      - true
+      - false
+  InstanceRole:
+    Description: Instance IAM Role.
+    Type: String
+    Default: devops
+  SubnetID:
+    Description: Subnet ID.
+    Type: AWS::EC2::Subnet::Id
+  SecurityGroupID:
+    Description: Security Group ID.
+    Type: AWS::EC2::SecurityGroup::Id
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  AssignEIP:
+    Description: Assign Elastic IP
+    Type: String
+    Default: false
+    AllowedValues:
+      - true
+      - false
+    ConstraintDescription: must specify True or False.
+  ServiceTag:
+    Description: Value of the tag Service
+    Type: String
+    Default: vm
+    AllowedValues:
+      - vm
+      - openvpn
+    ConstraintDescription: must be a predefined Tag.
+Conditions:
+  CreateEIP: !Equals
+    - !Ref 'AssignEIP'
+    - true
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      Comment: EC2
+    Properties:
+      DisableApiTermination: false
+      InstanceInitiatedShutdownBehavior: stop
+      ImageId: !Ref 'AMI'
+      InstanceType: !Ref 'InstanceType'
+      IamInstanceProfile: !Ref 'InstanceRole'
+      KeyName: !Ref 'KeyName'
+      Monitoring: false
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          Description: Primary network interface
+          DeviceIndex: '0'
+          GroupSet:
+            - !Ref 'SecurityGroupID'
+          SubnetId: !Ref 'SubnetID'
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: !Ref 'VolumeType'
+            VolumeSize: !Ref 'VolumeSize'
+            DeleteOnTermination: !Ref 'DeleteOnTermination'
+      Tags:
+        - Key: Application
+          Value: !Ref 'AWS::StackName'
+        - Key: Name
+          Value: !Ref 'EC2Name'
+        - Key: Inspect
+          Value: ALL
+        - Key: Service
+          Value: !Ref 'ServiceTag'
+  IPAddress:
+    Type: AWS::EC2::EIP
+    Condition: CreateEIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref 'EC2Instance'
+Outputs:
+  PublicIP:
+    Condition: CreateEIP
+    Description: The public IP address of the instance.
+    Value: !GetAtt 'EC2Instance.PublicIp'
+  PrivateIP:
+    Description: The private IP address of the instance.
+    Value: !GetAtt 'EC2Instance.PrivateIp'

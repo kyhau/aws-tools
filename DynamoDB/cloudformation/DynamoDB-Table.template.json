@@ -83,7 +83,6 @@
     },
     "ConsumedReadCapacityUnitsAlarm": {
       "Type": "AWS::CloudWatch::Alarm",
-      "DependsOn": "DdbAlarmSnsTopic",
       "Properties": {
         "AlarmActions": [{"Ref": "DdbAlarmSnsTopic"}],
         "AlarmDescription": {"Fn::Join": [" ",
@@ -105,7 +104,6 @@
     },
     "ConsumedWriteCapacityUnitsAlarm": {
       "Type": "AWS::CloudWatch::Alarm",
-      "DependsOn": "DdbAlarmSnsTopic",
       "Properties": {
         "AlarmActions": [{"Ref": "DdbAlarmSnsTopic"}],
         "AlarmDescription": {"Fn::Join": [" ",
@@ -127,7 +125,6 @@
     },
     "SystemErrorsAlarm": {
       "Type": "AWS::CloudWatch::Alarm",
-      "DependsOn": "DdbAlarmSnsTopic",
       "Properties": {
         "AlarmActions": ["Ref": "DdbAlarmSnsTopic"],
         "AlarmDescription": "System errors",
@@ -147,7 +144,6 @@
     },
     "UserErrorsAlarm": {
       "Type": "AWS::CloudWatch::Alarm",
-      "DependsOn": "DdbAlarmSnsTopic",
       "Properties": {
         "AlarmActions": [{"Ref": "DdbAlarmSnsTopic"}],
         "AlarmDescription": "User errors",
