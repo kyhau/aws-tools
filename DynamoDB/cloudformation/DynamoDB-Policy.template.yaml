@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a managed policy for using and managing a DynamoDB table.
+Parameters:
+  TableName:
+    Description: Name of the DynamoDB table to grant permissions on.
+    Type: String
+  GroupName:
+    Description: optional. List Group(s) to attach DynamoBD policy
+    Type: String
+  RoleName:
+    Description: optional. List Role(s) to attach DynamoBD policy
+    Type: String
+  UserName:
+    Description: optional. List User(s) to attach DynamoBD policy
+    Type: String
+Conditions:
+  HasGroupName: !Not [!Equals [!Ref GroupName, '']]
+  HasRoleName: !Not [!Equals [!Ref RoleName, '']]
+  HasUserName: !Not [!Equals [!Ref UserName, '']]
+Resources:
+  ManagedPolicyDynamoDB:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for accessing DynamoDB (read/write/delete)
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:ListTables
+              - dynamodb:ListStreams
+            Resource: arn:aws:dynamodb:::*
+          - Effect: Allow
+            Action:
+              - dynamodb:BatchGetItem
+              - dynamodb:BatchWriteItem
+              - dynamodb:CreateTable
+              - dynamodb:DeleteItem
+              - dynamodb:DeleteTable
+              - dynamodb:DescribeLimits
+              - dynamodb:DescribeTable
+              - dynamodb:GetItem
+              - dynamodb:GetRecords
+              - dynamodb:ListTagsOfResource
+              - dynamodb:PutItem
+              - dynamodb:Query
+              - dynamodb:TagResource
+              - dynamodb:UpdateItem
+              - dynamodb:UpdateTable
+              - dynamodb:UntagResource
+            Resource: !Sub 'arn:aws:dynamodb:::${TableName}'
+      Groups: !If
+        - HasGroupName
+        - - !Ref 'GroupName'
+        - !Ref 'AWS::NoValue'
+      Roles: !If
+        - HasRoleName
+        - - !Ref 'RoleName'
+        - !Ref 'AWS::NoValue'
+      Users: !If
+        - HasUserName
+        - - !Ref 'UserName'
+        - !Ref 'AWS::NoValue'

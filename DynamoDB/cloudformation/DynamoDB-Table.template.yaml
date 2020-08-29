@@ -1,0 +1,215 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create basic DynamoDB Table with On-Demand Read/Write Capacities and
+  some CloudWatch Alarms
+Parameters:
+  AlertHighConsumedReadCapacityUnits:
+    Type: Number
+    Description: Send SNS email notification if the given threshold of ConsumedReadCapacityUnits
+      is reached; e.g. 100 units/Period => 100 * Period = 6000
+  AlertHighConsumedWriteCapacityUnits:
+    Type: Number
+    Description: Send SNS email notification if the given threshold of ConsumedWriteCapacityUnits
+      is reached; e.g. 20 units/Period => 20 * Period = 1200
+  DynamoDBAlarmEmail:
+    Type: String
+    Description: Email address to notify if there are any DDB operational issues
+  DynamoDBAlarmNamePrefix:
+    Type: String
+    Description: Prefix of the DDB CloudWatch Alarm Name
+  PointInTimeRecoveryEnabled:
+    Description: Enables PointInTimeRecovery.
+    Type: String
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'false'
+  PrimaryKeyAttributeName:
+    Description: The name of an attribute. Attribute names can be 1 – 255 characters
+      long and have no character restrictions.
+    Type: String
+  PrimaryKeyAttributeType:
+    Description: The data type for the attribute. You can specify S for string data,
+      N for numeric data, or B for binary data.
+    Type: String
+    AllowedValues:
+      - S
+      - N
+      - B
+    Default: S
+  PrimaryKeyType:
+    Description: Represents the attribute data, consisting of the data type and the
+      attribute value itself. You can specify HASH or RANGE.
+    Type: String
+    AllowedValues:
+      - HASH
+      - RANGE
+    Default: HASH
+  TableName:
+    Description: A name for the table. If you don't specify a name, AWS CloudFormation
+      generates a unique physical ID and uses that ID for the table name.
+    Type: String
+    Default: ''
+Resources:
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref 'TableName'
+      AttributeDefinitions:
+        - AttributeName: !Ref 'PrimaryKeyAttributeName'
+          AttributeType: !Ref 'PrimaryKeyAttributeType'
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: !Ref 'PrimaryKeyAttributeName'
+          KeyType: !Ref 'PrimaryKeyType'
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !Ref 'PointInTimeRecoveryEnabled'
+      Tags:
+        - Key: Billing
+          Value: !Ref 'TableName'
+  DdbAlarmSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint: !Ref 'DynamoDBAlarmEmail'
+          Protocol: email
+  ConsumedReadCapacityUnitsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref 'DdbAlarmSnsTopic'
+      AlarmDescription: !Join
+        - ' '
+        - - ConsumedReadCapacityUnits is higher than
+          - !Ref 'AlertHighConsumedReadCapacityUnits'
+          - Units
+      AlarmName: !Join
+        - /
+        - - !Ref 'DynamoDBAlarmNamePrefix'
+          - !Ref 'TableName'
+          - ConsumedReadCapacityUnits
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: TableName
+          Value: !Ref 'TableName'
+      EvaluationPeriods: 1
+      MetricName: ConsumedReadCapacityUnits
+      Namespace: AWS/DynamoDB
+      Period: 60
+      Statistic: Sum
+      Threshold: !Ref 'AlertHighConsumedReadCapacityUnits'
+      TreatMissingData: notBreaching
+  ConsumedWriteCapacityUnitsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref 'DdbAlarmSnsTopic'
+      AlarmDescription: !Join
+        - ' '
+        - - ConsumedWriteCapacityUnits is higher than
+          - !Ref 'AlertHighConsumedWriteCapacityUnits'
+          - Units
+      AlarmName: !Join
+        - /
+        - - !Ref 'DynamoDBAlarmNamePrefix'
+          - !Ref 'TableName'
+          - ConsumedWriteCapacityUnits
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: TableName
+          Value: !Ref 'TableName'
+      EvaluationPeriods: 1
+      MetricName: ConsumedWriteCapacityUnits
+      Namespace: AWS/DynamoDB
+      Period: 60
+      Statistic: Sum
+      Threshold: !Ref 'AlertHighConsumedWriteCapacityUnits'
+      TreatMissingData: notBreaching
+  SystemErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref 'DdbAlarmSnsTopic'
+      AlarmDescription: System errors
+      AlarmName: !Join
+        - /
+        - - !Ref 'DynamoDBAlarmNamePrefix'
+          - !Ref 'TableName'
+          - SystemErrors
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: TableName
+          Value: !Ref 'TableName'
+      EvaluationPeriods: 1
+      MetricName: SystemErrors
+      Namespace: AWS/DynamoDB
+      Period: 60
+      Statistic: Sum
+      Threshold: 1
+      TreatMissingData: notBreaching
+  UserErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref 'DdbAlarmSnsTopic'
+      AlarmDescription: User errors
+      AlarmName: !Join
+        - /
+        - - !Ref 'DynamoDBAlarmNamePrefix'
+          - !Ref 'TableName'
+          - UserErrors
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: TableName
+          Value: !Ref 'TableName'
+      EvaluationPeriods: 1
+      MetricName: UserErrors
+      Namespace: AWS/DynamoDB
+      Period: 60
+      Statistic: Sum
+      Threshold: 1
+      TreatMissingData: notBreaching
+  IamGroupRWDPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Join
+        - '-'
+        - - !Ref 'TableName'
+          - RWD
+      Description: Managed Policy for accessing DynamoDB (read/write/delete)
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:ListTables
+              - dynamodb:ListStreams
+              - dynamodb:BatchGetItem
+              - dynamodb:BatchWriteItem
+              - dynamodb:DeleteItem
+              - dynamodb:DescribeLimits
+              - dynamodb:DescribeTable
+              - dynamodb:GetItem
+              - dynamodb:GetRecords
+              - dynamodb:PutItem
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:UpdateItem
+              - dynamodb:UpdateTable
+            Resource:
+              - !Join
+                - ''
+                - - 'arn:aws:dynamodb:'
+                  - !Ref 'AWS::Region'
+                  - ':'
+                  - !Ref 'AWS::AccountId'
+                  - :table/
+                  - !Ref 'TableName'
+      Users: []
+Outputs:
+  DynamoDBTableName:
+    Description: Table name
+    Value: !Ref 'DynamoDBTable'
+  DynamoDBRWDPolicyName:
+    Description: Name of Managed Policy allowing Read, Write and Delete access to
+      DynamoDB tables
+    Value: !Ref 'IamGroupRWDPolicy'
