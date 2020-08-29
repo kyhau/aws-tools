@@ -2,6 +2,9 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: CloudWatch monitoring config and custom metrics (Amazon Linux 2)
 
 Parameters:
+  AMI:
+    Description: The AMI ID of the image that the EC2 instance to be created from
+    Type: AWS::EC2::Image::Id
   AppName:
     Description: Application name
     Type: String
@@ -18,7 +21,7 @@ Resources:
       Type: String
       Value:
         Fn::Sub:
-          - >
+          - |
             {
               "logs": {
                 "logs_collected": {
@@ -90,6 +93,7 @@ Resources:
                 }
               }
             }
+          - { AppName: !Ref AppName }
 
   Instance:
     Type: AWS::EC2::Instance
@@ -132,11 +136,11 @@ Resources:
         configSets:
           EnvironmentSetup:
             - setupCfnHup
-
     Properties:
-      UserData: !Base64
-        Fn::Sub:
-          - |
+      ImageId: !Ref 'AMI'
+      UserData:
+        Fn::Base64:
+          !Sub |
             #!/bin/bash -x
             ip_addr=`curl -sL http://169.254.169.254/latest/meta-data/local-ipv4`
             yum update -y

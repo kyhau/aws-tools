@@ -9,7 +9,6 @@ Parameters:
     Description: The AMI ID of the image that the EC2 instance to be created from
       (check latest Ubuntu AMI image).
     Type: AWS::EC2::Image::Id
-    Default: ami-4e686b2d
   InstanceType:
     Description: EC2 instance type
     Type: String

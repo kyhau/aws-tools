@@ -15,7 +15,6 @@ Resources:
 
   CognitoAdminPolicy:
     Type: AWS::IAM::ManagedPolicy
-    DependsOn: CognitoAdmins
     Properties:
       Description: Managed Policy for accessing Cognito
       PolicyDocument:

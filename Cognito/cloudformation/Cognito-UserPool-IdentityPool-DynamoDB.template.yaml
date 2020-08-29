@@ -84,8 +84,6 @@ Resources:
 
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
-    DependsOn:
-      - UserPool
     Properties:
       ClientName: !Ref AppClientName
       UserPoolId: !Ref UserPool
@@ -94,9 +92,6 @@ Resources:
 
   IdentityPool:
     Type: AWS::Cognito::IdentityPool
-    DependsOn:
-      - UserPool
-      - UserPoolClient
     Properties:
       IdentityPoolName: !Ref IdentityPoolName
       AllowUnauthenticatedIdentities: false
@@ -107,7 +102,6 @@ Resources:
   AuthRole:
     Type: AWS::IAM::Role
     DependsOn:
-      - IdentityPool
       - DynamoDBTable
     Properties:
       RoleName: !Sub "${IdentityPoolName}-AuthRole"
@@ -150,8 +144,6 @@ Resources:
 
   UnauthRole:
     Type: AWS::IAM::Role
-    DependsOn:
-      - IdentityPool
     Properties:
       RoleName: !Sub "${IdentityPoolName}-UnauthRole"
       AssumeRolePolicyDocument:
@@ -179,8 +171,6 @@ Resources:
 
   IdentityPoolRoleAttachment:
     Type: AWS::Cognito::IdentityPoolRoleAttachment
-    DependsOn:
-      - IdentityPool
     Properties:
       IdentityPoolId: !Ref IdentityPool
       Roles:
