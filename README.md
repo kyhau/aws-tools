@@ -198,3 +198,4 @@ pip install -r requirements.txt
 - [Serverless Security](https://github.com/aws-samples/aws-serverless-security-workshop)
 - [Spot Instances Workshops](https://ec2spotworkshops.com/)
 - [Spot Instances with EKS](https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks.html)
+- [VPC Endpoint Workshop](https://www.vpcendpointworkshop.com/)
