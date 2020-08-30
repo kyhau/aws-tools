@@ -202,11 +202,12 @@ pip install -r requirements-cli.txt
 ## Workshops
 
 - [Amplify Days ANZ](https://amplifydays.awsanz.com/)
-- [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop)
+- [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop/)
 - [CDK](https://cdkworkshop.com/)
 - [CI/CD for Serverless Applications](https://cicd.serverlessworkshops.io/)
-- [Redshift Immersion](https://redshift-immersion.workshop.aws)
-- [Serverless Security](https://github.com/aws-samples/aws-serverless-security-workshop)
+- [One Observability Demo](https://observability.workshop.aws/)
+- [Redshift Immersion](https://redshift-immersion.workshop.aws/)
+- [Serverless Security](https://github.com/aws-samples/aws-serverless-security-workshop/)
 - [Spot Instances Workshops](https://ec2spotworkshops.com/)
 - [Spot Instances with EKS](https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks.html)
 - [VPC Endpoint Workshop](https://www.vpcendpointworkshop.com/)
