@@ -1,7 +1,8 @@
-from boto3.session import Session
-from botocore.exceptions import ClientError
 import logging
 from time import time
+
+from boto3.session import Session
+from botocore.exceptions import ClientError
 
 
 class AwsApiHelper():
@@ -10,7 +11,7 @@ class AwsApiHelper():
         "UnauthorizedOperation", "UnrecognizedClientException"
     ]
     CRED_ERRORS = ["ExpiredToken", "InvalidClientTokenId"]
-    
+
     def __init__(self):
         """Update the root logger to get messages at DEBUG and above"""
         logging.getLogger("botocore").setLevel(logging.CRITICAL)
@@ -48,7 +49,7 @@ class AwsApiHelper():
     def process_request(self, session, account_id, region, kwargs):
         """Process request for a region of an account"""
         pass
-    
+
     def post_process(self):
         pass
 

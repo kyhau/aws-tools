@@ -4,7 +4,7 @@ from os.path import abspath, dirname
 
 
 def init_logging(
-    name=PACKAGE_NAME,
+    name="default",
     log_level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     log_file=None

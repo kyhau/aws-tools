@@ -3,7 +3,7 @@ import logging
 import click
 
 import docker
-from arki_common import init_logging
+from helper.logger import init_logging
 
 init_logging()
 client = docker.from_env()

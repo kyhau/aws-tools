@@ -1,26 +1,26 @@
 """
 Define fixtures and prepare settings and environments
 """
-from datetime import datetime
 import getpass
 import logging
-from os.path import exists, join
-from os import makedirs
-import pytest
-from shutil import rmtree
 import socket
 import tempfile
+from datetime import datetime
+from os import makedirs
+from os.path import exists, join
+from shutil import rmtree
 
-from arki_common import init_logging
+import pytest
+from helper.logger import init_logging
 
 init_logging(log_level=logging.DEBUG)
 
 
 @pytest.fixture(scope="session")
 def unittest_id():
-    """Return arki-(username)-(hostname) as the id of the unit tests
+    """Return test-(username)-(hostname) as the id of the unit tests
     """
-    return f"arki-{getpass.getuser()}-{socket.gethostname()}"
+    return f"test-{getpass.getuser()}-{socket.gethostname()}"
 
 
 @pytest.fixture(scope="session")

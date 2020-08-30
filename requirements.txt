@@ -41,11 +41,11 @@ pytz
 #black
 #faker
 #pipdeptree
+#pycognito              # replace warrant
 #pyyaml~=5.1
 #pypiwin32==220
 #toml~=0.10
 #typer~=0.2             # click alternative
-#warrant~=0.6
 
 ################################################################################
 # Kafka
