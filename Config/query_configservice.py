@@ -2,7 +2,7 @@ import click
 import logging
 from os.path import basename, exists
 from shutil import rmtree
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 

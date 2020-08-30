@@ -3,7 +3,7 @@ Output: account_id, region, instance_id, private_ip, public_ip
 """
 import click
 import logging
-from arki_common.aws import AwsApiHelper, get_tag_value
+from helper.aws import AwsApiHelper, get_tag_value
 
 logging.getLogger().setLevel(logging.DEBUG)
 

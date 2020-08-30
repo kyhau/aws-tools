@@ -1,4 +1,4 @@
--e _lib/.
+-e _common/.
 
 #virtualenv~=16.4
 pip

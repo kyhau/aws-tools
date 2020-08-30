@@ -14,7 +14,7 @@ Output:
 import click
 from collections import defaultdict
 import logging
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 

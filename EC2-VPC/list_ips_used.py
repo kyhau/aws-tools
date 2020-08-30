@@ -10,8 +10,8 @@ PrivateIpAddress, PrivateDnsName, IsPrimary, PublicIp, PublicDnsName, InstanceId
 from botocore.exceptions import ClientError
 import click
 import logging
-from arki_common.aws import AwsApiHelper, get_tag_value
-from arki_common.file_io import write_csv_file
+from helper.aws import AwsApiHelper, get_tag_value
+from helper.file_io import write_csv_file
 
 logging.getLogger().setLevel(logging.DEBUG)
 

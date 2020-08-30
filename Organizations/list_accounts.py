@@ -15,7 +15,7 @@ import click
 from collections import defaultdict
 import logging
 from time import time
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 

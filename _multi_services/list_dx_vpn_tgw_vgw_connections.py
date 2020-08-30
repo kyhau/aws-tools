@@ -6,7 +6,7 @@ import json
 import logging
 from os import makedirs
 from os.path import join
-from arki_common.aws import AwsApiHelper, get_tag_value
+from helper.aws import AwsApiHelper, get_tag_value
 
 logging.getLogger().setLevel(logging.DEBUG)
 

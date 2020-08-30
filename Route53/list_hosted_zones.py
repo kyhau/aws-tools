@@ -3,7 +3,7 @@ List/find hosted zones and vpcs
 """
 import click
 import logging
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 

@@ -5,8 +5,8 @@ from botocore.exceptions import ProfileNotFound
 import click
 from datetime import datetime, timedelta
 import logging
-from arki_common.aws import AwsApiHelper
-from arki_common.ser import dump_json
+from helper.aws import AwsApiHelper
+from helper.ser import dump_json
 
 logging.getLogger().setLevel(logging.DEBUG)
 

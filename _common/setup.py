@@ -1,13 +1,14 @@
-from setuptools import setup, find_packages
 import os
+
+from setuptools import find_packages, setup
 
 base_dir = os.path.dirname(__file__)
 __author__ = "Kay Hau"
 __email__ = "virtualda@gmail.com"
-__title__ = "arki_common"
+__title__ = "helper"
 __version__ = "0.1.0.dev0"
 __summary__ = "This package includes some simple scripts for setting up local development environment."
-__uri__ = "https://github.com/kyhau/arki"
+__uri__ = "https://github.com/kyhau/aws-tools/"
 
 __requirements__ = [
     "boto3~=1.12",
@@ -19,10 +20,9 @@ __requirements__ = [
 
 __entry_points__ = {
     "console_scripts": [
-        "arki = arki:main",
-        "dockerc = arki.docker:find_non_running_containers",
-        "dockeri = arki.docker:find_dangling_images",
-        "env_store = arki.env_variable_store:main",
+        "helper = helper:main",
+        "dockerc = helper.docker:find_non_running_containers",
+        "dockeri = helper.docker:find_dangling_images",
     ]
 }
 

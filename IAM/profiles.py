@@ -3,8 +3,8 @@ import logging
 from os.path import expanduser, join
 import sys
 
-from arki_common.system import print_export_env
-from arki_common import init_logging
+from helper.system import print_export_env
+from helper import init_logging
 
 
 AWS_CONFIG_FILE = join(join(expanduser("~"), ".aws"), "config")

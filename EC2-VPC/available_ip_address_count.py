@@ -6,7 +6,7 @@ import logging
 
 import click
 
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 

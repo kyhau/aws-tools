@@ -1,10 +1,10 @@
-# arki
+# aws-tools
 
 Some tools and sample code I created for building with AWS.
 
-[![githubactions](https://github.com/kyhau/arki/workflows/Build-Test/badge.svg)](https://github.com/kyhau/arki/actions)
-[![travisci](https://travis-ci.org/kyhau/arki.svg?branch=master)](https://travis-ci.org/kyhau/arki)
-[![codecov](https://codecov.io/gh/kyhau/arki/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/arki)
+[![githubactions](https://github.com/kyhau/aws-tools/workflows/Build-Test/badge.svg)](https://github.com/kyhau/aws-tools/actions)
+[![travisci](https://travis-ci.org/kyhau/aws-tools.svg?branch=master)](https://travis-ci.org/kyhau/aws-tools)
+[![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
 
 ```
 # Create virtual env and install the required packages

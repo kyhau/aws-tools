@@ -4,7 +4,7 @@ Return tags of a supported service.
 from abc import ABC
 import click
 import logging
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 

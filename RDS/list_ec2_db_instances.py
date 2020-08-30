@@ -3,7 +3,7 @@ Identify databases hosted in EC2 instances, by inspecting security groups for co
 """
 import click
 import logging
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 

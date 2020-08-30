@@ -1,3 +1,8 @@
+0.3.0 - 2020-08-30
+==================
+- Renamed `arki` to `aws-tools`.
+- Renamed `arki_common` to `helper`.
+
 0.2.0 - 2019-xx-xx
 ==================
 

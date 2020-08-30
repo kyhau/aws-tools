@@ -5,7 +5,7 @@ See also Config/list_resources_with_configservice.py
 """
 import click
 import logging
-from arki_common.aws import AwsApiHelper
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.CRITICAL)
 

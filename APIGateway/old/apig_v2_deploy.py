@@ -10,11 +10,11 @@ import boto3
 import click
 import logging
 from os.path import basename
-from arki_common.configs import (
+from helper.configs import (
     init_wrapper,
     default_config_file_path,
 )
-from arki_common.utils import check_response
+from helper.utils import check_response
 
 APP_NAME = basename(__file__).split(".")[0]
 
@@ -106,7 +106,7 @@ def process(*args, **kwargs):
         if kwargs.get("is_init"):
             return 0
         
-        settings = kwargs.get("_arki_settings")
+        settings = kwargs.get("_settings")
         deploy = kwargs.get("deploy")
         description = kwargs.get("description")
 
