@@ -26,8 +26,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip virtualenv setuptools
-        pip install -r _lib/requirements-build.txt
+        pip install -r _common/requirements-build.txt
     - name: Test with tox
       run: |
-        cd _lib
+        cd _common
         tox -r

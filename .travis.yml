@@ -20,9 +20,9 @@ before_install:
 
 # command to install dependencies
 install:
-  - pip install -r _lib/requirements-build.txt
+  - pip install -r _common/requirements-build.txt
 
 # command to run tests
 script:
-  - cd _lib
+  - cd _common
   - tox -r
