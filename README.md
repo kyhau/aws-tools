@@ -2,9 +2,13 @@
 
 Some tools and sample code I created for building with AWS.
 
+Most of the Python scripts support multi accounts and regions.
+
 [![githubactions](https://github.com/kyhau/aws-tools/workflows/Build-Test/badge.svg)](https://github.com/kyhau/aws-tools/actions)
 [![travisci](https://travis-ci.org/kyhau/aws-tools.svg?branch=master)](https://travis-ci.org/kyhau/aws-tools)
 [![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
+
+## For running Python scripts
 
 ```
 # Create virtual env and install the required packages
@@ -14,7 +18,14 @@ virtualenv env -p python3.8
 pip install -r requirements.txt
 ```
 
-# Categories
+## For running shell scripts
+
+```
+pip install -r requirements-cli.txt
+```
+
+---
+## Useful Links
 - [AWS SDKs and CLIs](#aws-sdks-and-clis)
   - [CloudFormation](#cloudformation)
   - [ECS, EKS, container-based development](#ecs-efs-container-based-development)
