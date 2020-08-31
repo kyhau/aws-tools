@@ -64,14 +64,18 @@ def get_subnets(session, regions):
     return subnets
 
 
-def get_workspaces(session, regions, subnets, account_id, detailed):
+def get_workspaces(session, regions, subnets, account_id, detailed, workspace_id):
     workspaces = []
+
+    params = {} if workspace_id is None else {"WorkspaceIds": [workspace_id]}
 
     for region in regions:
         print(f"Checking {account_id} {region}...")
+
         client = session.client("workspaces", region_name=region)
         cnt = 0
-        for response in client.get_paginator("describe_workspaces").paginate():
+
+        for response in client.get_paginator("describe_workspaces").paginate(**params):
             for w in response["Workspaces"]:
                 lastlogon = client.describe_workspaces_connection_status(WorkspaceIds=[w["WorkspaceId"]])
 
@@ -105,6 +109,9 @@ def get_workspaces(session, regions, subnets, account_id, detailed):
                     print(data)
                 cnt += 1
 
+            if workspace_id:
+                return workspaces
+
         print(f"Total: {cnt}")
 
     return workspaces
@@ -112,9 +119,10 @@ def get_workspaces(session, regions, subnets, account_id, detailed):
 
 @click.command()
 @click.option("--detailed", "-d", show_default=True, is_flag=True)
+@click.option("--workspaceid", "-w", help="WorkSpace ID")
 @click.option("--profile", "-p", help="AWS profile name", default="default")
 @click.option("--region", "-r", help="AWS Region. All regions if not specified")
-def main(detailed, profile, region):
+def main(detailed, workspaceid, profile, region):
     session = Session(profile_name=profile)
 
     account_id = session.client("sts").get_caller_identity()["Account"]
@@ -127,10 +135,13 @@ def main(detailed, profile, region):
             write_csv_file("subnets.csv", list(subnets.values()))
 
     regions = session.get_available_regions("workspaces") if region is None else [region]
-    workspaces = get_workspaces(session, regions, subnets, account_id, detailed)
+    workspaces = get_workspaces(session, regions, subnets, account_id, detailed, workspaceid)
     if workspaces:
-        write_json_file("workspaces.json", workspaces)
-        print(f"Total: {len(workspaces)}")
+        if workspaceid:
+            print(json.dumps(workspaces, indent=2, sort_keys=True, default=str))
+        else:
+            write_json_file("workspaces.json", workspaces)
+            print(f"Total: {len(workspaces)}")
 
 
 if __name__ == "__main__":
