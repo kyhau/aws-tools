@@ -59,6 +59,8 @@ alias aws-iam-lookup-identities='python ${REPO_HOME}/Security/lookup_iam_identit
 alias aws-inspector-list-results='python ${REPO_HOME}/Inspector/inspector_helper.py'
 
 alias aws-ip-lookup='python ${REPO_HOME}/EC2-VPC/find_subnet_for_ip.py'
+alias aws-ip-ranges='curl https://ip-ranges.amazonaws.com/ip-ranges.json'
+alias aws-ip-ranges-link='echo https://ip-ranges.amazonaws.com/ip-ranges.json'
 
 alias aws-lambda-add-permission-for-apig='python ${REPO_HOME}/APIGateway/lambda_permissions_for_apig.py'
 alias aws-lambda-deploy='python ${REPO_HOME}/Lambda/deploy_lambda.py'
