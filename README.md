@@ -202,6 +202,7 @@ pip install -r requirements-cli.txt
 ## Workshops
 
 - [Amplify Days ANZ](https://amplifydays.awsanz.com/)
+- [App Mesh Workshop](https://www.appmeshworkshop.com/)
 - [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop/)
 - [CDK](https://cdkworkshop.com/)
 - [CI/CD for Serverless Applications](https://cicd.serverlessworkshops.io/)
