@@ -1,0 +1,112 @@
+# yamllint disable rule:line-length
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create a Lambda function to invoke a Lambda function attached to a VPC in another account.
+
+Parameters:
+  FunctionName:
+    Description: Name of your lambda function
+    Type: String
+  LambdaInvokeArn:
+    Description: ARN of the Lambda function in another account to be invoked
+    Type: String
+    Default: arn:aws:lambda:ap-southeast-2:123456789012:function:K-TestCrossAccountAccess
+  LambdaInvokeRoleArn:
+    Description: ARN of the Role of another account to assume to invoke this Lambda function
+    Type: String
+    Default: arn:aws:iam::123456789012:role/K-TestCrossAccountAccess-InvokeRole
+  LogRetention:
+    Description: Days to keep application logs
+    Type: Number
+    Default: 1
+
+Resources:
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-${FunctionName}-ExecutionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-${FunctionName}-ExecutionRolePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: sts:AssumeRole
+                Resource: !Ref LambdaInvokeRoleArn
+              - Effect: Allow
+                Action:
+                  - xray:Put*
+                Resource: "*"
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-${FunctionName}
+      Handler: index.lambda_handler
+      Runtime: python3.7
+      MemorySize: 1024
+      Timeout: 900
+      Code:
+        ZipFile: |
+          import json
+          import os
+          import boto3
+          from boto3.session import Session
+
+
+          function_arn = os.environ.get("InvokeFunction")
+          role_arn = os.environ.get("InvokeRole")
+
+          def get_session_for_account():
+              ret = boto3.client("sts").assume_role(RoleArn=role_arn, RoleSessionName="test_cross_account_lambda")
+              cred = {
+                  "aws_access_key_id": ret["Credentials"]["AccessKeyId"],
+                  "aws_secret_access_key": ret["Credentials"]["SecretAccessKey"],
+                  "aws_session_token": ret["Credentials"]["SessionToken"]
+              }
+              return Session(**cred).client("lambda")
+
+
+          def invoke_lambda(lambda_client, payload_json):
+              """Invoke a lambda synchronously"""
+
+              payload_bytes_arr = bytes(json.dumps(payload_json), encoding="utf8")
+              resp = lambda_client.invoke(
+                  FunctionName=function_arn,
+                  Payload=payload_bytes_arr
+              )
+              logging.info(resp)
+              succeeded = resp["ResponseMetadata"]["HTTPStatusCode"] in [200, 201, 202]
+              if succeeded:
+                  return json.loads(resp["Payload"].read().decode("utf-8"))["body"]
+
+
+          def lambda_handler(event, context):
+              lambda_client = get_session_for_account()
+              payload = {"hello": "lambda1"}
+
+              result = invoke_lambda(lambda_client, payload)
+              print(result)
+              return result
+
+      Role: !GetAtt LambdaRole.Arn
+      Environment:
+        Variables:
+          InvokeFunction: !Ref LambdaInvokeArn
+          InvokeRole: !Ref LambdaInvokeRoleArn
+      TracingConfig:
+        Mode: Active
+
+  LogGroupLambdaFunction:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join ["/", ["/aws/lambda", !Ref LambdaFunction]]
+      RetentionInDays: !Ref LogRetention

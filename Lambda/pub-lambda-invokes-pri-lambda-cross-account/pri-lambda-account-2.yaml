@@ -1,0 +1,115 @@
+# yamllint disable rule:line-length
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create a Lambda attached to a VPC and allow being invoked from another account
+
+Parameters:
+  FunctionName:
+    Description: Name of your lambda function
+    Type: String
+    Default: K-TestCrossAccountAccess
+  LambdaInvokeRoleName:
+    Description: Name of the Role for another account to assume to invoke this Lambda function.
+    Type: String
+    Default: K-TestCrossAccountAccess-InvokeRole
+  LogRetention:
+    Description: Days to keep application logs
+    Type: Number
+    Default: 1
+  OtherAccountId:
+    Description: The account ID of another account invoking this Lambda function.
+    Type: String
+  SubnetIds:
+    Description: The list of subnet IDs in your VPC to be attached to the Lambda function.
+    Type: List<AWS::EC2::Subnet::Id>
+  VpcId:
+    Description: The ID of the VPC that your Lambda function to be attached to.
+    Type: String
+
+Resources:
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${FunctionName}-ExecutionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: !Sub ${FunctionName}-ExecutionRolePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:CreateNetworkInterface
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:DetachNetworkInterface
+                  - ec2:DeleteNetworkInterface
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - xray:Put*
+                Resource: "*"
+
+  LambdaFunctionSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow assume role from cross account
+      VpcId: !Ref VpcId
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Ref FunctionName
+      Handler: index.lambda_handler
+      Runtime: python3.7
+      MemorySize: 1024
+      Timeout: 900
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              print(event)
+              return {
+                  "body": {"hello": "lamdab2"},
+                  "statusCode": 200,
+              }
+      Role: !GetAtt LambdaRole.Arn
+      TracingConfig:
+        Mode: Active
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaFunctionSG
+        SubnetIds: !Ref SubnetIds
+
+  LogGroupLambdaFunction:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join ["/", ["/aws/lambda", !Ref LambdaFunction]]
+      RetentionInDays: !Ref LogRetention
+
+  LambdaInvokeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref LambdaInvokeRoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${OtherAccountId}:root"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: !Sub ${LambdaInvokeRoleName}Policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - lambda:InvokeFunction
+                Resource: !GetAtt LambdaFunction.Arn
+
