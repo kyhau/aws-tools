@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a Managed Policy for CI to update and deploy the Lambda function.
+
+Parameters:
+  FunctionArn:
+    Description: ARN of the Lambda function.
+    Type: String
+  FunctionExecutionRoleArn:
+    Description: ARN of the Lambda function execution role.
+    Type: String
+
+Resources:
+  DeployPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for creating/updating the specified lambda function
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:GetFunction
+              - lambda:CreateFunction
+              - lambda:UpdateFunctionCode
+              - lambda:UpdateFunctionConfiguration
+              - lambda:CreateAlias
+              - lambda:DeleteAlias
+              - lambda:GetAlias
+              - lambda:UpdateAlias
+              - lambda:PublishVersion
+              - lambda:InvokeFunction
+            Resource:
+              - !Ref FunctionArn
+          - Effect: Allow
+            Action:
+              - iam:Passrole
+            Resource: !Ref FunctionExecutionRoleArn
+
+Outputs:
+  DeployManagedPolicy:
+    Description: The Managed Policy created
+    Value: !Ref DeployPolicy

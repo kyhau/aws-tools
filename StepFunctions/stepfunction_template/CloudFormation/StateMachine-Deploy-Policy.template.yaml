@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a Managed Policy for CI to update and deploy the State Machine.
+
+Parameters:
+  FunctionArn:
+    Description: ARN of the Lambda Function.
+    Type: String
+  StateMachineArn:
+    Description: ARN of the State Machine.
+    Type: String
+
+Resources:
+  DeployPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for creating/updating the specified State Machine
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - states:StartExecution
+              - states:DescribeExecution
+              - states:UpdateStateMachine
+            Resource:
+              - !Ref StateMachineArn
+              - !Sub "${StateMachineArn}:*"
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+            Resource:
+              - !Ref FunctionArn
+
+Outputs:
+  DeployManagedPolicy:
+    Description: The Managed Policy created
+    Value: !Ref DeployPolicy

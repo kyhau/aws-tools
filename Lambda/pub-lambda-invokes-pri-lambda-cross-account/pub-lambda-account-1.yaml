@@ -1,10 +1,11 @@
 # yamllint disable rule:line-length
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Create a Lambda function to invoke a Lambda function attached to a VPC in another account.
+Description: >-
+  Create a Lambda function to invoke a Lambda function attached to a VPC in another account.
 
 Parameters:
   FunctionName:
-    Description: Name of your lambda function
+    Description: Name of your Lambda function
     Type: String
   LambdaInvokeArn:
     Description: ARN of the Lambda function in another account to be invoked
@@ -20,7 +21,7 @@ Parameters:
     Default: 1
 
 Resources:
-  LambdaRole:
+  LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: !Sub ${AWS::StackName}-${FunctionName}-ExecutionRole
@@ -49,11 +50,6 @@ Resources:
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-${FunctionName}
-      Handler: index.lambda_handler
-      Runtime: python3.7
-      MemorySize: 1024
-      Timeout: 900
       Code:
         ZipFile: |
           import json
@@ -97,16 +93,21 @@ Resources:
               print(result)
               return result
 
-      Role: !GetAtt LambdaRole.Arn
       Environment:
         Variables:
           InvokeFunction: !Ref LambdaInvokeArn
           InvokeRole: !Ref LambdaInvokeRoleArn
+      FunctionName: !Sub ${AWS::StackName}-${FunctionName}
+      Handler: index.lambda_handler
+      MemorySize: 1024
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 900
       TracingConfig:
         Mode: Active
 
-  LogGroupLambdaFunction:
+  LambdaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Join ["/", ["/aws/lambda", !Ref LambdaFunction]]
+      LogGroupName: !Sub /aws/lambda/${LambdaFunction}
       RetentionInDays: !Ref LogRetention

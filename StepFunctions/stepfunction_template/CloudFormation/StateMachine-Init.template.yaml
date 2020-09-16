@@ -1,0 +1,156 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Step Function and Lambda function with dummy content.
+
+Parameters:
+  FunctionName:
+    Description: Name of the Lambda function to be created or updated.
+    Type: String
+  LogRetention:
+    Description: Days to keep application logs
+    Type: Number
+    Default: 1
+  StateMachineName:
+    Description: Name of the State Machine to create.
+    Type: String
+    Default: MyService-StateMachine
+
+Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      RoleName: !Sub ${FunctionName}-ExecutionRole
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              # This function will be updated through CI/CD
+              return "Hello from Lambda!"
+      FunctionName: !Ref FunctionName
+      Handler: index.lambda_handler
+      MemorySize: 1024
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 900
+      TracingConfig:
+        Mode: Active
+
+  LambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${LambdaFunction}
+      RetentionInDays: !Ref LogRetention
+
+  StateMachineExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - !Sub states.${AWS::Region}.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-${StateMachineName}-ExecutionRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:ListFunctions
+                Resource:
+                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${FunctionName}*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogDelivery
+                  - logs:GetLogDelivery
+                  - logs:UpdateLogDelivery
+                  - logs:DeleteLogDelivery
+                  - logs:ListLogDeliveries
+                  - logs:PutResourcePolicy
+                  - logs:DescribeResourcePolicies
+                  - logs:DescribeLogGroups
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - xray:Put*
+                Resource: "*"
+      RoleName: !Sub ${AWS::StackName}-${StateMachineName}-ExecuteRole
+
+  StateMachineLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/stepfunction/${StateMachineName}
+      RetentionInDays: !Ref LogRetention
+
+  StateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      DefinitionString:
+        !Sub
+          - |-
+            {
+              "Comment": "A Hello World example using an AWS Lambda function",
+              "StartAt": "HelloWorld",
+              "States": {
+                "HelloWorld": {
+                  "Type": "Task",
+                  "Resource": "${lambdaArn}",
+                  "End": true
+                }
+              }
+            }
+          - {lambdaArn: !GetAtt LambdaFunction.Arn}
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt StateMachineLogGroup.Arn
+        IncludeExecutionData: true
+        Level: ERROR
+      RoleArn: !GetAtt StateMachineExecutionRole.Arn
+      StateMachineName: !Ref StateMachineName
+      StateMachineType: STANDARD
+      TracingConfiguration:
+        Enabled: true
+
+  StateMachineExecutePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed Policy for starting new execution
+      ManagedPolicyName: !Sub ${StateMachineName}-Execute
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+            Resource:
+              - !GetAtt LambdaFunction.Arn
+          - Effect: Allow
+            Action:
+              - states:StartExecution
+              - states:DescribeExecution
+            Resource:
+              - !Ref StateMachine
+              - !Sub "${StateMachine}:*"
+
+Outputs:
+  StateMachineArn:
+    Value: !Ref StateMachine
+  StateMachineName:
+    Value: !GetAtt StateMachine.Name

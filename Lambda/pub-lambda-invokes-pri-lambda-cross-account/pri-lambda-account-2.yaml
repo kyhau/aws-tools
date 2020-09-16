@@ -1,6 +1,6 @@
-# yamllint disable rule:line-length
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Create a Lambda attached to a VPC and allow being invoked from another account
+Description: >-
+  Create a Lambda attached to a VPC and allow being invoked from another account.
 
 Parameters:
   FunctionName:
@@ -26,10 +26,9 @@ Parameters:
     Type: String
 
 Resources:
-  LambdaRole:
+  LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${FunctionName}-ExecutionRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -55,6 +54,7 @@ Resources:
                 Action:
                   - xray:Put*
                 Resource: "*"
+      RoleName: !Sub ${FunctionName}-ExecutionRole
 
   LambdaFunctionSG:
     Type: AWS::EC2::SecurityGroup
@@ -65,20 +65,20 @@ Resources:
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Ref FunctionName
-      Handler: index.lambda_handler
-      Runtime: python3.7
-      MemorySize: 1024
-      Timeout: 900
       Code:
         ZipFile: |
           def lambda_handler(event, context):
               print(event)
               return {
-                  "body": {"hello": "lamdab2"},
+                  "body": {"hello": "lambda"},
                   "statusCode": 200,
               }
-      Role: !GetAtt LambdaRole.Arn
+      FunctionName: !Ref FunctionName
+      Handler: index.lambda_handler
+      MemorySize: 1024
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 900
       TracingConfig:
         Mode: Active
       VpcConfig:
@@ -86,10 +86,10 @@ Resources:
           - !Ref LambdaFunctionSG
         SubnetIds: !Ref SubnetIds
 
-  LogGroupLambdaFunction:
+  LambdaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Join ["/", ["/aws/lambda", !Ref LambdaFunction]]
+      LogGroupName: !Sub /aws/lambda/${LambdaFunction}
       RetentionInDays: !Ref LogRetention
 
   LambdaInvokeRole:
@@ -101,14 +101,14 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: !Sub "arn:aws:iam::${OtherAccountId}:root"
-            Action: "sts:AssumeRole"
+              AWS: !Sub arn:aws:iam::${OtherAccountId}:root
+            Action: sts:AssumeRole
       Policies:
         - PolicyName: !Sub ${LambdaInvokeRoleName}Policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              - Effect: "Allow"
+              - Effect: Allow
                 Action:
                   - lambda:InvokeFunction
                 Resource: !GetAtt LambdaFunction.Arn
