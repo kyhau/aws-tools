@@ -75,6 +75,7 @@ alias aws-resource-list-with-config='python ${REPO_HOME}/Config/list_resources_w
 alias aws-resource-list-with-resourcegroupstaggingapi='python ${REPO_HOME}/_multi_services/list_resources_with_resourcegroupstaggingapi.py'
 
 alias aws-r53-hostedzones='python ${REPO_HOME}/Route53/list_hosted_zones.py'
+alias aws-r53-resolver-endpoints-and-ips='python ${REPO_HOME}/Route53/list_resolver_endpoints_and_ips.py'
 
 alias aws-s3-buckets='python ${REPO_HOME}/S3/list_s3_buckets.py'
 alias aws-s3-size='aws s3 ls --summarize --human-readable --recursive s3://'
