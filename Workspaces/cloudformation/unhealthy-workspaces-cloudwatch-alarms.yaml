@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create CloudWatch alarm for Unhealthy WorkSpaces
+
+Parameters:
+  AlarmEvaluationPeriod:
+    Description: Alarm evaluation period in seconds.
+    Type: Number
+    Default: 1800
+  ToEmailAddress:
+    Description: The email address the alerts to be sent to.
+    Type: String
+  LogRetention:
+    Description: Days to keep Lambda logs.
+    Type: Number
+    Default: 1
+
+Mappings:
+  Prd:
+    ap-southeast-2:
+      DirectoryId: d-1234567890
+
+Resources:
+  EmailAlertSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+      - Endpoint: !Ref ToEmailAddress
+        Protocol: email
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub UnhealthyWorkSpacesAlert-${AWS::Region}-ExecutionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: !Sub UnhealthyWorkSpacesAlert-${AWS::Region}-ExecutionRolePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource: !Ref EmailAlertSnsTopic
+              - Effect: Allow
+                Action:
+                  - workspaces:DescribeWorkspaces
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - xray:Put*
+                Resource: "*"
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: UnhealthyWorkSpacesAlert
+      Handler: index.lambda_handler
+      Runtime: python3.7
+      MemorySize: 1024
+      Timeout: 900
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          import os
+
+          SNS_TOPIC = os.environ.get("EmailAlertSnsTopic")
+          AWS_REGION = os.environ.get("AWS_REGION")
+          SUBJECT = f"Unhealthy WorkSpaces Notification {AWS_REGION}"
+          ws_client = boto3.client("workspaces")
+          sns_client = boto3.client("sns")
+
+          def lambda_handler(event, context):
+              unhealthy_workspaces = []
+              for response in ws_client.get_paginator("describe_workspaces").paginate():
+                  for workspace in response["Workspaces"]:
+                      if workspace["State"] == "UNHEALTHY":
+                          unhealthy_workspaces.append({k: v for k, v in workspace.items() if k in ["WorkspaceId", "UserName"]})
+
+              print(f"Unhealthy WorkSpaces Count: {len(unhealthy_workspaces)}")
+              if len(unhealthy_workspaces) > 0:
+                  message = json.dumps(unhealthy_workspaces)
+                  print(message)
+                  resp = sns_client.publish(TopicArn=SNS_TOPIC, Subject=SUBJECT, Message=message)
+                  print(resp)
+
+      Role: !GetAtt LambdaRole.Arn
+      Environment:
+        Variables:
+          EmailAlertSnsTopic: !Ref EmailAlertSnsTopic
+      TracingConfig:
+        Mode: Active
+
+  LogGroupLambdaFunction:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${LambdaFunction}
+      RetentionInDays: !Ref LogRetention
+
+  TargetLambdaSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+      - Endpoint: !GetAtt LambdaFunction.Arn
+        Protocol: lambda
+
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref LambdaFunction
+      Action: lambda:InvokeFunction
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref TargetLambdaSnsTopic
+
+  UnhealthyWorkSpacesAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: WorkSpaces-Unhealthy
+      AlarmDescription: Unhealthy alarm for WorkSpaces
+      AlarmActions:
+      - !Ref TargetLambdaSnsTopic
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+      - Name: DirectoryId
+        Value: !FindInMap [Prd, !Ref "AWS::Region", DirectoryId]
+      EvaluationPeriods: 1
+      MetricName: Unhealthy
+      Namespace: AWS/WorkSpaces
+      Period: !Ref AlarmEvaluationPeriod
+      Statistic: Sum
+      Threshold: 0
+
+Outputs:
+  EmailAlertSnsTopicArn:
+    Description: ARN of the SNS Topic for email notification
+    Value: !Ref EmailAlertSnsTopic
+
+  TargetLambdaSnsTopicArn:
+    Description: ARN of the SNS Topic targetting the Lambda function
+    Value: !Ref TargetLambdaSnsTopic
