@@ -16,6 +16,9 @@ Most of the Python scripts support multi accounts and regions.
 virtualenv env -p python3.8
 . env/bin/activate
 pip install -r requirements.txt
+
+# Optional
+source .aliases
 ```
 
 ## For running shell scripts
@@ -45,6 +48,7 @@ pip install -r requirements-cli.txt
 | :--- | :--- |
 | Amazon CloudWatch Embedded Metric Format Client Library | [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python) |
 | Authorization Lambda@Edge (nodejs) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
+| AWS Cloud Digital Interface (CDI) Software Development Kit (SDK) | [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-sdk) |
 | AWS CLI | [aws/aws-cli](https://github.com/aws/aws-cli) |
 | AWS CLI interactive productivity booster (aws-shell) | [awslabs/aws-shell](https://github.com/awslabs/aws-shell) |
 | AWS Config Rules Development Kit (RDK) | [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) |
