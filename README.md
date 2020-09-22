@@ -82,7 +82,6 @@ pip install -r requirements-cli.txt
 | Awesome CDK | [kolomied/awesome-cdk](https://github.com/kolomied/awesome-cdk) |
 | CDK Patterns | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
 
-
 ### CloudFormation
 
 | Description | Repo/Link |
@@ -177,6 +176,7 @@ pip install -r requirements-cli.txt
 | AWS Glue Libs | [awslabs/aws-glue-libs](https://github.com/awslabs/aws-glue-libs) |
 | AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
 | AWS Multi Account Viewer | [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer) |
+| AWS Perspective | [awslabs/aws-perspective](https://github.com/awslabs/aws-perspective) |
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
 | Chaos Injection for AWS resources using Amazon SSM Run Command and Automation | [adhorn/chaos-ssm-documents](https://github.com/adhorn/chaos-ssm-documents) |
 
