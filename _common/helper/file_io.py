@@ -29,14 +29,14 @@ def template_body(template_file):
 ################################################################################
 # json / yaml
 
-def get_json_data_from_file(input_file):
+def get_json_data_from_file(filename):
     """Return json object from a json or yaml file"""
-    if input_file.lower().endswith(".yaml"):
-        with open(input_file, "rb") as fp:
+    if filename.lower().endswith(".yaml"):
+        with open(filename, "rb") as fp:
             yaml_data = fp.read()
             return io.BytesIO(json.dumps(yaml.load(yaml_data)).encode())
     else:
-        with open(input_file, "r") as f:
+        with open(filename, "r") as f:
             return json.load(f)
 
 
@@ -50,12 +50,11 @@ def write_json_file(output_file, data, sort_keys=True, indent=0):
 
 def read_csv_file(filename):
     import csv
-    if filename.lower().endswith(".csv"):
-        with open(filename) as csv_file:
-            reader = csv.reader(csv_file)
-            return [
-                list(map(str.strip, row)) for row in reader if row and not row[0].startswith("#")
-            ]
+    with open(filename) as f:
+        reader = csv.reader(f)
+        return [
+            list(map(str.strip, row)) for row in reader if row and not row[0].startswith("#")
+        ]
 
 
 def write_csv_file(items, output_filename, delimiter=",", to_console=False):
@@ -88,9 +87,9 @@ def read_sql_file(filename):
 ################################################################################
 # txt
 
-def read_file(template_file):
-    with open(template_file, "r") as cf_file:
-        return cf_file.read()
+def read_file(filename):
+    with open(filename, "r") as f:
+        return f.read()
 
 
 def readlines_txt_file(filename):
