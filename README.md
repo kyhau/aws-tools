@@ -179,6 +179,7 @@ pip install -r requirements-cli.txt
 | AWS Perspective | [awslabs/aws-perspective](https://github.com/awslabs/aws-perspective) |
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
 | Chaos Injection for AWS resources using Amazon SSM Run Command and Automation | [adhorn/chaos-ssm-documents](https://github.com/adhorn/chaos-ssm-documents) |
+| Diagram Maker | [awslabs/diagram-maker](https://github.com/awslabs/diagram-maker) |
 
 ### Networking
 
