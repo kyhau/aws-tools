@@ -46,14 +46,14 @@ pip install -r requirements-cli.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
-| Amazon CloudWatch Embedded Metric Format Client Library | [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python) |
-| Authorization Lambda@Edge (nodejs) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
+| Amazon CloudWatch Embedded Metric Format Client Library (Python) | [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python) |
+| Authorization Lambda@Edge (Node.js) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
 | AWS Cloud Digital Interface (CDI) Software Development Kit (SDK) | [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-sdk) |
 | AWS CLI | [aws/aws-cli](https://github.com/aws/aws-cli) |
 | AWS CLI interactive productivity booster (aws-shell) | [awslabs/aws-shell](https://github.com/awslabs/aws-shell) |
-| AWS Config Rules Development Kit (RDK) | [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) |
-| AWS Config Rules RDK Python library | [awslabs/aws-config-rdklib](https://github.com/awslabs/aws-config-rdklib) |
-| AWS DynamoDB Encryption Client for Python | [aws/aws-dynamodb-encryption-python](https://github.com/aws/aws-dynamodb-encryption-python) |
+| AWS Config Rules Development Kit (RDK) CLI | [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) |
+| AWS Config Rules Development Kit (RDK) Library (Python) | [awslabs/aws-config-rdklib](https://github.com/awslabs/aws-config-rdklib) |
+| AWS DynamoDB Encryption Client (Python) | [aws/aws-dynamodb-encryption-python](https://github.com/aws/aws-dynamodb-encryption-python) |
 | AWS EC2 ENI Utilities (ec2-net-utils)  | [aws/ec2-net-utils](https://github.com/aws/ec2-net-utils) |
 | AWS EFS Utilities (efs-utils)  | [aws/efs-utils](https://github.com/aws/efs-utils) |
 | AWS Elastic Beanstalk CLI | [aws/aws-elastic-beanstalk-cli](https://github.com/aws/aws-elastic-beanstalk-cli) |
