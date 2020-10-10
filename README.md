@@ -48,6 +48,7 @@ pip install -r requirements-cli.txt
 | :--- | :--- |
 | Amazon CloudWatch Embedded Metric Format Client Library (Python) | [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python) |
 | Authorization Lambda@Edge (Node.js) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
+| AutoML Toolkit for Deep Learning | [awslabs/autogluon](https://github.com/awslabs/autogluon) |
 | AWS Cloud Digital Interface (CDI) Software Development Kit (SDK) | [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-sdk) |
 | AWS CLI | [aws/aws-cli](https://github.com/aws/aws-cli) |
 | AWS CLI interactive productivity booster (aws-shell) | [awslabs/aws-shell](https://github.com/awslabs/aws-shell) |
@@ -154,6 +155,7 @@ pip install -r requirements-cli.txt
 | Automated Incident Response with SSM | [aws-samples/automated-incident-response-with-ssm](https://github.com/aws-samples/automated-incident-response-with-ssm) |
 | Import AWS Config Findings into AWS Security Hub | [aws-samples/aws-securityhub-config-integration](https://github.com/aws-samples/aws-securityhub-config-integration) |
 | amazon-detective-multiaccount-scripts | [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts) |
+| AWS Self-Service Security Assessment tool | [awslabs/aws-security-assessment-solution](https://github.com/awslabs/aws-security-assessment-solution)|
 | aws-securityhub-to-email | [aws-samples/aws-securityhub-to-email](https://github.com/aws-samples/aws-securityhub-to-email) |
 | aws-securityhub-to-slack | [aws-samples/aws-securityhub-to-slack](https://github.com/aws-samples/aws-securityhub-to-slack) |
 | cloud-custodian | [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian) |
