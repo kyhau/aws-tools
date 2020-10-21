@@ -1,7 +1,7 @@
 #!/bin/bash
 # See also https://github.com/nodesource/distributions#debmanual
 
-VERSION=14.x
+VERSION=15.x
 
 # Remove current installations, if any
 sudo apt-get --purge remove node
