@@ -5,7 +5,6 @@ List WorkSpaces details including
 - Subnets
 """
 import json
-import os
 import time
 
 import click
@@ -64,6 +63,49 @@ def get_subnets(session, regions):
     return subnets
 
 
+def get_workspace(client, w, account_id, region, subnets, cnt, detailed):
+    attempts = 1
+    while attempts <= 3:
+        try:
+            workspace_id = w["WorkspaceId"]
+            lastlogon = client.describe_workspaces_connection_status(WorkspaceIds=[workspace_id])
+
+            if detailed:
+                print(f"Checking {cnt} {workspace_id} (attempt {attempts})")
+                # No SubnetId means the subnet in which the WorkSpace was launched does not have an available private IP address
+                subnet = subnets.get(w.get("SubnetId"), {})
+                snapshots = client.describe_workspace_snapshots(WorkspaceId=workspace_id)
+                tags = client.describe_tags(ResourceId=workspace_id)["TagList"]
+                data = w
+                data.update({
+                    "Account": account_id,
+                    "Region": region,
+                    "RebuildSnapshot": snapshots["RebuildSnapshots"][0]["SnapshotTime"] if snapshots["RebuildSnapshots"] else None,
+                    "RestoreSnapshot": snapshots["RestoreSnapshots"][0]["SnapshotTime"] if snapshots["RestoreSnapshots"] else None,
+                    "WorkspacesConnectionStatus": lastlogon["WorkspacesConnectionStatus"],
+                    "TagList": tags,
+                    **subnet,
+                })
+                #print(json.dumps(data, indent=2, sort_keys=True, default=str))
+
+            else:
+                data = [
+                    workspace_id,
+                    w["UserName"],
+                    workspace_id,
+                    str(lastlogon["WorkspacesConnectionStatus"][0]["ConnectionStateCheckTimestamp"])
+                        if lastlogon["WorkspacesConnectionStatus"] else None,
+                ]
+                print(data)
+            return data
+        except Exception as e:  # ThrottlingException
+            print(e)
+            time.sleep(5)
+        attempts += 1
+    print(f'Giving up on {w["WorkspaceId"]}')
+    return w
+
+
 def get_workspaces(session, regions, subnets, account_id, detailed, workspace_id):
     workspaces = []
 
@@ -77,36 +119,8 @@ def get_workspaces(session, regions, subnets, account_id, detailed, workspace_id
 
         for response in client.get_paginator("describe_workspaces").paginate(**params):
             for w in response["Workspaces"]:
-                lastlogon = client.describe_workspaces_connection_status(WorkspaceIds=[w["WorkspaceId"]])
-
-                if detailed:
-                    print(f"Checking {cnt} {w['WorkspaceId']}")
-
-                    subnet = subnets.get(w["SubnetId"], {})
-                    snapshots = client.describe_workspace_snapshots(WorkspaceId=w["WorkspaceId"])
-                    tags = client.describe_tags(ResourceId=w["WorkspaceId"])["TagList"]
-                    w.update({
-                        "Account": account_id,
-                        "Region": region,
-                        "RebuildSnapshot": snapshots["RebuildSnapshots"][0]["SnapshotTime"] if snapshots["RebuildSnapshots"] else None,
-                        "RestoreSnapshot": snapshots["RestoreSnapshots"][0]["SnapshotTime"] if snapshots["RestoreSnapshots"] else None,
-                        "WorkspacesConnectionStatus": lastlogon["WorkspacesConnectionStatus"],
-                        "TagList": tags,
-                        **subnet,
-                    })
-                    #print(json.dumps(w, indent=2, sort_keys=True, default=str))
-                    workspaces.append(w)
-                    time.sleep(0.5)
-
-                else:
-                    data = [
-                        w["WorkspaceId"],
-                        w["UserName"],
-                        w["WorkspaceId"],
-                        str(lastlogon["WorkspacesConnectionStatus"][0]["ConnectionStateCheckTimestamp"])
-                          if lastlogon["WorkspacesConnectionStatus"] else None,
-                    ]
-                    print(data)
+                w2 = get_workspace(client, w, account_id, region, subnets, cnt, detailed)
+                workspaces.append(w2)
                 cnt += 1
 
             if workspace_id:
