@@ -2,7 +2,7 @@
 Retrieve CloudTrail events
 """
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 import click
 from botocore.exceptions import ProfileNotFound
