@@ -182,6 +182,7 @@ pip install -r requirements-cli.txt
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
 | Chaos Injection for AWS resources using Amazon SSM Run Command and Automation | [adhorn/chaos-ssm-documents](https://github.com/adhorn/chaos-ssm-documents) |
 | Diagram Maker | [awslabs/diagram-maker](https://github.com/awslabs/diagram-maker) |
+| cfn-diagram | [mhlabs/cfn-diagram](https://github.com/mhlabs/cfn-diagram) |
 
 ### Networking
 
@@ -210,12 +211,14 @@ pip install -r requirements-cli.txt
 
 - [Amplify Days ANZ](https://amplifydays.awsanz.com/)
 - [App Mesh Workshop](https://www.appmeshworkshop.com/)
-- [Asynchronous Messaging](https://github.com/aws-samples/asynchronous-messaging-workshop/)
-- [CDK](https://cdkworkshop.com/)
-- [CI/CD for Serverless Applications](https://cicd.serverlessworkshops.io/)
-- [One Observability Demo](https://observability.workshop.aws/)
-- [Redshift Immersion](https://redshift-immersion.workshop.aws/)
-- [Serverless Security](https://github.com/aws-samples/aws-serverless-security-workshop/)
+- [Asynchronous Messaging Workshop](https://github.com/aws-samples/asynchronous-messaging-workshop/)
+- [CDK Workshop](https://cdkworkshop.com/)
+- [CI/CD for Serverless Applications Workshops](https://cicd.serverlessworkshops.io/)
+- [One Observability Workshop](https://observability.workshop.aws/)
+- [Redshift Immersion Workshop](https://redshift-immersion.workshop.aws/)
+- [Serverless Security Workshop](https://github.com/aws-samples/aws-serverless-security-workshop/)
+- [Service Catalog Tools Workshop](https://service-catalog-tools-workshop.com/)
 - [Spot Instances Workshops](https://ec2spotworkshops.com/)
-- [Spot Instances with EKS](https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks.html)
+- [Spot Instances with EKS Workshops](https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks.html)
 - [VPC Endpoint Workshop](https://www.vpcendpointworkshop.com/)
+- [Well-Architected Labs](https://wellarchitectedlabs.com/)
