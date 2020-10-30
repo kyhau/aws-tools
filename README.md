@@ -136,6 +136,7 @@ pip install -r requirements-cli.txt
 | Serverless Components CLI | [serverless/cli](https://github.com/serverless/cli) |
 | Stelligent mu (a tool for managing your microservices platform) | [stelligent/mu](https://github.com/stelligent/mu) |
 | Zappa Serverless Python | [Miserlou/Zappa](https://github.com/Miserlou/Zappa) |
+| Serverless Microservice Patterns for AWS | [Blog post](https://www.jeremydaly.com/serverless-microservice-patterns-for-aws/)|
 
 ### Security
 
