@@ -3,6 +3,8 @@
 
 REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+alias browser='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
+
 alias aws-acm-list-certificates='python ${REPO_HOME}/ACM/list_certificates.py'
 
 alias aws-ami-latest-ecs-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_eks_ami.py'
@@ -19,9 +21,10 @@ alias aws-apis-test='python ${REPO_HOME}/API/check_aws_apis.py'
 
 alias aws-canonical-user-id='. ${REPO_HOME}/CloudFront-S3/get_canonical_user_id.sh'
 
+alias aws-cdk-solution-constructs-page='browser https://aws.amazon.com/solutions/constructs/patterns/'
+
 alias aws-cloudformation-to-dot-to-image='python ${REPO_HOME}/CloudFormation/cloudformation_to_dot_to_image.py'
 
-alias browser='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 alias aws-cloudtrail-event-names='browser https://gist.github.com/pkazi/8b5a1374771f6efa5d55b92d8835718c'
 alias aws-cloudtrail-lookup-events='python ${REPO_HOME}/CloudTrail/cloudtrail_lookup_events.py'
 
