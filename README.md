@@ -49,9 +49,10 @@ pip install -r requirements-cli.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
-| AWS Cloud Development Kit (CDK) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
-| [CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [awslabs/cdk8s](https://github.com/awslabs/cdk8s) |
-| [CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/) | [aws-samples/cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) |
+| AWS CDK (Cloud Development Kit) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
+| [AWS CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [awslabs/cdk8s](https://github.com/awslabs/cdk8s) |
+| [AWS CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/) | [aws-samples/cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) |
+| [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/api-reference.html) | [awslabs/aws-solutions-constructs](https://github.com/awslabs/aws-solutions-constructs) |
 | CDK Patterns | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
 | Awesome CDK | [kolomied/awesome-cdk](https://github.com/kolomied/awesome-cdk) |
 
