@@ -15,8 +15,7 @@
 ### My small examples for demo
 
 - https://github.com/kyhau/have-a-smile
-- https://github.com/kyhau/cdk-lambda-layer-datetimenow
-- https://github.com/kyhau/cdk-url-shortener-demo
+- https://github.com/kyhau/cdk-examples
 
 
 ---
