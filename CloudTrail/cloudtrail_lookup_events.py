@@ -1,6 +1,7 @@
 """
-Retrieve CloudTrail events
+A helper script for retrieving CloudTrail events
 """
+import json
 import logging
 from datetime import datetime, timedelta
 
@@ -15,8 +16,9 @@ LOOKUP_HOURS = 12
 
 
 class Helper(AwsApiHelper):
-    def __init__(self, max_results):
+    def __init__(self, decode_json, max_results):
         super().__init__()
+        self._decode_json = decode_json
         self._max_results = max_results
 
     def process_request(self, session, account_id, region, kwargs):
@@ -24,6 +26,8 @@ class Helper(AwsApiHelper):
         cnt = 0
         for event in self.paginate(client, "lookup_events", kwargs):
             print("--------------------------------------------------------------------------------")
+            if self._decode_json:
+                event["CloudTrailEvent"] = json.loads(event.get("CloudTrailEvent", ""))
             print(dump_json(event))
             cnt += 1
             if self._max_results is not None and cnt >= int(self._max_results):
@@ -59,13 +63,14 @@ def new_operation_params(start_time, end_time, event_name, user_name):
 @click.option("--starttime", "-s", help=f"Start time (e.g. 2020-04-01); return last {LOOKUP_HOURS} records if not specified.")
 @click.option("--endtime", "-e", help="End time (e.g. 2020-04-01); now if not specified.")
 @click.option("--maxresults", "-m", help="Number of events to return for each account/region; unlimited if not specified.")
+@click.option('--decode', '-d', show_default=True, is_flag=True, help="Deserialize json-string to json-object")
 @click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
 @click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
-def main(eventname, username, starttime, endtime, maxresults, profile, region):
+def main(eventname, username, starttime, endtime, maxresults, decode, profile, region):
     kwargs = new_operation_params(starttime, endtime, eventname, username)
 
     try:
-        Helper(maxresults).start(profile, region, "cloudtrail", kwargs)
+        Helper(decode, maxresults).start(profile, region, "cloudtrail", kwargs)
     except ProfileNotFound as e:
         logging.error(f"{e}. Aborted")
 
