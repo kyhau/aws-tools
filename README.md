@@ -158,6 +158,7 @@ pip install -r requirements-cli.txt
 | AWS Policy Generator | [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html) |
 | AWS Security Benchmark | [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark) |
 | AWS Security Hub Multiaccount Scripts | [awslabs/aws-securityhub-multiaccount-scripts](https://github.com/awslabs/aws-securityhub-multiaccount-scripts) |
+| AWS Shield Engagement Lambda | https://s3.amazonaws.com/aws-shield-lambda/ShieldEngagementLambda.pdf |
 | AWS SSM Chaos Runner | [amzn/awsssmchaosrunner](https://github.com/amzn/awsssmchaosrunner) |
 | AWS WAF Security Automations | [awslabs/aws-waf-security-automations](https://github.com/awslabs/aws-waf-security-automations) |
 | Automated Incident Response with SSM | [aws-samples/automated-incident-response-with-ssm](https://github.com/aws-samples/automated-incident-response-with-ssm) |
