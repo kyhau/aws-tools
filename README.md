@@ -204,6 +204,7 @@ pip install -r requirements-cli.txt
 | Description | Repo/Link |
 | :--- | :--- |
 | CNCF Cloud Native Interactive Landscape | [landscape.cncf.io](https://landscape.cncf.io/) |
+| Awesome Hacking | [Hack-with-Github/Awesome-Hacking](https://github.com/Hack-with-Github/Awesome-Hacking)|
 | FastAPI | [tiangolo/fastapi](https://github.com/tiangolo/fastapi) |
 | OpenFaaS | [openfaas/faas](https://github.com/openfaas/faas) |
 | Regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript | [regex101.com](https://regex101.com/) |
