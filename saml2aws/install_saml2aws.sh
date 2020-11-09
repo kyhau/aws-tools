@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION=$(curl --silent "https://api.github.com/repos/Versent/saml2aws/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
+VERSION=$(curl --silent "https://api.github.com/repos/Versent/saml2aws/releases/latest" --insecure -s | grep -Po '"tag_name": "\K.*?(?=")')
 VERSION="${VERSION:1}"
 ZIP_FILE="https://github.com/Versent/saml2aws/releases/download/v${VERSION}/saml2aws_${VERSION}_linux_amd64.tar.gz"
 
