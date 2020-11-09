@@ -37,10 +37,6 @@ def main(profile, loggroupname, starttime, endtime, region):
 
     check_timestamp = start_timestamp
 
-    print(start_dt.strftime( "%Y-%m-%d %H:%M:%S"))
-    print(end_dt.strftime( "%Y-%m-%d %H:%M:%S"))
-    print(start_timestamp, end_timestamp, check_timestamp)
-
     while check_timestamp < end_timestamp:
         print(check_timestamp)
 
