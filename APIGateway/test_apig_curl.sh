@@ -10,3 +10,5 @@ curl -X POST \
 	"tool_name": "my-tool",
 	"tool_version": "latest"
 }'
+
+curl -X POST https://fake.execute-api.ap-southeast-2.amazonaws.com/prod/execution
