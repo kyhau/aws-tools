@@ -1,5 +1,11 @@
 # Step Functions
 
+## Canary Deployment
+
+- [AWS Lambda Canary Deployments with API Gateway](https://blog.thundra.io/aws-lambda-canary-deployments-with-api-gateway)
+
+## API Gateway Integration
+
 Notes
 - All Step Functions API actions use the HTTP `POST` method. ([Ref](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-api-gateway.html))
 - [Using AWS API Gateway and Step Functions without Exposing Your ARN](https://medium.com/@cody_green/using-aws-api-gateway-and-step-functions-without-exposing-your-arn-ce94a88fa594), 2017-10-07
@@ -7,12 +13,27 @@ Notes
     - Solution 1: Add a Lambda between API Gateway and Step Functions.
     - Solution 2: Use body-mapping templates to map SFN ARN in reguests and hide SFN ARNs in responses.
 
-CDK resources
+        Request Integration
+        ```
+        {
+            "input": "$util.escapeJavaScript($input.json('$'))",
+            "stateMachineArn": ${stageVariables.sfnArn}
+        }
+        ```
+
+        Responsee Integration
+        ```
+        {
+          "token": "$input.json('$.executionArn').split(':')[7].replace('"', "")"
+        }
+        ```
+
+## CDK resources
 - https://github.com/cdk-patterns/serverless/tree/master/the-state-machine
 - https://github.com/cdk-patterns/serverless/tree/master/the-saga-stepfunction
 - https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-lambda-step-function
 
-Useful links
+## Useful links
 - [Latest SFN Overview](https://docs.aws.amazon.com/step-functions/latest/dg/how-step-functions-works.html)
 - Use Cases
     - https://docs.aws.amazon.com/step-functions/latest/dg/create-sample-projects.html
