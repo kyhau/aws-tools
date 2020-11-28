@@ -31,6 +31,10 @@
 - https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html
     > To include libraries in a layer, place them in one of the folders supported by your runtime, or modify that path variable for your language.
 
+## Lambda Error Patterns and Logging
+
+- [How to get notified on specific Lambda function error patterns using CloudWatch](https://aws.amazon.com/blogs/mt/get-notified-specific-lambda-function-error-patterns-using-cloudwatch/) AWS Management & Governance Blog, 2020-08-24
+
 ## Custom Lambda Runtime
 
 ## Lambda destination
