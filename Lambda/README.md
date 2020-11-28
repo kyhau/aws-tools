@@ -2,6 +2,8 @@
 
 ## Lambda Tricks
 
+- [How to Make Your Lambda Functions Run Faster (and Cheaper)](https://hackernoon.com/how-to-make-your-lambda-functions-run-faster-and-cheaper-gp2034jl) by webiny on 2020-11-25
+
 - [Hit the 6MB Lambda payload limit? Here’s what you can do](
   https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
   by Yan Cui on 2020-04-09
