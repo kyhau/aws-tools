@@ -35,9 +35,11 @@ pip install -r requirements-cli.txt
 - [ECS, EKS, container-based development](#ecs-efs-container-based-development)
 - [AWS SDKs and CLIs](#aws-sdks-and-clis)
 - [Security](#security)
+- [Chaos Engineering](#chaos-engineering)
 - [Networking](#networking)
 - [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
-- [Some AWS related useful tools](#some-aws-related-useful-tools)
+- [Closing account](#closing-account)
+- [Other AWS useful tools](#other-aws-useful-tools)
 - [Other tools](#other-tools)
 - [Best Practices Guides](#best-practices-guides)
 - [Workshops](#workshops)
@@ -148,7 +150,7 @@ pip install -r requirements-cli.txt
 | kubectl | [kubernetes/kubectl](https://github.com/kubernetes/kubectl) |
 | Warrant a Python library for using AWS Cognito with support for SRP| [capless/warrant](https://github.com/capless/warrant) |
 
-### Security
+## Security
 
 | Description | Repo/Link |
 | :--- | :--- |
@@ -162,7 +164,6 @@ pip install -r requirements-cli.txt
 | AWS Security Benchmark | [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark) |
 | AWS Security Hub Multiaccount Scripts | [awslabs/aws-securityhub-multiaccount-scripts](https://github.com/awslabs/aws-securityhub-multiaccount-scripts) |
 | AWS Shield Engagement Lambda | https://s3.amazonaws.com/aws-shield-lambda/ShieldEngagementLambda.pdf |
-| AWS SSM Chaos Runner | [amzn/awsssmchaosrunner](https://github.com/amzn/awsssmchaosrunner) |
 | AWS WAF Security Automations | [awslabs/aws-waf-security-automations](https://github.com/awslabs/aws-waf-security-automations) |
 | Automated Incident Response with SSM | [aws-samples/automated-incident-response-with-ssm](https://github.com/aws-samples/automated-incident-response-with-ssm) |
 | Import AWS Config Findings into AWS Security Hub | [aws-samples/aws-securityhub-config-integration](https://github.com/aws-samples/aws-securityhub-config-integration) |
@@ -176,6 +177,13 @@ pip install -r requirements-cli.txt
 | Pacu an open source AWS exploitation framework | [RhinoSecurityLabs/Pacu](https://github.com/RhinoSecurityLabs/pacu) |
 | Redboto | [elitest/Redboto](https://github.com/elitest/Redboto) |
 
+## Chaos Engineering
+
+| Description | Repo/Link |
+| :--- | :--- |
+| AWS SSM Chaos Runner | [amzn/awsssmchaosrunner](https://github.com/amzn/awsssmchaosrunner) |
+| Chaos Injection for AWS resources using Amazon SSM Run Command and Automation | [adhorn/chaos-ssm-documents](https://github.com/adhorn/chaos-ssm-documents) |
+
 ### Networking
 
 | Description | Repo/Link |
@@ -185,7 +193,14 @@ pip install -r requirements-cli.txt
 | TGW (Transit Gateway) Migrator Tool | [TGW Migrator Tool](https://aws.amazon.com/blogs/networking-and-content-delivery/migrate-from-transit-vpc-to-aws-transit-gateway/) |
 | TGW to solve overlapping CIDRs | [aws-samples/aws-transit-gateway-overlapping-cidrs](https://github.com/aws-samples/aws-transit-gateway-overlapping-cidrs) |
 
-## Some AWS related useful tools
+### Closing account
+
+| Description | Repo/Link |
+| :--- | :--- |
+| How do I close my AWS account? | [How do I close my AWS account?](https://aws.amazon.com/premiumsupport/knowledge-center/close-aws-account/) |
+| aws-nuke Remove all resources from an AWS account | [rebuy-de/aws-nuke](https://github.com/rebuy-de/aws-nuke) |
+
+## Other AWS useful tools
 
 | Description | Repo/Link |
 | :--- | :--- |
@@ -199,8 +214,9 @@ pip install -r requirements-cli.txt
 | AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
 | AWS Multi Account Viewer | [awslabs/aws-multi-account-viewer](https://github.com/awslabs/aws-multi-account-viewer) |
 | AWS Perspective | [awslabs/aws-perspective](https://github.com/awslabs/aws-perspective) |
+| AWS Proton Sample Templates | [aws-samples/aws-proton-sample-templates](https://github.com/aws-samples/aws-proton-sample-templates) |
+| AWS Proton Sample Fargate Templates | [aws-samples/aws-proton-sample-fargate-service](https://github.com/aws-samples/aws-proton-sample-fargate-service) |
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
-| Chaos Injection for AWS resources using Amazon SSM Run Command and Automation | [adhorn/chaos-ssm-documents](https://github.com/adhorn/chaos-ssm-documents) |
 
 ## Other tools
 
