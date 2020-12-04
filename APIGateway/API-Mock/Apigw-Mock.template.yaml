@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: AWS API Gateway with a Mock Integration
+
+Parameters:
+  ApiGatewayName:
+    Description: Name of the API Gateway to create
+    Type: String
+    Default: Mock-API
+  StageName:
+    Description: Name of the API stage to create
+    Type: String
+    Default: v0
+
+Resources:
+  ApiGatewayRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      ApiKeySourceType: HEADER
+      Description: An API Gateway with a Mock Integration
+      EndpointConfiguration:
+        Types:
+          - EDGE
+      Name: !Ref ApiGatewayName
+
+  ApiGatewayResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: mock
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        ConnectionType: INTERNET
+        IntegrationResponses:
+          - ResponseTemplates:
+              application/json: "{\"message\": \"OK\"}"
+            SelectionPattern: '2\d{2}'
+            StatusCode: "200"
+          - ResponseTemplates:
+              application/json: "{\"message\": \"Internal Server Error\"}"
+            SelectionPattern: '5\d{2}'
+            StatusCode: "500"
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        RequestTemplates:
+          application/json: "{\"statusCode\": $input.json('$.statusCode'), \"message\": $input.json('$.message')}"
+        Type: MOCK
+        TimeoutInMillis: 29000
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref ApiGatewayModel
+          StatusCode: "200"
+        - ResponseModels:
+            application/json: !Ref ApiGatewayModel
+          StatusCode: "500"
+      OperationName: mock
+      ResourceId: !Ref ApiGatewayResource
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayModel:
+    Type: AWS::ApiGateway::Model
+    Properties:
+      ContentType: application/json
+      RestApiId: !Ref ApiGatewayRestApi
+      Schema: {}
+
+  ApiGatewayStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApiGatewayDeployment
+      Description: !Sub Mock API Stage v0 ${StageName}
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: !Ref StageName
+
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ApiGatewayMethod
+    Properties:
+      Description: Mock API Deployment
+      RestApiId: !Ref ApiGatewayRestApi
+
+Outputs:
+  ApigwUrl:
+    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/mock
