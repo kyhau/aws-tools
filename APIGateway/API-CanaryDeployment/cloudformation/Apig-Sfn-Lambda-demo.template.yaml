@@ -1,21 +1,25 @@
 # Stack name: K-SFN-Demo-1
-# CFN Tag: Project K-SFN-Demo-1
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create Step Function and Lambda function with dummy content.
+Description: Create a API gateway placeholder and the Step Function and Lambda function with dummy content.
 
 Parameters:
-  ApigName:
+  ApigwName:
     Description: Name of the API to create
     Type: String
     Default: K-SFN-API
-  FunctionAName:
-    Description: Name of the Lambda function to be created or updated.
+  SfnFunctionName:
+    Description: Name of the Lambda function to be invoked from SFN.
     Type: String
     Default: K-SFN-Function-A
-  FunctionBName:
-    Description: Name of the Lambda function to be created or updated.
+  ApigwFunctionName:
+    Description: Name of the Lambda function to be invoked from APIGW.
     Type: String
     Default: K-SFN-Function-B
+  FunctionTracingConfigMode:
+    Description: TracingConfig Mode
+    Type: String
+    AllowedValues: ["Active", "PassThrough"]
+    Default: PassThrough
   LogRetention:
     Description: Days to keep application logs
     Type: Number
@@ -24,6 +28,11 @@ Parameters:
     Description: Name of the State Machine to create.
     Type: String
     Default: K-SFN-StateMachine
+  StateMachineTracing:
+    Description: Enable State Machine tracing
+    Type: String
+    AllowedValues: ["true", "false"]
+    Default: "false"
 
 Resources:
   LambdaExecutionRole:
@@ -39,9 +48,18 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      RoleName: !Sub ${FunctionAName}-ExecutionRole
+      Policies:
+        - PolicyName: !Sub ${ApigwName}-Lambda-ExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:DescribeExecution
+                Resource: arn:aws:states:ap-southeast-2:818427450946:execution:K-SFN-StateMachine*
+      RoleName: !Sub ${ApigwName}-Lambda-ExecutionRole
 
-  LambdaFunction:
+  SfnFunction:
     Type: AWS::Lambda::Function
     Properties:
       Code:
@@ -49,40 +67,82 @@ Resources:
           def lambda_handler(event, context):
               # This function will be updated through CI/CD
               return "Lambda version 1"
-      FunctionName: !Ref FunctionAName
+      FunctionName: !Ref SfnFunctionName
       Handler: index.lambda_handler
       MemorySize: 1024
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: python3.7
       Timeout: 900
       TracingConfig:
-        Mode: Active
-  LambdaLogGroup:
+        Mode: !Ref FunctionTracingConfigMode
+
+  SfnFunctionLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub /aws/lambda/${LambdaFunction}
+      LogGroupName: !Sub /aws/lambda/${SfnFunction}
       RetentionInDays: !Ref LogRetention
 
-  LambdaFunctionB:
+  ApigwFunction:
     Type: AWS::Lambda::Function
     Properties:
       Code:
         ZipFile: |
+          import json
+          import logging
+          import os
+          import time
+          import boto3
+
+          SFN_ARN = os.environ["sfnArn"]
+          EXE_ARN = SFN_ARN.replace(":stateMachine:", ":execution:")
+
+          sfn_client = boto3.client("stepfunctions")
+
+
+          def lambda_response(message, status_code=200):
+              logging.info(message)
+              return {
+                  "body": json.dumps(message),
+                  "headers": {"Content-Type": "application/json"},
+                  "statusCode": status_code,
+              }
+
+
           def lambda_handler(event, context):
-              # This function will be updated through CI/CD
-              return "Lambda version 1"
-      FunctionName: !Ref FunctionBName
+              logging.info(event)
+              logging.info(SFN_ARN)
+
+              params = event["queryStringParameters"]
+              eid = params.get("eid")
+
+              if eid:
+                  resp = sfn_client.describe_execution(executionArn=f"{EXE_ARN}:{eid}")
+                  while resp["status"] == "RUNNING":
+                      print(resp.get("output"))
+                      time.sleep(1)
+                      resp = sfn_client.describe_execution(executionArn=f"{EXE_ARN}:{eid}")
+
+                  print(resp.get("output"))
+                  return lambda_response(resp.get("output"))
+
+              return lambda_response({"message": f"Returned from lambda B {eid}"})
+
+      Environment:
+        Variables:
+          sfnArn: !Ref StateMachineBlue
+      FunctionName: !Ref ApigwFunctionName
       Handler: index.lambda_handler
       MemorySize: 1024
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: python3.7
       Timeout: 900
       TracingConfig:
-        Mode: Active
-  LambdaLogGroupB:
+        Mode: !Ref FunctionTracingConfigMode
+
+  ApigwFunctionLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub /aws/lambda/${LambdaFunctionB}
+      LogGroupName: !Sub /aws/lambda/${ApigwFunction}
       RetentionInDays: !Ref LogRetention
 
   StateMachineExecutionRole:
@@ -107,7 +167,7 @@ Resources:
                   - lambda:InvokeFunction
                   - lambda:ListFunctions
                 Resource:
-                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${FunctionAName}*"
+                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${SfnFunctionName}*"
               - Effect: Allow
                 Action:
                   - logs:CreateLogDelivery
@@ -130,6 +190,7 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/vendedlogs/states/${StateMachineName}-Blue-Logs
       RetentionInDays: !Ref LogRetention
+
   StateMachineBlue:
     Type: AWS::StepFunctions::StateMachine
     Properties:
@@ -147,7 +208,7 @@ Resources:
                 }
               }
             }
-          - {lambdaArn: !GetAtt LambdaFunction.Arn}
+          - {lambdaArn: !GetAtt SfnFunction.Arn}
       LoggingConfiguration:
         Destinations:
           - CloudWatchLogsLogGroup:
@@ -158,13 +219,14 @@ Resources:
       StateMachineName: !Sub ${StateMachineName}-Blue
       StateMachineType: STANDARD
       TracingConfiguration:
-        Enabled: true
+        Enabled: !Ref StateMachineTracing
 
   StateMachineLogGroupGreen:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub /aws/vendedlogs/states/${StateMachineName}-Green-Logs
       RetentionInDays: !Ref LogRetention
+
   StateMachineGreen:
     Type: AWS::StepFunctions::StateMachine
     Properties:
@@ -182,7 +244,7 @@ Resources:
                 }
               }
             }
-          - {lambdaArn: !GetAtt LambdaFunction.Arn}
+          - {lambdaArn: !GetAtt SfnFunction.Arn}
       LoggingConfiguration:
         Destinations:
           - CloudWatchLogsLogGroup:
@@ -193,42 +255,19 @@ Resources:
       StateMachineName: !Sub ${StateMachineName}-Green
       StateMachineType: STANDARD
       TracingConfiguration:
-        Enabled: true
-
-  StateMachineExecutePolicy:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      Description: Managed Policy for starting new execution
-      ManagedPolicyName: !Sub ${StateMachineName}-ExecutionRolePolicy
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Action:
-              - lambda:InvokeFunction
-            Resource:
-              - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${FunctionAName}*"
-          - Effect: Allow
-            Action:
-              - states:StartExecution
-              - states:DescribeExecution
-            Resource:
-              - !Ref StateMachineBlue
-              - !Sub "${StateMachineBlue}:*"
-              - !Ref StateMachineGreen
-              - !Sub "${StateMachineGreen}:*"
+        Enabled: !Ref StateMachineTracing
 
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: !Ref ApigName
-      Description: !Ref ApigName
+      Name: !Ref ApigwName
+      Description: !Ref ApigwName
       FailOnWarnings: true
 
   ApigExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${ApigName}-APIGatewayToStepFunctions
+      RoleName: !Sub ${ApigwName}-ExecutionRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -237,10 +276,22 @@ Resources:
               Service:
                 - apigateway.amazonaws.com
             Action: sts:AssumeRole
-          - Effect: Allow
-            Action:
-              - lambda:InvokeFunction
-            Resource:
-              - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${FunctionBName}*"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess
+      Policies:
+        - PolicyName: !Sub ${ApigwName}-Lambda-ExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource:
+                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${ApigwFunction}*"
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                  - states:DescribeExecution
+                Resource:
+                  - !Ref StateMachineBlue
+                  - !Sub "${StateMachineBlue}:*"
+                  - !Ref StateMachineGreen
+                  - !Sub "${StateMachineGreen}:*"

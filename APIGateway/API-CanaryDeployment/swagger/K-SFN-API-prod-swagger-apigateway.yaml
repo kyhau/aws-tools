@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "K-SFN-API"
   title: "K-SFN-API"
-host: "todo_apig_id.execute-api.ap-southeast-2.amazonaws.com"
+host: "todo_api_id.execute-api.todo_region.amazonaws.com"
 basePath: "/prod"
 schemes:
 - "https"
@@ -18,7 +18,7 @@ paths:
           schema:
             $ref: "#/definitions/Empty"
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:1231456789012:function:K-SFN-Function-B:${stageVariables.lambdaAlias}/invocations"
+        uri: "arn:aws:apigateway:todo_region:lambda:path/2015-03-31/functions/arn:aws:lambda:todo_region:1231456789012:function:K-SFN-Function-B:${stageVariables.lambdaAlias}/invocations"
         responses:
           default:
             statusCode: "200"
@@ -37,8 +37,8 @@ paths:
           schema:
             $ref: "#/definitions/Empty"
       x-amazon-apigateway-integration:
-        credentials: "arn:aws:iam::1231456789012:role/K-SFN-API-APIGatewayToStepFunctions"
-        uri: "arn:aws:apigateway:ap-southeast-2:states:action/StartExecution"
+        credentials: "arn:aws:iam::1231456789012:role/K-SFN-API-ExecutionRole"
+        uri: "arn:aws:apigateway:todo_region:states:action/StartExecution"
         responses:
           default:
             statusCode: "200"

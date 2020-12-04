@@ -9,11 +9,11 @@ Resources:
   ApigAccount:
     Type: AWS::ApiGateway::Account
     Properties:
-      CloudWatchRoleArn: !GetAtt 'ApigCloudWatchLogRole.Arn'
+      CloudWatchRoleArn: !GetAtt ApigCloudWatchLogRole.Arn
   ApigCloudWatchLogRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub '${AwsAccountName}-CloudWatchLogRole'
+      RoleName: !Sub ${AwsAccountName}-CloudWatchLogRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -27,7 +27,7 @@ Resources:
 Outputs:
   ApigCloudWatchLogRoleName:
     Description: The name of the Api Gateway CloudWatch Log Role
-    Value: !Ref 'ApigCloudWatchLogRole'
+    Value: !Ref ApigCloudWatchLogRole
   ApigCloudWatchLogRoleArn:
     Description: The ARN of the Api Gateway CloudWatch Log Role
-    Value: !GetAtt 'ApigCloudWatchLogRole.Arn'
+    Value: !GetAtt ApigCloudWatchLogRole.Arn
