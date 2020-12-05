@@ -6,7 +6,7 @@ Parameters:
   ApiGatewayName:
     Description: Name of the API Gateway to create
     Type: String
-    Default: Mock-API
+    Default: Mock-Simple-API
   StageName:
     Description: Name of the API stage to create
     Type: String
@@ -49,7 +49,7 @@ Resources:
             StatusCode: "500"
         PassthroughBehavior: WHEN_NO_TEMPLATES
         RequestTemplates:
-          application/json: "{\"statusCode\": $input.json('$.statusCode'), \"message\": $input.json('$.message')}"
+          application/json: "{\"statusCode\": 200, \"message\": $input.json('$.message')}"
         Type: MOCK
         TimeoutInMillis: 29000
       MethodResponses:
