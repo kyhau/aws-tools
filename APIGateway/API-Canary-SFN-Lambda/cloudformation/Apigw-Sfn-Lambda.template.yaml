@@ -1,12 +1,20 @@
-# Stack name: K-SFN-Demo-1
+# Stack name: K-Cancary-Demo-API
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Create a API gateway placeholder and the Step Function and Lambda function with dummy content.
 
 Parameters:
-  ApigwName:
-    Description: Name of the API to create
+  ApiName:
+    Description: Name of the API Gateway to create
     Type: String
-    Default: K-SFN-API
+    Default: K-Cancary-Demo-API
+  ApiStageName:
+    Description: Name of the API stage to create
+    Type: String
+    Default: v0
+    AllowedPattern: '[A-Za-z0-9]*'
+    MinLength: '1'
+    MaxLength: '64'
+    ConstraintDescription: must contain only alphanumeric characters (1-64 chars)
   SfnFunctionName:
     Description: Name of the Lambda function to be invoked from SFN.
     Type: String
@@ -49,7 +57,7 @@ Resources:
         - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies:
-        - PolicyName: !Sub ${ApigwName}-Lambda-ExecutionPolicy
+        - PolicyName: !Sub ${ApiName}-Lambda-ExecutionPolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -57,7 +65,7 @@ Resources:
                 Action:
                   - states:DescribeExecution
                 Resource: arn:aws:states:ap-southeast-2:818427450946:execution:K-SFN-StateMachine*
-      RoleName: !Sub ${ApigwName}-Lambda-ExecutionRole
+      RoleName: !Sub ${ApiName}-Lambda-ExecutionRole
 
   SfnFunction:
     Type: AWS::Lambda::Function
@@ -81,6 +89,18 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${SfnFunction}
       RetentionInDays: !Ref LogRetention
+
+  SfnFunctionVersion:
+    Type: AWS::Lambda::Version
+      Properties:
+        FunctionName: !Ref SfnFunction
+
+  SfnFunctionAlias:
+    Type: AWS::Lambda::Alias
+      Properties:
+        FunctionName: !Ref SfnFunction
+        FunctionVersion: !Ref SfnFunctionVersion
+        Name: blue
 
   ApigwFunction:
     Type: AWS::Lambda::Function
@@ -144,6 +164,18 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${ApigwFunction}
       RetentionInDays: !Ref LogRetention
+
+  ApigwFunctionVersion:
+    Type: AWS::Lambda::Version
+      Properties:
+        FunctionName: !Ref ApigwFunction
+
+  ApigwFunctionAlias:
+    Type: AWS::Lambda::Alias
+      Properties:
+        FunctionName: !Ref ApigwFunction
+        FunctionVersion: !Ref ApigwFunctionVersion
+        Name: blue
 
   StateMachineExecutionRole:
     Type: AWS::IAM::Role
@@ -257,17 +289,90 @@ Resources:
       TracingConfiguration:
         Enabled: !Ref StateMachineTracing
 
-  RestApi:
+  ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: !Ref ApigwName
-      Description: !Ref ApigwName
+      Name: !Ref ApiName
+      Description: !Ref ApiName
       FailOnWarnings: true
+
+  ApiGatewayResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: execution
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        ConnectionType: INTERNET
+        Credentials: !GetAtt ApigExecutionRole.Arn
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - ResponseTemplates:
+              application/json: |
+                {
+                  "token": "$input.json('$.executionArn').split(':')[7].replace('"', "")"
+                }
+            StatusCode: "200"
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        RequestTemplates:
+          application/json:
+            !Sub |
+              {
+                "input": "$util.escapeJavaScript($input.json('$'))",
+                "stateMachineArn": "${stageVariables.sfnArn}"
+              }
+        TimeoutInMillis: 29000
+        Type: AWS
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:states:action/StartExecution"
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          StatusCode: "200"
+      OperationName: StartExecution
+      ResourceId: !Ref ApiGatewayResource
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        ConnectionType: INTERNET
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - ContentHandling: CONVERT_TO_TEXT
+            StatusCode: "200"
+        PassthroughBehavior: WHEN_NO_MATCH
+        TimeoutInMillis: 29000
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApigwFunction.Arn}:${stageVariables.lambdaAlias}/invocations"
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          StatusCode: "200"
+      OperationName: GetExecution
+      ResourceId: !Ref ApiGatewayResource
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApigwLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${ApiGatewayRestApi}/${ApiStageName}
+      RetentionInDays: !Ref LogRetention
 
   ApigExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${ApigwName}-ExecutionRole
+      RoleName: !Sub ${ApiName}-SFN-ExecutionRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -277,21 +382,52 @@ Resources:
                 - apigateway.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: !Sub ${ApigwName}-Lambda-ExecutionPolicy
+        - PolicyName: !Sub ${ApiName}-SFN-ExecutionPolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
-                  - lambda:InvokeFunction
-                Resource:
-                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${ApigwFunction}*"
-              - Effect: Allow
-                Action:
                   - states:StartExecution
-                  - states:DescribeExecution
                 Resource:
                   - !Ref StateMachineBlue
                   - !Sub "${StateMachineBlue}:*"
                   - !Ref StateMachineGreen
                   - !Sub "${StateMachineGreen}:*"
+
+  ApiGatewayInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt ApigwFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/GET/execution"
+
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - ApiGatewayGetMethod
+      - ApiGatewayPostMethod
+    Properties:
+      Description: Mock API Deployment
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApiGatewayDeployment
+      Description: !Sub Mock API Stage ${ApiStageName}
+      MethodSettings:
+        - ResourcePath: '/*'
+          HttpMethod: '*'
+          LoggingLevel: INFO
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: !Ref ApiStageName
+      Variables:
+        lambdaAlias: blue
+        sfnArn: !Ref StateMachineBlue
+
+Outputs:
+  ApigwUrl:
+    Description: API URL
+    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ApiStageName}/execution
