@@ -258,10 +258,10 @@ Resources:
                   - !Ref StateMachine
                   - !Sub "${StateMachine}:*"
 
-  #ApiGatewayInvokeLambdaPermission:
-  #  Type: AWS::Lambda::Permission
-  #  Properties:
-  #    Action: lambda:InvokeFunction
-  #    FunctionName: !GetAtt ApigwFunction.Arn
-  #    Principal: apigateway.amazonaws.com
-  #    SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/GET/execution"
+  ApiGatewayInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt ApigwFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/GET/execution"

@@ -1,0 +1,135 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Creates an API gateway that's backed by a Lambda function
+
+Parameters:
+  ApiName:
+    Description: Name of the API to create
+    Type: String
+  ApiStageName:
+    Description: Stage name to deploy the API to
+    Type: String
+    Default: v0
+    AllowedPattern: '[A-Za-z0-9]*'
+    MinLength: '1'
+    MaxLength: '64'
+    ConstraintDescription: must contain only alphanumeric characters (1-64 chars)
+  FunctionTracingConfigMode:
+    Description: TracingConfig Mode
+    Type: String
+    AllowedValues: ["Active", "PassThrough"]
+    Default: PassThrough
+  LogRetention:
+    Description: Days to keep application logs
+    Type: Number
+    Default: 1
+
+Resources:
+  LambdaFunctionExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import json
+
+          def lambda_handler(event, context):
+              return {
+                  "body": json.dumps("Hello World"),
+                  "headers": {"Content-Type": "application/json"},
+                  "statusCode": 200,
+              }
+
+      FunctionName: !Sub ${ApiName}-Function
+      Handler: index.lambda_handler
+      MemorySize: 128
+      Role: !GetAtt LambdaFunctionExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 900
+      TracingConfig:
+        Mode: !Ref FunctionTracingConfigMode
+
+  LambdaFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${LambdaFunction}
+      RetentionInDays: !Ref LogRetention
+
+  ApigwRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Ref ApiName
+      Description: !Ref ApiName
+
+  ApigwProxyResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApigwRestApi.RootResourceId
+      PathPart: api
+      RestApiId: !Ref ApigwRestApi
+
+  ApigwProxyResourceANY:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub >-
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations
+      RestApiId: !Ref ApigwRestApi
+      ResourceId: !Ref ApigwProxyResource
+
+  ApigwLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${ApigwRestApi}/${ApiStageName}
+      RetentionInDays: !Ref LogRetention
+
+  ApigwInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApigwRestApi}/*/*/*"
+
+  ApigwDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ApigwProxyResourceANY
+    Properties:
+      Description: Mock API Deployment
+      RestApiId: !Ref ApigwRestApi
+
+  ApigwStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApigwDeployment
+      Description: !Sub API Stage ${ApiStageName}
+      MethodSettings:
+        - ResourcePath: '/*'
+          HttpMethod: '*'
+          LoggingLevel: INFO
+      RestApiId: !Ref ApigwRestApi
+      StageName: !Ref ApiStageName
+
+Outputs:
+  ApigwUrl:
+    Description: API URL
+    Value: !Sub https://${ApigwRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ApiStageName}/api

@@ -11,6 +11,10 @@ Parameters:
     Description: Name of the API stage to create
     Type: String
     Default: v0
+    AllowedPattern: '[A-Za-z0-9]*'
+    MinLength: '1'
+    MaxLength: '64'
+    ConstraintDescription: must contain only alphanumeric characters (1-64 chars)
 
 Resources:
   ApiGatewayRestApi:
@@ -70,20 +74,20 @@ Resources:
       RestApiId: !Ref ApiGatewayRestApi
       Schema: {}
 
-  ApiGatewayStage:
-    Type: AWS::ApiGateway::Stage
-    Properties:
-      DeploymentId: !Ref ApiGatewayDeployment
-      Description: !Sub Mock API Stage v0 ${StageName}
-      RestApiId: !Ref ApiGatewayRestApi
-      StageName: !Ref StageName
-
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn: ApiGatewayMethod
     Properties:
       Description: Mock API Deployment
       RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApiGatewayDeployment
+      Description: !Sub Mock API Stage ${StageName}
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: !Ref StageName
 
 Outputs:
   ApigwUrl:
