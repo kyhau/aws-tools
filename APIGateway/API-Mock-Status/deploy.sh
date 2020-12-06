@@ -9,5 +9,5 @@ aws cloudformation validate-template --template-body file://${TEMPLATE_FILE}
 
 echo "Deploying CloudFormation stack..."
 aws cloudformation deploy --stack-name ${API_NAME} --template-file ${TEMPLATE_FILE} \
-  --parameter-overrides ApiGatewayName=${API_NAME} StageName=v0 \
+  --parameter-overrides ApiName=${API_NAME} ApiStageName=v0 \
   --tags Billing=${API_NAME}
