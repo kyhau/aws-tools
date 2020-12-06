@@ -4,7 +4,7 @@ Description: Create a API gateway placeholder and the Step Function and Lambda f
 
 Parameters:
   ApigwName:
-    Description: Name of the API to create
+    Description: Name of the API Gateway to create
     Type: String
     Default: K-SFN-API
   SfnFunctionName:

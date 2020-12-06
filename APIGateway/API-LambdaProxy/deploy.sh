@@ -2,10 +2,11 @@
 set -e
 
 API_NAME=K-LambdaProxy-API
+TEMPLATE_FILE=Apigw-LambdaProxy.template.yaml
 
-aws cloudformation validate-template --template-body file://Apigw-LambdaProxy.template.yaml
+aws cloudformation validate-template --template-body file://${TEMPLATE_FILE}
 
-aws cloudformation deploy --stack-name ${API_NAME} --template-file Apigw-LambdaProxy.template.yaml \
+aws cloudformation deploy --stack-name ${API_NAME} --template-file ${TEMPLATE_FILE} \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides ApiName=${API_NAME} ApiStageName=v0 \
   --tags Billing=${API_NAME}

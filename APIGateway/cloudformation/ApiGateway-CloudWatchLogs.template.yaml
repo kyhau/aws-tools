@@ -1,19 +1,19 @@
+# Stack name: ApiGateway-CloudWatchLogs
 AWSTemplateFormatVersion: '2010-09-09'
+
 Description: Grant the entire API Gateway service proper permissions to read and write
   logs to CloudWatch for your account. You need to do this once.
-Parameters:
-  AwsAccountName:
-    Description: The AWS account name or prefix.
-    Type: String
+  See https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-cloudwatch-logs/.
+
 Resources:
-  ApigAccount:
+  ApiGatewayAccount:
     Type: AWS::ApiGateway::Account
     Properties:
-      CloudWatchRoleArn: !GetAtt ApigCloudWatchLogRole.Arn
-  ApigCloudWatchLogRole:
+      CloudWatchRoleArn: !GetAtt ApiGatewayCloudWatchLogRole.Arn
+
+  ApiGatewayCloudWatchLogRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${AwsAccountName}-CloudWatchLogRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -24,10 +24,12 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+      RoleName: APIGatewayPushToCloudWatchLogRole
+
 Outputs:
   ApigCloudWatchLogRoleName:
-    Description: The name of the Api Gateway CloudWatch Log Role
-    Value: !Ref ApigCloudWatchLogRole
+    Description: The name of the API Gateway CloudWatch Log Role
+    Value: !Ref ApiGatewayCloudWatchLogRole
   ApigCloudWatchLogRoleArn:
-    Description: The ARN of the Api Gateway CloudWatch Log Role
-    Value: !GetAtt ApigCloudWatchLogRole.Arn
+    Description: The ARN of the API Gateway CloudWatch Log Role
+    Value: !GetAtt ApiGatewayCloudWatchLogRole.Arn

@@ -2,10 +2,11 @@
 set -e
 
 API_NAME=K-Mock-Status-API
+TEMPLATE_FILE=Apigw-Mock-Status.template.yaml
 
-aws cloudformation validate-template --template-body file://Apigw-Mock-Status.template.yaml
+aws cloudformation validate-template --template-body file://${TEMPLATE_FILE}
 
-aws cloudformation deploy --stack-name ${API_NAME} --template-file Apigw-Mock-Status.template.yaml \
+aws cloudformation deploy --stack-name ${API_NAME} --template-file ${TEMPLATE_FILE} \
   --parameter-overrides ApiGatewayName=${API_NAME} StageName=v0 \
   --tags Billing=${API_NAME}
 
