@@ -3,11 +3,11 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS API Gateway with a Mock Integration
 
 Parameters:
-  ApiGatewayName:
+  ApiName:
     Description: Name of the API Gateway to create
     Type: String
     Default: Mock-Simple-API
-  StageName:
+  ApiStageName:
     Description: Name of the API stage to create
     Type: String
     Default: v0
@@ -25,7 +25,7 @@ Resources:
       EndpointConfiguration:
         Types:
           - EDGE
-      Name: !Ref ApiGatewayName
+      Name: !Ref ApiName
 
   ApiGatewayResource:
     Type: AWS::ApiGateway::Resource
@@ -85,10 +85,10 @@ Resources:
     Type: AWS::ApiGateway::Stage
     Properties:
       DeploymentId: !Ref ApiGatewayDeployment
-      Description: !Sub Mock API Stage ${StageName}
+      Description: !Sub Mock API Stage ${ApiStageName}
       RestApiId: !Ref ApiGatewayRestApi
-      StageName: !Ref StageName
+      ApiStageName: !Ref ApiStageName
 
 Outputs:
   ApigwUrl:
-    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/mock
+    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ApiStageName}/mock
