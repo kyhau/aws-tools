@@ -87,7 +87,7 @@ Resources:
       DeploymentId: !Ref ApiGatewayDeployment
       Description: !Sub Mock API Stage ${ApiStageName}
       RestApiId: !Ref ApiGatewayRestApi
-      ApiStageName: !Ref ApiStageName
+      StageName: !Ref ApiStageName
 
 Outputs:
   ApigwUrl:
