@@ -40,6 +40,7 @@ pip install -r requirements-cli.txt
 - [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
 - [Closing account](#closing-account)
 - [Other AWS useful tools](#other-aws-useful-tools)
+- [Data sources](#data-sources)
 - [Other tools](#other-tools)
 - [Best Practices Guides](#best-practices-guides)
 - [Workshops](#workshops)
@@ -217,6 +218,14 @@ pip install -r requirements-cli.txt
 | AWS Proton Sample Templates | [aws-samples/aws-proton-sample-templates](https://github.com/aws-samples/aws-proton-sample-templates) |
 | AWS Proton Sample Fargate Templates | [aws-samples/aws-proton-sample-fargate-service](https://github.com/aws-samples/aws-proton-sample-fargate-service) |
 | awslimitchecker | [jantman/awslimitchecker](https://github.com/jantman/awslimitchecker) |
+
+## Data sources
+
+| Description | Repo/Link |
+| :--- | :--- |
+| Registry of Open Data on AWS | [registry.opendata.aws](https://registry.opendata.aws/) |
+| Landset 8 satellite imagery of all land on Earth | [registry.opendata.aws/landsat-8](https://registry.opendata.aws/landsat-8/), <br/> [landsatonaws.com](https://landsatonaws.com/)|
+
 
 ## Other tools
 
