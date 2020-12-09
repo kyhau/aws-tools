@@ -147,9 +147,9 @@ pip install -r requirements-cli.txt
 | AWS Trusted Advisor Tools | [aws/Trusted-Advisor-Tools](https://github.com/aws/Trusted-Advisor-Tools) |
 | AWS X-Ray SDK (Python) | [aws/aws-xray-sdk-python](https://github.com/aws/aws-xray-sdk-python) |
 | bash-my-aws | [bash-my-universe/bash-my-aws](https://github.com/bash-my-universe/bash-my-aws.git) |
+| coldsnap - command-line tool that uses the EBS direct APIs to upload and download snapshots | [awslabs/coldsnap](https://github.com/awslabs/coldsnap) |
 | Neptune Graph Notebook (Python) | [aws/graph-notebook](https://github.com/aws/graph-notebook) |
 | kubectl | [kubernetes/kubectl](https://github.com/kubernetes/kubectl) |
-| Warrant a Python library for using AWS Cognito with support for SRP| [capless/warrant](https://github.com/capless/warrant) |
 
 ## Security
 
