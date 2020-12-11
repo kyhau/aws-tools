@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: A private API Gateway with a Mock Integration
+
+Parameters:
+  ApiName:
+    Description: Name of the API Gateway to create
+    Type: String
+    Default: K-Mock-Simple-Private-API
+  ApiStageName:
+    Description: Name of the API stage to create
+    Type: String
+    Default: v0
+    AllowedPattern: '[A-Za-z0-9]*'
+    MinLength: '1'
+    MaxLength: '64'
+    ConstraintDescription: must contain only alphanumeric characters (1-64 chars)
+  VpcEndpointId:
+    Description: Logical ID of the VPC endpoint
+    Type: String
+
+Resources:
+  ApiGatewayRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      ApiKeySourceType: HEADER
+      Description: A private API Gateway with a Mock Integration
+      EndpointConfiguration:
+        Types:
+          - PRIVATE
+        VpcEndpointIds:
+          - !Ref VpcEndpointId
+      Policy: !Sub |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": "execute-api:Invoke",
+              "Resource": "execute-api:/*"
+            },
+            {
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "execute-api:Invoke",
+              "Resource": "execute-api:/*",
+              "Condition": {
+                "StringNotEquals": {
+                  "aws:sourceVpce": "${VpcEndpointId}"
+                }
+              }
+            }
+          ]
+        }
+      Name: !Ref ApiName
+
+  ApiGatewayResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: mock
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        ConnectionType: INTERNET
+        IntegrationResponses:
+          - ResponseTemplates:
+              application/json: "{\"message\": \"OK\"}"
+            SelectionPattern: '2\d{2}'
+            StatusCode: "200"
+          - ResponseTemplates:
+              application/json: "{\"message\": \"Internal Server Error\"}"
+            SelectionPattern: '5\d{2}'
+            StatusCode: "500"
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        RequestTemplates:
+          application/json: "{\"statusCode\": 200, \"message\": $input.json('$.message')}"
+        Type: MOCK
+        TimeoutInMillis: 29000
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref ApiGatewayModel
+          StatusCode: "200"
+        - ResponseModels:
+            application/json: !Ref ApiGatewayModel
+          StatusCode: "500"
+      OperationName: mock
+      ResourceId: !Ref ApiGatewayResource
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayModel:
+    Type: AWS::ApiGateway::Model
+    Properties:
+      ContentType: application/json
+      RestApiId: !Ref ApiGatewayRestApi
+      Schema: {}
+
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ApiGatewayMethod
+    Properties:
+      Description: Mock API Deployment
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApiGatewayDeployment
+      Description: !Sub Mock API Stage ${ApiStageName}
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: !Ref ApiStageName
+
+Outputs:
+  ApigwUrl:
+    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ApiStageName}/mock

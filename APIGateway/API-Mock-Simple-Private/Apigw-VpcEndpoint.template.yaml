@@ -1,0 +1,102 @@
+# Stack name: K-Mock-Simple-APIGW-VpcEndpoint
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >-
+  Create VPC Endpoint and Policy.
+  After you create an interface VPC endpoint, if you enable private DNS hostnames for the endpoint, the default
+  API Gateway endpoint (https://execute-api.<Region>.amazonaws.com) resolves to your VPC endpoint.
+  If you do not enable private DNS hostnames, Amazon VPC provides a DNS endpoint name that you can use in the
+  following format: <VPC_Endpoint_ID>.execute-api.<Region>.vpce.amazonaws.com.
+
+Parameters:
+  VpcId:
+    Description: The ID of the VPC in which the endpoint will be used.
+    Type: String
+
+Mappings:
+  Subnets:  # TODO Update the subnet details for the VPC of the given VpcId
+    SubnetA:
+      Cidr: 172.30.16.0/20
+      Id: subnet-11111111
+    SubnetB:
+      Cidr: 172.30.32.0/20
+      Id: subnet-22222222
+    SubnetC:
+      Cidr: 172.30.0.0/20
+      Id: subnet-33333333
+
+Resources:
+# Security group to associate with the endpoint network interface.
+# The security group must be set to allow TCP Port 443 inbound HTTPS traffic from either an IP range in your VPC or another security group in your VPC.
+  EndpointSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VpcId
+      GroupDescription: Security group
+      GroupName: GroupA
+      SecurityGroupIngress:
+        - CidrIp: !FindInMap [Subnets, SubnetA, Cidr]
+          Description: SubnetA
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+        - CidrIp: !FindInMap [Subnets, SubnetB, Cidr]
+          Description: SubnetB
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+        - CidrIp: !FindInMap [Subnets, SubnetC, Cidr]
+          Description: SubnetC
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+      SecurityGroupEgress:
+        - CidrIp: '0.0.0.0/0'
+          IpProtocol: '-1'
+
+  VpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      # If you do not use API Gateway Resource Policy to restrict access to only this VPC endpoint.
+      # then enable the following:
+      #
+      #PolicyDocument:    # A policy to attach to the endpoint that controls access to the service.
+      #  Version: 2012-10-17
+      #  Statement:
+      #    - Effect: Allow
+      #      Principal: "*"    # TODO AWS: ["arn:aws:iam::123412341234:user/MyUser"]
+      #      Action:
+      #        - execute-api:Invoke
+      #      Resource:
+      #        - arn:aws:execute-api:ap-southeast-2:123412341234:aaaaa11111/*
+      PrivateDnsEnabled: false    # Indicate whether to associate a private hosted zone with the specified VPC.
+      SecurityGroupIds:
+        - !Ref EndpointSecurityGroup
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.execute-api
+      SubnetIds:
+        - !FindInMap [Subnets, SubnetA, Id]
+        - !FindInMap [Subnets, SubnetB, Id]
+        - !FindInMap [Subnets, SubnetC, Id]
+      VpcEndpointType: Interface
+      VpcId: !Ref VpcId
+
+Outputs:
+  VpcEndpointId:
+    Description: Logical ID of the VPC endpoint
+    Value: !Ref VpcEndpoint
+
+  VpcEndpointCreationTimestamp:
+    Description: The date and time the VPC endpoint was created. E.g. Fri Sep 28 23:34:36 UTC 2018.
+    Value: !GetAtt VpcEndpoint.CreationTimestamp
+
+  VpcEndpointDnsEntries:
+    Description: >-
+      The DNS entries for the endpoint.
+      If you update the PrivateDnsEnabled or SubnetIds properties, the DNS entries in the list will change.
+    Value: !Join [",", !GetAtt VpcEndpoint.DnsEntries]
+
+  VpcEndpointNetworkInterfaceIds:
+    Description: >-
+      One or more network interface IDs.
+      If you update the PrivateDnsEnabled or SubnetIds properties, the items in this list might change.
+    Value: !Join [",", !GetAtt VpcEndpoint.NetworkInterfaceIds]

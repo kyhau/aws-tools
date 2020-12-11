@@ -1,9 +1,13 @@
-# Useful tools
+## Useful links
+
+* [Understanding AWS CloudFormation !Sub Syntax](https://www.fischco.org/technica/2017/cloud-formation-sub/)
+
+## Useful tools
 
 * [AWS CloudFormer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html)
  (beta) - creates AWS CloudFormation templates from existing AWS resources.
 
-* [cfn-flip](https://github.com/awslabs/aws-cfn-template-flip) - 
+* [cfn-flip](https://github.com/awslabs/aws-cfn-template-flip) -
   converts AWS CloudFormation templates between JSON and YAML formats, making use of the YAML format's short function
   syntax where possible.
   - `pip install cfn_flip`
@@ -13,7 +17,7 @@
   template adhering to standards as used in AWS documentation.
 
 * [cfn-lint](https://github.com/aws-cloudformation/cfn-python-lint) -
-  validates CloudFormation yaml/json templates against the CloudFormation spec and additional checks. 
+  validates CloudFormation yaml/json templates against the CloudFormation spec and additional checks.
   - `pip install cfn-lint`
 
 * [cfn-nag](https://github.com/stelligent/cfn_nag) -
