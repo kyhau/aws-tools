@@ -118,5 +118,14 @@ Resources:
       StageName: !Ref ApiStageName
 
 Outputs:
-  ApigwUrl:
-    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ApiStageName}/mock
+  ApigwEndpoint:
+    Description: The API Gateway default execute-api endpoint
+    Value: !Sub ${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com
+
+  ApigwVpcEndpointR53Alias:
+    Description: The API Gateway Route 53 Alias for the VPC endpoint associated
+    Value: !Sub ${ApiGatewayRestApi}-${VpcEndpointId}.execute-api.${AWS::Region}.amazonaws.com
+
+  ApiPath:
+    Description: The API stage and/or resource node to test with.
+    Value: !Sub /${ApiStageName}/mock

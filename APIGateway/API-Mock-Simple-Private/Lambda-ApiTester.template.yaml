@@ -1,0 +1,175 @@
+# Stack name: K-Mock-Simple-Private-API-LambdaTester
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Template to launch a Lambda function to test a private API
+
+Parameters:
+  ApigwEndpoint:
+    Description: The API Gateway default execute-api endpoint
+      (API_ID.execute-api.REGION.amazonaws.com); works only if private DNS enabled
+      for your interface endpoint).
+    Type: String
+    Default: ""
+  ApigwVpcEndpointR53Alias:
+    Description: The API Gateway Route 53 Alias for the VPC endpoint associated
+      (API_ID-VPCE_ID.execute-api.REGION.amazonaws.com).
+    Type: String
+    Default: ""
+  ApiPath:
+    Description: The API stage and/or resource node to test with.
+    Type: String
+    Default: /v0/mock
+  FunctionTracingConfigMode:
+    Description: The TracingConfig Mode of Lambda Function.
+    Type: String
+    AllowedValues: ["Active", "PassThrough"]
+    Default: PassThrough
+  LogRetention:
+    Description: Days to keep application logs.
+    Type: Number
+    Default: 1
+  VpcEndpointPublicDnsName:
+    Description: The public DNS name for the VPC endpoint
+      (VPCE_ID-xxxxxxxx.execute-api.REGION.vpce.amazonaws.com). On the Endpoints console
+      page, note the DNS names. Copy the public DNS name for your interface endpoint.
+    Type: String
+    Default: ""
+  VpcId:
+    Description: The ID of the VPC the Lambda is associated to.
+    Type: String
+
+Mappings:
+  Subnets:  # TODO Update the subnet details for the VPC of the given VpcId
+    SubnetA:
+      Id: subnet-11111111
+    SubnetB:
+      Id: subnet-22222222
+
+Resources:
+  ApiTesterFunctionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+    Type: AWS::IAM::Role
+
+  ApiTesterFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import json
+          import logging
+          import os
+          import urllib3
+
+          API_PATH = os.environ.get("API_PATH", "/v0/mock")
+          APIGW_ENDPOINT = os.environ.get("APIGW_ENDPOINT")
+          APIGW_VPCE_R53_Alias = os.environ.get("APIGW_VPCE_R53_Alias")
+          VPCE_PUBLIC_DNS_NAME = os.environ.get("VPCE_PUBLIC_DNS_NAME")
+          passed = 0
+          failed = 0
+
+          logging.getLogger("urllib3.connectionpool").setLevel(logging.CRITICAL)
+
+          http = urllib3.PoolManager()
+
+
+          def test_url(url, headers={}):
+              global passed, failed
+              try:
+                  resp = http.request("POST", url, headers=headers)
+                  data = json.loads(resp.data.decode("utf-8"))
+                  print(f"Response: {data}")
+                  if data.get("message") == "OK":
+                      passed += 1
+                  else:
+                      failed += 1
+              except Exception as e:
+                  print(f"Error: {e}")
+                  failed += 1
+
+
+          def lambda_handler(event, context):
+              if APIGW_ENDPOINT:
+                  # Default APIGW endpoint; work only if private DNS enabled for your interface endpoint.
+                  default_apigw_endpoint_url = f"https://{APIGW_ENDPOINT}{API_PATH}"
+                  print(f"Testing default APIGW endpoint (work only if private DNS enabled): {default_apigw_endpoint_url}")
+                  test_url(default_apigw_endpoint_url)
+
+              if APIGW_VPCE_R53_Alias:
+                  # API Gateway Route 53 Alias for VPC endpoint associated
+                  apigw_vpce_dns_url = f"https://{APIGW_VPCE_R53_Alias}{API_PATH}"
+                  print(f"Testing API Gateway Route 53 Alias for VPC endpoint associated: {apigw_vpce_dns_url}")
+                  test_url(apigw_vpce_dns_url)
+
+              if VPCE_PUBLIC_DNS_NAME and APIGW_ENDPOINT:
+                  public_dns_url = f"https://{VPCE_PUBLIC_DNS_NAME}{API_PATH}"
+
+                  # Public DNS name with a Host header
+                  print(f"Testing {public_dns_url} with headers Host={APIGW_ENDPOINT}")
+                  test_url(public_dns_url, headers={"Host": APIGW_ENDPOINT})
+
+                  # Public DNS name with the x-apigw-api-id header
+                  API_ID = APIGW_ENDPOINT.split(".")[0]
+                  print(f"Testing {public_dns_url} with headers x-apigw-api-id={API_ID}")
+                  test_url(public_dns_url, headers={"x-apigw-api-id": API_ID})
+
+              return {
+                  "body": json.dumps({"passed": passed, "failed": failed}),
+                  "headers": {"Content-Type": "application/json"},
+                  "statusCode": 200,
+              }
+
+      Environment:
+        Variables:
+          API_PATH: !Ref ApiPath
+          APIGW_ENDPOINT: !Ref ApigwEndpoint
+          APIGW_VPCE_R53_Alias: !Ref ApigwVpcEndpointR53Alias
+          VPCE_PUBLIC_DNS_NAME: !Ref VpcEndpointPublicDnsName
+      Handler: index.lambda_handler
+      Role: !GetAtt ApiTesterFunctionRole.Arn
+      Runtime: python3.7
+      Timeout: 35
+      TracingConfig:
+        Mode: !Ref FunctionTracingConfigMode
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref ApiTesterSG
+        SubnetIds:
+          - !FindInMap [Subnets, SubnetA, Id]
+          - !FindInMap [Subnets, SubnetB, Id]
+
+  ApiTesterFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${ApiTesterFunction}
+      RetentionInDays: !Ref LogRetention
+
+  ApiTesterSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VpcId
+      GroupDescription: SG for Lambda function
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: '0.0.0.0/0'
+      Tags:
+        - Key: Name
+          Value: ApiTesterSG
+
+Outputs:
+  ApiTesterFunctionName:
+    Description: Name of the Lambda function
+    Value: !Ref ApiTesterFunction
