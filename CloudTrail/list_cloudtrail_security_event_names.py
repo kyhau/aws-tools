@@ -3,6 +3,8 @@ COMMON_SECURITY_EVENTS = [
     "AuthorizeSecurityGroupIngress",
     "RevokeSecurityGroupEgress",
     "RevokeSecurityGroupIngress",
+    "CreateSecurityGroup",
+    "DeleteSecurityGroup",
     "AuthorizeDBSecurityGroupIngress",
     "RevokeDBSecurityGroupIngress",
     "CreateDBSecurityGroup",
