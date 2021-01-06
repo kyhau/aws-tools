@@ -240,6 +240,7 @@ pip install -r requirements-cli.txt
 
 ## Best Practices Guides
 
+- [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf)
 - [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/)
 
 ## Workshops
