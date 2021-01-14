@@ -244,7 +244,7 @@ pip install -r requirements-cli.txt
 - [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/)
 
 ## Workshops
-
+- [workshops.aws](https://workshops.aws/)
 - [Amplify Days ANZ](https://amplifydays.awsanz.com/)
 - [App Mesh Workshop](https://www.appmeshworkshop.com/)
 - [Asynchronous Messaging Workshop](https://github.com/aws-samples/asynchronous-messaging-workshop/)
