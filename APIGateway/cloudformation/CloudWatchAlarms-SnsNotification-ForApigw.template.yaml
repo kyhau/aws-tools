@@ -15,14 +15,14 @@ Parameters:
 
 Resources:
   ApiGatewayAlarmSnsTopic:
-    Type: 'AWS::SNS::Topic'
+    Type: AWS::SNS::Topic
     Properties:
       Subscription:
         - Endpoint: !Ref ApiGatewayAlarmEmail
           Protocol: email
 
   ApiGateway4XXErrorAlarm:
-    Type: 'AWS::CloudWatch::Alarm'
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
         - !Ref ApiGatewayAlarmSnsTopic
@@ -37,13 +37,13 @@ Resources:
       EvaluationPeriods: 1
       MetricName: 4XXError
       Namespace: AWS/ApiGateway
-      Period: 300
+      Period: 60  # seconds
       Statistic: Sum
       Threshold: 0
-      TreatMissingData: notBreaching
+      TreatMissingData: missing
 
   ApiGateway5XXErrorAlarm:
-    Type: 'AWS::CloudWatch::Alarm'
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmActions:
         - !Ref ApiGatewayAlarmSnsTopic
@@ -58,10 +58,33 @@ Resources:
       EvaluationPeriods: 1
       MetricName: 5XXError
       Namespace: AWS/ApiGateway
-      Period: 300
+      Period: 60  # seconds
       Statistic: Sum
       Threshold: 0
-      TreatMissingData: notBreaching
+      TreatMissingData: missing
+
+  ApiGatewayLatencyAlarm:
+    # The time between when API Gateway receives a request from a client and when it returns a response
+    # to the client. The latency includes the integration latency and other API Gateway overhead.
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref ApiGatewayAlarmSnsTopic
+      AlarmDescription: When API Gateway latency greater than 29 seconds it will be notified through SNS
+      AlarmName: !Join [ "/", [ !Ref ApiGatewayName, "ApiGatway", !Ref ApiGatewayStage, "Latency" ] ]
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: ApiName
+          Value: !Ref ApiGatewayName
+        - Name: Stage
+          Value: !Ref ApiGatewayStage
+      EvaluationPeriods: 1
+      MetricName: Latency
+      Namespace: AWS/ApiGateway
+      Period: 300  # seconds
+      Statistic: Maximum
+      Threshold: 29000  # in milliseconds (29 seconds)
+      TreatMissingData: missing
 
 Outputs:
   ApiGatewayAlarmSnsTopicArn:
