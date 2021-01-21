@@ -1,0 +1,104 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This template deploys additional CloudWatch Alarms and SNS email notifications for a Step Function.
+
+Parameters:
+  SfnAlarmEmail:
+    Description: Email address to notify if there are any Step Function operational issues
+    Type: String
+  SfnArn:
+    Description: The ARN of the Step Function
+    Type: String
+  SfnName:
+    Description: Name of the Step Function
+    Type: String
+
+Resources:
+  SfnAlarmSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint: !Ref SfnAlarmEmail
+          Protocol: email
+
+  SfnExecutionTimeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SfnAlarmSnsTopic
+      AlarmDescription: State Machine executime time greater than 5 mins
+      AlarmName: !Sub Sfn/${SfnName}/ExecutionTime
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: StateMachineArn
+          Value: !Ref SfnArn
+      EvaluationPeriods: 1
+      MetricName: ExecutionTime
+      Namespace: AWS/States
+      Period: 60  # seconds
+      Statistic: Maximum
+      Threshold: 300000  # in milliseconds (300000 ms = 5 mins)
+      TreatMissingData: missing
+
+  SfnExecutionThrottledAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SfnAlarmSnsTopic
+      AlarmDescription: State Machine execution were throttled
+      AlarmName: !Sub Sfn/${SfnName}/ExecutionThrottled
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: StateMachineArn
+          Value: !Ref SfnArn
+      EvaluationPeriods: 1
+      MetricName: ExecutionThrottled
+      Namespace: AWS/States
+      Period: 60 # seconds
+      Statistic: Sum
+      Threshold: 1
+      TreatMissingData: missing
+
+  SfnExecutionsFailedAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmActions:
+        - !Ref SfnAlarmSnsTopic
+        AlarmDescription: State Machine execution failed
+        AlarmName: !Sub Sfn/${SfnName}/ExecutionsFailed
+        ComparisonOperator: GreaterThanThreshold
+        Dimensions:
+        - Name: StateMachineArn
+          Value: !Ref SfnArn
+        EvaluationPeriods: 1
+        MetricName: ExecutionsFailed
+        Namespace: AWS/States
+        Period: 60 # seconds
+        Statistic: Sum
+        Threshold: 1
+        TreatMissingData: missing
+
+  SfnExecutionsTimedOutAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+      - !Ref SfnAlarmSnsTopic
+      AlarmDescription: State Machine execution timed out
+      AlarmName: !Sub Sfn/${SfnName}/ExecutionsTimedOut
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+      - Name: StateMachineArn
+        Value: !Ref SfnArn
+            Fn::GetAtt: [StateMachine, Arn]
+      EvaluationPeriods: 1
+      MetricName: ExecutionsTimedOut
+      Namespace: AWS/States
+      Period: 60 # seconds
+      Statistic: Sum
+      Threshold: 1
+      TreatMissingData: missing
+
+Outputs:
+  SfnAlarmSnsTopicArn:
+    Description: A reference to SNS Notification ARN of Step Function error activities
+    Value: !Ref SfnAlarmSnsTopic
