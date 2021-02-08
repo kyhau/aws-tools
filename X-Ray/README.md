@@ -1,14 +1,17 @@
-## Some links
+# Some X-Ray notes
 
-- https://aws.amazon.com/blogs/compute/building-well-architected-serverless-applications-understanding-application-health-part-2/
+- [Segment and subsegment in Lambda](#segment-and-subsegment-in-lambda)
+- [SQS to Lambda](#sqs-to-lambda)
 
-- Dynamically adjusting X-Ray sampling rules
-  https://aws.amazon.com/blogs/mt/dynamically-adjusting-x-ray-sampling-rules/
+---
+## Segment and subsegment in Lambda
 
-## Some notes
+- Summary of facade segment and new segment/subsegments in Lambda.
+    - https://github.com/aws/aws-xray-sdk-node/issues/148
+    - https://github.com/aws/aws-xray-sdk-node/issues/160
 
-- Though SQS supports X-Ray tracing, it doesn't propagate the trace to a lambda function - Lambda always starts a new trace. There is an issue reported https://github.com/aws/aws-xray-sdk-node/issues/208.
-    - Possible workaround: Create a new segment for the lambda to link to the parent (sqs).
+- `AWSXray.getSegment()` returns the root segment from the previous invocation.
+    - https://theburningmonk.com/2017/06/aws-x-ray-and-lambda-the-good-the-bad-and-the-ugly/
 
 - The `in_progress` subsegment is discarded in favor of the completed subsegment.
     - i.e. (in_progress === undefined)
@@ -21,3 +24,20 @@
 
 - Segment doc max 64 kb
   https://docs.aws.amazon.com/xray/latest/devguide/xray-api-segmentdocuments.html
+
+- Dynamically adjusting X-Ray sampling rules
+  https://aws.amazon.com/blogs/mt/dynamically-adjusting-x-ray-sampling-rules/
+
+---
+## SQS to Lambda
+
+SQS supports X-Ray tracing but it does not propagate the trace to a Lambda function.Lambda always starts a new trace.
+
+See:
+- aws-xray-sdk-node: https://github.com/aws/aws-xray-sdk-node/issues/208.
+    - Possible workaround: Create a new segment for the lambda to link to the parent (sqs)
+- aws-xray-sdk-dotnet: https://github.com/aws/aws-xray-sdk-dotnet/issues/110
+
+Workaround:
+- Create a new segment to replace the facade segment created by Lambda, and retrieve the trace ID and parent ID from the trace header (from the SQS segment).
+- Example: [xray-sqs-to-lambda/handler.ts](xray-sqs-to-lambda/handler.ts)
