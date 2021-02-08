@@ -124,6 +124,7 @@ pip install -r requirements-cli.txt
 | Description | Repo/Link |
 | :--- | :--- |
 | Amazon CloudWatch Embedded Metric Format Client Library (Python) | [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python) |
+| Amazon Ion Python | [amzn/ion-python](https://github.com/amzn/ion-python) |
 | Authorization Lambda@Edge (Node.js) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
 | AutoML Toolkit for Deep Learning | [awslabs/autogluon](https://github.com/awslabs/autogluon) |
 | AWS Cloud Digital Interface (CDI) Software Development Kit (SDK) | [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-sdk) |
