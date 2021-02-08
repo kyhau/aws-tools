@@ -41,3 +41,4 @@ See:
 Workaround:
 - Create a new segment to replace the facade segment created by Lambda, and retrieve the trace ID and parent ID from the trace header (from the SQS segment).
 - Example: [xray-sqs-to-lambda/handler.ts](xray-sqs-to-lambda/handler.ts)
+![(xray-sqs-to-lambda](xray-sqs-to-lambda/x-ray-sqs-to-lambda-to-others.png)
