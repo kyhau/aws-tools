@@ -57,6 +57,7 @@ pip install -r requirements-cli.txt
 | [AWS CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/) | [aws-samples/cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) |
 | [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/api-reference.html) | [awslabs/aws-solutions-constructs](https://github.com/awslabs/aws-solutions-constructs) |
 | CDK Patterns | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
+| Serverless Stack Toolkit (SST) (extension of AWS CDK) | [serverless-stack/serverless-stack](https://github.com/serverless-stack/serverless-stack) |
 | Awesome CDK | [kolomied/awesome-cdk](https://github.com/kolomied/awesome-cdk) |
 | kyhau/cdk-examples | [kyhau/cdk-examples](https://github.com/kyhau/cdk-examples) |
 
