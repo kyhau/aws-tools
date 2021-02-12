@@ -12,8 +12,8 @@ alias aws-ami-latest-eks-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_e
 alias aws-ami-latest-ec2-linux-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py'
 alias aws-ami-latest-ec2-windows-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py -w'
 
-alias aws-apig-deploy='python ${REPO_HOME}/APIGateway/deploy_apig.py'
-alias aws-apig-v2-deploy='python ${REPO_HOME}/APIGateway/deploy_apig_v2.py'
+alias aws-apigw-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw.py'
+alias aws-apigw-v2-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw_v2.py'
 
 alias aws-athena-query-execution='python ${REPO_HOME}/Athena/athena_query_execution.py'
 
@@ -67,7 +67,7 @@ alias aws-ip-lookup='python ${REPO_HOME}/EC2-VPC/find_subnet_for_ip.py'
 alias aws-ip-ranges='curl https://ip-ranges.amazonaws.com/ip-ranges.json'
 alias aws-ip-ranges-link='echo https://ip-ranges.amazonaws.com/ip-ranges.json'
 
-alias aws-lambda-add-permission-for-apig='python ${REPO_HOME}/APIGateway/lambda_permissions_for_apig.py'
+alias aws-lambda-add-permission-for-apigw='python ${REPO_HOME}/APIGateway/lambda_permissions_for_apigw.py'
 alias aws-lambda-deploy='python ${REPO_HOME}/Lambda/deploy_lambda.py'
 
 alias aws-msk-cluster-bootstrap-broker-string='aws kafka get-bootstrap-brokers --query BootstrapBrokerStringTls --cluster-arn '
