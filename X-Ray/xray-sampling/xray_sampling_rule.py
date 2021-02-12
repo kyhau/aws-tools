@@ -78,40 +78,35 @@ def cli_main(ctx, profile, region):
 @cli_main.command(help='List all x-ray sampling rules.')
 @click.pass_context
 def ls(ctx):
-    region, session = ctx.obj['region'], ctx.obj['session']
-    Helper(session, region).get_sampling_rules()
+    Helper(ctx.obj['session'], ctx.obj['region']).get_sampling_rules()
 
 
 @cli_main.command(help='Export a rule to a local file (rule_name.json).')
 @click.argument('rule_name')
 @click.pass_context
 def export(ctx, rule_name):
-    region, session = ctx.obj['region'], ctx.obj['session']
-    Helper(session, region).export_rule_to_file(rule_name)
+    Helper(ctx.obj['session'], ctx.obj['region']).export_rule_to_file(rule_name)
 
 
 @cli_main.command(help='Create a new sampling rule with the given input json file.')
 @click.argument('input_json_file')
 @click.pass_context
 def create(ctx, input_json_file):
-    region, session = ctx.obj['region'], ctx.obj['session']
-    Helper(session, region).create_sampling_rule(input_json_file)
+    Helper(ctx.obj['session'], ctx.obj['region']).create_sampling_rule(input_json_file)
 
 
 @cli_main.command(help='Delete the sampling rule of the given rule name.')
 @click.argument('rule_name')
 @click.pass_context
 def delete(ctx, rule_name):
-    region, session = ctx.obj['region'], ctx.obj['session']
-    Helper(session, region).delete_sampling_rule(rule_name)
+    Helper(ctx.obj['session'], ctx.obj['region']).delete_sampling_rule(rule_name)
 
 
 @cli_main.command(help='Update an existing sampling rule with the given input json file.')
 @click.argument('input_json_file')
 @click.pass_context
 def update(ctx, input_json_file):
-    region, session = ctx.obj['region'], ctx.obj['session']
-    Helper(session, region).update_sampling_rule(input_json_file)
+    Helper(ctx.obj['session'], ctx.obj['region']).update_sampling_rule(input_json_file)
 
 
 if __name__ == '__main__':
