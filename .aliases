@@ -110,6 +110,8 @@ alias aws-vpn-connections='python ${REPO_HOME}/EC2-VPC/list_vpn_connections.py'
 alias aws-workspaces-details='python ${REPO_HOME}/Workspaces/list_workspaces_details.py'
 alias aws-workspace-restore-rebuild='python ${REPO_HOME}/Workspaces/workspace_restore_rebuild.py'
 
+alias aws-xray-sampling-rule='python ${REPO_HOME}/X-Ray/xray-sampling/xray_sampling_rule.py*'
+
 alias arki-ls-common-ip-protocols='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-protocols.md'
 alias arki-ls-common-ip-ranges='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-ranges.md'
 alias arki-ls-common-ports='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ports.md'
