@@ -3,16 +3,16 @@ A helper script for retrieving CloudTrail events
 """
 import json
 import logging
-from datetime import datetime, timedelta
 
 import click
 from botocore.exceptions import ProfileNotFound
 from helper.aws import AwsApiHelper
+from helper.datetime import DT_FORMAT_YMDHMS, lookup_range_str_to_timestamp
 from helper.ser import dump_json
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-LOOKUP_HOURS = 12
+LOOKUP_HOURS = 4
 
 
 class Helper(AwsApiHelper):
@@ -35,14 +35,7 @@ class Helper(AwsApiHelper):
 
 
 def new_operation_params(start_time, end_time, event_name, user_name):
-    end_dt = datetime.now() if end_time is None else datetime.strptime(end_time, "%Y-%m-%d")
-    start_dt = end_dt - timedelta(hours=LOOKUP_HOURS) if start_time is None else datetime.strptime(start_time, "%Y-%m-%d")
-
-    # Convert local datetime to UTC
-    local_to_utc = lambda dt: datetime.utcfromtimestamp(datetime.timestamp(dt))
-
-    end_dt = local_to_utc(end_dt)
-    start_dt = local_to_utc(start_dt)
+    start_dt, end_dt = lookup_range_str_to_timestamp(start_time, end_time, lookup_hours=LOOKUP_HOURS, local_to_utc=True)
 
     lookup_attributes = []  # If more than one attribute, they are evaluated as "OR".
     if event_name is not None:
@@ -60,8 +53,8 @@ def new_operation_params(start_time, end_time, event_name, user_name):
 @click.command()
 @click.option("--eventname", "-n", help="Event name. If specify both eventname and username, the condition is OR.")
 @click.option("--username", "-u", help="User name. If specify both eventname and username, the condition is OR.")
-@click.option("--starttime", "-s", help=f"Start time (e.g. 2020-04-01); return last {LOOKUP_HOURS} records if not specified.")
-@click.option("--endtime", "-e", help="End time (e.g. 2020-04-01); now if not specified.")
+@click.option("--starttime", "-s", help=f"Start time ({DT_FORMAT_YMDHMS}); return records of last {LOOKUP_HOURS} hours if not specified.")
+@click.option("--endtime", "-e", help="End time ({DT_FORMAT_YMDHMS}); now if not specified.")
 @click.option("--maxresults", "-m", help="Number of events to return for each account/region; unlimited if not specified.")
 @click.option('--decode', '-d', show_default=True, is_flag=True, help="Deserialize json-string to json-object")
 @click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")

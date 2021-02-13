@@ -1,6 +1,6 @@
-from datetime import date, datetime
 import decimal
 import json
+from datetime import date, datetime
 from time import mktime
 
 
@@ -26,7 +26,6 @@ class DefaultEncoder(json.JSONEncoder):
         if isinstance(obj, datetime):
             return int(mktime(obj.timetuple()))
         return json.JSONEncoder.default(self, obj)
-
 
 
 class DecimalEncoder(json.JSONEncoder):

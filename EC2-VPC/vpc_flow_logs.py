@@ -1,66 +1,53 @@
 """
 Retrieve VPC Flow Logs with CloudWatch Logs Insights
 """
-import logging
-from datetime import datetime, timedelta
+from time import sleep
 
 import click
 from boto3.session import Session
-
-logging.getLogger().setLevel(logging.DEBUG)
+from helper.datetime import DT_FORMAT_YMDHMS, lookup_range_str_to_timestamp
 
 LOOKUP_HOURS = 1
 
+DEFAULT_QUERY_STRING = "fields @timestamp, @message | sort @timestamp asc"
+
 
 @click.command(help="Retrieve VPC Flow Logs")
-@click.option("--profile", "-p", help="AWS profile name.", default="default")
 @click.option("--loggroupname", "-l", help="Log Group name", required=True)
-@click.option("--starttime", "-s", help="Start time (e.g. 2020-04-01 04:00:00); return last 1d records if not specified")
-@click.option("--endtime", "-e", help="End time (e.g. 2020-04-01 04:30:00); now if not specified.")
-@click.option("--region", "-r", help="AWS Region. Default ap-southeast-2", default="ap-southeast-2")
-def main(profile, loggroupname, starttime, endtime, region):
+@click.option("--starttime", "-s", help=f"Start time ({DT_FORMAT_YMDHMS}); return records of last {LOOKUP_HOURS} hours if not specified.")
+@click.option("--endtime", "-e", help="End time ({DT_FORMAT_YMDHMS}); now if not specified.")
+@click.option("--limit", "-m", type=int, default=10000, show_default=True, help="The maximum number of log events to return in the query.")
+@click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name.")
+@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region.")
+def main(loggroupname, starttime, endtime, limit, profile, region):
     session = Session(profile_name=profile)
     client = session.client("logs", region_name=region)
 
-    end_dt = datetime.now() if endtime is None else datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
-    start_dt = (end_dt - timedelta(hours=LOOKUP_HOURS)) if starttime is None else datetime.strptime(starttime, "%Y-%m-%d %H:%M:%S")
+    start_dt, end_dt = lookup_range_str_to_timestamp(starttime, endtime, lookup_hours=LOOKUP_HOURS, local_to_utc=False)
 
-    # Convert local datetime to UTC
-    #local_to_utc = lambda dt: datetime.utcfromtimestamp(datetime.timestamp(dt))
-    #start_dt = local_to_utc(start_dt)
-    #end_dt = local_to_utc(end_dt)
+    query_id = client.start_query(
+        logGroupName=loggroupname,
+        startTime=int(start_dt.timestamp()),  # Although doc says this is the number of seconds UTC, it takes local time and convert to UTC
+        endTime=int(end_dt.timestamp()),
+        queryString=DEFAULT_QUERY_STRING,
+        limit=limit,
+    )["queryId"]
 
-    start_timestamp = int(start_dt.timestamp())
-    end_timestamp = int(end_dt.timestamp())
+    # TODO What if more than 10000 messages?
 
-    query_string = 'fields @timestamp, @message | sort @timestamp asc'
+    response = None   # "Scheduled"|"Running"|"Complete"|"Failed"|"Cancelled"
+    while response is None or response.get("status") == "Running":
+        response = client.get_query_results(queryId=query_id)
+        sleep(1)
 
-    check_timestamp = start_timestamp
+    cnt = 0
+    for item in response.get("results", []):
+        v = [k["value"] for k in item if k["field"] == "@message"][0]
+        t = [k["value"] for k in item if k["field"] == "@timestamp"][0]
+        print(t, v)
+        cnt += 1
 
-    while check_timestamp < end_timestamp:
-        print(check_timestamp)
-
-        query_id = client.start_query(
-            logGroupName=loggroupname,
-            startTime=check_timestamp,
-            endTime=check_timestamp+1,
-            queryString=query_string,
-            limit=10000,
-        )["queryId"]
-
-        response = None   # 'Scheduled'|'Running'|'Complete'|'Failed'|'Cancelled'
-        while response is None or response.get("status") == "Running":
-            response = client.get_query_results(queryId=query_id)
-
-        # TODO What if more than 10000 messages?
-
-        for item in response.get("results", []):
-            v = [k['value'] for k in item if k['field'] == '@message'][0]
-            t = [k['value'] for k in item if k['field'] == '@timestamp'][0]
-            print(t, v)
-
-        check_timestamp += 1
-
+    print(f"Number of items returned: {cnt}")
 
 
 if __name__ == "__main__":
