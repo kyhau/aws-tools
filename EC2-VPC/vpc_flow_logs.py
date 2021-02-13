@@ -13,9 +13,9 @@ DEFAULT_QUERY_STRING = "fields @timestamp, @message | sort @timestamp asc"
 
 
 @click.command(help="Retrieve VPC Flow Logs")
-@click.option("--loggroupname", "-l", help="Log Group name", required=True)
+@click.option("--loggroupname", "-n", help="Log Group name", required=True)
 @click.option("--starttime", "-s", help=f"Start time ({DT_FORMAT_YMDHMS}); return records of last {LOOKUP_HOURS} hours if not specified.")
-@click.option("--endtime", "-e", help="End time ({DT_FORMAT_YMDHMS}); now if not specified.")
+@click.option("--endtime", "-e", help=f"End time ({DT_FORMAT_YMDHMS}); now if not specified.")
 @click.option("--limit", "-m", type=int, default=10000, show_default=True, help="The maximum number of log events to return in the query.")
 @click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name.")
 @click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region.")
