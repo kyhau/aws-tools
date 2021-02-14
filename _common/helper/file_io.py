@@ -7,7 +7,6 @@ Functions for reading/writing files
 - text
 - ini
 """
-import io
 import json
 from os import makedirs, walk
 from os.path import exists, join
@@ -202,8 +201,8 @@ class IniFileHelper:
             section, option, value = c
 
             if section not in self.config.sections():
-                config.add_section(section)
-            config.set(section, option, value)
+                self.config.add_section(section)
+            self.config.set(section, option, value)
 
         with open(ini_file, "w") as configfile:
-            config.write(configfile)
+            self.config.write(configfile)
