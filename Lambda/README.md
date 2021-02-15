@@ -15,6 +15,10 @@
   - Technically you can do up to 10 seconds of work before it starts getting included in the billed duration.
   - Also, you'll always have to pay something for the handler execution - the minimum billed execution time is 100ms.
 
+## Using AWS SAM CLI with the AWS CDK to test a Lambda function locally
+
+- https://docs.aws.amazon.com/cdk/latest/guide/sam.html
+
 ## aws-lambda-powertools
 
 - https://awslabs.github.io/aws-lambda-powertools-python/core/logger/
