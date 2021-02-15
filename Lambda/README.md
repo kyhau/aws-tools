@@ -15,6 +15,15 @@
   - Technically you can do up to 10 seconds of work before it starts getting included in the billed duration.
   - Also, you'll always have to pay something for the handler execution - the minimum billed execution time is 100ms.
 
+- non-async handlers and `context.callbackWaitsForEmptyEventLoop = false`
+  - By default calling the callback() function in a NodeJS Lambda function does not end the function execution. It will continue running until the event loop is empty. A common issue with NodeJS Lambda functions continuing to run after callback is called occurs when you are holding on to open database connections.
+I solved my problems with set to callbackWaitsForEmptyEventLoop = false.
+  - https://stackoverflow.com/questions/53296201/request-time-out-from-aws-lambda/53312129
+  - https://stackoverflow.com/questions/37791258/lambda-timing-out-after-calling-callback
+  - https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html (edited) 
+     - > For non-async handlers, function execution continues until the event loop is empty or the function times out. The response isn't sent to the invoker until all event loop tasks are finished. If the function times out, an error is returned instead. You can configure the runtime to send the response immediately by setting context.callbackWaitsForEmptyEventLoop to false. 
+
+
 ## Using AWS SAM CLI with the AWS CDK to test a Lambda function locally
 
 - https://docs.aws.amazon.com/cdk/latest/guide/sam.html
