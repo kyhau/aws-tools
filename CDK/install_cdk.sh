@@ -14,6 +14,9 @@ echo "npm version: $(npm --version)"
 #echo "Uninstalling the AWS CDK.
 #sudo npm uninstall -g aws-cdk
 
+# If seeing enoent ENOENT: no such file or directory, chmod '/usr/lib/node_modules/aws-cdk/bin/cdk'
+#sudo rm -rf /usr/lib/node_modules/aws-cdk/
+
 echo "Installing the AWS CDK..."
 sudo npm install -g aws-cdk
 echo "cdk version: $(cdk --version)"
