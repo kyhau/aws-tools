@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: DBClusterParameterGroup and DBParameterGroup for Aurora PostgreSQL
+
+Parameters:
+  DBParameterGroupFamily:
+    Description: The DB parameter group family name.
+    Type: String
+    Default: aurora-postgresql12
+
+Outputs:
+  DBClusterParameterGroup:
+    Description: The name of the DB cluster parameter group.
+    Value: !Ref DBClusterParameterGroup
+  DBParameterGroup:
+    Description: The name of the DB parameter group.
+    Value: !Ref DBParameterGroup
+
+Resources:
+  DBClusterParameterGroup:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Description: Aurora PostgreSQL Cluster Parameter Group
+      Family: !Ref DBParameterGroupFamily
+      Parameters:
+        rds.force_ssl: 1
+  DBParameterGroup:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      Description: Aurora PostgreSQL Instance Parameter Group
+      Family: !Ref DBParameterGroupFamily
+      Parameters:
+        shared_preload_libraries: auto_explain,pg_stat_statements,pg_hint_plan,pgaudit
+        log_statement: "ddl"
+        log_connections: "1"
+        log_disconnections: "1"
+        log_lock_waits: "1"
+        log_min_duration_statement: "5000"
+        auto_explain.log_min_duration: "5000"
+        auto_explain.log_verbose: "1"
+        log_rotation_age: "1440"
+        log_rotation_size: "102400"
+        rds.log_retention_period: "10080"
+        random_page_cost: "1"
+        track_activity_query_size: "16384"
+        idle_in_transaction_session_timeout: "7200000"
+        statement_timeout: "7200000"
+        search_path: '"$user",public'

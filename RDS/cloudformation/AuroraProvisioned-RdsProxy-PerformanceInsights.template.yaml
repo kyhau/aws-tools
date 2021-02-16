@@ -1,0 +1,600 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Aurora provisioned, RDS Proxy and Performance Insights
+
+Parameters:
+  AlarmIntegrationEndpoint:
+    Description: The HTTPS integration endpoint to send SNS alarm messages.
+    Type: String
+    Default: ""
+  DatabaseName:
+    Description: The name of your database.
+    Type: String
+  BackupRetentionPeriod:
+    Description: The number of days for which automated backups are retained.
+    Type: Number
+    Default: 4
+  DBClusterParameterGroup:
+    Description: The name of the DB cluster parameter group to associate with this DB cluster.
+    Type: String
+  DBInstanceClass:
+    Description: The compute and memory capacity of the DB instance, for example, db.m4.large.
+    Type: String
+    Default: db.t3.medium
+  DBParameterGroup:
+    Description: The name of the DB parameter group to associate with this DB instance.
+    Type: String
+  Engine:
+    Description: The name of the database engine to be used for this DB cluster.
+    Type: String
+    AllowedValues:
+      - aurora-postgresql
+      - aurora-mysql
+    Default: aurora-postgresql
+  EngineVersion:
+    Description: The version number of the database engine to use. Optional.
+    Type: String
+    Default: ""
+  HostedZoneName:
+    Description: The name of the hosted zone that you want to create records in (must include a trailing dot e.g. www.example.com.). Optional.
+    Type: String
+  MasterUsername:
+    Description: The name of the master user for the DB cluster.
+    Type: String
+  MasterPassword:
+    Description: The master password for the DB cluster. Auto generated if not specified.
+    Type: String
+    Default: ""
+    NoEcho: true
+  NetworkSubnetIds:
+    Description: Subnet IDs
+    Type: List<AWS::EC2::Subnet::Id>
+  NetworkVpcId:
+    Description: The ID of the VPC for the security group.
+    Type: AWS::EC2::VPC::Id
+  PerformanceInsightsRetentionPeriod:
+    Description: The number of days for which Performance Insights data are retained. Valid values are 7 or 731 (2 years).
+    Type: Number
+    AllowedValues:
+      - 7
+      - 731
+    Default: 7
+  Port:
+    Description: The port number on which the DB instances in the DB cluster accept connections. 3306 for MySQL. 5432 for PostgreSQL.
+    Type: Number
+    Default: 5432
+  SnapshotToRestore:
+    Description: The identifier for the DB cluster snapshot.
+    Type: String
+    Default: ""
+
+Conditions:
+  ConfigureAlarms: !Not [!Equals [!Ref AlarmIntegrationEndpoint, ""]]
+  ConfigureDBClusterParameterGroup: !Not [!Equals [!Ref DBClusterParameterGroup, ""]]
+  ConfigureDBParameterGroup: !Not [!Equals [!Ref DBParameterGroup, ""]]
+  ConfigureEngineVersion: !Not [!Equals [!Ref EngineVersion, ""]]
+  ConfigureRecordSet: !Not [!Equals [!Ref HostedZoneName, ""]]
+  GeneratePassword: !Equals [!Ref MasterPassword, ""]
+  IsPostgreSQL: !Equals [!Ref Engine, "aurora-postgresql"]
+  RestoreSnapshot: !Not [!Equals [!Ref SnapshotToRestore, ""]]
+
+Outputs:
+  AppSecurityGroup:
+    Description: Security group for database access
+    Value: !Ref AppSecurityGroup
+  DBAddress:
+    Condition: ConfigureRecordSet
+    Description: The connection endpoint for the DB cluster.
+    Value: !Ref Route53RecordSet
+  DBProxyAddress:
+    Description: The connection endpoint for the RDS Proxy
+    Value: !GetAtt DBProxy.Endpoint
+  DBProxyId:
+    Description: The ID for the RDS Proxy
+    Value: !Select [6, !Split [":", !GetAtt DBProxy.DBProxyArn]]
+  DBProxyAccessManagedPolicy:
+    Description: Managed policy for access to the rds proxy
+    Value: !Ref DBProxyAccessManagedPolicy
+  DBProxySecurityGroup:
+    Description: Security Group for the rds proxy
+    Value: !Ref DBProxySecurityGroup
+  DBSecretArn:
+    Description: The ARN of the secret for the DB
+    Value: !Ref MasterSecret
+
+Resources:
+  ################################################################################
+  # RDS Proxy
+
+  DBProxyRolePolicy:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-RdsProxy-Role
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service: rds.amazonaws.com
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-RdsProxy-Secret
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Ref MasterSecret
+        - PolicyName: !Sub ${AWS::StackName}-RdsProxy-Kms
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                Resource: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/secretsmanager
+                Condition:
+                  StringEquals:
+                    "kms:ViaService": !Sub secretsmanager.${AWS::Region}.amazonaws.com
+
+  DBProxyTargetGroup:
+    Type: AWS::RDS::DBProxyTargetGroup
+    Properties:
+      DBClusterIdentifiers: [!Ref DBCluster]
+      DBProxyName: !Ref DBProxy
+      TargetGroupName: default
+
+  AppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: APP-to-DB security group
+      GroupName: !Sub ${AWS::StackName}-DB-SG
+      VpcId: !Ref NetworkVpcId
+
+  DBProxySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${AWS::StackName}-DBProxy-SG
+      GroupDescription: RDS Proxy security group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref Port
+          ToPort: !Ref Port
+          SourceSecurityGroupId: !Ref AppSecurityGroup
+      VpcId: !Ref NetworkVpcId
+
+  DBProxy:
+    Type: AWS::RDS::DBProxy
+    DependsOn: DBFirstInstance
+    Properties:
+      DBProxyName: !Sub ${AWS::StackName}-DBProxy
+      EngineFamily: !If [IsPostgreSQL, POSTGRESQL, MYSQL]
+      RequireTLS: true
+      RoleArn: !GetAtt DBProxyRolePolicy.Arn
+      VpcSecurityGroupIds: [!Ref DBProxySecurityGroup]
+      VpcSubnetIds: !Ref NetworkSubnetIds
+      Auth:
+        - {
+            AuthScheme: SECRETS,
+            SecretArn: !Ref MasterSecret,
+            IAMAuth: REQUIRED,
+          }
+
+  DBProxyAccessManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Policy for allowing access to the RDS Proxy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - rds-db:connect
+            Resource:
+              !Join [
+                "",
+                [
+                  !Sub "arn:aws:rds-db:${AWS::Region}:${AWS::AccountId}:dbuser:",
+                  !Select [6, !Split [":", !GetAtt DBProxy.DBProxyArn]],
+                  "/",
+                  !Sub "{{resolve:secretsmanager:${MasterSecret}:SecretString:username}}",
+                ],
+              ]
+
+  ################################################################################
+  # RDS
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Ref AWS::StackName
+      DBSubnetGroupDescription: Database subnet group
+      SubnetIds: !Ref NetworkSubnetIds
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Database security group
+      GroupName: !Ref AWS::StackName
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref Port
+          ToPort: !Ref Port
+          SourceSecurityGroupId: !Ref DBProxySecurityGroup
+      VpcId: !Ref NetworkVpcId
+
+  MasterSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Ref AWS::StackName
+      Description: Database username and password
+      SecretString: !If
+        - GeneratePassword
+        - !Ref AWS::NoValue
+        - !Sub '{"username": "${MasterUsername}", "password": "${MasterPassword}"}'
+      GenerateSecretString: !If
+        - GeneratePassword
+        - SecretStringTemplate: !Sub '{"username": "${MasterUsername}"}'
+          GenerateStringKey: "password"
+          ExcludeCharacters: '\"@/\\'
+        - !Ref AWS::NoValue
+
+  DBKmsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: Enable IAM user permissions
+            Effect: Allow
+            Action: kms:*
+            Principal:
+              AWS: !Ref AWS::AccountId
+            Resource: "*"
+          - Sid: Allow use of the key
+            Effect: Allow
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey*
+              - kms:ReEncrypt*
+            Principal:
+              AWS:
+                - !Ref AWS::AccountId
+            Resource: "*"
+          - Sid: Allow attachment of persistent resources
+            Effect: Allow
+            Action:
+              - kms:CreateGrant
+              - kms:ListGrants
+              - kms:RevokeGrant*
+            Principal:
+              AWS:
+                - !Ref AWS::AccountId
+            Resource: "*"
+            Condition:
+              Bool:
+                kms:GrantIsForAWSResource: true
+
+  DBKmsKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: !Sub alias/${AWS::StackName}
+      TargetKeyId: !Ref DBKmsKey
+
+  PerformanceInsightsKMSKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: Enable IAM user permissions
+            Effect: Allow
+            Action: kms:*
+            Principal:
+              AWS: !Ref AWS::AccountId
+            Resource: "*"
+          - Sid: Allow use of the key
+            Effect: Allow
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey*
+              - kms:ReEncrypt*
+            Principal:
+              AWS:
+                - !Ref AWS::AccountId
+            Resource: "*"
+          - Sid: Allow attachment of persistent resources
+            Effect: Allow
+            Action:
+              - kms:CreateGrant
+              - kms:ListGrants
+              - kms:RevokeGrant*
+            Principal:
+              AWS:
+                - !Ref AWS::AccountId
+            Resource: "*"
+            Condition:
+              Bool:
+                kms:GrantIsForAWSResource: true
+
+  PerformanceInsightsKMSKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: !Sub alias/${AWS::StackName}PerformanceInsightsKMSKey
+      TargetKeyId: !Ref PerformanceInsightsKMSKey
+
+  DBCluster:
+    Type: AWS::RDS::DBCluster
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Properties:
+      BackupRetentionPeriod: !Ref BackupRetentionPeriod
+      DatabaseName: !Ref DatabaseName
+      DBClusterIdentifier: !Sub ${AWS::StackName}-cluster
+      DBClusterParameterGroupName: !If
+        - ConfigureDBClusterParameterGroup
+        - !Ref DBClusterParameterGroup
+        - !Ref AWS::NoValue
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      Engine: !Ref Engine
+      EngineMode: provisioned
+      EngineVersion: !If
+        - ConfigureEngineVersion
+        - !Ref EngineVersion
+        - !Ref AWS::NoValue
+      KmsKeyId: !Ref DBKmsKey
+      MasterUsername: !If
+        - RestoreSnapshot
+        - !Ref AWS::NoValue
+        - !Sub "{{resolve:secretsmanager:${MasterSecret}:SecretString:username}}"
+      MasterUserPassword: !If
+        - RestoreSnapshot
+        - !Ref AWS::NoValue
+        - !Sub "{{resolve:secretsmanager:${MasterSecret}:SecretString:password}}"
+      Port: !Ref Port
+      SnapshotIdentifier: !If [RestoreSnapshot, !Ref SnapshotToRestore, !Ref AWS::NoValue]
+      StorageEncrypted: true
+      VpcSecurityGroupIds:
+        - !Ref SecurityGroup
+
+  DBFirstInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBClusterIdentifier: !Ref DBCluster
+      DBInstanceClass: !Ref DBInstanceClass
+      DBParameterGroupName: !If
+        - ConfigureDBParameterGroup
+        - !Ref DBParameterGroup
+        - !Ref AWS::NoValue
+      Engine: !Ref Engine
+      EnablePerformanceInsights: true
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      PerformanceInsightsKMSKeyId: !Ref PerformanceInsightsKMSKey
+      PerformanceInsightsRetentionPeriod: !Ref PerformanceInsightsRetentionPeriod
+
+  ################################################################################
+  # Route53
+
+  Route53RecordSet:
+    Type: AWS::Route53::RecordSet
+    Condition: ConfigureRecordSet
+    Properties:
+      Name: !Sub ${AWS::StackName}.${HostedZoneName}
+      HostedZoneName: !Ref HostedZoneName
+      ResourceRecords:
+        - !GetAtt DBCluster.Endpoint.Address
+      TTL: 30
+      Type: CNAME
+
+  ################################################################################
+  # CloudWatch
+
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Condition: ConfigureAlarms
+    Properties:
+      TopicName: !Ref AWS::StackName
+      Subscription:
+        - Endpoint: !Ref AlarmIntegrationEndpoint
+          Protocol: https
+
+  RDSClusterCpuAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: ConfigureAlarms
+    Properties:
+      AlarmDescription: !Sub "${AWS::StackName} primary DB CPU over 60%"
+      Namespace: AWS/RDS
+      MetricName: CPUUtilization
+      Unit: Percent
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 60
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: DBClusterIdentifier
+          Value: !Ref DBCluster
+      AlarmActions:
+        - !Ref AlarmTopic
+      OKActions:
+        - !Ref AlarmTopic
+
+  RDSClusterMemoryAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: ConfigureAlarms
+    Properties:
+      AlarmDescription: !Sub ${AWS::StackName} primary DB memory under 500000000 bytes
+      Namespace: AWS/RDS
+      MetricName: FreeableMemory
+      Unit: Bytes
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 500000000
+      ComparisonOperator: LessThanOrEqualToThreshold
+      Dimensions:
+        - Name: DBClusterIdentifier
+          Value: !Ref DBCluster
+      AlarmActions:
+        - !Ref AlarmTopic
+      OKActions:
+        - !Ref AlarmTopic
+
+  Dashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Sub ${AWS::StackName}
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "metric",
+              "x": 12,
+              "y": 6,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [
+                    "AWS/RDS",
+                    "WriteLatency",
+                    "DBClusterIdentifier",
+                    "${DBCluster}"
+                  ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${AWS::Region}",
+                "title": "WriteLatency",
+                "period": 300,
+                "stat": "Average"
+              }
+            },
+            {
+              "type": "metric",
+              "x": 0,
+              "y": 6,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "EngineUptime", "DBClusterIdentifier", "${DBCluster}", {"visible": false}],
+                  [".", "ReadThroughput", ".", "."]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "title": "ReadThroughput",
+                "region": "${AWS::Region}",
+                "period": 300,
+                "stat": "Average"
+              }
+            },
+            {
+              "type": "metric",
+              "x": 12,
+              "y": 0,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                  ["AWS/RDS", "NetworkReceiveThroughput", "DBClusterIdentifier", "${DBCluster}"]
+                ],
+                "region": "${AWS::Region}",
+                "title": "NetworkReceiveThroughput"
+              }
+            },
+            {
+              "type": "metric",
+              "x": 18,
+              "y": 0,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                  ["AWS/RDS", "WriteThroughput", "DBClusterIdentifier", "${DBCluster}"]
+                ],
+                "region": "${AWS::Region}",
+                "title": "WriteThroughput"
+              }
+            },
+            {
+              "type": "metric",
+              "x": 6,
+              "y": 0,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "title": "EngineUptime",
+                "metrics": [
+                  ["AWS/RDS", "EngineUptime", "DBClusterIdentifier", "${DBCluster}"]
+                ],
+                "region": "${AWS::Region}"
+              }
+            },
+            {
+              "type": "metric",
+              "x": 0,
+              "y": 0,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                  ["AWS/RDS", "CPUUtilization", "DBClusterIdentifier", "${DBCluster}"]
+                ],
+                "region": "${AWS::Region}",
+                "title": "CPUUtilization"
+              }
+            },
+            {
+              "type": "metric",
+              "x": 18,
+              "y": 6,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "CommitLatency", "DBClusterIdentifier", "${DBCluster}"]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${AWS::Region}",
+                "title": "CommitLatency",
+                "period": 300,
+                "stat": "Average"
+              }
+            },
+            {
+              "type": "metric",
+              "x": 6,
+              "y": 6,
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "CPUUtilization", "DBClusterIdentifier", "${DBCluster}", {"visible": false}],
+                  [".", "ReadLatency", ".", "."]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${AWS::Region}",
+                "title": "ReadLatency",
+                "period": 300,
+                "stat": "Average"
+              }
+            }
+          ]
+        }

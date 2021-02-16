@@ -1,0 +1,496 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Aurora Serverless v1 database cluster
+
+Parameters:
+  AutoPause:
+    Description: A value that indicates whether to allow or disallow automatic pause for an Aurora DB cluster in serverless DB engine mode.
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: true
+  AlarmIntegrationEndpoint:
+    Description: The HTTPS integration endpoint to send SNS alarm messages.
+    Type: String
+    Default: ""
+  BackupRetentionPeriod:
+    Description: The number of days for which automated backups are retained.
+    Type: Number
+    Default: 4
+  DatabaseName:
+    Description: The name of your database.
+    Type: String
+  DBClusterParameterGroup:
+    Description: The name of the DB cluster parameter group to associate with this DB cluster.
+    Type: String
+  Engine:
+    Description: The name of the database engine to be used for this DB cluster.
+    Type: String
+    AllowedValues:
+      - aurora-postgresql
+      - aurora-mysql
+    Default: aurora-postgresql
+  EngineVersion:
+    Description: The version number of the database engine to use. Optional.
+    Type: String
+    Default: ""
+  HostedZoneName:
+    Description: The name of the hosted zone that you want to create records in (must include a trailing dot e.g. www.example.com.). Optional.
+    Type: String
+  MasterUsername:
+    Description: The name of the master user for the DB cluster.
+    Type: String
+  MasterPassword:
+    Description: The master password for the DB cluster. Auto generated if not specified.
+    Type: String
+    Default: ""
+    NoEcho: true
+  MaxCapacity:
+    Description: The maximum capacity for an Aurora DB cluster.
+    Type: Number
+    Default: 4
+  MinCapacity:
+    Description: The minimum capacity for an Aurora DB cluster.
+    Type: Number
+    Default: 2
+  NetworkSubnetIds:
+    Description: Subnet IDs
+    Type: List<AWS::EC2::Subnet::Id>
+  NetworkVpcId:
+    Description: The ID of the VPC for the security group.
+    Type: AWS::EC2::VPC::Id
+  SnapshotToRestore:
+    Description: The identifier for the DB cluster snapshot.
+    Type: String
+    Default: ""
+
+Conditions:
+  ConfigureAlarms: !Not [!Equals [!Ref AlarmIntegrationEndpoint, ""]]
+  ConfigureEngineVersion: !Not [!Equals [!Ref EngineVersion, ""]]
+  ConfigureParameterGroup: !Not [!Equals [!Ref DBClusterParameterGroup, ""]]
+  ConfigureRecordSet: !Not [!Equals [!Ref HostedZoneName, ""]]
+  GeneratePassword: !Equals [!Ref MasterPassword, ""]
+  RestoreSnapshot: !Not [!Equals [!Ref SnapshotToRestore, ""]]
+
+Outputs:
+  MasterUsername:
+    Description: The name of the master user for the DB cluster.
+    Value: !Ref MasterUsername
+    Export:
+      Name: !Sub ${AWS::StackName}-MasterUsername
+  MasterSecretArn:
+    Description: The secret ARN for the DB master username and password.
+    Value: !Ref MasterSecret
+    Export:
+      Name: !Sub ${AWS::StackName}-MasterSecretArn
+  SecurityGroupId:
+    Description: The security group ID for the DB cluster.
+    Value: !Ref SecurityGroup
+    Export:
+      Name: !Sub ${AWS::StackName}-SG-ID
+  EndpointAddress:
+    Description: The connection endpoint for the DB cluster.
+    Value: !GetAtt Cluster.Endpoint.Address
+    Export:
+      Name: !Sub ${AWS::StackName}-EndpointAddress
+  CustomEndpointAddress:
+    Condition: ConfigureRecordSet
+    Description: The custom connection endpoint for the DB cluster.
+    Value: !Ref Route53RecordSet
+    Export:
+      Name: !Sub ${AWS::StackName}-CustomEndpointAddress
+
+Resources:
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Ref AWS::StackName
+      DBSubnetGroupDescription: Database subnet group
+      SubnetIds: !Ref NetworkSubnetIds
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Database security group
+      GroupName: !Ref AWS::StackName
+      VpcId: !Ref NetworkVpcId
+
+  MasterSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Ref AWS::StackName
+      Description: Database username and password
+      SecretString: !If
+        - GeneratePassword
+        - !Ref AWS::NoValue
+        - !Sub '{"username": "${MasterUsername}", "password": "${MasterPassword}"}'
+      GenerateSecretString: !If
+        - GeneratePassword
+        - SecretStringTemplate: !Sub '{"username": "${MasterUsername}"}'
+          GenerateStringKey: "password"
+          ExcludeCharacters: '\"@/\\'
+        - !Ref AWS::NoValue
+
+  KmsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: Enable IAM user permissions
+            Effect: Allow
+            Action: kms:*
+            Principal:
+              AWS: !Ref AWS::AccountId
+            Resource: "*"
+          - Sid: Allow use of the key
+            Effect: Allow
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey*
+              - kms:ReEncrypt*
+            Principal:
+              AWS:
+                - !Ref AWS::AccountId
+            Resource: "*"
+          - Sid: Allow attachment of persistent resources
+            Effect: Allow
+            Action:
+              - kms:CreateGrant
+              - kms:ListGrants
+              - kms:RevokeGrant*
+            Principal:
+              AWS:
+                - !Ref AWS::AccountId
+            Resource: "*"
+            Condition:
+              Bool:
+                kms:GrantIsForAWSResource: true
+  KmsKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: !Sub alias/${AWS::StackName}
+      TargetKeyId: !Ref KmsKey
+
+  Cluster:
+    Type: AWS::RDS::DBCluster
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Properties:
+      BackupRetentionPeriod: !Ref BackupRetentionPeriod
+      DatabaseName: !Ref DatabaseName
+      DBClusterParameterGroupName: !If
+        - ConfigureParameterGroup
+        - !Ref DBClusterParameterGroup
+        - !Ref AWS::NoValue
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      EnableHttpEndpoint: true
+      Engine: !Ref Engine
+      EngineMode: serverless
+      EngineVersion: !If
+        - ConfigureEngineVersion
+        - !Ref EngineVersion
+        - !Ref AWS::NoValue
+      KmsKeyId: !Ref KmsKey
+      MasterUsername: !If
+        - RestoreSnapshot
+        - !Ref AWS::NoValue
+        - !Sub "{{resolve:secretsmanager:${MasterSecret}:SecretString:username}}"
+      MasterUserPassword: !If
+        - RestoreSnapshot
+        - !Ref AWS::NoValue
+        - !Sub "{{resolve:secretsmanager:${MasterSecret}:SecretString:password}}"
+      ScalingConfiguration:
+        AutoPause: !Ref AutoPause
+        MaxCapacity: !Ref MaxCapacity
+        MinCapacity: !Ref MinCapacity
+      SnapshotIdentifier:
+        !If [RestoreSnapshot, !Ref SnapshotToRestore, !Ref AWS::NoValue]
+      StorageEncrypted: true
+      VpcSecurityGroupIds:
+        - !Ref SecurityGroup
+
+  ################################################################################
+  # Route53
+
+  Route53RecordSet:
+    Type: AWS::Route53::RecordSet
+    Condition: ConfigureRecordSet
+    Properties:
+      Name: !Sub ${AWS::StackName}.${HostedZoneName}
+      HostedZoneName: !Ref HostedZoneName
+      ResourceRecords:
+        - !GetAtt Cluster.Endpoint.Address
+      TTL: 30
+      Type: CNAME
+
+  ################################################################################
+  # CloudWatch
+
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Condition: ConfigureAlarms
+    Properties:
+      TopicName: !Ref AWS::StackName
+      Subscription:
+        - Endpoint: !Ref AlarmIntegrationEndpoint
+          Protocol: https
+
+  ConnectionAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: ConfigureAlarms
+    Properties:
+      AlarmDescription: Database connections
+      Namespace: AWS/RDS
+      MetricName: DatabaseConnections
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 2
+      Period: 180
+      Statistic: Maximum
+      Threshold: 200
+      Dimensions:
+        - Name: DBClusterIdentifier
+          Value: !Ref Cluster
+      AlarmActions:
+        - !Ref AlarmTopic
+      OKActions:
+        - !Ref AlarmTopic
+
+  CpuAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: ConfigureAlarms
+    Properties:
+      AlarmDescription: Database CPU percentage
+      Namespace: AWS/RDS
+      MetricName: CPUUtilization
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 3
+      Period: 300
+      Statistic: Average
+      Threshold: 60
+      Dimensions:
+        - Name: DBClusterIdentifier
+          Value: !Ref Cluster
+      AlarmActions:
+        - !Ref AlarmTopic
+      OKActions:
+        - !Ref AlarmTopic
+
+  LatencyAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: ConfigureAlarms
+    Properties:
+      AlarmDescription: Database commit latency
+      Namespace: AWS/RDS
+      MetricName: CommitLatency
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 2
+      Period: 180
+      Statistic: Maximum
+      Threshold: 400  # Milliseconds
+      Dimensions:
+        - Name: DBClusterIdentifier
+          Value: !Ref Cluster
+      AlarmActions:
+        - !Ref AlarmTopic
+      OKActions:
+        - !Ref AlarmTopic
+
+  NetworkAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: ConfigureAlarms
+    Properties:
+      AlarmDescription: Database network throughput
+      Namespace: AWS/RDS
+      MetricName: NetworkThroughput
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      Period: 300
+      Statistic: Average
+      Threshold: 200000000  # 200MB
+      Dimensions:
+        - Name: DBClusterIdentifier
+          Value: !Ref Cluster
+      AlarmActions:
+        - !Ref AlarmTopic
+      OKActions:
+        - !Ref AlarmTopic
+
+  Dashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Ref AWS::StackName
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "text",
+              "width": 24,
+              "height": 1,
+              "properties": {
+                "markdown": "# Aurora"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "CPUUtilization", "DBClusterIdentifier", "${Cluster}"],
+                  [".", "CPUCreditUsage", "..."],
+                  [".", "CPUCreditBalance", "..."]
+                ],
+                "period": 60,
+                "stat": "Average",
+                "region": "${AWS::Region}",
+                "title": "CPU"
+              }
+            }, {
+              "type": "metric",
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "DatabaseConnections", "DBClusterIdentifier", "${Cluster}", {
+                    "stat": "Average"
+                  }],
+                  ["...", {
+                    "stat": "Maximum"
+                  }],
+                  ["...", {
+                    "stat": "Minimum"
+                  }]
+                ],
+                "period": 60,
+                "region": "${AWS::Region}",
+                "title": "Connection"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "UpdateLatency", "DBClusterIdentifier", "${Cluster}"],
+                  [".", "SelectLatency", "..."],
+                  [".", "DeleteLatency", "..."],
+                  [".", "CommitLatency", "..."],
+                  [".", "InsertLatency", "..."]
+                ],
+                "period": 60,
+                "stat": "Average",
+                "region": "${AWS::Region}",
+                "title": "Latency"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "NetworkThroughput", "DBClusterIdentifier", "${Cluster}", {
+                    "stat": "Average"
+                  }],
+                  ["...", {
+                    "stat": "Maximum"
+                  }],
+                  ["...", {
+                    "stat": "Minimum"
+                  }],
+                  [".", "NetworkReceiveThroughput", "...", {
+                    "stat": "Average"
+                  }],
+                  ["...", {
+                    "stat": "Maximum"
+                  }],
+                  ["...", {
+                    "stat": "Minimum"
+                  }],
+                  [".", "NetworkTransmitThroughput", "...", {
+                    "stat": "Average"
+                  }],
+                  ["...", {
+                    "stat": "Maximum"
+                  }],
+                  ["...", {
+                    "stat": "Minimum"
+                  }]
+                ],
+                "period": 60,
+                "stat": "Sum",
+                "region": "${AWS::Region}",
+                "title": "Network Throughput"
+
+              }
+            },
+            {
+              "type": "metric",
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "Queries", "DBClusterIdentifier", "${Cluster}"]
+                ],
+                "period": 60,
+                "stat": "Average",
+                "region": "${AWS::Region}",
+                "title": "Queries"
+
+              }
+            },
+            {
+              "type": "metric",
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "CommitThroughput", "DBClusterIdentifier", "${Cluster}"],
+                  [".", "InsertThroughput", "..."],
+                  [".", "DeleteThroughput", "..."],
+                  [".", "SelectThroughput", "..."],
+                  [".", "UpdateThroughput", "..."]
+                ],
+                "period": 60,
+                "stat": "Average",
+                "region": "${AWS::Region}",
+                "title": "Throughput"
+
+              }
+            },
+            {
+              "type": "metric",
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "ServerlessDatabaseCapacity", "DBClusterIdentifier", "${Cluster}"]
+                ],
+                "period": 60,
+                "stat": "Maximum",
+                "region": "${AWS::Region}",
+                "title": "Capacity"
+
+              }
+            },
+            {
+              "type": "metric",
+              "width": 6,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  ["AWS/RDS", "EngineUptime", "DBClusterIdentifier", "${Cluster}"]
+                ],
+                "period": 60,
+                "stat": "Maximum",
+                "region": "${AWS::Region}",
+                "title": "Uptime"
+              }
+            }
+          ]
+        }
