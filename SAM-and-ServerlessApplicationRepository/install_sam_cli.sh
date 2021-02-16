@@ -7,4 +7,7 @@ set -e
 brew tap aws/tap
 brew install aws-sam-cli
 
+# To upgrade:
+# brew upgrade aws/tap/aws-sam-cli
+
 sam --version

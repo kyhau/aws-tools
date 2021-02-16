@@ -132,3 +132,5 @@ alias ls-common-ip-protocols='cat ${REPO_HOME}/Useful-tools/networking/ls-common
 alias ls-common-ip-ranges='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-ranges.md'
 alias ls-common-ports='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ports.md'
 alias ls-timezones='python -c "import pytz;print(\"\n\".join(tz for tz in pytz.all_timezones))"'
+
+alias update-aws-sam-cli='brew upgrade aws/tap/aws-sam-cli'
