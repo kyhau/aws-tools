@@ -128,6 +128,8 @@ pip install -r requirements-cli.txt
 | Amazon Ion Python | [amzn/ion-python](https://github.com/amzn/ion-python) |
 | Authorization Lambda@Edge (Node.js) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
 | AutoML Toolkit for Deep Learning | [awslabs/autogluon](https://github.com/awslabs/autogluon) |
+| AWS Amplify CLI | [aws-amplify/amplify-cli](https://github.com/aws-amplify/amplify-cli) |
+| AWS Amplify Flutter | [aws-amplify/amplify-flutter](https://github.com/aws-amplify/amplify-flutter) |
 | AWS Cloud Digital Interface (CDI) Software Development Kit (SDK) | [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-sdk) |
 | AWS CLI | [aws/aws-cli](https://github.com/aws/aws-cli) |
 | AWS CLI interactive productivity booster (aws-shell) | [awslabs/aws-shell](https://github.com/awslabs/aws-shell) |
