@@ -116,7 +116,19 @@ alias aws-workspace-restore-rebuild='python ${REPO_HOME}/Workspaces/workspace_re
 
 alias aws-xray-sampling-rule='python ${REPO_HOME}/X-Ray/xray-sampling/xray_sampling_rule.py*'
 
-alias arki-ls-common-ip-protocols='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-protocols.md'
-alias arki-ls-common-ip-ranges='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-ranges.md'
-alias arki-ls-common-ports='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ports.md'
-alias arki-ls-timezones='python -c "import pytz;print(\"\n\".join(tz for tz in pytz.all_timezones))"'
+alias cdk-deploy='cdk deploy'
+alias cdk-diff='cdk diff'
+alias cdk-doctor='cdk doctor'
+alias cdk-ls='cdk ls'
+alias cdk-synth='cdk synth'
+alias cdk-synth-no-staging='cdk synth --no-staging'
+
+alias sam-local-invoke='sam local invoke'
+alias sam-local-generate-event='sam local generate-event'
+alias sam-local-start-api='sam-local-start-api'
+alias sam-local-start-lambda='sam local start-lambda'
+
+alias ls-common-ip-protocols='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-protocols.md'
+alias ls-common-ip-ranges='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-ranges.md'
+alias ls-common-ports='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ports.md'
+alias ls-timezones='python -c "import pytz;print(\"\n\".join(tz for tz in pytz.all_timezones))"'
