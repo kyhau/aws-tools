@@ -92,6 +92,7 @@ alias aws-s3-size='aws s3 ls --summarize --human-readable --recursive s3://'
 alias aws-secretsmanager-get-secret='python ${REPO_HOME}/SecretManager/get_secret.py'
 
 alias aws-sts-decode-authorization-message='aws sts decode-authorization-message --encoded-message'
+alias aws-sts-get-caller-identity='aws sts get-caller-identity'
 
 alias aws-ssm-parameters-list-global-infrastructure='. ${REPO_HOME}/SSM/ssm_parameters_list.sh'
 alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["3389"],"localPortNumber"=["9999"] --target '
@@ -128,9 +129,5 @@ alias sam-local-generate-event='sam local generate-event'
 alias sam-local-start-api='sam-local-start-api'
 alias sam-local-start-lambda='sam local start-lambda'
 
-alias ls-common-ip-protocols='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-protocols.md'
-alias ls-common-ip-ranges='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ip-ranges.md'
-alias ls-common-ports='cat ${REPO_HOME}/Useful-tools/networking/ls-common-ports.md'
-alias ls-timezones='python -c "import pytz;print(\"\n\".join(tz for tz in pytz.all_timezones))"'
-
+alias update-cdk='sudo npm install -g aws-cdk@latest'
 alias update-aws-sam-cli='brew upgrade aws/tap/aws-sam-cli'
