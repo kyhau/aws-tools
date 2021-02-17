@@ -20,17 +20,16 @@ class Helper(AwsApiHelper):
     def process_request(self, session, account_id, region, kwargs):
         function_name = kwargs.get("FunctionName", "").lower()
         client = session.client("lambda", region_name=region)
-        for page in client.get_paginator("list_functions").paginate().result_key_iters():
-            for item in page:
-                if function_name:
-                    if function_name == item.get("FunctionName", "").lower():
-                        print(json.dumps(item, indent=2))
-                        return True
+        for item in self.paginate(client, "list_functions", kwargs):
+            if function_name:
+                if function_name == item.get("FunctionName", "").lower():
+                    print(json.dumps(item, indent=2))
+                    return True
+            else:
+                if self._detailed:
+                    print(json.dumps(item, indent=2))
                 else:
-                    if self._detailed:
-                        print(json.dumps(item, indent=2))
-                    else:
-                        print(", ".join([item.get("FunctionArn"), item.get("Runtime")]))
+                    print(", ".join([item.get("FunctionArn"), item.get("Runtime")]))
 
 
 @click.command()

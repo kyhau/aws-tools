@@ -1,12 +1,13 @@
 """
 List RDS instances
 Output: [
-  [Account_id, Region, AWS-ProfileName, DBInstanceIdentifier, DBInstanceStatus, Engine, Endpoint-Address,
+  [Account_id, DBInstanceIdentifier, DBInstanceStatus, Engine, Endpoint-Address,
    Endpoint-Port, MultiAZ|SingleAZ, PreferredMaintenanceWindow(UTC), CACertificateIdentifier],
 ]
 """
-import click
 import logging
+
+import click
 from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
@@ -18,7 +19,6 @@ class Helper(AwsApiHelper):
         for item in self.paginate(client, "describe_db_instances", kwargs):
             data = [
                 account_id,
-                region,
                 item["DBInstanceIdentifier"],
                 item["DBInstanceStatus"],
                 item["Engine"],
@@ -29,7 +29,7 @@ class Helper(AwsApiHelper):
                 item.get("CACertificateIdentifier", "None"),
             ]
             print(",".join(data))
-            
+
             if kwargs.get("InstanceIds"):
                 return True
 
