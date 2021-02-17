@@ -50,6 +50,7 @@ alias aws-ec2-unreachable='python ${REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
 alias aws-ec2-security-groups='python ${REPO_HOME}/EC2-VPC/list_security_groups.py'
 
 alias aws-ecr-list-used-images-having-critical-or-high-severity-findings='python ${REPO_HOME}/ECR/list_used_images_having_critical_or_high_severity_findings.py'
+alias aws-ecr-get-login='aws ecr get-login --no-include-email'
 
 alias aws-database-status-check='python ${REPO_HOME}/RDS/databases_status_check.py'
 
