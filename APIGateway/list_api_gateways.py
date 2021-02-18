@@ -21,31 +21,27 @@ class Helper(AwsApiHelper):
 
         client = session.client("apigateway", region_name=region)
         for item in self.paginate(client, "get_rest_apis", kwargs):
-            if api_id:
-                if api_id == item.get("id"):
-                    print(json.dumps(item, indent=2, default=str))
-                    return True
+            if self._detailed:
+                print(json.dumps(item, indent=2, default=str))
             else:
-                if self._detailed:
-                    print(json.dumps(item, indent=2, default=str))
-                else:
-                    config = item.get("endpointConfiguration", {})
-                    types = "|".join(config.get("types", []))
-                    endpoints = "|".join(config.get("vpcEndpointIds", ["NoVpcEndpoint"]))
-                    print(", ".join([account_id, item.get("id"), f"REST {types}", item.get("name"), endpoints]))
+                config = item.get("endpointConfiguration", {})
+                types = "|".join(config.get("types", []))
+                endpoints = "|".join(config.get("vpcEndpointIds", ["NoVpcEndpoint"]))
+                print(", ".join([account_id, item.get("id"), f"REST {types}", item.get("name"), endpoints]))
+
+            if api_id and api_id == item.get("id"):
+                return True
 
         client = session.client("apigatewayv2", region_name=region)
         for page in client.get_paginator("get_apis").paginate().result_key_iters():
             for item in page:
-                if api_id:
-                    if api_id == item.get("ApiId"):
-                        print(json.dumps(item, indent=2, default=str))
-                        return True
+                if self._detailed:
+                    print(json.dumps(item, indent=2, default=str))
                 else:
-                    if self._detailed:
-                        print(json.dumps(item, indent=2, default=str))
-                    else:
-                        print(", ".join([account_id, item.get("ApiId"), item.get("ProtocolType"), item.get("Name"), item.get("ApiEndpoint")]))
+                    print(", ".join([account_id, item.get("ApiId"), item.get("ProtocolType"), item.get("Name"), item.get("ApiEndpoint")]))
+
+                if api_id and api_id == item.get("ApiId"):
+                    return True
 
 
 @click.command()

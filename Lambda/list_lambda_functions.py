@@ -21,15 +21,13 @@ class Helper(AwsApiHelper):
         function_name = kwargs.get("FunctionName", "").lower()
         client = session.client("lambda", region_name=region)
         for item in self.paginate(client, "list_functions", kwargs):
-            if function_name:
-                if function_name == item.get("FunctionName", "").lower():
-                    print(json.dumps(item, indent=2))
-                    return True
+            if self._detailed:
+                print(json.dumps(item, indent=2))
             else:
-                if self._detailed:
-                    print(json.dumps(item, indent=2))
-                else:
-                    print(", ".join([item.get("FunctionArn"), item.get("Runtime")]))
+                print(", ".join([item.get("FunctionArn"), item.get("Runtime")]))
+
+            if function_name and function_name == item.get("FunctionName", "").lower():
+                return True
 
 
 @click.command()

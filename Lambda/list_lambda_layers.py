@@ -21,15 +21,13 @@ class Helper(AwsApiHelper):
         layer_name = kwargs.get("LayerName", "").lower()
         client = session.client("lambda", region_name=region)
         for item in self.paginate(client, "list_layers", kwargs):
-            if layer_name:
-                if layer_name == item.get("LayerName", "").lower():
-                    print(json.dumps(item, indent=2))
-                    return True
+            if self._detailed:
+                print(json.dumps(item, indent=2))
             else:
-                if self._detailed:
-                    print(json.dumps(item, indent=2))
-                else:
-                    print(f'{item.get("LayerArn")}, {item.get("LatestMatchingVersion", {}).get("CompatibleRuntimes")}')
+                print(f'{item.get("LayerArn")}, {item.get("LatestMatchingVersion", {}).get("CompatibleRuntimes")}')
+
+            if layer_name and layer_name == item.get("LayerName", "").lower():
+                return True
 
 
 @click.command()

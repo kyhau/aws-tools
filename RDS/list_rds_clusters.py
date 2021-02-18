@@ -1,6 +1,6 @@
 """
 List RDS clusters
-1. Simple output: DatabaseName, DBClusterIdentifier, Status, Engine, Endpoint (primary)
+1. Simple output: DatabaseName, DBClusterIdentifier, Status, Engine, EngineMode, Endpoint (primary), IamAuthEnabled|IamAuthDisabled
 2. With `-d`: print all details
 """
 import json
@@ -21,10 +21,6 @@ class Helper(AwsApiHelper):
         client = session.client("rds", region_name=region)
 
         for item in self.paginate(client, "describe_db_clusters", kwargs):
-            if kwargs.get("DBClusterIdentifier"):
-                print(json.dumps(item, indent=2, default=str))
-                return
-
             if self._detailed:
                 print(json.dumps(item, indent=2, default=str))
             else:
@@ -33,8 +29,13 @@ class Helper(AwsApiHelper):
                     item["DBClusterIdentifier"],
                     item["Status"],
                     item["Engine"],
+                    item["EngineMode"],
                     item["Endpoint"],
+                    "IamAuthEnabled" if item["IAMDatabaseAuthenticationEnabled"] else "IamAuthDisabled"
                 ]))
+            if kwargs.get("DBClusterIdentifier"):
+                return True
+
 
 @click.command()
 @click.option("--clusterid", "-i", help="RDS cluster ID")
