@@ -31,8 +31,7 @@ alias aws-cloudtrail-lookup-events='python ${REPO_HOME}/CloudTrail/cloudtrail_lo
 alias aws-cloudtrail-list-security-event-names='python ${REPO_HOME}/CloudTrail/list_cloudtrail_security_event_names.py'
 
 alias aws-cloudwatch-log-send-sample-event='python ${REPO_HOME}/CloudWatch/send_cloudwatch_log_event.py'
-alias aws-cloudwatch-insights-run-query='python ${REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights_run_query.py'
-alias aws-cloudwatch-insights-list-queries='python ${REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights_list_queries.py'
+alias aws-cloudwatch-insights='python ${REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights.py'
 
 alias aws-dynamodb-enable-contributor-insights='aws dynamodb update-contributor-insights --contributor-insights-action ENABLE --table-name '
 alias aws-dynamodb-search='python ${REPO_HOME}/DynamoDB/search_dynamodb.py'
