@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Athena Workgroup and bucket
+
+Parameters:
+  BucketDeleteContentAfterDays:
+    Description: The number of days to keep the objects.
+    Type: Number
+    Default: 1
+  BucketName:
+    Description: Name of the S3 bucket, which must be globally unique
+    Type: String
+  KMSMasterKeyID:
+    Description: KMS Master Key ID. Required only if selecting aws:kms in BucketServerSideEncryptionAlgorithm.
+    Type: String
+  BucketServerSideEncryptionAlgorithm:
+    Description: Specify server side encryption.
+    Type: String
+    AllowedValues: [SSE_S3, SSE_KMS]
+    Default: SSE_S3
+
+Conditions:
+  UseKms: !Equals [SSE_KMS, !Ref BucketServerSideEncryptionAlgorithm]
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: !If
+              - UseKms
+              - SSEAlgorithm: 'aws:kms'
+                KMSMasterKeyID: !Ref KMSMasterKeyID
+              - SSEAlgorithm: AES256
+      BucketName: !Ref BucketName
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfterDays
+            Status: Enabled
+            ExpirationInDays: !Ref BucketDeleteContentAfterDays
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  AthenaWorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Ref AWS::StackName
+      Description: !Ref AWS::StackName
+      State: ENABLED
+      WorkGroupConfigurationUpdates:
+        ResultConfigurationUpdates:
+          EncryptionConfiguration:
+            EncryptionOption:  !If
+              - UseKms
+              - SSE_KMS
+              - SSE_S3
+            KmsKey:  !If
+              - UseKms
+              - !Ref KMSMasterKeyID
+              - AWS::NoValue
+          OutputLocation: !Sub s3://${BucketName}/
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain

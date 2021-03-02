@@ -8,18 +8,18 @@ Parameters:
   DeleteContentAfterDays:
     Description: The number of days to keep the objects.
     Type: Number
-    Default: 7
+    Default: 1
   KMSMasterKeyID:
     Description: KMS Master Key ID. Required only if selecting aws:kms in ServerSideEncryptionAlgorithm.
     Type: String
   ServerSideEncryptionAlgorithm:
-    Description: Specify server side encryption. Choose None to disable server side encryption.
+    Description: Specify server side encryption.
     Type: String
-    AllowedValues: [AES256, 'aws:kms']
-    Default: AES256
+    AllowedValues: [SSE_S3, SSE_KMS]
+    Default: SSE_S3
 
 Conditions:
-  UseKms: !Equals ['aws:kms', !Ref ServerSideEncryptionAlgorithm]
+  UseKms: !Equals [SSE_KMS, !Ref ServerSideEncryptionAlgorithm]
 
 Resources:
   S3Bucket:
@@ -30,9 +30,9 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault: !If
               - UseKms
-              - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+              - SSEAlgorithm: 'aws:kms'
                 KMSMasterKeyID: !Ref KMSMasterKeyID
-              - SSEAlgorithm: !Ref ServerSideEncryptionAlgorithm
+              - SSEAlgorithm: AES256
       LifecycleConfiguration:
         Rules:
           - Id: DeleteContentAfterDays
