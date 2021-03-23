@@ -1,6 +1,7 @@
 ## Useful links
 
 * [Understanding AWS CloudFormation !Sub Syntax](https://www.fischco.org/technica/2017/cloud-formation-sub/)
+* Passing value to UserData to set EC2 env variable https://stackoverflow.com/questions/54858072/aws-cloudformation-userdata-ec2-environment-variable
 
 ## Useful tools
 
