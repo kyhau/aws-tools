@@ -263,6 +263,7 @@ pip install -r requirements-cli.txt
 - [Asynchronous Messaging Workshop](https://github.com/aws-samples/asynchronous-messaging-workshop/)
 - [CDK Workshop](https://cdkworkshop.com/)
 - [CI/CD for Serverless Applications Workshops](https://cicd.serverlessworkshops.io/)
+- [Networking Immersion Day](https://networking.workshop.aws/)
 - [One Observability Workshop](https://observability.workshop.aws/)
 - [Redshift Immersion Workshop](https://redshift-immersion.workshop.aws/)
 - [Serverless Security Workshop](https://github.com/aws-samples/aws-serverless-security-workshop/)
