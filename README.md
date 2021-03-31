@@ -103,6 +103,7 @@ pip install -r requirements-cli.txt
 | Serverless Framework | [serverless/serverless](https://github.com/serverless/serverless) |
 | Serverless Components | [serverless/components](https://github.com/serverless/components) |
 | Serverless Components CLI | [serverless/cli](https://github.com/serverless/cli) |
+| Serverless Patterns Collection | [serverlessland.com/patterns](https://serverlessland.com/patterns) |
 | Serverless Stack (SST) (extension of CDK) | [serverless-stack/serverless-stack](https://github.com/serverless-stack/serverless-stack) |
 | Stelligent mu (a tool for managing your microservices platform) | [stelligent/mu](https://github.com/stelligent/mu) |
 | Zappa Serverless Python | [Miserlou/Zappa](https://github.com/Miserlou/Zappa) |
