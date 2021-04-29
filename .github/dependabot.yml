@@ -1,0 +1,9 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/_common"
+  schedule:
+    interval: daily
+    time: "19:00"
+    timezone: Australia/ACT
+  open-pull-requests-limit: 10
