@@ -2,7 +2,7 @@
 
 ################################################################################
 # AWS related packages
-boto3~=1.13
+boto3~=1.17
 #aws-embedded-metrics
 #aws-encryption-sdk
 #aws-lambda-powertools
@@ -32,7 +32,7 @@ boto3~=1.13
 # Non aws related packages
 apispec~=3.3            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
 click~=7.1
-dataclasses-json~=0.4   # provides a simple API for encoding and decoding dataclasses to and from JSON
+dataclasses-json~=0.5   # provides a simple API for encoding and decoding dataclasses to and from JSON
 PyInquirer~=1.0         # for saml2aws/aws_login.py
 pytz
 #black
