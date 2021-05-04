@@ -119,6 +119,7 @@ alias aws-workspace-restore-rebuild='python ${REPO_HOME}/Workspaces/workspace_re
 
 alias aws-xray-sampling-rule='python ${REPO_HOME}/X-Ray/xray-sampling/xray_sampling_rule.py*'
 
+alias cdk-bootstrap='cdk bootstrap'
 alias cdk-deploy='cdk deploy'
 alias cdk-diff='cdk diff'
 alias cdk-doctor='cdk doctor'
