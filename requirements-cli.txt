@@ -14,6 +14,7 @@ aws-cdk.core              # require npm aws-cdk
 cfn-flip
 cfn-lint                  # require aws-sam-translator
 cloudformation-cli        # https://github.com/aws-cloudformation/cloudformation-cli
+cloudformation-cli-python-plugin
 pydot                     # use tegether with cfn-lint to generate DOT file, require graphviz
 yamllint
 
