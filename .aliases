@@ -44,6 +44,7 @@ alias aws-config-query='python ${REPO_HOME}/Config/query_configservice.py'
 
 alias aws-ec2-instances='python ${REPO_HOME}/EC2-VPC/list_ec2_instances.py'
 alias aws-ec2-check-userdata='python ${REPO_HOME}/EC2-VPC/UserData/check_UserData.py'
+alias aws-ec2-create-key-pair='.  ${REPO_HOME}/EC2-VPC/create_key_pair.sh'
 alias aws-ec2-db-instances='python ${REPO_HOME}/RDS/list_ec2_db_instances.py'
 alias aws-ec2-unreachable='python ${REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
 alias aws-ec2-security-groups='python ${REPO_HOME}/EC2-VPC/list_security_groups.py'
