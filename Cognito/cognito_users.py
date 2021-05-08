@@ -1,5 +1,5 @@
 """
-List users of a User Pool
+List users of a Cognito User Pool
 """
 import boto3
 import click
@@ -38,7 +38,7 @@ def print_users(user_list):
     print(f"Total number of users: {len(user_list)}")
 
 
-@click.command()
+@click.command(help="List all users of Cognito User Pool")
 @click.argument("userpoolid")
 def main(userpoolid):
     users = list_all_users(userpoolid)

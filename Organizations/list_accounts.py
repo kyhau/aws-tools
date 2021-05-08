@@ -9,12 +9,10 @@ Output:
     },
 }
 """
-from boto3.session import Session
-from botocore.exceptions import ClientError
-import click
-from collections import defaultdict
 import logging
-from time import time
+from collections import defaultdict
+
+import click
 from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
@@ -31,8 +29,8 @@ class Helper(AwsApiHelper):
             aliases = session.client("iam").list_account_aliases()["AccountAliases"]
             self.results[account_id]["alias"] = aliases[0] if aliases else None
         except Exception as e:
-            print(e)
-    
+            logging.error(e)
+
         try:
             # 2) See if this session can access "list_accounts" from "organisation"
             paginator = session.client("organizations").get_paginator("list_accounts")
@@ -41,7 +39,7 @@ class Helper(AwsApiHelper):
                     self.results[acc["Id"]]["status"] = acc["Status"]
         except Exception as e:
             logging.error(e)
-    
+
     def post_process(self):
         if self.results:
             print("AccountId, Alias, Status")
