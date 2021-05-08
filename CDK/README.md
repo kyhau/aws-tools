@@ -15,7 +15,7 @@
 ### My small examples for demo
 
 - https://github.com/kyhau/cdk-examples (CDK v2 and v1)
-- https://github.com/kyhau/have-a-smile
+- https://github.com/kyhau/have-a-smile (CDK v2)
 
 
 ---
