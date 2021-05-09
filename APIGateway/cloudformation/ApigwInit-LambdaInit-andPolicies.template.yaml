@@ -20,13 +20,11 @@ Parameters:
     Type: String
     Default: TodoService-Lambda-ExecuteRole
   LambdaExecuteTodoProdDynamoDBPolicyArn:
-    Description: ARN of the policy for accessing DynamoDB tables (TodoProd*) .
+    Description: ARN of the policy for accessing DynamoDB tables (TodoProd*) e.g. arn:aws:iam::todo-aws-acc-id:policy/TodoProd-DynamoDB-RW.
     Type: String
-    Default: arn:aws:iam::todo-aws-acc-id:policy/TodoProd-DynamoDB-RW
   LambdaExecuteTodoTestDynamoDBPolicyArn:
-    Description: ARN of the policy for accessing DynamoDB tables (TodoTest*) .
+    Description: ARN of the policy for accessing DynamoDB tables (TodoTest*) e.g. arn:aws:iam::todo-aws-acc-id:policy/TodoTest-DynamoDB-RW.
     Type: String
-    Default: arn:aws:iam::todo-aws-acc-id:policy/TodoTest-DynamoDB-RW
   InternalGroupCI:
     Description: Existing IAM Group for CI to run tests and do deployment.
     Type: String
@@ -39,7 +37,7 @@ Resources:
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: !Ref 'ApigName'
+      Name: !Ref ApigName
       Description: !Sub '${ApigName} API'
       FailOnWarnings: true
   ApigInvokeLambdaPermission:
@@ -52,7 +50,7 @@ Resources:
   ApigExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Ref 'ApigExecutionRoleName'
+      RoleName: !Ref ApigExecutionRoleName
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -77,10 +75,10 @@ Resources:
             Resource:
               - !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*'
       Groups:
-        - !Ref 'InternalGroupCI'
-        - !Ref 'InternalGroupDev'
+        - !Ref InternalGroupCI
+        - !Ref InternalGroupDev
       Roles:
-        - !Ref 'ApigExecutionRoleName'
+        - !Ref ApigExecutionRoleName
   ApigDeployPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:

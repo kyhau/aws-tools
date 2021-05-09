@@ -89,7 +89,6 @@ Resources:
       Dimensions:
       - Name: StateMachineArn
         Value: !Ref SfnArn
-            Fn::GetAtt: [StateMachine, Arn]
       EvaluationPeriods: 1
       MetricName: ExecutionsTimedOut
       Namespace: AWS/States

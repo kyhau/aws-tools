@@ -92,15 +92,15 @@ Resources:
 
   SfnFunctionVersion:
     Type: AWS::Lambda::Version
-      Properties:
-        FunctionName: !Ref SfnFunction
+    Properties:
+      FunctionName: !Ref SfnFunction
 
   SfnFunctionAlias:
     Type: AWS::Lambda::Alias
-      Properties:
-        FunctionName: !Ref SfnFunction
-        FunctionVersion: !Ref SfnFunctionVersion
-        Name: blue
+    Properties:
+      FunctionName: !Ref SfnFunction
+      FunctionVersion: !Ref SfnFunctionVersion
+      Name: blue
 
   ApigwFunction:
     Type: AWS::Lambda::Function
@@ -167,15 +167,15 @@ Resources:
 
   ApigwFunctionVersion:
     Type: AWS::Lambda::Version
-      Properties:
-        FunctionName: !Ref ApigwFunction
+    Properties:
+      FunctionName: !Ref ApigwFunction
 
   ApigwFunctionAlias:
     Type: AWS::Lambda::Alias
-      Properties:
-        FunctionName: !Ref ApigwFunction
-        FunctionVersion: !Ref ApigwFunctionVersion
-        Name: blue
+    Properties:
+      FunctionName: !Ref ApigwFunction
+      FunctionVersion: !Ref ApigwFunctionVersion
+      Name: blue
 
   StateMachineExecutionRole:
     Type: AWS::IAM::Role
@@ -354,7 +354,13 @@ Resources:
         PassthroughBehavior: WHEN_NO_MATCH
         TimeoutInMillis: 29000
         Type: AWS_PROXY
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApigwFunction.Arn}:${stageVariables.lambdaAlias}/invocations"
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref AWS::Region
+            - ':lambda:path/2015-03-31/functions/'
+            - !GetAtt ApigwFunction.Arn
+            - ':${stageVariables.lambdaAlias}/invocations'
       MethodResponses:
         - ResponseModels:
             application/json: Empty
