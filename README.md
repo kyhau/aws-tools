@@ -11,10 +11,11 @@ Most of the Python scripts support multi accounts and regions.
 ## For running Python scripts
 
 ```
-# Create virtual env and install the required packages
-
+# Create and activate virtual env (optional)
 virtualenv env -p python3.8
 . env/bin/activate
+
+# Install the required packages
 pip install -r requirements.txt
 
 # Optional
@@ -29,7 +30,7 @@ pip install -r requirements-cli.txt
 
 ---
 ## Useful Links
-- [CDK](#cdk)
+- [CDK v1 and v2](#cdk)
 - [CloudFormation](#cloudformation)
 - [Serverless](#serverless)
 - [ECS, EKS, container-based development](#ecs-efs-container-based-development)
@@ -59,18 +60,19 @@ pip install -r requirements-cli.txt
 | CDK Patterns | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
 | Serverless Stack Toolkit (SST) (extension of AWS CDK) | [serverless-stack/serverless-stack](https://github.com/serverless-stack/serverless-stack) |
 | Awesome CDK | [kolomied/awesome-cdk](https://github.com/kolomied/awesome-cdk) |
-| kyhau/cdk-examples | [kyhau/cdk-examples](https://github.com/kyhau/cdk-examples) |
+| kyhau/cdk-examples (CDK v1 and v2) | [kyhau/cdk-examples](https://github.com/kyhau/cdk-examples) |
 
 ### CloudFormation
 
 | Description | Repo/Link |
 | :--- | :--- |
-| AWS CloudFormation CLI (cloudformation-cli) | [aws-cloudformation/aws-cloudformation-cli](https://github.com/aws-cloudformation/cloudformation-cli) |
+| AWS CloudFormation CLI (cfn) | [aws-cloudformation/aws-cloudformation-cli](https://github.com/aws-cloudformation/cloudformation-cli) |
 | AWS CloudFormation Guard | [aws-cloudformation/cloudformation-guard](https://github.com/aws-cloudformation/cloudformation-guard) |
-| AWS CloudFormation Linter (cfn-lint)  | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
-| AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
-| AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) |
 | AWS CloudFormation Handling Region parity| [aws-samples/aws-cloudformation-region-parity](https://github.com/aws-samples/aws-cloudformation-region-parity) |
+| AWS CloudFormation Linter (cfn-lint) | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
+| AWS CloudFormation Macros | [aws-cloudformation/aws-cloudformation-macros](https://github.com/aws-cloudformation/aws-cloudformation-macros) |
+| AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) |
+| AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
 | AWS CloudFormation Sample Templates | [awslabs/aws-cloudformation-templates](https://github.com/awslabs/aws-cloudformation-templates) |
 | AWS CloudFormation Template Flip (cfn-flip) | [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) |
 | [AWS predefined CloudWatch metric filters and alarms](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/use-cloudformation-template-to-create-cloudwatch-alarms.html) |[CloudWatch_Alarms_for_CloudTrail_API_Activity.zip](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/samples/CloudWatch_Alarms_for_CloudTrail_API_Activity.zip)|
