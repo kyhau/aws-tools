@@ -8,12 +8,21 @@ awscli
 #c7n                      # cloud-custodian
 
 ################################################################################
-# CDK/Cloudformation
+# CDK
 
-aws-cdk.core              # require npm aws-cdk
+# CDK v2; require `npm install -g aws-cdk@next`
+#aws-cdk-lib>=2.0.0rc1
+#constructs>=10.0.0
+
+# CDK v1; require `npm install -g aws-cdk`
+#aws-cdk.core
+
+################################################################################
+# CloudFormation
+
 cfn-flip
 cfn-lint                  # require aws-sam-translator
-cloudformation-cli        # https://github.com/aws-cloudformation/cloudformation-cli
+cloudformation-cli        # cfn
 cloudformation-cli-python-plugin
 pydot                     # use tegether with cfn-lint to generate DOT file, require graphviz
 yamllint
@@ -26,6 +35,7 @@ yamllint
 #chalice             # AWS Chalice
 
 #awscli-local        # LocalStack AWS CLI - https://github.com/localstack/awscli-local
+
 #localstack          # Local AWS cloud stack - https://github.com/localstack/localstack
 
 ################################################################################

@@ -2,6 +2,7 @@
 
 ################################################################################
 # AWS related packages
+
 boto3~=1.17
 #aws-embedded-metrics
 #aws-encryption-sdk
@@ -19,7 +20,16 @@ boto3~=1.17
 #git+https://github.com/aws-cloudformation/aws-cloudformation-rpdk-python-plugin.git#egg=cloudformation-cli-python-plugin
 
 ################################################################################
-# AWS-CDK related packages
+# AWS CDK v2 related packages
+# Prerequisite: npm install -g aws-cdk@next
+
+#aws-cdk-lib>=2.0.0rc1
+#constructs>=10.0.0
+
+################################################################################
+# AWS CDK v1 related packages
+# Prerequisite: npm install -g aws-cdk
+
 #aws-cdk.core
 #aws-cdk.aws-apigateway
 #aws-cdk.aws-dynamodb
@@ -30,6 +40,7 @@ boto3~=1.17
 
 ################################################################################
 # Non aws related packages
+
 apispec~=3.3            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
 click~=7.1
 dataclasses-json~=0.5   # provides a simple API for encoding and decoding dataclasses to and from JSON
@@ -46,5 +57,6 @@ pytz
 
 ################################################################################
 # Kafka
+
 #confluent_kafka        # https://docs.confluent.io/current/clients/python.html
 #kafka-python
