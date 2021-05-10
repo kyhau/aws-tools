@@ -97,6 +97,7 @@ pip install -r requirements-cli.txt
 | AWS Serverless Application Model (SAM) CLI | [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
 | AWS Serverless Application Model (SAM) Examples | [awslabs/serverless-application-model/examples/](https://github.com/awslabs/serverless-application-model/tree/master/examples/2016-10-31) |
 | Cookiecutter SAM for Python Lambda functions | [aws-samples/cookiecutter-aws-sam-python](https://github.com/aws-samples/cookiecutter-aws-sam-python) |
+| AWS Serverless Patterns (SAM, CDK) | [aws-samples/serverless-patterns](https://github.com/aws-samples/serverless-patterns) |
 | AWS Serverless Application Repository | [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/) |
 | AWS Step Functions Data Science SDK (Python) | [aws/aws-step-functions-data-science-sdk-python](https://github.com/aws/aws-step-functions-data-science-sdk-python) |
 | A sandboxed local environment that replicates the live AWS Lambda environment | [lambci/docker-lambda](https://github.com/lambci/docker-lambda) |
@@ -105,7 +106,7 @@ pip install -r requirements-cli.txt
 | Serverless Framework | [serverless/serverless](https://github.com/serverless/serverless) |
 | Serverless Components | [serverless/components](https://github.com/serverless/components) |
 | Serverless Components CLI | [serverless/cli](https://github.com/serverless/cli) |
-| Serverless Patterns Collection | [serverlessland.com/patterns](https://serverlessland.com/patterns) |
+| Serverless Patterns Collection (SAM, CDK) | [serverlessland.com/patterns](https://serverlessland.com/patterns) |
 | Serverless Stack (SST) (extension of CDK) | [serverless-stack/serverless-stack](https://github.com/serverless-stack/serverless-stack) |
 | Stelligent mu (a tool for managing your microservices platform) | [stelligent/mu](https://github.com/stelligent/mu) |
 | Zappa Serverless Python | [Miserlou/Zappa](https://github.com/Miserlou/Zappa) |
