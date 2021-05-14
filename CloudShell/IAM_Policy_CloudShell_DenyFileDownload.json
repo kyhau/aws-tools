@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Sid": "CloudShellUser",
+        "Effect": "Allow",
+        "Action": [
+            "cloudshell:*"
+        ],
+        "Resource": "*"
+    }, {
+        "Sid": "DenyDownload",
+        "Effect": "Deny",
+        "Action": [
+            "cloudshell:GetFileDownloadUrls"
+        ],
+        "Resource": "*"
+    }]
+}

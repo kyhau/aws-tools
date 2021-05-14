@@ -154,6 +154,7 @@ pip install -r requirements-cli.txt
 | AWS IoT Device SDK (Python) | [aws/aws-iot-device-sdk-python](https://github.com/aws/aws-iot-device-sdk-python) |
 | AWS ParallelCluster (enhanced version of CfnCluster) | [aws/aws-parallelcluster](https://github.com/aws/aws-parallelcluster) |
 | AWS SageMaker SDK (Python) | [aws/sagemaker-python-sdk](https://github.com/aws/sagemaker-python-sdk) |
+| AWS SaaS Boost | [awslabs/aws-saas-boost](https://github.com/awslabs/aws-saas-boost) |
 | AWS Tools for Microsoft VSTS | [AWS Tools for Microsoft Visual Studio Team Services](https://docs.aws.amazon.com/vsts/latest/userguide/welcome.html) |
 | AWS Tools for PowerShell | [AWS Tools for PowerShell](https://aws.amazon.com/powershell/) |
 | AWS Tools and sample code provided by AWS Premium Support | [awslabs/aws-support-tools](https://github.com/awslabs/aws-support-tools) |
