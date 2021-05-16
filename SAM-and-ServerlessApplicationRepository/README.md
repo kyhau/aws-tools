@@ -1,5 +1,7 @@
 # Resources for building serverless applications and pipelines
 
+- My example with sam-beta-cdk: https://github.com/kyhau/slack-command-app-cdk
+
 - https://aws.amazon.com/serverless/serverlessrepo/resources/
 
 -  **Pipeline**
@@ -13,14 +15,25 @@
 
 ---
 
+## Notes on known sam-beta-cdk issues
+
+1. KeyError when running sam-beta-cdk ...
+   ```
+   KeyError: '/home/.../lambda'
+   Failed to execute script __main__
+   ```
+   - Known bug: https://github.com/aws/aws-sam-cli/issues/2849
+   - Workaround:
+      - Add `"@aws-cdk/core:newStyleStackSynthesis": false` into cdk.json
+      - Add an empty requirements.txt to lambda/ (folder containing the Lambda functions).
+
+---
+
 ## SAM
 
 - [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model) (SAM)
 - [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli) (SAM CLI, formerly known as SAM Local)
 - [Examples](https://github.com/awslabs/serverless-application-model/tree/master/examples/2016-10-31)
-- Example `sam-app`'s source can be found [here](
-  https://aws.amazon.com/blogs/aws/aws-serverless-application-model-sam-command-line-interface-build-test-and-debug-serverless-apps-locally/)
-- [Create a Step Functions State Machine Using AWS SAM ](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-state-machine-using-sam.html)
 - [Cookiecutter SAM for Python Lambda functions](https://github.com/aws-samples/cookiecutter-aws-sam-python) |
 
 
@@ -31,7 +44,7 @@ otherwise the mounting will not work probably (without error).
 Setup
 ```
 # 1. Install Docker
-# 2. Install Python 3.7
+# 2. Install Python 3.8
 # 3. Install aws-sam-cli
 
 pip install aws-sam-cli
