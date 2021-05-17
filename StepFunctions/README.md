@@ -4,6 +4,19 @@
 
 - [AWS Lambda Canary Deployments with API Gateway](https://blog.thundra.io/aws-lambda-canary-deployments-with-api-gateway)
 
+## Bucket size and Refill Rate per Second In Step Functions
+
+> Some Step Functions API actions are throttled using a token bucket scheme to maintain service bandwidth.
+
+> The bucket size and refill rate refer to the behavior of an algorithm that is conceptually represented by a bucket of tokens. Each time the action occurs, a token must be removed from the bucket, otherwise the action is throttled if no token is available in the bucket.
+> The refill rate establishes the sustained rate at which the action is potentially allowed to occur.
+
+> The bucket size is the maximum burst capacity you can "store" to handle surges of activity.
+
+> Buckets are constantly filling at the refill rate. If the event rate is less than the refill rate, they reach their size limit, and the extra (imaginary) tokens fall off the (imaginary) edge of the (imaginary) bucket and disappear, leaving you with a full bucket to provide for smooth bursting as long as you don't exceed the bucket capacity and run out of tokens.
+
+Ref: https://stackoverflow.com/questions/57959933/what-does-refill-rate-mean-for-aws-step-functions
+
 ## API Gateway Integration
 
 Notes
