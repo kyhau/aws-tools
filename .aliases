@@ -138,9 +138,14 @@ alias sam-local-generate-event='sam local generate-event'
 alias sam-local-start-api='sam local start-api'
 alias sam-local-start-lambda='sam local start-lambda'
 
-alias update-awscii-cli='sudo npm i -g @mhlabs/awscii-cli@latest'
-
 alias update-aws-cdk='sudo npm install -g aws-cdk@latest'
 alias update-aws-cdk-v2='sudo npm install -g aws-cdk@next'
+
+alias update-aws-cfn-guard='. ${REPO_HOME}/CloudFormation/install-cfn-guard.sh'
+
 alias update-aws-sam-cli='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli.sh'
 alias update-aws-sam-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-beta-cdk.sh'
+
+alias update-awscii-cli='sudo npm i -g @mhlabs/awscii-cli@latest'
+
+alias update-sam2aws='. ${REPO_HOME}/saml2aws/install-saml2aws.sh'
