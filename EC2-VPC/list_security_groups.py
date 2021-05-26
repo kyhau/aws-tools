@@ -1,8 +1,9 @@
 """
 List Security Groups
 """
-import click
 import logging
+
+import click
 import yaml
 from helper.aws import AwsApiHelper
 
@@ -24,6 +25,12 @@ class Helper(AwsApiHelper):
         logging.debug(f"Total: {cnt}")
         if cnt and (kwargs.get("GroupIds") or group_name):
             return cnt
+
+    def process_client_error(self, e, account_id, region):
+        if e.response["Error"]["Code"] == "InvalidGroup.NotFound":
+            pass
+        else:
+            super().process_client_error(e, account_id, region)
 
 
 @click.command()
