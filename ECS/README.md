@@ -7,6 +7,11 @@
 1. [ECS + CloudFormation without clobbering desired counts?](https://www.reddit.com/r/aws/comments/6pwxkv/ecs_cloudformation_without_clobbering_desired/)
     > I've run into this as well, the ECS services behave subtly different from the ASG scaling. In ASG if you don't set the DesiredCapacity (which isn't required) then CFN/ASG will happily keep the existing value. However the DesiredCount is required for ECS Services so CFN will honor what you've put in the template and happily reset your service back to what's in your template. Even if that means going from 20 instances to 1 in a heartbeat.
 
+1. ECS Cluster utilization and Service utilization
+    - CPU Units example: A t3.medium has 2 vCPUs so it would be 2 x 1024 = 2048 CPU units
+    - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cloudwatch-metrics.html#cluster_reservation
+    - https://aws.amazon.com/blogs/containers/how-amazon-ecs-manages-cpu-and-memory-resources/
+
 1. [How can I correctly update my Auto Scaling group when I update my CloudFormation stack?](https://aws.amazon.com/premiumsupport/knowledge-center/auto-scaling-group-rolling-updates/)
 
 1. [Refreshing an Amazon ECS Container Instance Cluster With a New AMI](https://aws.amazon.com/blogs/compute/refreshing-an-amazon-ecs-container-instance-cluster-with-a-new-ami/)
