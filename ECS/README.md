@@ -4,6 +4,10 @@
 
 1. Fargate 1.3 had two ENIs and some fun routing. Fargate 1.4 AWS put it back to single ENI (and if you put it in the VPC I think it wants endpoints).
 
+1. [Theoretical cost optimization by Amazon ECS launch type: Fargate vs EC2](https://aws.amazon.com/blogs/containers/theoretical-cost-optimization-by-amazon-ecs-launch-type-fargate-vs-ec2/)
+    - > For steady-state, predictable workload levels that use a higher proportion of the instance CPU and memory, EC2 can be a more cost-effective choice, as it is possible to simply select the instance type for which tasks can optimally use the available resources.
+    - > For highly dynamic workloads where right-sizing and scaling EC2 infrastructure introduces the risks of under/over-provisioning, the flexibility in cost and operation provided by Fargate would be beneficial.
+
 1. [ECS + CloudFormation without clobbering desired counts?](https://www.reddit.com/r/aws/comments/6pwxkv/ecs_cloudformation_without_clobbering_desired/)
     > I've run into this as well, the ECS services behave subtly different from the ASG scaling. In ASG if you don't set the DesiredCapacity (which isn't required) then CFN/ASG will happily keep the existing value. However the DesiredCount is required for ECS Services so CFN will honor what you've put in the template and happily reset your service back to what's in your template. Even if that means going from 20 instances to 1 in a heartbeat.
 
