@@ -49,7 +49,7 @@ Setup
 
 pip install aws-sam-cli
 
-sam init --runtime python3.7 --dependency-manager pip --name sam-app --output-dir . --app-template hello-world
+sam init --runtime python3.8 --dependency-manager pip --name sam-app --output-dir . --app-template hello-world
 
 cd sam-app/
 ```

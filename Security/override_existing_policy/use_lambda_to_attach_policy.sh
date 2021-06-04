@@ -20,7 +20,7 @@ aws lambda create-function \
   --function-name "lambda_function" \
   --zip-file "fileb://lambda_function.zip" \
   --handler "lambda_function.lambda_handler" \
-  --runtime "python3.7" \
+  --runtime "python3.8" \
   --role "$ROLE_ARN" \
   --region "$AWS_REGION"
 
