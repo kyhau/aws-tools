@@ -267,6 +267,7 @@ pip install -r requirements-cli.txt
 - [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf), AWS, DEC 2018
 
 ## Workshops
+
 - [workshops.aws](https://workshops.aws/)
 - [Amplify Days ANZ](https://amplifydays.awsanz.com/)
 - [App Mesh Workshop](https://www.appmeshworkshop.com/)

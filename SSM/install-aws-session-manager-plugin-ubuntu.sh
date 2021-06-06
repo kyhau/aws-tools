@@ -12,7 +12,7 @@ sudo dpkg -i session-manager-plugin.deb
 echo "Cleaning up downloaded file..."
 rm session-manager-plugin.deb
 
-echo "Version installed: $(session-manager-plugin --version)"
+echo "session-manager-plugin version: $(session-manager-plugin --version)"
 
 echo "Enabling logging for the plugin..."
 
