@@ -2,14 +2,15 @@
 # https://github.com/aws-samples/cdk-assume-role-credential-plugin
 set -e
 
-git clone git@github.com:aws-samples/cdk-assume-role-credential-plugin.git
+npm cache clear --force
 
-cd cdk-assume-role-credential-plugin
-echo "Install the plugin globally..."
+sudo apt-get install -y nodejs
+echo "node version: $(node --version)"
+echo "npm version: $(npm --version)"
 
-npm install -g git+https://github.com/aws-samples/cdk-assume-role-credential-plugin.git
+echo "Installing the plugin globally..."
+sudo npm install -g cdk-assume-role-credential-plugin
+echo "cdk-assume-role-credential-plugin version: $(cdk-assume-role-credential-plugin --version)"
 
 # OR install it locally...
-# npm install git+https://github.com/aws-samples/cdk-assume-role-credential-plugin.git
-
-cd ..
+# npm install cdk-assume-role-credential-plugin
