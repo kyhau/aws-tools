@@ -1,12 +1,13 @@
-# About Lambda
+# Some notes about Lambda
 
 ## Lambda Tricks
 
 - [How to Make Your Lambda Functions Run Faster (and Cheaper)](https://hackernoon.com/how-to-make-your-lambda-functions-run-faster-and-cheaper-gp2034jl) by webiny on 2020-11-25
 
-- [Hit the 6MB Lambda payload limit? Here’s what you can do](
-  https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
-  by Yan Cui on 2020-04-09
+- Lambda now supports up to 10 GB of memory and 6 vCPU cores
+    - Old blog post: [Hit the 6MB Lambda payload limit? Here’s what you can do](
+        https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
+        by Yan Cui on 2020-04-09
 
 - [Shave 99.93% off your Lambda bill with this one weird trick](
   https://medium.com/@hichaelmart/shave-99-93-off-your-lambda-bill-with-this-one-weird-trick-33c0acebb2ea)
@@ -24,15 +25,28 @@ I solved my problems with set to callbackWaitsForEmptyEventLoop = false.
      - > For non-async handlers, function execution continues until the event loop is empty or the function times out. The response isn't sent to the invoker until all event loop tasks are finished. If the function times out, an error is returned instead. You can configure the runtime to send the response immediately by setting context.callbackWaitsForEmptyEventLoop to false.
 
 
-## Using AWS SAM CLI with the AWS CDK to test a Lambda function locally
+## Container Image, Lambda Layers, Lambda Extensions
 
-- https://docs.aws.amazon.com/cdk/latest/guide/sam.html
+- Working with Lambda layers and extensions in container images ([blog post](https://aws.amazon.com/blogs/compute/working-with-lambda-layers-and-extensions-in-container-images/))
+
+- Optimizing Lambda functions packaged as container images ([blog post](https://aws.amazon.com/blogs/compute/optimizing-lambda-functions-packaged-as-container-images/))
+
+### Lambda Layers
+
+- Deploy Lambda Layer wwith CDK - example: https://github.com/kyhau/cdk-examples/tree/master/python/cdk-lambda-layer-datetimenow
 
 
 ## APIs
 - Lambda Extensions API https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html
 - Lambda Logs API https://docs.aws.amazon.com/lambda/latest/dg/runtimes-logs-api.html
 - Lambda runtime API https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html
+
+
+## Using SAM CLI with the CDK to test a Lambda function locally
+
+- Example: https://github.com/kyhau/slack-command-app-cdk
+- https://docs.aws.amazon.com/cdk/latest/guide/sam.html
+
 
 ## aws-lambda-powertools
 
@@ -42,13 +56,8 @@ I solved my problems with set to callbackWaitsForEmptyEventLoop = false.
 - https://awslabs.github.io/aws-lambda-powertools-python/utilities/middleware_factory/
 - https://aws.amazon.com/blogs/compute/building-well-architected-serverless-applications-understanding-application-health-part-2/
 
-## Lambda Layers
 
-- https://github.com/kyhau/cdk-lambda-layer-datetimenow
-- https://github.com/awsdocs/aws-lambda-developer-guide/tree/master/sample-apps/blank-python
-- https://stackoverflow.com/questions/59716366/how-to-deploy-and-attach-a-layer-to-aws-lambda-function-using-aws-cdk-and-python
-- https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html
-    > To include libraries in a layer, place them in one of the folders supported by your runtime, or modify that path variable for your language.
+## Lambda code signing with AWS Signer
 
 ## Lambda Error Patterns and Logging
 
