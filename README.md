@@ -71,6 +71,7 @@ pip install -r requirements-cli.txt
 | AWS CloudFormation Handling Region parity| [aws-samples/aws-cloudformation-region-parity](https://github.com/aws-samples/aws-cloudformation-region-parity) |
 | AWS CloudFormation Linter (cfn-lint) | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
 | AWS CloudFormation Macros | [aws-cloudformation/aws-cloudformation-macros](https://github.com/aws-cloudformation/aws-cloudformation-macros) |
+| AWS CloudFormation Registry (public/private extensions/modules) | [User Guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry.html) |
 | AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) |
 | AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
 | AWS CloudFormation Sample Templates | [awslabs/aws-cloudformation-templates](https://github.com/awslabs/aws-cloudformation-templates) |
