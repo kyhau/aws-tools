@@ -215,6 +215,7 @@ pip install -r requirements-cli.txt
 | AWS CIDR Finder | [aws-samples/aws-cidr-finder](https://github.com/aws-samples/aws-cidr-finder) |
 | [Serverless Transit Network Orchestrator](https://aws.amazon.com/solutions/serverless-transit-network-orchestrator/) | [awslabs/serverless-transit-network-orchestrator](https://github.com/awslabs/serverless-transit-network-orchestrator) |
 | TGW (Transit Gateway) Migrator Tool | [TGW Migrator Tool](https://aws.amazon.com/blogs/networking-and-content-delivery/migrate-from-transit-vpc-to-aws-transit-gateway/) |
+| TGW Route Limits Monitoring | [aws-samples/how-to-monitor-tgw-route-limits-using-serverless-architecture](https://github.com/aws-samples/how-to-monitor-tgw-route-limits-using-serverless-architecture) |
 | TGW to solve overlapping CIDRs | [aws-samples/aws-transit-gateway-overlapping-cidrs](https://github.com/aws-samples/aws-transit-gateway-overlapping-cidrs) |
 
 ### Closing account
