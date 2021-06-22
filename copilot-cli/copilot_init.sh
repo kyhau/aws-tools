@@ -61,6 +61,6 @@ The push refers to repository [123456789012.dkr.ecr.ap-southeast-2.amazonaws.com
 ...
 
 ✔ Deployed api, you can access it at http://demo-Publi-4ZRT0E9ANEG1-1224506604.ap-southeast-2.elb.amazonaws.com.
-/mnt/c/xxx/github/xxx/copilot-cli
+/c/xxx/github/xxx/copilot-cli
 
 END_COMMENT

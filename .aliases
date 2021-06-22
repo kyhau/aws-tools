@@ -3,7 +3,7 @@
 
 REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-alias browser='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
+alias browser='/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 
 alias aws-acm-list-certificates='python ${REPO_HOME}/ACM/list_certificates.py'
 
