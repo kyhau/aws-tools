@@ -1,6 +1,6 @@
 """
 Print current control status of Security Hub.
-- Print "ControlId: ControlStatus" of a standard control by default.
+- Print "Subscription/ControlId,ControlStatus,Title" of a standard control by default.
 - Print all details when `--detailed` is used.
 """
 import json
@@ -26,25 +26,29 @@ class Helper(AwsApiHelper):
 
     def process_request(self, session, account_id, region, kwargs):
         kwargs["StandardsSubscriptionArn"] = f"arn:aws:securityhub:{region}:{account_id}:subscription/{self._subscription}"
+        ret = []
 
         client = session.client("securityhub", region_name=region)
         resp = client.describe_standards_controls(**kwargs)
         next_token = resp.get("NextToken")
         for item in resp["Controls"]:
-            self.printline(item)
+            ret.append(item)
 
         while next_token:
             kwargs["NextToken"] = next_token
-            resp = client.describe_standards_controls(Expression=self._sql_statement)
+            resp = client.describe_standards_controls(**kwargs)
             next_token = resp.get("NextToken")
             for item in resp["Controls"]:
-                self.printline(item)
+                ret.append(item)
 
-    def printline(self, item):
+        self.printline(ret)
+
+    def printline(self, items):
         if self._detailed:
-            print(json.dumps(item, indent=2, default=str))
+            print(json.dumps(items, indent=2, default=str))
         else:
-            print(f"{item['ControlId']}: {item['ControlStatus']}")
+            for item in items:
+                print(f"{self._subscription}/{item['ControlId']},{item['ControlStatus']},{item['Title']}")
 
 
 @click.command()
