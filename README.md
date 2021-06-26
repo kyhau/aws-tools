@@ -178,6 +178,7 @@ pip install -r requirements-cli.txt
 | :--- | :--- |
 | AWS Exposable Resources | [SummitRoute/aws_exposable_resources](https://github.com/SummitRoute/aws_exposable_resources) |
 | AWS Security Documentation by Category | [docs.aws.amazon.com/security](https://docs.aws.amazon.com/security/)|
+| AWS Security Reference Architecture (AWS SRA) | [docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/architecture.html) |
 | A Secure Cloud - Repository of customizable AWS security configurations and best practices | [asecure.cloud/](https://asecure.cloud/) |
 | Open source tools for AWS security | [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools) |
 | AWS IAM Policy Simulator | [IAM Policy Simulator Console](https://policysim.aws.amazon.com/) |
