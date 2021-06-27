@@ -33,7 +33,7 @@ pip install -r requirements-cli.txt
 - [CDK v1 and v2](#cdk)
 - [CloudFormation](#cloudformation)
 - [Serverless](#serverless)
-- [ECS, EKS, container-based development](#ecs-efs-container-based-development)
+- [ECS, EKS, container-based development](#ecs-eks-container-based-development)
 - [AWS SDKs and CLIs](#aws-sdks-and-clis)
 - [Security](#security)
 - [Chaos Engineering](#chaos-engineering)
@@ -116,7 +116,7 @@ pip install -r requirements-cli.txt
 | Zappa Serverless Python | [Miserlou/Zappa](https://github.com/Miserlou/Zappa) |
 | Serverless Microservice Patterns for AWS | [Blog post](https://www.jeremydaly.com/serverless-microservice-patterns-for-aws/)|
 
-### ECS, EFS, Container-based development
+### ECS, EKS, Container-based development
 
 | Description | Repo/Link |
 | :--- | :--- |
@@ -130,6 +130,7 @@ pip install -r requirements-cli.txt
 | AWS Controllers for Kubernetes (ACK) | [aws/aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) |
 | AWS Copilot CLI - containerize apps on ECS/Fargate| [aws/copilot-cli](https://github.com/aws/copilot-cli) |
 | AWS EBS CSI Driver on Kubernetes | [kubernetes-sigs/aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) |
+| AWS EKS Charts | [aws/eks-charts](https://github.com/aws/eks-charts) |
 | AWS Node Termination Handler | [aws/aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) |
 | Docker CLI plugin for ECS | [docker/ecs-plugin](https://github.com/docker/ecs-plugin) |
 | A simple terminal UI for both docker and docker-compose | [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) |
