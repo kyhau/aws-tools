@@ -79,6 +79,9 @@ alias aws-msk-cluster-bootstrap-broker-string='aws kafka get-bootstrap-brokers -
 alias aws-msk-cluster-zookeeper-connect-string='aws kafka describe-cluster --query ClusterInfo.ZookeeperConnectString --cluster-arn '
 alias aws-msk-list-nodes='python ${REPO_HOME}/MSK/msk_list_nodes.py'
 
+alias aws-organizations-list-accounts='python ${REPO_HOME}/Organizations/list_accounts.py'
+alias aws-organizations-list-policies='python ${REPO_HOME}/Organizations/list_policies.py'
+
 alias aws-rds-cluster-endpoints='python ${REPO_HOME}/RDS/list_rds_cluster_endpoints.py'
 alias aws-rds-clusters='python ${REPO_HOME}/RDS/list_rds_clusters.py'
 alias aws-rds-instances='python ${REPO_HOME}/RDS/list_rds_instances.py'
