@@ -13,7 +13,7 @@ sha256sum aws-sam-cli-linux-x86_64.zip
 unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
 
 # Install the AWS SAM CLI.
-sudo ./sam-installation/install
+sudo ./sam-installation/install --update
 
 # Verify the installation.
 sam-beta-cdk --version
