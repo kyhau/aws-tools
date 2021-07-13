@@ -30,7 +30,7 @@ class PolicyHelper():
         return policy_dict
 
     def get_customer_managed_scp_ids(self):
-        """Return a list of SCP IDs of the existing customer managaed SCPs"""
+        """Return a list of SCP IDs of the existing customer managed SCPs"""
         scp_list = []
 
         params = {"Filter": "SERVICE_CONTROL_POLICY"}
@@ -40,7 +40,7 @@ class PolicyHelper():
         return scp_list
 
     def get_customer_managed_scps(self, scp_ids):
-        """Return a dict of {policy_name: policy_dict} of the existing customer managaed SCPs"""
+        """Return a dict of {policy_name: policy_dict} of the existing customer managed SCPs"""
         scps = {}
         for id in scp_ids:
             resp = self.client.describe_policy(PolicyId=id)["Policy"]
