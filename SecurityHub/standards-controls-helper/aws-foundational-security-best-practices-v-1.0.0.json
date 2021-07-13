@@ -1,0 +1,3187 @@
+{
+  "ACM.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "ACM certificates should be renewed after a specified time period"
+  },
+  "APIGateway.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "API Gateway REST and WebSocket API execution logging should be enabled"
+  },
+  "APIGateway.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "API Gateway REST API stages should be configured to use SSL certificates for backend authentication"
+  },
+  "APIGateway.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "API Gateway REST API stages should have AWS X-Ray tracing enabled"
+  },
+  "AutoScaling.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Auto scaling groups associated with a load balancer should use load balancer health checks"
+  },
+  "CloudFront.1": {
+    "Regions": {
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudFront distributions should have a default root object configured"
+  },
+  "CloudFront.2": {
+    "Regions": {
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudFront distributions should have origin access identity enabled"
+  },
+  "CloudFront.3": {
+    "Regions": {
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudFront distributions should require encryption in transit"
+  },
+  "CloudFront.4": {
+    "Regions": {
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudFront distributions should have origin failover configured"
+  },
+  "CloudTrail.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudTrail should be enabled and configured with at least one multi-region trail"
+  },
+  "CloudTrail.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudTrail should have encryption at-rest enabled"
+  },
+  "CloudTrail.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudTrail log file validation should be enabled"
+  },
+  "CloudTrail.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CloudTrail trails should be integrated with Amazon CloudWatch Logs"
+  },
+  "CodeBuild.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CodeBuild GitHub or Bitbucket source repository URLs should use OAuth"
+  },
+  "CodeBuild.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "CodeBuild project environment variables should not contain clear text credentials"
+  },
+  "Config.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "AWS Config should be enabled"
+  },
+  "DMS.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Database Migration Service replication instances should not be public"
+  },
+  "DynamoDB.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "DynamoDB tables should automatically scale capacity with demand"
+  },
+  "DynamoDB.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "DynamoDB tables should have point-in-time recovery enabled"
+  },
+  "DynamoDB.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "DynamoDB Accelerator (DAX) clusters should be encrypted at rest"
+  },
+  "EC2.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EBS snapshots should not be public, determined by the ability to be restorable by anyone"
+  },
+  "EC2.10": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon EC2 should be configured to use VPC endpoints"
+  },
+  "EC2.15": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EC2 subnets should not automatically assign public IP addresses"
+  },
+  "EC2.16": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Unused Network Access Control Lists should be removed"
+  },
+  "EC2.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "The VPC default security group should not allow inbound and outbound traffic"
+  },
+  "EC2.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Attached EBS volumes should be encrypted at-rest"
+  },
+  "EC2.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Stopped EC2 instances should be removed after a specified time period"
+  },
+  "EC2.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "VPC flow logging should be enabled in all VPCs"
+  },
+  "EC2.7": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EBS default encryption should be enabled"
+  },
+  "EC2.8": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EC2 instances should use Instance Metadata Service Version 2 (IMDSv2)"
+  },
+  "EC2.9": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EC2 instances should not have a public IPv4 address"
+  },
+  "EFS.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Elastic File System should be configured to encrypt file data at-rest using AWS KMS"
+  },
+  "EFS.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon EFS volumes should be in backup plans"
+  },
+  "ELB.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Classic Load Balancer listeners should be configured with HTTPS or TLS termination"
+  },
+  "ELB.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Application load balancer should be configured to drop http headers"
+  },
+  "ELB.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Application and Classic Load Balancers logging should be enabled"
+  },
+  "ELB.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Application Load Balancer deletion protection should be enabled"
+  },
+  "ELBv2.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Application Load Balancer should be configured to redirect all HTTP requests to HTTPS"
+  },
+  "EMR.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon Elastic MapReduce cluster master nodes should not have public IP addresses"
+  },
+  "ES.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Elasticsearch domains should have encryption at-rest enabled"
+  },
+  "ES.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon Elasticsearch Service domains should be in a VPC"
+  },
+  "ES.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon Elasticsearch domains should encrypt data sent between nodes"
+  },
+  "ElasticBeanstalk.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Elastic Beanstalk environments should have enhanced health reporting enabled"
+  },
+  "ElasticBeanstalk.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Elastic Beanstalk managed platform updates should be enabled"
+  },
+  "GuardDuty.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "GuardDuty should be enabled"
+  },
+  "IAM.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM policies should not allow full \"*\" administrative privileges"
+  },
+  "IAM.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM users should not have IAM policies attached"
+  },
+  "IAM.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM users' access keys should be rotated every 90 days or less"
+  },
+  "IAM.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM root user access key should not exist"
+  },
+  "IAM.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "MFA should be enabled for all IAM users that have a console password"
+  },
+  "IAM.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Hardware MFA should be enabled for the root user"
+  },
+  "IAM.7": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Password policies for IAM users should have strong configurations"
+  },
+  "IAM.8": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Unused IAM user credentials should be removed"
+  },
+  "KMS.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM customer managed policies should not allow decryption actions on all KMS keys"
+  },
+  "KMS.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM principals should not have IAM inline policies that allow decryption actions on all KMS keys"
+  },
+  "KMS.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "AWS KMS keys should not be deleted unintentionally"
+  },
+  "Lambda.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Lambda function policies should prohibit public access"
+  },
+  "Lambda.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Lambda functions should use supported runtimes"
+  },
+  "Lambda.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Lambda functions should have a dead-letter queue configured"
+  },
+  "RDS.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS snapshot should be private"
+  },
+  "RDS.10": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM authentication should be configured for RDS instances"
+  },
+  "RDS.12": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "IAM authentication should be configured for RDS clusters"
+  },
+  "RDS.13": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS automatic minor version upgrades should be enabled"
+  },
+  "RDS.14": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon Aurora clusters should have backtracking enabled"
+  },
+  "RDS.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS DB Instances should prohibit public access, determined by the PubliclyAccessible configuration"
+  },
+  "RDS.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS DB instances should have encryption at-rest enabled"
+  },
+  "RDS.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS cluster snapshots and database snapshots should be encrypted at rest"
+  },
+  "RDS.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS DB instances should be configured with multiple Availability Zones"
+  },
+  "RDS.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Enhanced monitoring should be configured for RDS DB instances"
+  },
+  "RDS.7": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS clusters should have deletion protection enabled"
+  },
+  "RDS.8": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "RDS DB instances should have deletion protection enabled"
+  },
+  "RDS.9": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Database logging should be enabled"
+  },
+  "Redshift.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon Redshift clusters should prohibit public access"
+  },
+  "Redshift.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Connections to Amazon Redshift clusters should be encrypted in transit"
+  },
+  "Redshift.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon Redshift clusters should have automatic snapshots enabled"
+  },
+  "Redshift.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon Redshift should have automatic upgrades to major versions enabled"
+  },
+  "Redshift.7": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Redshift clusters should use enhanced VPC routing"
+  },
+  "S3.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "S3 Block Public Access setting should be enabled"
+  },
+  "S3.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "S3 buckets should prohibit public read access"
+  },
+  "S3.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "S3 buckets should prohibit public write access"
+  },
+  "S3.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "S3 buckets should have server-side encryption enabled"
+  },
+  "S3.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "S3 buckets should require requests to use Secure Socket Layer"
+  },
+  "S3.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "S3 permissions granted to other AWS accounts in bucket policies should be restricted"
+  },
+  "SNS.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "SNS topics should be encrypted at-rest using AWS KMS"
+  },
+  "SSM.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EC2 instances should be managed by AWS Systems Manager"
+  },
+  "SSM.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation"
+  },
+  "SSM.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "EC2 instances managed by Systems Manager should have an association compliance status of COMPLIANT"
+  },
+  "SageMaker.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Amazon SageMaker notebook instances should not have direct internet access"
+  },
+  "SecretsManager.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Secrets Manager secrets should have automatic rotation enabled"
+  },
+  "SecretsManager.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Secrets Manager secrets configured with automatic rotation should rotate successfully"
+  },
+  "SecretsManager.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Remove unused Secrets Manager secrets"
+  },
+  "SecretsManager.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Secrets Manager secrets should be rotated within a specified number of days"
+  },
+  "WAF.1": {
+    "Regions": {
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "AWS WAF Classic Global Web ACL logging should be enabled"
+  }
+}

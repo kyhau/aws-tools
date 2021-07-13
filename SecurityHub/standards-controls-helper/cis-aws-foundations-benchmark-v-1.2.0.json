@@ -1,0 +1,1577 @@
+{
+  "CIS.1.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Avoid the use of the \"root\" account"
+  },
+  "CIS.1.10": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM password policy prevents password reuse"
+  },
+  "CIS.1.11": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM password policy expires passwords within 90 days or less"
+  },
+  "CIS.1.12": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure no root account access key exists"
+  },
+  "CIS.1.13": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure MFA is enabled for the \"root\" account"
+  },
+  "CIS.1.14": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure hardware MFA is enabled for the \"root\" account"
+  },
+  "CIS.1.16": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM policies are attached only to groups or roles"
+  },
+  "CIS.1.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console password"
+  },
+  "CIS.1.20": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a support role has been created to manage incidents with AWS Support"
+  },
+  "CIS.1.22": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM policies that allow full \"*:*\" administrative privileges are not created"
+  },
+  "CIS.1.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure credentials unused for 90 days or greater are disabled"
+  },
+  "CIS.1.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure access keys are rotated every 90 days or less"
+  },
+  "CIS.1.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM password policy requires at least one uppercase letter"
+  },
+  "CIS.1.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM password policy requires at least one lowercase letter"
+  },
+  "CIS.1.7": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM password policy requires at least one symbol"
+  },
+  "CIS.1.8": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM password policy requires at least one number"
+  },
+  "CIS.1.9": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure IAM password policy requires minimum password length of 14 or greater"
+  },
+  "CIS.2.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure CloudTrail is enabled in all regions"
+  },
+  "CIS.2.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure CloudTrail log file validation is enabled"
+  },
+  "CIS.2.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure the S3 bucket used to store CloudTrail logs is not publicly accessible"
+  },
+  "CIS.2.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure CloudTrail trails are integrated with CloudWatch Logs"
+  },
+  "CIS.2.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure AWS Config is enabled"
+  },
+  "CIS.2.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket"
+  },
+  "CIS.2.7": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure CloudTrail logs are encrypted at rest using KMS CMKs"
+  },
+  "CIS.2.8": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure rotation for customer created CMKs is enabled"
+  },
+  "CIS.2.9": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure VPC flow logging is enabled in all VPCs"
+  },
+  "CIS.3.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for unauthorized API calls"
+  },
+  "CIS.3.10": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for security group changes"
+  },
+  "CIS.3.11": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL)"
+  },
+  "CIS.3.12": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for changes to network gateways"
+  },
+  "CIS.3.13": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for route table changes"
+  },
+  "CIS.3.14": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for VPC changes"
+  },
+  "CIS.3.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for Management Console sign-in without MFA"
+  },
+  "CIS.3.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for usage of \"root\" account"
+  },
+  "CIS.3.4": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for IAM policy changes"
+  },
+  "CIS.3.5": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for CloudTrail configuration changes"
+  },
+  "CIS.3.6": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for AWS Management Console authentication failures"
+  },
+  "CIS.3.7": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs"
+  },
+  "CIS.3.8": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for S3 bucket policy changes"
+  },
+  "CIS.3.9": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure a log metric filter and alarm exist for AWS Config configuration changes"
+  },
+  "CIS.4.1": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"
+  },
+  "CIS.4.2": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389"
+  },
+  "CIS.4.3": {
+    "Regions": {
+      "ap-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "ap-southeast-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-central-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-south-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "eu-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-east-1": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      },
+      "us-west-2": {
+        "ControlStatus": "ENABLED",
+        "DisabledReason": ""
+      }
+    },
+    "Title": "Ensure the default security group of every VPC restricts all traffic"
+  }
+}
