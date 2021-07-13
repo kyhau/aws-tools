@@ -65,10 +65,10 @@ class PolicyHelper():
         )
 
     def manage_scps(self, input_dir, dry_run):
-        # Retrieve input policies from filee
+        # Retrieve input policies from file
         input_policies = self.get_policies_from_files(input_dir)
 
-        # Retrieve {policy_name: policy_dict} of the existing customer managaed SCPs
+        # Retrieve {policy_name: policy_dict} of the existing customer managed SCPs
         curr_scps = self.get_customer_managed_scps(self.get_customer_managed_scp_ids())
 
         cnt_add, cnt_update, cnt_delete = 0, 0, 0
