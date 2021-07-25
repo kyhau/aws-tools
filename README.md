@@ -88,6 +88,7 @@ pip install -r requirements-cli.txt
 | :--- | :--- |
 | [Amazon API Gateway Serverless Developer Portal](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-developer-portal.html) | [awslabs/aws-api-gateway-developer-portal](https://github.com/awslabs/aws-api-gateway-developer-portal) |
 | AWS Chalice - Python Serverless Microframework for AWS | [aws/chalice](https://github.com/aws/chalice) |
+| AWS Lambda Builders (Python library, the brains behind `sam build`) | [aws/aws-lambda-builders](https://github.com/aws/aws-lambda-builders) |
 | AWS Lambda Developer Guide | [awsdocs/aws-lambda-developer-guide](https://github.com/awsdocs/aws-lambda-developer-guide) |
 | AWS Lambda Extensions API | [specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) |
 | AWS Lambda Extensions sample projects | [aws-samples/aws-lambda-extensions](https://github.com/aws-samples/aws-lambda-extensions/) |
