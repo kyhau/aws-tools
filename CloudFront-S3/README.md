@@ -1,13 +1,5 @@
 # CloudFront
 
-## Useful links
-- [Using Amazon S3 Origins and Custom Origins for Web Distributions](
-  http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
-- [Granting Permission to an Amazon CloudFront Origin Identity](
-  http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-6)
-- https://vimalpaliwal.com/blog/2018/10/10f435c29f/serving-multiple-s3-buckets-via-single-aws-cloudfront-distribution.html
-- https://stackoverflow.com/questions/20632828/aws-cloud-formation-script-to-create-s3-bucket-and-distribution
-
 
 ## Steps to provision infrastructure
 
@@ -44,32 +36,68 @@
    the CloudFront Domain name.
 
 
-### Notes
+---
+## Notes
 
-##### CloudFront: Error: NoSuchKey?
-[Ref](https://stackoverflow.com/questions/15309113/amazon-cloudfront-doesnt-respect-my-s3-website-buckets-index-html-rules)
+1. S3 Website endpoint vs. S3 REST API endpoint
 
-1. Check the “Origin Domain Name” of that distribution.
-1. DO NOT use the domain name of the S3 bucket which was provided in the auto-complete droplist, e.g. “mywebsite.s3.amazonaws.com”.
-1. Use the actual hosting domain name, e.g. “mywebsite.s3-website-us-east-1.amazonaws.com”.
+    1. If you use an **S3 bucket as the origin**, CloudFront uses the **REST API** interface of S3 to communicate with the origin.
 
-##### When granting permission to CloudFront to access S3 through Origin Access Identity
+        1. S3 REST API is more versatile, allowing the client to pass richer information like AWS Identity, thereby allowing the exchange of information that makes **OAI** possible.
 
-In the CloudFormation template, specify (where xxxxxx is S3 CanonicalUser ID)
+    2. If you use the **website endpoint as the origin**, CloudFront uses the **website URL** as the origin.
 
-```
-"Principal": {
-  {"CanonicalUser": "xxxxxx"}
-},
-```
+        1. E.g. http://bucket-name.s3-website.Region.amazonaws.com/object-name
 
-Then the BucketPolicy to be created will become:
+        2. **OAI** cannot be used when CloudFront is using the **website endpoint** where only **GET** and **HEAD** requests are allowed on objects.
 
-```
-"Principal": {
-  "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity xxxxxxxxxxxx"
-},
-```
+        3. **OAI** cannot be used. Instead, we have to use an **origin custom header** that only **CloudFront** can inject into the **Origin-bound HTTP** request.
 
-See also [Granting Permission to an Amazon CloudFront Origin Identity](
-  http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-6).
+        4. The **bucket policy** of the S3 bucket hosting the static website can then check for **the existence of said header**. The assumption here is that if any browser ever directly uses the website URL of the S3 hosted static website, their request will not contain this header, and hence will be rejected by the bucket policy.
+
+        5. Also, S3 hosted static websites **do not support HTTPS**.
+            1. We can only set **Viewer Protocol Policy**. Only the **browser to CloudFront half** will be HTTPS. The **CloudFront to Origin half** cannot be HTTPS in this case.
+            2. Therefore, **Origin Protocol Policy**, in this case, **cannot be set to HTTPS Only**.
+
+    3. See also https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteEndpoints.html#WebsiteRestEndpointDiff.
+
+
+1. CloudFront: Error: NoSuchKey?
+    ([Ref](https://stackoverflow.com/questions/15309113/amazon-cloudfront-doesnt-respect-my-s3-website-buckets-index-html-rules))
+
+    1. Check the “Origin Domain Name” of that distribution.
+    1. DO NOT use the domain name of the S3 bucket which was provided in the auto-complete droplist, e.g. “mywebsite.s3.amazonaws.com”.
+    1. Use the actual hosting domain name, e.g. “mywebsite.s3-website-us-east-1.amazonaws.com”.
+
+
+1. When granting permission to CloudFront to access S3 through Origin Access Identity
+
+    In the CloudFormation template, specify (where xxxxxx is S3 CanonicalUser ID)
+
+        ```
+        "Principal": {
+          {"CanonicalUser": "xxxxxx"}
+        },
+        ```
+
+        Then the BucketPolicy to be created will become:
+
+        ```
+        "Principal": {
+          "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity xxxxxxxxxxxx"
+        },
+        ```
+
+        See also [Granting Permission to an Amazon CloudFront Origin Identity](
+      http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-6).
+
+
+---
+
+## Useful links
+- [Using Amazon S3 Origins and Custom Origins for Web Distributions](
+  http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
+- [Granting Permission to an Amazon CloudFront Origin Identity](
+  http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-6)
+- https://vimalpaliwal.com/blog/2018/10/10f435c29f/serving-multiple-s3-buckets-via-single-aws-cloudfront-distribution.html
+- https://stackoverflow.com/questions/20632828/aws-cloud-formation-script-to-create-s3-bucket-and-distribution
