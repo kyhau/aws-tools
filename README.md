@@ -54,6 +54,7 @@ pip install -r requirements-cli.txt
 | Description | Repo/Link |
 | :--- | :--- |
 | AWS CDK (Cloud Development Kit) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
+| AWS CDK Construct Hub - Find reusable components for your cloud applications | [constructs.dev](https://constructs.dev/) |
 | [AWS CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [awslabs/cdk8s](https://github.com/awslabs/cdk8s) |
 | [AWS CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/) | [aws-samples/cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) |
 | [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/api-reference.html) | [awslabs/aws-solutions-constructs](https://github.com/awslabs/aws-solutions-constructs) |
