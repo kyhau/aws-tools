@@ -1,5 +1,5 @@
 """
-Calling admin_initiate_auth with oauth2 hash
+Calling admin_initiate_auth with OAuth2 hash
 
 Return
 {
@@ -57,7 +57,7 @@ def admin_initiate_auth(client_id, userpool_id, uname, upass, uhash):
     )
 
 
-@click.command(help="TODO")
+@click.command(help="Calling admin_initiate_auth with OAuth2 hash")
 @click.option("--client-id", "-i", help="App Client ID")
 @click.option("--client-secret", "-s", help="App Client Secret")
 @click.option("--username", "-n", help="Cognito User Name")
