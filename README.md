@@ -287,6 +287,7 @@ pip install -r requirements-cli.txt
 - [Networking Immersion Day](https://networking.workshop.aws/)
 - [One Observability Workshop](https://observability.workshop.aws/)
 - [Redshift Immersion Workshop](https://redshift-immersion.workshop.aws/)
+- [Serverless applications with streaming data](https://github.com/aws-samples/serverless-streaming-data-application/tree/main)
 - [Serverless Security Workshop](https://github.com/aws-samples/aws-serverless-security-workshop/)
 - [Service Catalog Tools Workshop](https://service-catalog-tools-workshop.com/)
 - [Spot Instances Workshops](https://ec2spotworkshops.com/)
