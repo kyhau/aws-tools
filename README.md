@@ -87,6 +87,7 @@ pip install -r requirements-cli.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
+| Amazon API Gateway CORS Configurator | [aws-samples/amazon-api-gateway-cors-configurator](https://github.com/aws-samples/amazon-api-gateway-cors-configurator) |
 | [Amazon API Gateway Serverless Developer Portal](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-developer-portal.html) | [awslabs/aws-api-gateway-developer-portal](https://github.com/awslabs/aws-api-gateway-developer-portal) |
 | AWS Chalice - Python Serverless Microframework for AWS | [aws/chalice](https://github.com/aws/chalice) |
 | AWS Lambda Builders (Python library, the brains behind `sam build`) | [aws/aws-lambda-builders](https://github.com/aws/aws-lambda-builders) |
