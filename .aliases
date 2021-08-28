@@ -30,6 +30,7 @@ alias aws-cloudtrail-event-names='browser https://gist.github.com/pkazi/8b5a1374
 alias aws-cloudtrail-lookup-events='python ${REPO_HOME}/CloudTrail/cloudtrail_lookup_events.py'
 alias aws-cloudtrail-list-security-event-names='python ${REPO_HOME}/CloudTrail/list_cloudtrail_security_event_names.py'
 
+alias aws-cloudwatch-put-cloudwatch-dashboard='python ${REPO_HOME}/CloudWatch/put_cloudwatch_dashboard.py'
 alias aws-cloudwatch-log-send-sample-event='python ${REPO_HOME}/CloudWatch/send_cloudwatch_log_event.py'
 alias aws-cloudwatch-insights='python ${REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights.py'
 
