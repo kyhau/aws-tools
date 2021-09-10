@@ -1,7 +1,5 @@
 # Some notes about Lambda
 
-## Lambda Tricks
-
 - [How to Make Your Lambda Functions Run Faster (and Cheaper)](https://hackernoon.com/how-to-make-your-lambda-functions-run-faster-and-cheaper-gp2034jl) by webiny on 2020-11-25
 
 - Lambda now supports up to 10 GB of memory and 6 vCPU cores
@@ -15,6 +13,9 @@
   - The init stage has the same performance as a 1792 MB Lambda, even if we’re only running a 128 MB one.
   - Technically you can do up to 10 seconds of work before it starts getting included in the billed duration.
   - Also, you'll always have to pay something for the handler execution - the minimum billed execution time is 100ms.
+
+- Cannot do `ping` from Lambda Function (see [AWS Lambda FAQs](https://aws.amazon.com/lambda/faqs/))
+  > Lambda attempts to impose as few restrictions as possible on normal language and operating system activities, but there are a few activities that are disabled: Inbound network connections are blocked by AWS Lambda, and for outbound connections, only TCP/IP and UDP/IP sockets are supported, and ptrace (debugging) system calls are blocked. TCP port 25 traffic is also blocked as an anti-spam measure.
 
 - non-async handlers and `context.callbackWaitsForEmptyEventLoop = false`
   - By default calling the callback() function in a NodeJS Lambda function does not end the function execution. It will continue running until the event loop is empty. A common issue with NodeJS Lambda functions continuing to run after callback is called occurs when you are holding on to open database connections.
