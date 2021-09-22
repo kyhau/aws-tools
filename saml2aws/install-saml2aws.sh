@@ -12,16 +12,19 @@ tar xfz saml2aws_${VERSION}_linux_amd64.tar.gz
 rm saml2aws_${VERSION}_linux_amd64.tar.*
 
 echo "Coping binary to .local/bin and create a symlink for bookmarking the version..."
-mkdir -p .local/bin
-rm .local/bin/saml2aws || true
-rm .local/bin/saml2aws-v* || true
+mkdir -p ~/.local/bin
+rm ~/.local/bin/saml2aws || true
+rm ~/.local/bin/saml2aws-v* || true
 
-mv saml2aws .local/bin/
-pushd .local/bin
+mv saml2aws ~/.local/bin/
+pushd ~/.local/bin
 ln -s saml2aws saml2aws-v${VERSION}
 popd
 
 popd
+
+echo "Checking version..."
+saml2aws --version
 
 # Configure saml2aws
 echo "Next TODO: saml2aws configure"

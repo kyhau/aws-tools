@@ -152,6 +152,10 @@ alias update-aws-cfn-guard='. ${REPO_HOME}/CloudFormation/install-cfn-guard.sh'
 
 alias update-aws-copilot-cli='. ${REPO_HOME}/copilot-cli/install-copilot-cli.sh'
 
+alias update-aws-eksctl='. ${REPO_HOME}/EKS/install_eksctl.sh'
+alias update-aws-eks-aws-iam-authenticator='. ${REPO_HOME}/EKS/install_eks_aws_iam_authenticator.sh'
+alias update-aws-eks-kubectl='. ${REPO_HOME}/EKS/install_eks_kubectl.sh'
+
 alias update-aws-sam-cli='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli.sh'
 alias update-aws-sam-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-beta-cdk.sh'
 
