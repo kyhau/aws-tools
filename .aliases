@@ -155,8 +155,6 @@ alias update-aws-copilot-cli='. ${REPO_HOME}/copilot-cli/install-copilot-cli.sh'
 alias update-aws-eksctl='. ${REPO_HOME}/EKS/install_eksctl.sh'
 alias update-aws-eks-aws-iam-authenticator='. ${REPO_HOME}/EKS/install_eks_aws_iam_authenticator.sh'
 alias update-aws-eks-kubectl='. ${REPO_HOME}/EKS/install_eks_kubectl.sh'
-alias update-k8s-kubectx-and-kubens='. ${REPO_HOME}/EKS/install_kubectx_and_kubens.sh'
-alias update-k8s-kustomize='. ${REPO_HOME}/EKS/install_kustomize.sh'
 
 alias update-aws-sam-cli='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli.sh'
 alias update-aws-sam-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-beta-cdk.sh'
