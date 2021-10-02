@@ -219,8 +219,9 @@ pip install -r requirements-cli.txt
 
 | Description | Repo/Link |
 | :--- | :--- |
-| AWS Network Firewall CFN templates | [aws-samples/aws-networkfirewall-cfn-templates](https://github.com/aws-samples/aws-networkfirewall-cfn-templates) |
 | AWS CIDR Finder | [aws-samples/aws-cidr-finder](https://github.com/aws-samples/aws-cidr-finder) |
+| AWS IP Ranges | [aws-samples/awsipranges](https://github.com/aws-samples/awsipranges) |
+| AWS Network Firewall CFN templates | [aws-samples/aws-networkfirewall-cfn-templates](https://github.com/aws-samples/aws-networkfirewall-cfn-templates) |
 | [Serverless Transit Network Orchestrator](https://aws.amazon.com/solutions/serverless-transit-network-orchestrator/) | [awslabs/serverless-transit-network-orchestrator](https://github.com/awslabs/serverless-transit-network-orchestrator) |
 | TGW (Transit Gateway) Migrator Tool | [TGW Migrator Tool](https://aws.amazon.com/blogs/networking-and-content-delivery/migrate-from-transit-vpc-to-aws-transit-gateway/) |
 | TGW Route Limits Monitoring | [aws-samples/how-to-monitor-tgw-route-limits-using-serverless-architecture](https://github.com/aws-samples/how-to-monitor-tgw-route-limits-using-serverless-architecture) |
