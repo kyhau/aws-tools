@@ -32,3 +32,5 @@ else
 {
     Write-Host "$BinDirectory already in Path."
 }
+
+session-manager-plugin --version
