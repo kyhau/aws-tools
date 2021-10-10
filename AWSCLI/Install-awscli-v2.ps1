@@ -6,18 +6,14 @@
 # choco install awscli
 
 Write-Host "Downloading..."
-
 Invoke-WebRequest `
   https://awscli.amazonaws.com/AWSCLIV2.msi `
   -outfile AWSCLIV2.msi -UseBasicParsing
 
 Write-Host "Installing..."
-
 Start-Process msiexec.exe -Wait -ArgumentList '/I AWSCLIV2.msi /quiet'
 
-#Move-Item -Path saml2aws.exe -Destination C:\ProgramData\chocolatey\bin\saml2aws.exe -Force
 Remove-Item AWSCLIV2.msi -Force
-
 Write-Host "Removed AWSCLIV2.msi"
 
 aws --version
