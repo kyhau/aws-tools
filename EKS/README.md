@@ -15,6 +15,12 @@ Quick start
 - kube-bench is a tool that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. https://github.com/aquasecurity/kube-bench
 - Amazon EKS Workshop https://www.eksworkshop.com
 
+## EKS logging
+- https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html
+- https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
+- https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html
+
+
 ## Collecting metrics with built-in Kubernetes monitoring tools
 - https://www.datadoghq.com/blog/how-to-collect-and-graph-kubernetes-metrics/
     - Querying and visualizing resource metrics from Kubernetes
