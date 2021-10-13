@@ -1,6 +1,6 @@
 # EKS Notes
 
-- See [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes) for other kubernetes tools
+- For non-AWS Kubernetes tools see [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
 
 Quick start
 - https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
@@ -9,11 +9,15 @@ Quick start
     - AWS ALB Ingress Service - Enable SSL - https://www.stacksimplify.com/aws-eks/aws-alb-ingress/learn-to-enable-ssl-on-alb-ingress-service-in-kubernetes-on-aws-eks/
     - Setting up end-to-end TLS encryption on Amazon EKS with the new AWS Load Balancer Controller - https://aws.amazon.com/blogs/containers/setting-up-end-to-end-tls-encryption-on-amazon-eks-with-the-new-aws-load-balancer-controller/)
 - Cluster Autoscaler
-    - Parameters supported for cluster autoscaler - https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca 
-    - https://docs.cloudbees.com/docs/cloudbees-ci/latest/cloud-admin-guide/eks-auto-scaling-nodes 
+    - Parameters supported for cluster autoscaler - https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca
+    - https://docs.cloudbees.com/docs/cloudbees-ci/latest/cloud-admin-guide/eks-auto-scaling-nodes
 - Kubernetes Dashboard https://github.com/kubernetes/dashboard
 - kube-bench is a tool that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. https://github.com/aquasecurity/kube-bench
 - Amazon EKS Workshop https://www.eksworkshop.com
+
+## CDK for Kubernetes (cdk8s)
+- [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s)
+- [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
 
 ## EKS logging
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html
@@ -25,7 +29,7 @@ Quick start
 - https://www.datadoghq.com/blog/how-to-collect-and-graph-kubernetes-metrics/
     - Querying and visualizing resource metrics from Kubernetes
     - Gathering cluster-level status information
-    - Viewing logs from Kubernetes pods 
+    - Viewing logs from Kubernetes pods
 
 ## Kubernetes Metrics Server (Optional)
 - https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html

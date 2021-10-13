@@ -8,18 +8,18 @@ set -e
 npm cache clear --force
 
 sudo apt-get install -y nodejs
-echo "node version: $(node --version)"
-echo "npm version: $(npm --version)"
+echo "INFO: node version: $(node --version)"
+echo "INFO: npm version: $(npm --version)"
 
-#echo "Uninstalling the AWS CDK.
+#echo "INFO: Uninstalling CDK"
 #sudo npm uninstall -g aws-cdk
 
 # If seeing enoent ENOENT: no such file or directory, chmod '/usr/lib/node_modules/aws-cdk/bin/cdk'
 #sudo rm -rf /usr/lib/node_modules/aws-cdk/
 
-echo "Installing the AWS CDK..."
+echo "INFO: Installing CDK"
 sudo npm install -g aws-cdk@next
-echo "cdk version: $(cdk --version)"
+echo "INFO: cdk version: $(cdk --version)"
 
 # Updating Your Language (Python) Dependencies
 pip install -U aws-cdk-lib constructs

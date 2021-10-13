@@ -7,6 +7,8 @@
 
 ### Useful links
 
+- [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s)
+- [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
 - [Getting Started Guide](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
 - [github.com/aws/aws-cdk](https://github.com/aws/aws-cdk)
 - [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html)
