@@ -1,8 +1,14 @@
 # EKS Notes
 
-- For non-AWS Kubernetes tools see [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
+- Non-AWS Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
+- [QuickStart](#quick-start)
+- [CDK for Kubernetes cdk8s](#cdk-for-Kubernetes-cdk8s)
+- [EKS logging](#eks-logging)
+- [Collecting metrics with built-in Kubernetes monitoring tools](#collecting-metrics-with-built-in-kubernetes-monitoring-tools)
+- [Kubernetes Metrics Server](#kubernetes-metrics-server)
 
-Quick start
+---
+## Quick Start
 - https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
 - ALB Ingress - https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
 - https
@@ -15,34 +21,37 @@ Quick start
 - kube-bench is a tool that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. https://github.com/aquasecurity/kube-bench
 - Amazon EKS Workshop https://www.eksworkshop.com
 
-## CDK for Kubernetes (cdk8s)
+---
+## CDK for Kubernetes cdk8s
 - [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s)
 - [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
 
+---
 ## EKS logging
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html
 - https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html
 
 
+---
 ## Collecting metrics with built-in Kubernetes monitoring tools
 - https://www.datadoghq.com/blog/how-to-collect-and-graph-kubernetes-metrics/
     - Querying and visualizing resource metrics from Kubernetes
     - Gathering cluster-level status information
     - Viewing logs from Kubernetes pods
 
-## Kubernetes Metrics Server (Optional)
+---
+## Kubernetes Metrics Server
 - https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html
 - https://github.com/kubernetes/dashboard/blob/master/docs/user/integrations.md
 
 ```
 # Deploy the Metrics Server
-# curl -o components.yaml https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-# See the latest url in components.yaml, then
-# curl -o metrics-server-components-v0.5.1.yaml https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.5.1/components.yaml
-kubectl apply -f customresource/metrics-server-components-v0.5.1.yaml
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
 # Verify that the metrics-server deployment is running the desired number of pods with the following command
+
 kubectl get deployment metrics-server -n kube-system
 # NAME             READY   UP-TO-DATE   AVAILABLE   AGE
 # metrics-server   1/1     1            1           57s
