@@ -55,7 +55,8 @@ pip install -r requirements-cli.txt
 | :--- | :--- |
 | AWS CDK (Cloud Development Kit) | [aws/aws-cdk](https://github.com/aws/aws-cdk) |
 | AWS CDK Construct Hub - Find reusable components for your cloud applications | [constructs.dev](https://constructs.dev/) |
-| [AWS CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [awslabs/cdk8s](https://github.com/awslabs/cdk8s) |
+| [AWS CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s) |
+| AWS cdk8s-cli - a command-line-interface for CDK for Kubernetes | [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) |
 | [AWS CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/) | [aws-samples/cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) |
 | [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/api-reference.html) | [awslabs/aws-solutions-constructs](https://github.com/awslabs/aws-solutions-constructs) |
 | CDK Patterns | [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) |
@@ -130,6 +131,8 @@ pip install -r requirements-cli.txt
 | Amazon EKS-vended aws-iam-authenticator | [Amazon EKS-vended aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html) |
 | Amazon EKS-vended kubectl | [Amazon EKS-vended kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) |
 | AWS App2Container | [Containerize a Java or .NET app](https://docs.aws.amazon.com/app2container/latest/UserGuide/start-intro.html) |
+| [AWS CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s) |
+| AWS cdk8s-cli - a command-line-interface for CDK for Kubernetes | [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) |
 | AWS Controllers for Kubernetes (ACK) | [aws/aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) |
 | AWS Copilot CLI - containerize apps on ECS/Fargate| [aws/copilot-cli](https://github.com/aws/copilot-cli) |
 | AWS EBS CSI Driver on Kubernetes | [kubernetes-sigs/aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) |
