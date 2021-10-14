@@ -47,6 +47,7 @@ Notes
 - https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-lambda-step-function
 
 ## Useful links
+- Using JSONPath effectively in AWS Step Functions https://aws.amazon.com/blogs/compute/using-jsonpath-effectively-in-aws-step-functions/
 - [Latest SFN Overview](https://docs.aws.amazon.com/step-functions/latest/dg/how-step-functions-works.html)
 - Use Cases
     - https://docs.aws.amazon.com/step-functions/latest/dg/create-sample-projects.html
