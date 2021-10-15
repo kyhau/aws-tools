@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    image: amazon/amazon-ecs-sample
+    ports:
+      - "80:80"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: k-test-ecs-fargate
+        awslogs-region: ap-southeast-2
+        awslogs-stream-prefix: web

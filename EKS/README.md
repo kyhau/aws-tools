@@ -44,6 +44,7 @@
 ## Kubernetes Metrics Server
 - https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html
 - https://github.com/kubernetes/dashboard/blob/master/docs/user/integrations.md
+- https://www.replex.io/blog/the-ultimate-guide-to-the-kubernetes-dashboard-how-to-install-and-integrate-metrics-server
 
 ```
 # Deploy the Metrics Server
