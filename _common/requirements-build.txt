@@ -2,4 +2,4 @@
 pip~=21.3
 logilab-common~=1.8
 tox~=3.24
-virtualenv~=20.8
+virtualenv~=20.9
