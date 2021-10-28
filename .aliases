@@ -162,7 +162,7 @@ alias update-aws-eks-aws-iam-authenticator='. ${REPO_HOME}/EKS/install_eks_aws_i
 alias update-aws-eks-kubectl='. ${REPO_HOME}/EKS/install_eks_kubectl.sh'
 
 alias update-aws-sam-cli='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli.sh'
-alias update-aws-sam-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-beta-cdk.sh'
+alias update-aws-sam-cli-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli-beta-cdk.sh'
 
 alias update-aws-session-manager-plugin='. ${REPO_HOME}/SSM/install-aws-session-manager-plugin-ubuntu.sh'
 
