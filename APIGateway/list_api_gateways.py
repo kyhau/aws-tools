@@ -1,6 +1,6 @@
 """
 1. List all REST/HTTP/WEBSOCKET APIGWs, or
-1. Lookup details of a APIGW by its ID
+2. Lookup details of a APIGW by its ID
 """
 import json
 import logging
@@ -18,16 +18,25 @@ class Helper(AwsApiHelper):
 
     def process_request(self, session, account_id, region, kwargs):
         api_id = kwargs.get("id")
+        cnt = 0
 
         client = session.client("apigateway", region_name=region)
         for item in self.paginate(client, "get_rest_apis", kwargs):
+            cnt += 1
             if self._detailed:
                 print(json.dumps(item, indent=2, default=str))
             else:
                 config = item.get("endpointConfiguration", {})
                 types = "|".join(config.get("types", []))
                 endpoints = "|".join(config.get("vpcEndpointIds", ["NoVpcEndpoint"]))
-                print(", ".join([account_id, item.get("id"), f"REST {types}", item.get("name"), endpoints]))
+                print(", ".join([
+                    account_id,
+                    region,
+                    item.get("id"),
+                    f"REST {types}",
+                    item.get("name"),
+                    endpoints
+                ]))
 
             if api_id and api_id == item.get("id"):
                 return True
@@ -35,13 +44,24 @@ class Helper(AwsApiHelper):
         client = session.client("apigatewayv2", region_name=region)
         for page in client.get_paginator("get_apis").paginate().result_key_iters():
             for item in page:
+                cnt += 1
                 if self._detailed:
                     print(json.dumps(item, indent=2, default=str))
                 else:
-                    print(", ".join([account_id, item.get("ApiId"), item.get("ProtocolType"), item.get("Name"), item.get("ApiEndpoint")]))
+                    print(", ".join([
+                        account_id,
+                        region,
+                        item.get("ApiId"),
+                        item.get("ProtocolType"),
+                        item.get("Name"),
+                        item.get("ApiEndpoint")
+                    ]))
 
                 if api_id and api_id == item.get("ApiId"):
                     return True
+
+        if not api_id:
+            logging.info(f"Number of APIGWs in {account_id} {region}: {cnt}")
 
 
 @click.command()

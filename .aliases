@@ -7,22 +7,20 @@ alias browser='/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 
 alias aws-acm-list-certificates='python ${REPO_HOME}/ACM/list_certificates.py'
 
-alias aws-ami-latest-ecs-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_eks_ami.py'
-alias aws-ami-latest-eks-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_eks_ami.py -k'
-alias aws-ami-latest-ec2-linux-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py'
-alias aws-ami-latest-ec2-windows-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py -w'
+alias aws-ami-latest-ecs-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_eks_ami.py ecs'
+alias aws-ami-latest-eks-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_eks_ami.py eks'
+alias aws-ami-latest-ec2-linux-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py linux'
+alias aws-ami-latest-ec2-windows-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py windows'
 
-alias aws-apigateways='python ${REPO_HOME}/APIGateway/list_api_gateways.py'
-alias aws-apigateway-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw.py'
-alias aws-apigateway-v2-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw_v2.py'
+alias aws-apigws='python ${REPO_HOME}/APIGateway/list_api_gateways.py'
+alias aws-apigw-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw.py'
+alias aws-apigw-v2-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw_v2.py'
 
 alias aws-apis-test='python ${REPO_HOME}/API/check_aws_apis.py'
 
 alias aws-athena-query-execution='python ${REPO_HOME}/Athena/athena_query_execution.py'
 
 alias aws-canonical-user-id='. ${REPO_HOME}/CloudFront-S3/get_canonical_user_id.sh'
-
-alias aws-cdk-solution-constructs-page='browser https://aws.amazon.com/solutions/constructs/patterns/'
 
 alias aws-cloudformation-to-dot-to-image='python ${REPO_HOME}/CloudFormation/cloudformation_to_dot_to_image.py'
 
@@ -34,14 +32,18 @@ alias aws-cloudwatch-put-cloudwatch-dashboard='python ${REPO_HOME}/CloudWatch/pu
 alias aws-cloudwatch-log-send-sample-event='python ${REPO_HOME}/CloudWatch/send_cloudwatch_log_event.py'
 alias aws-cloudwatch-insights='python ${REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights.py'
 
-alias aws-dynamodb-enable-contributor-insights='aws dynamodb update-contributor-insights --contributor-insights-action ENABLE --table-name '
-alias aws-dynamodb-search='python ${REPO_HOME}/DynamoDB/search_dynamodb.py'
-alias aws-dynamodb-table-delete-item='python ${REPO_HOME}/DynamoDB/delete_table_items.py'
-
 alias aws-cognito-token='python ${REPO_HOME}/Cognito/cognito_token.py'
 alias aws-cognito-users='python ${REPO_HOME}/Cognito/cognito_users.py'
 
 alias aws-config-query='python ${REPO_HOME}/Config/query_configservice.py'
+
+alias aws-database-status-check='python ${REPO_HOME}/RDS/databases_status_check.py'
+
+alias aws-ddb-delete-table-item='python ${REPO_HOME}/DynamoDB/delete_table_items.py'
+alias aws-ddb-enable-contributor-insights='aws dynamodb update-contributor-insights --contributor-insights-action ENABLE --table-name '
+alias aws-ddb-search='python ${REPO_HOME}/DynamoDB/search_dynamodb.py'
+alias aws-ddb-start-localddb='. ${REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
+alias aws-ddb-start-localddb-container='. ${REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 
 alias aws-ec2-instances='python ${REPO_HOME}/EC2-VPC/list_ec2_instances.py'
 alias aws-ec2-check-userdata='python ${REPO_HOME}/EC2-VPC/UserData/check_UserData.py'
@@ -52,11 +54,6 @@ alias aws-ec2-security-groups='python ${REPO_HOME}/EC2-VPC/list_security_groups.
 
 alias aws-ecr-list-used-images-having-critical-or-high-severity-findings='python ${REPO_HOME}/ECR/list_used_images_having_critical_or_high_severity_findings.py'
 alias aws-ecr-get-login='aws ecr get-login --no-include-email'
-
-alias aws-database-status-check='python ${REPO_HOME}/RDS/databases_status_check.py'
-
-alias aws-ddb-start-localddb='. ${REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
-alias aws-ddb-start-localddb-container='. ${REPO_HOME}/DynamoDB/start_dynamodb_local_docker.sh'
 
 alias aws-guardduty-findings='python ${REPO_HOME}/GuardDuty/list_findings.py'
 

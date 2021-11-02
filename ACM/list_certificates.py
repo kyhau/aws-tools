@@ -1,12 +1,13 @@
 """
 List certificates of account(s)
 """
-import click
 import logging
+
+import click
 from helper.aws import AwsApiHelper
 from helper.ser import dump_json
 
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Helper(AwsApiHelper):
@@ -19,7 +20,7 @@ class Helper(AwsApiHelper):
         data_list = []
         for page in client.get_paginator("list_certificates").paginate():
             data_list.extend(page["CertificateSummaryList"])
-    
+
         for data in data_list:
             item = client.describe_certificate(CertificateArn=data["CertificateArn"])["Certificate"]
             data = item if self._detailed else {
