@@ -1,26 +1,30 @@
 """
 List databases status.
-Supported: DocumentDB | DynamoDB | ElastiCache | Neptune | RDS/Aurora | Redshift
+Supported: DocumentDB | DynamoDB | ElastiCache | MemoryDB | Neptune | RDS/Aurora | Redshift | Timestream | QLDB
+TODO: Keyspaces
+
 Output: [
     {
         "AccountId": in-string,
         "Region": in-string,
-        "Service": docdb | dynamodb | elasticache | neptune | rds | redshift
-        "Engine": dynamodb | aurora | aurora-* | mariadb | oracle-* | postgres | sqlserver-* | neptune | docdb | memcached | redis
+        "Service": docdb | dynamodb | elasticache | memorydb | neptune | rds | redshift | qldb
+        "Engine": dynamodb | aurora | aurora-* | mariadb | oracle-* | postgres | sqlserver-* | neptune | docdb | memcached | redis | timestream | qldb
         "Id": in-string,
         "BackupRetentionPeriod": in-days,
         "MultiAZ": True | False,
         "EncryptedAtRest": True | False,
-        "PubliclyAccessible": True | False,  # not available for Dynamodb and ElastiCache
+        "EncryptedInTransit": True | False,  # MemoryDB, QLDB
+        "PubliclyAccessible": True | False,  # not available for Dynamodb, ElastiCache, MemoryDB
     },
 ]
 """
+import logging
 from abc import ABC, abstractmethod
+from time import time
+
+import click
 from boto3.session import Session
 from botocore.exceptions import ClientError
-import click
-import logging
-from time import time
 
 # Update the root logger to get messages at DEBUG and above
 logging.getLogger().setLevel(logging.DEBUG)
@@ -40,16 +44,6 @@ def read_aws_profile_names():
         logging.error(e)
 
 
-def request_data(client, func_name, result_key=None):
-    for page in client.get_paginator(func_name).paginate().result_key_iters():
-        for item in page:
-            if result_key is None:
-                yield item
-            else:
-                for subitem in item[result_key]:
-                    yield subitem
-
-
 class Helper(ABC):
     def __init__(self, name, request_func, result_key=None):
         self._name = name
@@ -62,22 +56,31 @@ class Helper(ABC):
     @property
     def name(self):
         return self._name
-    
+
     @abstractmethod
     def process_response(self, item):
         pass
-    
+
     def process_request(self, session, region, account_id):
+        logging.info(f"Checking {self._name} {account_id} {region}")
         self._client = session.client(self.name, region_name=region)
         self._region, self._account_id = region, account_id
         ret = []
-        for item in request_data(self._client, self._request_func, self._result_key):
+        for item in self.request_data():
             data = self.process_response(item)
             if data:
                 data.update({"AccountId": account_id, "Region": region})
                 ret.append(data)
         return ret
 
+    def request_data(self):
+        for page in self._client.get_paginator(self._request_func).paginate().result_key_iters():
+            for item in page:
+                if self._result_key is None:
+                    yield item
+                else:
+                    for subitem in item[self._result_key]:
+                        yield subitem
 
 class DynamoDBHelper(Helper):
     def __init__(self):
@@ -110,6 +113,32 @@ class ElastiCacheHelper(Helper):
                 "MultiAZ": item["PreferredAvailabilityZone"] == "Multiple",
                 "EncryptedAtRest": item["AtRestEncryptionEnabled"],
             }
+
+class MemoryDBHelper(Helper):
+    def __init__(self):
+        super().__init__("memorydb", "describe_clusters", result_key="Clusters")
+
+    def process_response(self, item):
+        if item.get("Status") == "available":
+            return {
+                "Service": self.name,
+                "Engine": "redis",
+                "Id": item.get("Name"),
+                "BackupRetentionPeriod": item.get("SnapshotRetentionLimit", 0),
+                "MultiAZ": item.get("AvailabilityMode", "singleaz") == "multiaz",
+                "EncryptedAtRest": item.get("KmsKeyId") is not None,
+                "EncryptedInTransit": item["TLSEnabled"],
+            }
+
+    def request_data(self):
+        params = {}
+        while True:
+            resp = self._client.describe_clusters(**params)
+            for item in resp[self._result_key]:
+                yield item
+            if resp.get("NextToken") is None:
+                break
+            params["NextToken"] = resp.get("NextToken")
 
 
 class RdsHelper(Helper):
@@ -148,8 +177,73 @@ class RedshiftHelper(Helper):
             }
 
 
+class TimestreamHelper(Helper):
+    def __init__(self):
+        super().__init__("timestream-write", "list_databases", result_key="Databases")
+
+    def process_response(self, item):
+        if item.get("State") == "ACTIVE":
+            return {
+                "Service": self.name,
+                "Engine": self.name,
+                "Id": item.get("DatabaseName"),
+                "BackupRetentionPeriod": 0,
+                "MultiAZ": True,  # Always true
+                "EncryptedAtRest": True,
+                "EncryptedInTransit": True,
+            }
+
+    def request_data(self):
+        try:
+            params = {}
+            while True:
+                resp = self._client.list_databases(**params)
+                for item in resp[self._result_key]:
+                    yield item
+                if resp.get("NextToken") is None:
+                    break
+                params["NextToken"] = resp.get("NextToken")
+        except Exception as e:
+            logging.error(e)
+
+class QLDBHelper(Helper):
+    def __init__(self):
+        super().__init__("qldb", "list_ledgers", result_key="Ledgers")
+
+    def process_response(self, item):
+        if item.get("State") == "ACTIVE":
+            ledge = self._client.describe_ledger(Name=item["Name"])
+            return {
+                "Service": self.name,
+                "Engine": self.name,
+                "Id": ledge.get("Name"),
+                "BackupRetentionPeriod": 0,
+                "MultiAZ": True,  # Always true
+                "EncryptedAtRest": ledge.get("EncryptionDescription", {}).get("EncryptionStatus") == "ENABLED",
+                "EncryptedInTransit": True,
+            }
+
+    def request_data(self):
+        params = {}
+        while True:
+            resp = self._client.list_ledgers(**params)
+            for item in resp[self._result_key]:
+                yield item
+            if resp.get("NextToken") is None:
+                break
+            params["NextToken"] = resp.get("NextToken")
+
+
 def process_account(session, account_id, aws_region):
-    for service in [DynamoDBHelper(), ElastiCacheHelper(), RdsHelper(), RedshiftHelper()]:
+    for service in [
+        DynamoDBHelper(),
+        ElastiCacheHelper(),
+        MemoryDBHelper(),
+        RdsHelper(),
+        RedshiftHelper(),
+        TimestreamHelper(),
+        QLDBHelper(),
+    ]:
         regions = session.get_available_regions(service.name) if aws_region == "all" else [aws_region]
         ret = []
         for region in regions:

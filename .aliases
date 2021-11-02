@@ -37,7 +37,7 @@ alias aws-cognito-users='python ${REPO_HOME}/Cognito/cognito_users.py'
 
 alias aws-config-query='python ${REPO_HOME}/Config/query_configservice.py'
 
-alias aws-database-status-check='python ${REPO_HOME}/RDS/databases_status_check.py'
+alias aws-database-status-check='python ${REPO_HOME}/_multi_services/databases_status_check.py'
 
 alias aws-ddb-delete-table-item='python ${REPO_HOME}/DynamoDB/delete_table_items.py'
 alias aws-ddb-enable-contributor-insights='aws dynamodb update-contributor-insights --contributor-insights-action ENABLE --table-name '
@@ -48,7 +48,7 @@ alias aws-ddb-start-localddb-container='. ${REPO_HOME}/DynamoDB/start_dynamodb_l
 alias aws-ec2-instances='python ${REPO_HOME}/EC2-VPC/list_ec2_instances.py'
 alias aws-ec2-check-userdata='python ${REPO_HOME}/EC2-VPC/UserData/check_UserData.py'
 alias aws-ec2-create-key-pair='.  ${REPO_HOME}/EC2-VPC/create_key_pair.sh'
-alias aws-ec2-db-instances='python ${REPO_HOME}/RDS/list_ec2_db_instances.py'
+alias aws-ec2-db-instances-based-on-ports='python ${REPO_HOME}/RDS/list_ec2_db_instances_based_on_ports.py'
 alias aws-ec2-unreachable='python ${REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
 alias aws-ec2-security-groups='python ${REPO_HOME}/EC2-VPC/list_security_groups.py'
 
@@ -105,9 +105,9 @@ alias aws-sts-get-caller-identity='aws sts get-caller-identity'
 alias aws-ssm-parameters-list-global-infrastructure='. ${REPO_HOME}/SSM/ssm_parameters_list.sh'
 alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["3389"],"localPortNumber"=["9999"] --target '
 
-alias aws-subnet-ip-count='python ${REPO_HOME}/EC2-VPC/available_ip_address_count.py'
+alias aws-subnet-ip-usage='python ${REPO_HOME}/EC2-VPC/available_ip_address_count.py'
 
-alias aws-tag-list='python ${REPO_HOME}/Security/list_tags.py'
+alias aws-tag-list='python ${REPO_HOME}/_multi_services/list_tags.py'
 
 alias aws-trustedadvisor-list-result='python ${REPO_HOME}/TrustedAdvisor/trusted_advisor_check_result.py'
 
