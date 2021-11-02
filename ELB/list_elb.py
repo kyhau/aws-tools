@@ -1,7 +1,7 @@
 import logging
 
 import click
-from helper.aws import AwsApiHelper, get_tag_value
+from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -10,12 +10,13 @@ class ElbHelper(AwsApiHelper):
     def __init__(self, detailed):
         super().__init__()
         self._detailed = detailed
+        self.arns = []
 
     def process_request(self, session, account_id, region, kwargs):
         client = session.client("elb", region_name=region)
         for item in self.paginate(client, "describe_load_balancers", kwargs):
-            print(item)
-            # TODO format results and include tags
+            arn = f"arn:aws:elasticloadbalancing:{region}:{account_id}:loadbalancer/${item['LoadBalancerName']}"
+            self.arns.append(arn)
 
     def get_tags(self, item):
         return self._client.describe_tags(LoadBalancerNames=[item["LoadBalancerName"]])["TagDescriptions"][0]["Tags"]
@@ -25,8 +26,7 @@ class ElbV2Helper(ElbHelper):
     def process_request(self, session, account_id, region, kwargs):
         client = session.client("elbv2", region_name=region)
         for item in self.paginate(client, "describe_load_balancers", kwargs):
-            print(item)
-            # TODO format results and include tags
+            self.arns.append(item["LoadBalancerArn"])
 
     def get_tags(self, item):
         return self._client.describe_tags(ResourceArns=[item["LoadBalancerArn"]])["TagDescriptions"][0]["Tags"]
@@ -39,8 +39,16 @@ class ElbV2Helper(ElbHelper):
 @click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region. Use 'all' for all regions.")
 def main(detailed, instanceid, profile, region):
     kwargs = {"InstanceIds": [instanceid]} if instanceid else {}
-    ElbHelper(detailed).start(profile, region, "elb", kwargs)
-    ElbV2Helper(detailed).start(profile, region, "elbv2", kwargs)
+    elbv1 = ElbHelper(detailed)
+    elbv1.start(profile, region, "elb", kwargs)
+
+    elbv2 = ElbV2Helper(detailed)
+    elbv2.start(profile, region, "elbv2", kwargs)
+
+    elb_arns = elbv1.arns + elbv2.arns
+
+    for elb in elb_arns:
+        print(elb)
 
 
 if __name__ == "__main__":
