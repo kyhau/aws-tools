@@ -21,10 +21,8 @@ before_install:
 # command to install dependencies
 install:
   - pip install -r _common/requirements-build.txt
-  - pip install cfn-lint
 
 # command to run tests
 script:
-  - cfn-lint
   - cd _common
   - tox -r

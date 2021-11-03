@@ -2,26 +2,36 @@ name: Build-Test
 
 on:
   push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+    paths-ignore:
+      - .aliases
+      - '**.md'
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   lint:
     name: Run yamllint and cfn-lint with common config
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout sources
+        uses: actions/checkout@v2
 
       - name: Run yamllint
         run: yamllint -c ./.github/linters/.yaml-lint.yaml .github/
 
-      - name: Run cfn-lint
+      - name: Install cfn-lint
         run: |
           pip install cfn-lint
-          cfn-lint
+
+      - name: Run cfn-lint
+        run: |
+          cp .github/linters/.cfnlintrc .
+          cfn-lint ./**/cloudformation/*.yaml
 
   build:
+    needs: lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -36,6 +46,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip virtualenv setuptools tox
+          pip install -r _common/requirements-build.txt
+
       - id: ToxSetting
         run: |
           if [[ "${{ matrix.python-version }}" == "3.8" ]]
@@ -47,11 +62,6 @@ jobs:
           else
             exit 1
           fi
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip virtualenv setuptools tox
-          pip install -r _common/requirements-build.txt
 
       - name: Test with tox
         run: |
