@@ -210,6 +210,7 @@ pip install -r requirements-cli.txt
 | Pacu an open source AWS exploitation framework | [RhinoSecurityLabs/Pacu](https://github.com/RhinoSecurityLabs/pacu) |
 | Redboto | [elitest/Redboto](https://github.com/elitest/Redboto) |
 | Endgame: Creating Backdoors in AWS | [hirajanwin/endgame](https://github.com/hirajanwin/endgame) |
+| Endgame: AWS Pentesting tool | [DavidDikker/endgame](https://github.com/DavidDikker/endgame) |
 
 ## Chaos Engineering
 
