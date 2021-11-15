@@ -33,9 +33,11 @@ SERVICES = [
     "WORKSPACES_GATEWAYS",
 ]
 
+SOURCE = "https://ip-ranges.amazonaws.com/ip-ranges.json"
+
 
 def list_ip_ranges(service, ip_type, region, prefix):
-    data = requests.get("https://ip-ranges.amazonaws.com/ip-ranges.json").json()
+    data = requests.get().json(SOURCE)
 
     key_prefix, key_prefixes = ("ip_prefix", "prefixes") if ip_type == "ipv4" else ("ipv6_prefix", "ipv6_prefixes")
 
