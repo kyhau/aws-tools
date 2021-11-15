@@ -64,6 +64,21 @@ def query(ls, loggroupname, starttime, endtime, querystring, limit, profile, reg
     print(f'Number of items returned: {cnt}')
 
 
+@main_cli.command(help='List log groups')
+@click.option('--loggroupnameprefix', '-n', help='Log Group Name Prefix', required=False)
+@click.option('--profile', '-p', default='default', show_default=True, help='AWS profile name.')
+@click.option('--region', '-r', default='ap-southeast-2', show_default=True, help='AWS Region.')
+def loggroups(loggroupnameprefix, profile, region):
+    session = Session(profile_name=profile)
+    client = session.client('logs', region_name=region)
+
+    params = {"logGroupNamePrefix": loggroupnameprefix} if loggroupnameprefix else {}
+    for page in client.get_paginator("describe_log_groups").paginate(**params).result_key_iters():
+        for item in page:
+            print(item["logGroupName"])
+
+
+
 @main_cli.command(help='List predefined query strings')
 def ls():
     for k, v in PREDEFINED_QUERIES.items():
