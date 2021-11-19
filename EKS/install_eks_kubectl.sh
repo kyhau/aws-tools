@@ -15,7 +15,7 @@ curl -o kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/${VERSION}/${REL_
 chmod +x ./kubectl
 
 echo "Coping binary to ~/.local/bin and create a symlink for bookmarking the version..."
-mkdir -p .local/bin
+mkdir -p ~/.local/bin
 rm ~/.local/bin/kubectl || true
 rm ~/.local/bin/kubectl-v${VERSION} || true
 
