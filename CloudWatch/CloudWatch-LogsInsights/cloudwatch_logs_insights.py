@@ -7,7 +7,7 @@ from time import sleep
 import click
 import yaml
 from boto3.session import Session
-from helper.datetime import DT_FORMAT_YMDHMS, lookup_range_str_to_timestamp
+from helper.date_time import DT_FORMAT_YMDHMS, lookup_range_str_to_timestamp
 
 LOOKUP_HOURS = 4
 

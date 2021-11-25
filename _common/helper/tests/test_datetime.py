@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytest
-from helper.datetime import lookup_range_str_to_timestamp
+from helper.date_time import lookup_range_str_to_timestamp
 
 
 def test_lookup_range_str_to_timestamp_passed():
