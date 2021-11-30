@@ -140,7 +140,8 @@ pip install -r requirements-cli.txt
 | AWS Fargate Fast AutoScaler (with CDK) | [aws-samples/aws-fargate-fast-autoscaler](https://github.com/aws-samples/aws-fargate-fast-autoscaler) |
 | AWS Node Termination Handler | [aws/aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) |
 | Docker CLI plugin for ECS | [docker/ecs-plugin](https://github.com/docker/ecs-plugin) |
-| A simple terminal UI for both docker and docker-compose | [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) |
+| Karpenter - Kubernetes Cluster Autoscaler | [aws/karpenter](https://github.com/aws/karpenter) |
+| Lazydocker - A simple terminal UI for both docker and docker-compose | [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) |
 | Multus-CNI - enables attaching multiple network interfaces to pods in Kubernetes | [k8snetworkplumbingwg/multus-cni](https://github.com/k8snetworkplumbingwg/multus-cni) |
 
 ## AWS SDKs and CLIs
