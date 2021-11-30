@@ -12,3 +12,9 @@
 
 ## RDS Proxy
 - https://github.com/aws-samples/serverless-rds-proxy-demo
+
+## For RDS MySQL insert/delete event -> Lambda processing events
+
+1. Enable query logging with custom parameter group (for MySQL it should be the Audit Log, see [MySQL database log files](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.MySQL.html#USER_LogAccess.MySQL.Auditlog))
+2. Then, publish logs to CloudWatch Logs (see [Publishing MySQL logs to CloudWatch Logs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.MySQL.html#USER_LogAccess.MySQL.Auditlog))
+3. Then, create [CloudWatch Logs Subscription Filters](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html) with Lambda for processing the log group entries.
