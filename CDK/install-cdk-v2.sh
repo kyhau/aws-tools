@@ -18,8 +18,9 @@ echo "INFO: npm version: $(npm --version)"
 #sudo rm -rf /usr/lib/node_modules/aws-cdk/
 
 echo "INFO: Installing CDK"
-sudo npm install -g aws-cdk@next
+#sudo npm install -g aws-cdk@next
+sudo npm install -g aws-cdk
 echo "INFO: cdk version: $(cdk --version)"
 
 # Updating Your Language (Python) Dependencies
-pip install -U aws-cdk-lib constructs
+echo "INFO: TODO: pip install -U aws-cdk-lib constructs"

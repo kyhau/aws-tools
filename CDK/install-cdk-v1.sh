@@ -22,4 +22,4 @@ sudo npm install -g aws-cdk
 echo "INFO: cdk version: $(cdk --version)"
 
 # Updating Your Language (Python) Dependencies
-pip install -U aws-cdk.core
+echo "INFO: TODO: pip install -U aws-cdk.core"

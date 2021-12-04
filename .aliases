@@ -144,8 +144,7 @@ alias sam-local-generate-event='sam local generate-event'
 alias sam-local-start-api='sam local start-api'
 alias sam-local-start-lambda='sam local start-lambda'
 
-alias update-aws-cdk='sudo npm install -g aws-cdk@latest'
-alias update-aws-cdk-v2='sudo npm install -g aws-cdk@next'
+alias update-aws-cdk='. ${REPO_HOME}/CDK/install-cdk-v2.sh'
 alias update-aws-cdk-assume-role-credential-plugin='sudo npm install -g cdk-assume-role-credential-plugin@latest'
 alias update-aws-cdk8s-cli='sudo npm install -g cdk8s-cli@latest'
 
