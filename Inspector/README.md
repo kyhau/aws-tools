@@ -10,6 +10,7 @@ General approach
 
 See also
 
+- [Inspector - Supported operating systems and programming languages](https://docs.aws.amazon.com/inspector/latest/user/supported.html)
 - [Setting Up Automatic Assessment Runs Through a Lambda Function](
   https://docs.aws.amazon.com/inspector/latest/userguide/inspector_assessments.html#assessment_runs-schedule)
 - [Setting Up an SNS Topic for Amazon Inspector Notifications](
