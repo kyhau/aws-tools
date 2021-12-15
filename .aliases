@@ -62,6 +62,7 @@ alias aws-iam-list-aws-managed-policies-to-files='python ${REPO_HOME}/IAM/list_a
 alias aws-iam-list-users='python ${REPO_HOME}/IAM/list_iam_users.py'
 alias aws-iam-lookup-identities='python ${REPO_HOME}/Security/lookup_iam_identities.py'
 
+alias aws-inspector-cvelist-ap-southeast-2='curl https://s3.ap-southeast-2.amazonaws.com/rules-engine.ap-southeast-2/CVEList.txt'
 alias aws-inspector-list-results='python ${REPO_HOME}/Inspector/inspector_helper.py'
 
 alias aws-ip-lookup='python ${REPO_HOME}/EC2-VPC/find_subnet_for_ip.py'
