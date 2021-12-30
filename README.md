@@ -10,9 +10,11 @@ Most of the Python scripts support multi accounts and regions.
 
 ## For running Python scripts
 
+Python 3.6 +
+
 ```
 # Create and activate virtual env (optional)
-virtualenv env -p python3.8
+virtualenv env -p python3.10
 . env/bin/activate
 
 # Install the required packages
