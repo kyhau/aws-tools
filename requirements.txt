@@ -41,12 +41,11 @@ boto3~=1.18
 ################################################################################
 # Non aws related packages
 
-apispec~=5.1            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
 click~=8.0
-dataclasses-json~=0.5   # provides a simple API for encoding and decoding dataclasses to and from JSON
-PyInquirer~=1.0         # for saml2aws/aws_login.py
-pytz
+fire~=0.4               # google/python-fire
+#apispec~=5.1            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
 #black
+#dataclasses-json~=0.5   # provides a simple API for encoding and decoding dataclasses to and from JSON
 #faker
 #pipdeptree
 #pycognito              # replace warrant

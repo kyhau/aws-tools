@@ -1,10 +1,11 @@
 """
 List details of a bucket or all buckets accessible by the profiles in .aws/.
 """
-from botocore.exceptions import ClientError
-import click
+import json
 import logging
-import yaml
+
+import fire
+from botocore.exceptions import ClientError
 from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
@@ -41,7 +42,7 @@ class Helper(AwsApiHelper):
                     "website": self.get_bucket_website(client, bucket),
                 }
             }
-            print(yaml.dump(data, default_flow_style=False, sort_keys=False))
+            print(json.dumps(data, indent=2, sort_keys=True))
             if kwargs.get("Bucket"):
                 return True
 
@@ -51,7 +52,7 @@ class Helper(AwsApiHelper):
         except ClientError as e:
             if e.response["Error"]["Code"] == "NoSuchCORSConfiguration":
                 pass
-    
+
     def get_bucket_encryption(self, client, bucket):
         try:
             return client.get_bucket_encryption(Bucket=bucket)["ServerSideEncryptionConfiguration"]
@@ -102,14 +103,10 @@ class Helper(AwsApiHelper):
                 pass
 
 
-@click.command(help="List bucket(s) details.")
-@click.option("--bucket", "-b", help="Bucket name. Describe all buckets if not specified.")
-@click.option("--profile", "-p", help="AWS profile name. Use profiles in ~/.aws if not specified.")
-@click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS Region.")
-def main(bucket, profile, region):
+def main(bucket=None, profile=None, region="ap-southeast-2"):
     kwargs = {"Bucket": bucket} if bucket else {}
     Helper().start(profile, region, "s3", kwargs)
 
 
 if __name__ == "__main__":
-    main()
+    fire.Fire(main)
