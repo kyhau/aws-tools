@@ -104,6 +104,11 @@ class Helper(AwsApiHelper):
 
 
 def main(bucket=None, profile=None, region="ap-southeast-2"):
+    """
+    List bucket(s) details.
+    BUCKET: Name of the bucket; or all buckets if not specified.
+    PROFILE: AWS profile name; or use profiles in ~/.aws if not specified.
+    """
     kwargs = {"Bucket": bucket} if bucket else {}
     Helper().start(profile, region, "s3", kwargs)
 
