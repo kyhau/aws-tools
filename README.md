@@ -10,9 +10,11 @@ Most of the Python scripts support multi accounts and regions.
 
 ## For running Python scripts
 
+Python 3.6 +
+
 ```
 # Create and activate virtual env (optional)
-virtualenv env -p python3.8
+virtualenv env -p python3.10
 . env/bin/activate
 
 # Install the required packages
@@ -151,6 +153,7 @@ pip install -r requirements-cli.txt
 | Amazon CloudWatch Embedded Metric Format Client Library (Python) | [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python) |
 | Amazon Ion Python | [amzn/ion-python](https://github.com/amzn/ion-python) |
 | Amazon Neptune Tools | [awslabs/amazon-neptune-tools](https://github.com/awslabs/amazon-neptune-tools) |
+| Amazon Redshift connector (for Python) | [aws/amazon-redshift-python-driver](https://github.com/aws/amazon-redshift-python-driver) |
 | Authorization Lambda@Edge (Node.js) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
 | AutoML Toolkit for Deep Learning | [awslabs/autogluon](https://github.com/awslabs/autogluon) |
 | AWS Amplify CLI | [aws-amplify/amplify-cli](https://github.com/aws-amplify/amplify-cli) |
