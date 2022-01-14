@@ -4,10 +4,9 @@ set -e
 
 # Prerequisites
 # - Node.js (>= 10.3.0)
+#npm cache clear --force
+#sudo apt-get install -y nodejs
 
-npm cache clear --force
-
-sudo apt-get install -y nodejs
 echo "INFO: node version: $(node --version)"
 echo "INFO: npm version: $(npm --version)"
 
@@ -23,4 +22,4 @@ sudo npm install -g aws-cdk
 echo "INFO: cdk version: $(cdk --version)"
 
 # Updating Your Language (Python) Dependencies
-echo "INFO: TODO: pip install -U aws-cdk-lib constructs"
+echo "INFO: TODO for python: pip install -U aws-cdk-lib constructs"
