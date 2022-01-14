@@ -135,6 +135,7 @@ pip install -r requirements-cli.txt
 | AWS App2Container | [Containerize a Java or .NET app](https://docs.aws.amazon.com/app2container/latest/UserGuide/start-intro.html) |
 | [AWS CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s) |
 | AWS cdk8s-cli - a command-line-interface for CDK for Kubernetes | [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) |
+| AWS cdk8s-plus | [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) |
 | AWS Controllers for Kubernetes (ACK) | [aws/aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) |
 | AWS Copilot CLI - containerize apps on ECS/Fargate| [aws/copilot-cli](https://github.com/aws/copilot-cli) |
 | AWS EBS CSI Driver on Kubernetes | [kubernetes-sigs/aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) |
@@ -266,7 +267,6 @@ pip install -r requirements-cli.txt
 | :--- | :--- |
 | Registry of Open Data on AWS | [registry.opendata.aws](https://registry.opendata.aws/) |
 | Landset 8 satellite imagery of all land on Earth | [registry.opendata.aws/landsat-8](https://registry.opendata.aws/landsat-8/), <br/> [landsatonaws.com](https://landsatonaws.com/)|
-
 
 ## Other tools
 

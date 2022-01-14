@@ -9,13 +9,14 @@
 
 ---
 ## Quick Start
-- https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
+- EKS Best Practices https://aws.github.io/aws-eks-best-practices/
+- ALB Controller - https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
 - ALB Ingress - https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
 - https
     - AWS ALB Ingress Service - Enable SSL - https://www.stacksimplify.com/aws-eks/aws-alb-ingress/learn-to-enable-ssl-on-alb-ingress-service-in-kubernetes-on-aws-eks/
     - Setting up end-to-end TLS encryption on Amazon EKS with the new AWS Load Balancer Controller - https://aws.amazon.com/blogs/containers/setting-up-end-to-end-tls-encryption-on-amazon-eks-with-the-new-aws-load-balancer-controller/)
 - Cluster Autoscaler
-    - NEW - [Karpenter](https://github.com/aws/karpenter)  
+    - NEW - [Karpenter](https://github.com/aws/karpenter)
     - Parameters supported for cluster autoscaler - https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca
     - https://docs.cloudbees.com/docs/cloudbees-ci/latest/cloud-admin-guide/eks-auto-scaling-nodes
 - Kubernetes Dashboard https://github.com/kubernetes/dashboard
@@ -26,6 +27,7 @@
 ## CDK for Kubernetes cdk8s
 - [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s)
 - [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
+- [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus)
 
 ---
 ## EKS logging
