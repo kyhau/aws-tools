@@ -30,7 +30,6 @@ import logging
 import click
 from botocore.exceptions import ClientError
 from helper.aws import AwsApiHelper
-from helper.file_io import write_csv_file
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -74,14 +73,6 @@ class Helper(AwsApiHelper):
 
             except ClientError as e:
                 self.process_client_error(e, account_id, region)
-
-        if results:
-            output_filename = f"{account_id}_ips_used.csv"
-            titles = [
-                "PrivateIpAddress", "PrivateDnsName", "IsPrimary", "PublicIp", "PublicDnsName", "InstanceId", "Description",
-                "AccountId", "Region"]
-            results.insert(0, titles)
-            write_csv_file(results, output_filename)
 
 
 @click.command()
