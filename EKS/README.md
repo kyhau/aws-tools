@@ -2,14 +2,19 @@
 
 - Non-AWS Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
 - [QuickStart](#quick-start)
-- [CDK for Kubernetes cdk8s](#cdk-for-Kubernetes-cdk8s)
+- [CDK for Kubernetes cdk8s / cdk8s+](#cdk-for-Kubernetes-cdk8s)
+- [EKS Persistent Storage](eks-persistent-storage)
 - [EKS logging](#eks-logging)
 - [Collecting metrics with built-in Kubernetes monitoring tools](#collecting-metrics-with-built-in-kubernetes-monitoring-tools)
 - [Kubernetes Metrics Server](#kubernetes-metrics-server)
 
 ---
 ## Quick Start
-- EKS Best Practices https://aws.github.io/aws-eks-best-practices/
+
+- EKS Kubernetes [versions](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-release-calendar) and [release calendar](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-release-calendar)
+- EKS Distro
+    - https://gallery.ecr.aws/?searchTerm=EKS+Distro
+    - https://github.com/aws/eks-distro
 - ALB Controller - https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
 - ALB Ingress - https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
 - https
@@ -21,7 +26,8 @@
     - https://docs.cloudbees.com/docs/cloudbees-ci/latest/cloud-admin-guide/eks-auto-scaling-nodes
 - Kubernetes Dashboard https://github.com/kubernetes/dashboard
 - kube-bench is a tool that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. https://github.com/aquasecurity/kube-bench
-- Amazon EKS Workshop https://www.eksworkshop.com
+- EKS Best Practices https://aws.github.io/aws-eks-best-practices/
+- EKS Workshop https://www.eksworkshop.com
 
 ---
 ## CDK for Kubernetes cdk8s
@@ -33,9 +39,10 @@
 ## EKS Persistent Storage
 - https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/
 - https://github.com/kubernetes-sigs/aws-ebs-csi-driver
+- https://github.com/kubernetes-sigs/aws-efs-csi-driver
 
 ---
-## EKS logging
+## EKS Logging
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html
 - https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html

@@ -124,28 +124,36 @@ pip install -r requirements-cli.txt
 
 ### ECS, EKS, Container-based development
 
-| Description | Repo/Link |
+| ECS / ECR / Others | Repo/Link |
 | :--- | :--- |
 | Amazon ECR Docker Credential Helper | [awslabs/amazon-ecr-credential-helper](https://github.com/awslabs/amazon-ecr-credential-helper) |
+| Amazon ECR Public Gallery | https://gallery.ecr.aws/ |
 | Amazon ECS CLI v2 | [aws/amazon-ecs-cli-v2](https://aws.amazon.com/blogs/containers/announcing-the-amazon-ecs-cli-v2/) |
 | Amazon ECS Exec | [Using ECS Exec to access containers on Fargate and EC2](https://aws.amazon.com/blogs/containers/new-using-amazon-ecs-exec-access-your-containers-fargate-ec2/) |
+| AWS Copilot CLI - containerize apps on ECS/Fargate| [aws/copilot-cli](https://github.com/aws/copilot-cli) |
+| AWS Fargate Fast AutoScaler (with CDK) | [aws-samples/aws-fargate-fast-autoscaler](https://github.com/aws-samples/aws-fargate-fast-autoscaler) |
+| Docker CLI plugin for ECS | [docker/ecs-plugin](https://github.com/docker/ecs-plugin) |
+| AWS App2Container | [Containerize a Java or .NET app](https://docs.aws.amazon.com/app2container/latest/UserGuide/start-intro.html) |
+| Lazydocker - A simple terminal UI for both docker and docker-compose | [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) |
+
+
+| EKS | Repo/Link |
+| :--- | :--- |
 | Amazon EKS CLI | [weaveworks/eksctl](https://github.com/weaveworks/eksctl) |
+| Amazon EKS Distro (EKS-D) - a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters | [aws/eks-distro](https://github.com/aws/eks-distro), <br/> [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro) |
 | Amazon EKS-vended aws-iam-authenticator | [Amazon EKS-vended aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html) |
 | Amazon EKS-vended kubectl | [Amazon EKS-vended kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) |
-| AWS App2Container | [Containerize a Java or .NET app](https://docs.aws.amazon.com/app2container/latest/UserGuide/start-intro.html) |
-| [AWS CDK for Kubernetes (cdk8s)](https://cdk8s.io/) | [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s) |
-| AWS cdk8s-cli - a command-line-interface for CDK for Kubernetes | [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) |
+| AWS cdk8s - [CDK for Kubernetes](https://cdk8s.io/) | [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s) |
+| AWS cdk8s-cli - a CLI for CDK for Kubernetes | [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) |
 | AWS cdk8s-plus | [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) |
 | AWS Controllers for Kubernetes (ACK) | [aws/aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) |
-| AWS Copilot CLI - containerize apps on ECS/Fargate| [aws/copilot-cli](https://github.com/aws/copilot-cli) |
 | AWS EBS CSI Driver on Kubernetes | [kubernetes-sigs/aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) |
+| AWS EFS CSI Driver on Kubernetes | [kubernetes-sigs/aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) |
 | AWS EKS Charts | [aws/eks-charts](https://github.com/aws/eks-charts) |
-| AWS Fargate Fast AutoScaler (with CDK) | [aws-samples/aws-fargate-fast-autoscaler](https://github.com/aws-samples/aws-fargate-fast-autoscaler) |
-| AWS Node Termination Handler | [aws/aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) |
-| Docker CLI plugin for ECS | [docker/ecs-plugin](https://github.com/docker/ecs-plugin) |
-| Karpenter - Kubernetes Cluster Autoscaler | [aws/karpenter](https://github.com/aws/karpenter) |
-| Lazydocker - A simple terminal UI for both docker and docker-compose | [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) |
+| AWS Karpenter - Kubernetes Cluster Autoscaler | [aws/karpenter](https://github.com/aws/karpenter) |
+| AWS Node Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes | [aws/aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) |
 | Multus-CNI - enables attaching multiple network interfaces to pods in Kubernetes | [k8snetworkplumbingwg/multus-cni](https://github.com/k8snetworkplumbingwg/multus-cni) |
+
 
 ## AWS SDKs and CLIs
 
