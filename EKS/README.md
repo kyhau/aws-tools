@@ -30,6 +30,11 @@
 - [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus)
 
 ---
+## EKS Persistent Storage
+- https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/
+- https://github.com/kubernetes-sigs/aws-ebs-csi-driver
+
+---
 ## EKS logging
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html
 - https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
