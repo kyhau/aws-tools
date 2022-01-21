@@ -28,7 +28,7 @@ jobs:
       - name: Run cfn-lint
         run: |
           cp .github/linters/.cfnlintrc .
-          cfn-lint ./**/cloudformation/*.yaml
+          cfn-lint ./**/cfn/*.yaml
 
   build:
     needs: lint
