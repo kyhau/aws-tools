@@ -28,6 +28,7 @@
 - kube-bench is a tool that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. https://github.com/aquasecurity/kube-bench
 - EKS Best Practices https://aws.github.io/aws-eks-best-practices/
 - EKS Workshop https://www.eksworkshop.com
+- AWSQS::Kubernetes::Helm https://github.com/aws-quickstart/quickstart-helm-resource-provider
 
 ---
 ## CDK for Kubernetes cdk8s
