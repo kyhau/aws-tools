@@ -21,21 +21,16 @@ def main(keyword, profile):
     client = session.client("quicksight", region_name="us-east-1")
     account_id = session.client("sts").get_caller_identity()["Account"]
 
-    next_token, ret = None, {}
-
+    ret = {}
+    params = {"AwsAccountId": account_id, "Namespace": "default"}
     while True:
-        params = {"AwsAccountId": account_id, "Namespace": "default"}
-        if next_token:
-            params["NextToken"] = next_token
-
         resp = client.list_users(**params)
         for r in resp["UserList"]:
             if keyword is None or keyword.lower() in r["UserName"].lower():
                 ret[r["UserName"]] = r
-
-        next_token = resp.get("NextToken")
-        if next_token is None:
+        if resp.get("NextToken") is None:
             break
+        params["NextToken"] = resp["NextToken"]
 
     with open("quicksight_users.json", "w") as f:
         json.dump(ret, f, indent=2, sort_keys=True)

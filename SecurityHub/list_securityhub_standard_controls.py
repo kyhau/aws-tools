@@ -29,17 +29,14 @@ class Helper(AwsApiHelper):
         ret = []
 
         client = session.client("securityhub", region_name=region)
-        resp = client.describe_standards_controls(**kwargs)
-        next_token = resp.get("NextToken")
-        for item in resp["Controls"]:
-            ret.append(item)
-
-        while next_token:
-            kwargs["NextToken"] = next_token
+        while True:
             resp = client.describe_standards_controls(**kwargs)
-            next_token = resp.get("NextToken")
             for item in resp["Controls"]:
                 ret.append(item)
+
+            if resp.get("NextToken") is None:
+                break
+            kwargs["NextToken"] = resp["NextToken"]
 
         self.printline(ret)
 

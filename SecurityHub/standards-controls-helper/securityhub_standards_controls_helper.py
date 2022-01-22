@@ -49,16 +49,15 @@ def subscription_arn(region, account_id, subscription):
 
 def get_standards_controls(account_id, region, subscription):
     client = boto3.client("securityhub", region_name=region)
-    kwargs = {"StandardsSubscriptionArn": subscription_arn(region, account_id, subscription)}
     ret = []
-
-    resp = client.describe_standards_controls(**kwargs)
-    kwargs["NextToken"] = resp.get("NextToken")
-    ret.extend(resp["Controls"])
-    while kwargs["NextToken"]:
+    kwargs = {"StandardsSubscriptionArn": subscription_arn(region, account_id, subscription)}
+    while True:
         resp = client.describe_standards_controls(**kwargs)
-        kwargs["NextToken"] = resp.get("NextToken")
         ret.extend(resp["Controls"])
+
+        if resp.get("NextToken") is None:
+            break
+        kwargs["NextToken"] = resp["NextToken"]
 
     return ret
 

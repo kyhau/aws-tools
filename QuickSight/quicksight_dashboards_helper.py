@@ -52,20 +52,17 @@ def ls(ctx, keyword):
     client = ctx.obj["client"]
     account_id = ctx.obj["account"]
 
-    next_token, ret = None, {}
+    ret = {}
+    params = {"AwsAccountId": account_id}
     while True:
-        params = {"AwsAccountId": account_id}
-        if next_token:
-            params["NextToken"] = next_token
-
         resp = client.list_dashboards(**params)
         for r in resp["DashboardSummaryList"]:
             if keyword is None or keyword.lower() in r["Name"].lower():
                 ret[r["DashboardId"]] = r["Name"]
 
-        next_token = resp.get("NextToken")
-        if next_token is None:
+        if resp.get("NextToken") is None:
             break
+        params["NextToken"] = resp["NextToken"]
 
     dump_output(ret, "quicksight_dashboard_ids.json")
     logging.info(f"Total num of Dashboards: {len(ret)}")
