@@ -58,6 +58,7 @@ def ls(ctx, keyword):
         for r in resp["AnalysisSummaryList"]:
             if keyword is None or keyword.lower() in r["Name"].lower():
                 ret[r["AnalysisId"]] = r["Name"]
+
         if resp.get("NextToken") is None:
             break
         params["NextToken"] = resp["NextToken"]

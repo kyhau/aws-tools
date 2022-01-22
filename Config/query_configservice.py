@@ -21,7 +21,6 @@ class Helper(AwsApiHelper):
 
         client = session.client("config", region_name=region)
         params = {"Expression": self._sql_statement}
-
         while True:
             resp = client.select_resource_config(**params)
             for item in resp["Results"]:
@@ -29,7 +28,7 @@ class Helper(AwsApiHelper):
 
             if resp.get("NextToken") is None:
                 break
-            params["NextToken"] = resp.get("NextToken")
+            params["NextToken"] = resp["NextToken"]
 
 
 def dump(data, output_filename, to_console=True):

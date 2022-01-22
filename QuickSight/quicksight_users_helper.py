@@ -28,6 +28,7 @@ def main(keyword, profile):
         for r in resp["UserList"]:
             if keyword is None or keyword.lower() in r["UserName"].lower():
                 ret[r["UserName"]] = r
+
         if resp.get("NextToken") is None:
             break
         params["NextToken"] = resp["NextToken"]
