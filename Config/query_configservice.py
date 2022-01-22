@@ -20,16 +20,16 @@ class Helper(AwsApiHelper):
             rmtree(output_filename)
 
         client = session.client("config", region_name=region)
-        resp = client.select_resource_config(Expression=self._sql_statement)
-        next_token = resp.get("NextToken")
-        for item in resp["Results"]:
-            dump(item, output_filename)
-    
-        while next_token:
-            resp = client.select_resource_config(Expression=self._sql_statement, NextToken=next_token)
-            next_token = resp.get("NextToken")
+        params = {"Expression": self._sql_statement}
+
+        while True:
+            resp = client.select_resource_config(**params)
             for item in resp["Results"]:
                 dump(item, output_filename)
+
+            if resp.get("NextToken") is None:
+                break
+            params["NextToken"] = resp.get("NextToken")
 
 
 def dump(data, output_filename, to_console=True):
