@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a CodeArtifact repository
+
+Parameters:
+  Description:
+    Description: A text description of the repository.
+    Type: String
+  RepositoryName:
+    Description: The name of a repository or an upstream repository.
+    Type: String
+
+Resources:
+  CodeArtifactRepository:
+    Type: AWS::CodeArtifact::Repository
+    Properties:
+      Description: !Ref Description
+      DomainName: !ImportValue main:codeartifact:domain:name
+      RepositoryName: !Ref RepositoryName
+
+      # A repository policy gives you the ability to specify which actions other AWS accounts and organizations can perform on your repository.
+      # PermissionsPolicyDocument: ...
+
+Outputs:
+  CodeArtifactRepository:
+    Value: !Ref CodeArtifactRepository
+  CodeArtifactRepositoryArn:
+    Value: !GetAtt CodeArtifactRepository.Arn
+  CodeArtifactRepositoryDomainName:
+    Value: !GetAtt CodeArtifactRepository.DomainName
+  CodeArtifactRepositoryDomainOwner:
+    Value: !GetAtt CodeArtifactRepository.DomainOwner
+  CodeArtifactRepositoryName:
+    Value: !GetAtt CodeArtifactRepository.Name

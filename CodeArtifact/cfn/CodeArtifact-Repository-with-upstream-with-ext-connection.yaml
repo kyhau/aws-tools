@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a CodeArtifact repository with an upstream repository and external connection
+
+Parameters:
+  Description:
+    Description: A text description of the repository.
+    Type: String
+  ExternalConnection:
+    Description: External connection associated with the repository.
+    Type: String
+    AllowedValues:
+      - public:npmjs  # for the npm public repository.
+      - public:pypi  # for the Python Package Index.
+      - public:maven-central  # for Maven Central.
+      - public:maven-googleandroid  # for the Google Android repository.
+      - public:maven-gradleplugins  # for the Gradle plugins repository.
+      - public:maven-commonsware  # for the CommonsWare Android repository.
+  RepositoryName:
+    Description: The name of a repository or an upstream repository.
+    Type: String
+
+Resources:
+  CodeArtifactUpstreamRepository:
+    Type: AWS::CodeArtifact::Repository
+    Properties:
+      Description: !Sub Upsteam repo of ${RepositoryName}
+      DomainName: !ImportValue main:codeartifact:domain:name
+      ExternalConnections:
+        - !Ref ExternalConnection
+      RepositoryName: !Sub ${RepositoryName}-upstream
+
+  CodeArtifactRepository:
+    Type: AWS::CodeArtifact::Repository
+    Properties:
+      Description: !Ref Description
+      DomainName: !ImportValue main:codeartifact:domain:name
+      RepositoryName: !Ref RepositoryName
+      Upstreams:
+        - !GetAtt CodeArtifactUpstreamRepository.Name
+
+Outputs:
+  CodeArtifactRepository:
+    Value: !Ref CodeArtifactRepository
+  CodeArtifactRepositoryArn:
+    Value: !GetAtt CodeArtifactRepository.Arn
+  CodeArtifactRepositoryDomainName:
+    Value: !GetAtt CodeArtifactRepository.DomainName
+  CodeArtifactRepositoryDomainOwner:
+    Value: !GetAtt CodeArtifactRepository.DomainOwner
+  CodeArtifactRepositoryName:
+    Value: !GetAtt CodeArtifactRepository.Name
+
+  CodeArtifactUpstreamRepository:
+    Value: !Ref CodeArtifactUpstreamRepository
+  CodeArtifactUpstreamRepositoryArn:
+    Value: !GetAtt CodeArtifactUpstreamRepository.Arn
+  CodeArtifactUpstreamRepositoryDomainName:
+    Value: !GetAtt CodeArtifactUpstreamRepository.DomainName
+  CodeArtifactUpstreamRepositoryDomainOwner:
+    Value: !GetAtt CodeArtifactUpstreamRepository.DomainOwner
+  CodeArtifactUpstreamRepositoryName:
+    Value: !GetAtt CodeArtifactUpstreamRepository.Name
