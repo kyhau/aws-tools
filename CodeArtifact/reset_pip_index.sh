@@ -1,4 +1,7 @@
 #!/bin/bash
 
-rm ~/.pypirc
+# pip
 rm ~/.config/pip/pip.conf
+
+# twine
+rm ~/.pypirc
