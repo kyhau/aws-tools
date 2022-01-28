@@ -8,7 +8,8 @@ source .config
 aws codeartifact create-domain --domain ${DOMAIN} --profile ${AWS_PROFILE_1}
 
 
-# Create a cross account domain policy
+# Create a cross account domain policy for account 1
+# copy-package-versions requires codeartifact:ReadFromRepository
 
 cat > cross_account_domain_policy.json << EOF
 {
@@ -17,11 +18,13 @@ cat > cross_account_domain_policy.json << EOF
         {
             "Sid": "ContributorPolicy",
             "Action": [
+                "codeartifact:AssociateWithDownstreamRepository",
                 "codeartifact:CreateRepository",
                 "codeartifact:DescribeDomain",
                 "codeartifact:GetAuthorizationToken",
                 "codeartifact:GetDomainPermissionsPolicy",
                 "codeartifact:ListRepositoriesInDomain",
+                "codeartifact:ReadFromRepository",
                 "sts:GetServiceBearerToken"
             ],
             "Effect": "Allow",

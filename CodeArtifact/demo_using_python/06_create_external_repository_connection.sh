@@ -9,7 +9,7 @@ source .config
 # This makes it possible to consume open-source dependencies used by your application.
 
 aws codeartifact associate-external-connection --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${SHARED_REPO_1} --external-connection public:pypi
+  --repository ${ACCOUNT_1_SHARED_REPO_1} --external-connection public:pypi
 
 
 # public:npmjs - for the npm public repository.
