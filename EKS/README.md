@@ -35,6 +35,7 @@
 - [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s)
 - [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
 - [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus)
+- [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd)
 
 ---
 ## EKS Persistent Storage
