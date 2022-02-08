@@ -1,5 +1,9 @@
 # Notes
 
+## MLA
+
+- Automate time series network visualizations for AWS PrivateLink using Amazon CloudWatch Contributor Insights ([blogpost](https://aws.amazon.com/blogs/mt/automate-time-series-network-visualizations-for-aws-privatelink-using-amazon-cloudwatch-contributor-insights/), AWS, 08 FEB 2022
+
 ## Gateway VPC Endpoint
 
 - A VPC can have more than one DynamoDB (or S3) Gateway VPC endpoint.
