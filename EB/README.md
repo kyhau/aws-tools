@@ -1,5 +1,8 @@
 # Elastic Beanstalk
 
+AWS Elastic Beanstalk CLI - [aws/aws-elastic-beanstalk-cli](https://github.com/aws/aws-elastic-beanstalk-cli)
+
+
 ```
 ################################################################################
 # Initialise EB Application and generate .elasticbeanstalk and .gitignore
@@ -46,22 +49,22 @@ $ docker push ${STAGE_TAG} || echo "Failure: ${STAGE_TAG} push failed."
 $ eb deploy --region $EB_REGION $EB_ENV_NAME
 
 # 3. To update Elastic Beanstalk Environment for instant change in After Creation state:
-# 3.1  Make sure you have the latest EB environment first. 
+# 3.1  Make sure you have the latest EB environment first.
 #      Because `aws:elasticbeanstalk:managedactions:platformupdate` is enabled, the Docker/platform version in
 #     `Platform:PlatformArn` can be different from the last saved `*.cfg.yml` file.
-    
+
 $ cd app/
 $ eb use [EB_ENV_NAME]              # Ensure all operations take effect to a specific EB environment
 $ eb config delete [EB_ENV_NAME]    # Delete the named saved configuration (in EB S3)
 $ eb config save [EB_ENV_NAME]      # Save the environment configuration settings for the current running
                                   # environment to .elasticbeanstalk/saved_configs/ with the filename
                                   # [EB_ENV_NAME].cfg.yml.
-    
+
 # 3.2  Edit `app/.elasticbeanstalk/saved_configs/[EB_ENV_NAME].cfg.yml`.
 
 # 3.3  Create Pull Request for review.
 
-# 3.4.  Apply the change 
+# 3.4.  Apply the change
 
 $ cd app/
 $ eb use ${EB_ENV_NAME}
@@ -87,7 +90,7 @@ $ aws elasticbeanstalk list-available-solution-stacks
      1. `00clean_dir.sh` - Clean directory where source will be downloaded, removes docker containers and images.
      2. `01unzip.sh` - Download source from S3 and unzip it.
      3. `02loopback-check.sh` - Verify you don't have docker loopback setting set.
-     4. `03build.sh` - Build your docker image from your `Dockerfile` or `Dockerrun.aws.json`. 
+     4. `03build.sh` - Build your docker image from your `Dockerfile` or `Dockerrun.aws.json`.
 
 2. `/opt/elasticbeanstalk/hooks/appdeploy/enact/`
      1. `00run.sh` - Execute `docker run` against the image that was generated in the pre stage based on environment

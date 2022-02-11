@@ -1,5 +1,16 @@
 # API Gateway
 
+## Useful Libs and Tools
+
+| Description | Repo/Link |
+| :--- | :--- |
+| Amazon API Gateway CORS Configurator | [aws-samples/amazon-api-gateway-cors-configurator](https://github.com/aws-samples/amazon-api-gateway-cors-configurator) |
+| [Amazon API Gateway Serverless Developer Portal](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-developer-portal.html) | [awslabs/aws-api-gateway-developer-portal](https://github.com/awslabs/aws-api-gateway-developer-portal) |
+
+
+---
+## Useful Articles and Blogs
+
 1. Private API invocation between two separate AWS accounts
 
     1. [How can I access an API Gateway private REST API in another AWS account using an interface VPC endpoint?](https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-private-cross-account-vpce/), AWS, 2021-10-11

@@ -1,4 +1,4 @@
-# Service Mesh
+# App Mesh
 
 See also https://www.nginx.com/blog/what-is-a-service-mesh/
 - A service mesh is a configurable, low‑latency infrastructure layer designed to handle a high volume of network‑based interprocess communication among application infrastructure services using APIs.

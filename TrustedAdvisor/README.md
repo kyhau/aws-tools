@@ -1,9 +1,7 @@
 # Trusted Advisor
 
-## Service Limits
+| AWS Trusted Advisor Tools | [aws/Trusted-Advisor-Tools](https://github.com/aws/Trusted-Advisor-Tools) |
 
-- AWS Limit Monitor https://aws.amazon.com/solutions/limit-monitor/
-- `awslimitchecker` - https://github.com/jantman/awslimitchecker
 
 ## Troubleshooting
 - `aws support` works only with no region or `us-east-1`.

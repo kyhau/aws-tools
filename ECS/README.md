@@ -1,5 +1,22 @@
 # ECS Notes
 
+
+---
+## Useful Libs and Tools
+
+| ECS / Others | Repo/Link |
+| :--- | :--- |
+| Amazon ECS CLI v2 | [aws/amazon-ecs-cli-v2](https://aws.amazon.com/blogs/containers/announcing-the-amazon-ecs-cli-v2/) |
+| Amazon ECS Exec | [Using ECS Exec to access containers on Fargate and EC2](https://aws.amazon.com/blogs/containers/new-using-amazon-ecs-exec-access-your-containers-fargate-ec2/) |
+| AWS Copilot CLI - containerize apps on ECS/Fargate| [aws/copilot-cli](https://github.com/aws/copilot-cli) |
+| AWS Fargate Fast AutoScaler (with CDK) | [aws-samples/aws-fargate-fast-autoscaler](https://github.com/aws-samples/aws-fargate-fast-autoscaler) |
+| Docker CLI plugin for ECS | [docker/ecs-plugin](https://github.com/docker/ecs-plugin) |
+| AWS App2Container | [Containerize a Java or .NET app](https://docs.aws.amazon.com/app2container/latest/UserGuide/start-intro.html) |
+| Lazydocker - A simple terminal UI for both docker and docker-compose | [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) |
+
+---
+## Useful Articles and Blogs
+
 1. Access
     1. [Using Amazon ECS Exec to access your containers on AWS Fargate and Amazon EC2](https://aws.amazon.com/blogs/containers/new-using-amazon-ecs-exec-access-your-containers-fargate-ec2/)
 

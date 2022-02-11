@@ -1,6 +1,11 @@
 # Querying AWS resources
 
-See also 
+
+| AWS Config Rules Development Kit (RDK) CLI | [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) |
+| AWS Config Rules Development Kit (RDK) Library (Python) | [awslabs/aws-config-rdklib](https://github.com/awslabs/aws-config-rdklib) |
+
+
+See also
 - [Querying AWS resources](
   https://docs.aws.amazon.com/config/latest/developerguide/querying-AWS-resources.html)
 - [Resource Types supported](
@@ -11,7 +16,7 @@ CLI
 aws configservice select-resource-config --expression "$(cat ec2.sql)"
 ```
 
-The SQL SELECT query components are as follows. 
+The SQL SELECT query components are as follows.
 ```
 SELECT property [, ...]
 [ WHERE condition ]
@@ -25,9 +30,9 @@ SELECT resourceId WHERE resourceType='AWS::EC2::Instance'
 ```
 
 ```
-SELECT configuration.complianceType, COUNT(*) 
-WHERE resourceType = 'AWS::Config::ResourceCompliance' 
-GROUP BY configuration.complianceType  
+SELECT configuration.complianceType, COUNT(*)
+WHERE resourceType = 'AWS::Config::ResourceCompliance'
+GROUP BY configuration.complianceType
 ```
 
 ```

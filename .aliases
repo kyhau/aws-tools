@@ -44,12 +44,12 @@ alias aws-ddb-enable-contributor-insights='aws dynamodb update-contributor-insig
 alias aws-ddb-search='python ${REPO_HOME}/DynamoDB/search_dynamodb.py'
 alias aws-ddb-start-local='. ${REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 
-alias aws-ec2-instances='python ${REPO_HOME}/EC2-VPC/list_ec2_instances.py'
-alias aws-ec2-check-userdata='python ${REPO_HOME}/EC2-VPC/UserData/check_UserData.py'
-alias aws-ec2-create-key-pair='.  ${REPO_HOME}/EC2-VPC/create_key_pair.sh'
+alias aws-ec2-instances='python ${REPO_HOME}/EC2/list_ec2_instances.py'
+alias aws-ec2-check-userdata='python ${REPO_HOME}/EC2/UserData/check_UserData.py'
+alias aws-ec2-create-key-pair='.  ${REPO_HOME}/EC2/create_key_pair.sh'
 alias aws-ec2-db-instances-based-on-ports='python ${REPO_HOME}/RDS/list_ec2_db_instances_based_on_ports.py'
-alias aws-ec2-unreachable='python ${REPO_HOME}/EC2-VPC/list_ec2_unreachable.py'
-alias aws-ec2-security-groups='python ${REPO_HOME}/EC2-VPC/list_security_groups.py'
+alias aws-ec2-unreachable='python ${REPO_HOME}/EC2/list_ec2_unreachable.py'
+alias aws-ec2-security-groups='python ${REPO_HOME}/VPC/list_security_groups.py'
 
 alias aws-ecr-list-used-images-having-critical-or-high-severity-findings='python ${REPO_HOME}/ECR/list_used_images_having_critical_or_high_severity_findings.py'
 alias aws-ecr-get-login='aws ecr get-login --no-include-email'
@@ -64,7 +64,7 @@ alias aws-iam-lookup-identities='python ${REPO_HOME}/Security/lookup_iam_identit
 alias aws-inspector-cvelist-ap-southeast-2='curl https://s3.ap-southeast-2.amazonaws.com/rules-engine.ap-southeast-2/CVEList.txt'
 alias aws-inspector-list-results='python ${REPO_HOME}/Inspector/inspector_helper.py'
 
-alias aws-ip-lookup='python ${REPO_HOME}/EC2-VPC/find_subnet_for_ip.py'
+alias aws-ip-lookup='python ${REPO_HOME}/VPC/find_subnet_for_ip.py'
 alias aws-ip-ranges='curl https://ip-ranges.amazonaws.com/ip-ranges.json'
 alias aws-ip-ranges-link='echo https://ip-ranges.amazonaws.com/ip-ranges.json'
 
@@ -109,20 +109,20 @@ alias aws-sts-get-caller-identity='aws sts get-caller-identity'
 alias aws-ssm-parameters-list-global-infrastructure='. ${REPO_HOME}/SSM/ssm_parameters_list.sh'
 alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["3389"],"localPortNumber"=["9999"] --target '
 
-alias aws-subnet-ip-usage='python ${REPO_HOME}/EC2-VPC/available_ip_address_count.py'
+alias aws-subnet-ip-usage='python ${REPO_HOME}/VPC/available_ip_address_count.py'
 
 alias aws-tag-list='python ${REPO_HOME}/_multi_services/list_tags.py'
 
 alias aws-trustedadvisor-list-result='python ${REPO_HOME}/TrustedAdvisor/trusted_advisor_check_result.py'
 
-alias aws-vpc-flow-logs='python ${REPO_HOME}/EC2-VPC/vpc_flow_logs.py'
-alias aws-vpcs='python ${REPO_HOME}/EC2-VPC/list_vpcs.py'
+alias aws-vpc-flow-logs='python ${REPO_HOME}/VPC/vpc_flow_logs.py'
+alias aws-vpcs='python ${REPO_HOME}/VPC/list_vpcs.py'
 
-alias aws-vpc-endpoints='python ${REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoints.py'
-alias aws-vpc-endpoint-gateway-prefix-list='python ${REPO_HOME}/EC2-VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
-alias aws-vpc-endpoint-services='python ${REPO_HOME}/EC2-VPC-Endpoint/vpc_endpoint_services.py'
+alias aws-vpc-endpoints='python ${REPO_HOME}/VPC-Endpoint/vpc_endpoints.py'
+alias aws-vpc-endpoint-gateway-prefix-list='python ${REPO_HOME}/VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
+alias aws-vpc-endpoint-services='python ${REPO_HOME}/VPC-Endpoint/vpc_endpoint_services.py'
 
-alias aws-vpn-connections='python ${REPO_HOME}/EC2-VPC/list_vpn_connections.py'
+alias aws-vpn-connections='python ${REPO_HOME}/VPC/list_vpn_connections.py'
 
 alias aws-workspaces-details='python ${REPO_HOME}/Workspaces/list_workspaces_details.py'
 alias aws-workspace-restore-rebuild='python ${REPO_HOME}/Workspaces/workspace_restore_rebuild.py'

@@ -1,12 +1,36 @@
 # EKS Notes
 
-- Non-AWS Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
+Jump to
+- [Userful Libs and Tools](#useful-libs-and-tools)
+- Non-AWS / Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
 - [QuickStart](#quick-start)
 - [CDK for Kubernetes cdk8s / cdk8s+](#cdk-for-Kubernetes-cdk8s)
+- [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
 - [EKS Persistent Storage](eks-persistent-storage)
 - [EKS logging](#eks-logging)
 - [Collecting metrics with built-in Kubernetes monitoring tools](#collecting-metrics-with-built-in-kubernetes-monitoring-tools)
 - [Kubernetes Metrics Server](#kubernetes-metrics-server)
+
+---
+## Useful Libs and Tools
+
+| EKS | Repo/Link |
+| :--- | :--- |
+| Amazon EKS CLI | [weaveworks/eksctl](https://github.com/weaveworks/eksctl) |
+| Amazon EKS Distro (EKS-D) - a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters | [aws/eks-distro](https://github.com/aws/eks-distro), <br/> [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro) |
+| Amazon EKS-vended aws-iam-authenticator | [Amazon EKS-vended aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html) |
+| Amazon EKS-vended kubectl | [Amazon EKS-vended kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) |
+| AWS cdk8s - [CDK for Kubernetes](https://cdk8s.io/) | [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s) |
+| AWS cdk8s-cli - a CLI for CDK for Kubernetes | [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) |
+| AWS cdk8s-plus | [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) |
+| AWS Controllers for Kubernetes (ACK) | [aws/aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) |
+| AWS EKS Cluster Controller | [awslabs/aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) |
+| AWS EBS CSI Driver on Kubernetes | [kubernetes-sigs/aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) |
+| AWS EFS CSI Driver on Kubernetes | [kubernetes-sigs/aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) |
+| AWS EKS Charts | [aws/eks-charts](https://github.com/aws/eks-charts) |
+| AWS Karpenter - Kubernetes Cluster Autoscaler | [aws/karpenter](https://github.com/aws/karpenter) |
+| AWS Node Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes | [aws/aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) |
+| Multus-CNI - enables attaching multiple network interfaces to pods in Kubernetes | [k8snetworkplumbingwg/multus-cni](https://github.com/k8snetworkplumbingwg/multus-cni) |
 
 ---
 ## Quick Start
@@ -36,6 +60,28 @@
 - [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
 - [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus)
 - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd)
+
+---
+## EKS IAM OIDC Provider
+
+This change is for restricting OpenIDConnectProvider created for EKS cluster from infra deploy roles and developer roles.
+
+1. `iam:*OpenIDConnectProvider*` permissions are not required when creating an EKS cluster with `CreateCluster`, which creates an **OpenID Connect provider URL** (OpenID Connect issuer URL) for the cluster (e.g. https://oidc.eks.ap-southeast-2.amazonaws.com/id/ABCABC111222333444ABCABC11122233).
+    - And in CloudTrail, there are no `*OpenIDConnectProvider*` events.
+
+2.  After (1), the cluster has an OpenID Connect issuer URL associated with it.  To use IAM roles for service accounts, an IAM OIDC provider must exist for the cluster. See [here](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html).
+You need to run `ekctl utils associate-iam-oidc-provider`,
+    ```
+    $ eksctl utils associate-iam-oidc-provider --cluster=k-test-oicd --approve --region=ap-southeast-2 --profile test-oidc
+    ```
+    - A **Open ID Provider** with the same URL as (1) is created.
+    - For this step, this role needs to have the following permissions
+        ```
+        iam:CreateOpenIDConnectProvider
+        iam:GetOpenIDConnectProvider
+        iam:TagOpenIDConnectProvider
+        ```
+    - CloudTrail does NOT show the events as well (e.g. `CreateOpenIDConnectProvider`)
 
 ---
 ## EKS Persistent Storage

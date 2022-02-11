@@ -7,6 +7,14 @@ General approach
 3. The function fetches the findings from the security assessment.
 4. The function formats and emails the findings using another SNS topic.
 
+Inspector 2
+
+- Inspector 2 only scan things changed modified within 30 days.
+- Inspector 2 supports ECR. 
+    - When you turn on Inspector 2, ECR scan will be disabled (cannot be enabled at the same time).
+- Inspector 2 can be enabled across your organization with a single click. Once enabled, Inspector automatically discovers all of your workloads and continually scans them for software vulnerabilities and unintended network exposure. No need to schedule scaning windows.
+- Inspector 2 now uses SSM agent for EC2 vulnerability scanning. No need to install additional inspector agent.
+- The Inspector findings are also routed to Security Hub and pushed to EventBridge to automate with partner solutions to reduce mean time to resolution (MTTR).
 
 See also
 
