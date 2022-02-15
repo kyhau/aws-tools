@@ -1,7 +1,8 @@
 # EKS Notes
 
+Jump to
 - [Userful Libs and Tools](#useful-libs-and-tools)
-- Non-AWS Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
+- Non-AWS / Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
 - [QuickStart](#quick-start)
 - [CDK for Kubernetes cdk8s / cdk8s+](#cdk-for-Kubernetes-cdk8s)
 - [EKS Persistent Storage](eks-persistent-storage)
