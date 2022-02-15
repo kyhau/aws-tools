@@ -1,6 +1,19 @@
 # Resources for building serverless applications and pipelines
 
+
 - My example with sam-beta-cdk: https://github.com/kyhau/slack-command-app-cdk
+
+
+
+| Description | Repo/Link |
+| :--- | :--- |
+| AWS Serverless Application Model (SAM) | [awslabs/serverless-application-model](https://github.com/awslabs/serverless-application-model) |
+| AWS Serverless Application Model (SAM) CLI | [awslabs/aws-sam-cli](https://github.com/awslabs/aws-sam-cli)
+| AWS Serverless Application Model (SAM) Examples | [awslabs/serverless-application-model/examples/](https://github.com/awslabs/serverless-application-model/tree/master/examples/2016-10-31) |
+| AWS Serverless Application Repository | [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/) |
+| Cookiecutter SAM for Python Lambda functions | [aws-samples/cookiecutter-aws-sam-python](https://github.com/aws-samples/cookiecutter-aws-sam-python) |
+
+
 
 - https://aws.amazon.com/serverless/serverlessrepo/resources/
 

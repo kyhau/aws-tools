@@ -1,5 +1,6 @@
 # EKS Notes
 
+- [Userful Libs and Tools](#useful-libs-and-tools)
 - Non-AWS Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
 - [QuickStart](#quick-start)
 - [CDK for Kubernetes cdk8s / cdk8s+](#cdk-for-Kubernetes-cdk8s)
@@ -7,6 +8,27 @@
 - [EKS logging](#eks-logging)
 - [Collecting metrics with built-in Kubernetes monitoring tools](#collecting-metrics-with-built-in-kubernetes-monitoring-tools)
 - [Kubernetes Metrics Server](#kubernetes-metrics-server)
+
+---
+## Useful Libs and Tools
+
+| EKS | Repo/Link |
+| :--- | :--- |
+| Amazon EKS CLI | [weaveworks/eksctl](https://github.com/weaveworks/eksctl) |
+| Amazon EKS Distro (EKS-D) - a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters | [aws/eks-distro](https://github.com/aws/eks-distro), <br/> [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro) |
+| Amazon EKS-vended aws-iam-authenticator | [Amazon EKS-vended aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html) |
+| Amazon EKS-vended kubectl | [Amazon EKS-vended kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) |
+| AWS cdk8s - [CDK for Kubernetes](https://cdk8s.io/) | [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s) |
+| AWS cdk8s-cli - a CLI for CDK for Kubernetes | [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) |
+| AWS cdk8s-plus | [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) |
+| AWS Controllers for Kubernetes (ACK) | [aws/aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) |
+| AWS EKS Cluster Controller | [awslabs/aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) |
+| AWS EBS CSI Driver on Kubernetes | [kubernetes-sigs/aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) |
+| AWS EFS CSI Driver on Kubernetes | [kubernetes-sigs/aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) |
+| AWS EKS Charts | [aws/eks-charts](https://github.com/aws/eks-charts) |
+| AWS Karpenter - Kubernetes Cluster Autoscaler | [aws/karpenter](https://github.com/aws/karpenter) |
+| AWS Node Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes | [aws/aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) |
+| Multus-CNI - enables attaching multiple network interfaces to pods in Kubernetes | [k8snetworkplumbingwg/multus-cni](https://github.com/k8snetworkplumbingwg/multus-cni) |
 
 ---
 ## Quick Start

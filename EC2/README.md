@@ -1,4 +1,14 @@
-# EC2 / VPC
+# EC2
+
+## Useful Libs and Tools
+
+| Description | Repo/Link |
+| :--- | :--- |
+| AWS EC2 ENI Utilities (ec2-net-utils)  | [aws/ec2-net-utils](https://github.com/aws/ec2-net-utils) |
+| AWS Instance Scheduler | [AWS Instance Scheduler](https://aws.amazon.com/solutions/instance-scheduler/) |
+
+---
+## Useful Articles and Blogs
 
 - CloudWatch Agent
     - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent-New-Instances-CloudFormation.html
@@ -37,15 +47,15 @@
 
 
 - EC2 Instance Connect
-    - There is no need to install the EC2 Instance Connect CLI if users only use the console or an SSH client to connect to an instance. 
+    - There is no need to install the EC2 Instance Connect CLI if users only use the console or an SSH client to connect to an instance.
 
     ```
     ################################################################################
     # Install CLI
     # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-set-up.html#ec2-instance-connect-install-eic-CLI
-    
+
     pip install ec2instanceconnectcli
-    
+
     # SSH connection to an instance
     ssh <instance_id>
     ```

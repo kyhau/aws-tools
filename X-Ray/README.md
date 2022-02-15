@@ -3,6 +3,12 @@
 - [Segment and subsegment in Lambda](#segment-and-subsegment-in-lambda)
 - [SQS to Lambda](#sqs-to-lambda)
 
+| AWS X-Ray Daemon | [aws/aws-xray-daemon](https://github.com/aws/aws-xray-daemon) |
+| AWS X-Ray SDK (Python) | [aws/aws-xray-sdk-python](https://github.com/aws/aws-xray-sdk-python) |
+
+
+
+
 ---
 ## Segment and subsegment in Lambda
 
