@@ -1,5 +1,23 @@
 # Some notes about Lambda
 
+
+| Description | Repo/Link |
+| :--- | :--- |
+| AWS Lambda Builders (Python library, the brains behind `sam build`) | [aws/aws-lambda-builders](https://github.com/aws/aws-lambda-builders) |
+| AWS Lambda Developer Guide | [awsdocs/aws-lambda-developer-guide](https://github.com/awsdocs/aws-lambda-developer-guide) |
+| AWS Lambda Extensions API | [specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) |
+| AWS Lambda Extensions sample projects | [aws-samples/aws-lambda-extensions](https://github.com/aws-samples/aws-lambda-extensions/) |
+| AWS Lambda Logs API | [specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-logs-api.html) |
+| AWS Lambda Powertools | [awslabs/aws-lambda-powertools-python](https://github.com/awslabs/aws-lambda-powertools-python) |
+| AWS Lambda Power Tuning | [alexcasalboni/aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning) |
+| AWS Lambda Python Runtime Interface Client | [aws/aws-lambda-python-runtime-interface-client](https://github.com/aws/aws-lambda-python-runtime-interface-client) |
+| AWS Lambda Runtime API | [specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html) |
+| AWS Lambda Runtime Interface Emulator | [aws/aws-lambda-runtime-interface-emulator](https://github.com/aws/aws-lambda-runtime-interface-emulator/) |
+| Authorization Lambda@Edge (Node.js) | [aws-samples/authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) |
+| A sandboxed local environment that replicates the live AWS Lambda environment | [lambci/docker-lambda](https://github.com/lambci/docker-lambda) |
+
+
+
 - [How to Make Your Lambda Functions Run Faster (and Cheaper)](https://hackernoon.com/how-to-make-your-lambda-functions-run-faster-and-cheaper-gp2034jl) by webiny on 2020-11-25
 
 - Lambda now supports up to 10 GB of memory and 6 vCPU cores
