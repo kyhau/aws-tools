@@ -5,6 +5,7 @@ Jump to
 - Non-AWS / Kubernetes tools: [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/master/useful-tools/kubernetes)
 - [QuickStart](#quick-start)
 - [CDK for Kubernetes cdk8s / cdk8s+](#cdk-for-Kubernetes-cdk8s)
+- [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
 - [EKS Persistent Storage](eks-persistent-storage)
 - [EKS logging](#eks-logging)
 - [Collecting metrics with built-in Kubernetes monitoring tools](#collecting-metrics-with-built-in-kubernetes-monitoring-tools)
@@ -59,6 +60,28 @@ Jump to
 - [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
 - [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus)
 - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd)
+
+---
+## EKS IAM OIDC Provider
+
+This change is for restricting OpenIDConnectProvider created for EKS cluster from infra deploy roles and developer roles.
+
+1. `iam:*OpenIDConnectProvider*` permissions are not required when creating an EKS cluster with `CreateCluster`, which creates an **OpenID Connect provider URL** (OpenID Connect issuer URL) for the cluster (e.g. https://oidc.eks.ap-southeast-2.amazonaws.com/id/ABCABC111222333444ABCABC11122233).
+    - And in CloudTrail, there are no `*OpenIDConnectProvider*` events.
+
+2.  After (1), the cluster has an OpenID Connect issuer URL associated with it.  To use IAM roles for service accounts, an IAM OIDC provider must exist for the cluster. See [here](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html).
+You need to run `ekctl utils associate-iam-oidc-provider`,
+    ```
+    $ eksctl utils associate-iam-oidc-provider --cluster=k-test-oicd --approve --region=ap-southeast-2 --profile test-oidc
+    ```
+    - A **Open ID Provider** with the same URL as (1) is created.
+    - For this step, this role needs to have the following permissions
+        ```
+        iam:CreateOpenIDConnectProvider
+        iam:GetOpenIDConnectProvider
+        iam:TagOpenIDConnectProvider
+        ```
+    - CloudTrail does NOT show the events as well (e.g. `CreateOpenIDConnectProvider`)
 
 ---
 ## EKS Persistent Storage
