@@ -43,6 +43,8 @@
 
     1. If you use an **S3 bucket as the origin**, CloudFront uses the **REST API** interface of S3 to communicate with the origin.
 
+        1. E.g. bucket-name.s3.Region.amazon.com
+
         1. S3 REST API is more versatile, allowing the client to pass richer information like AWS Identity, thereby allowing the exchange of information that makes **OAI** possible.
 
     2. If you use the **website endpoint as the origin**, CloudFront uses the **website URL** as the origin.
