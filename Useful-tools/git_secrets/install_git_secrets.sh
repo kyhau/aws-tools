@@ -2,9 +2,9 @@
 # Set to fail script if any command fails.
 set -e
 
-WORKSPACE_DIR="$HOME/workspaces/github"
+INSTALL_DIR="$HOME/.local/"
 
-pushd $WORKSPACE_DIR
+pushd $INSTALL_DIR
 
 [[ ! -d "$REPO_DIR" ]] || git clone https://github.com/awslabs/git-secrets
 
