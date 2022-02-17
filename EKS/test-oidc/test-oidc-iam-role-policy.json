@@ -1,0 +1,27 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "ForCreateEksCluster",
+          "Effect": "Allow",
+          "Action": [
+              "cloudformation:*",
+              "ec2:*",
+              "eks:*",
+              "iam:*Role*"
+          ],
+          "Resource": "*"
+      },
+      {
+          "Sid": "ForEksctlUtilsAssociateAndDeleteOpenIDConnectProvider",
+          "Effect": "Allow",
+          "Action": [
+              "iam:CreateOpenIDConnectProvider",
+              "iam:DeleteOpenIDConnectProvider",
+              "iam:GetOpenIDConnectProvider",
+              "iam:TagOpenIDConnectProvider"
+          ],
+          "Resource": "arn:aws:iam::123456789012:oidc-provider/oidc.eks.ap-southeast-2.amazonaws.com*"
+      }
+  ]
+}
