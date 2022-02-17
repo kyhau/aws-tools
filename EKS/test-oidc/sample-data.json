@@ -1,0 +1,20 @@
+{
+	"Url": "oidc.eks.ap-southeast-2.amazonaws.com/id/ABC123ABC123ABC123ABC123ABC123AB",
+	"ClientIDList": [
+		"sts.amazonaws.com"
+	],
+	"ThumbprintList": [
+		"9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
+	],
+	"CreateDate": "2021-12-22 04:35:35.103000+00:00",
+	"Tags": [
+		{
+			"Key": "alpha.eksctl.io/eksctl-version",
+			"Value": "0.77.0"
+		},
+		{
+			"Key": "alpha.eksctl.io/cluster-name",
+			"Value": "development-k-test-oicd"
+		}
+	]
+}
