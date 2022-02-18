@@ -90,7 +90,8 @@ You need to run `ekctl utils associate-iam-oidc-provider`,
 - https://github.com/kubernetes-sigs/aws-efs-csi-driver
 
 ---
-## EKS Logging
+## EKS Montoring, Logging, Alerting
+- CloudWatch Container Insights adds support for Amazon EKS Fargate using AWS Distro for OpenTelemetry https://aws.amazon.com/about-aws/whats-new/2022/02/amazon-cloudwatch-eks-fargate-distro-opentelemetry/
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html
 - https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html
