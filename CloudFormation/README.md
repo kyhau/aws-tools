@@ -1,7 +1,8 @@
 # CloudFormation Notes
 
-- [Understanding AWS CloudFormation !Sub Syntax](https://www.fischco.org/technica/2017/cloud-formation-sub/)
-- Passing value to UserData to set EC2 env variable https://stackoverflow.com/questions/54858072/aws-cloudformation-userdata-ec2-environment-variable
+- [Useful Libs and Tools](#useful-libs-and-tools)
+- [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [CDN Syntax](#cfn-syntax)
 
 ---
 ## Useful Libs and Tools
@@ -57,3 +58,45 @@
   generates a report with a pass/fail grade for each region.
   taskcat is implemented as a Python class that you import, instantiate, and run.
 
+---
+## CFN Syntax
+
+- [Understanding AWS CloudFormation !Sub Syntax](https://www.fischco.org/technica/2017/cloud-formation-sub/)
+
+- Passing value to UserData to set EC2 env variable https://stackoverflow.com/questions/54858072/aws-cloudformation-userdata-ec2-environment-variable
+    ```
+    UserData:
+      Fn::Base64: !Sub |
+        #!/bin/bash
+        sudo yum install -y https://s3.${AWS::Region}.amazonaws.com/amazon-ssm-${AWS::Region}/latest/linux_amd64/amazon-ssm-agent.rpm
+    ```
+
+- Example: optional item in a list
+    ```
+    Parameters:
+      TargetRole:
+        Type: String
+      TargetRole2:
+        Type: String
+        Default: ""
+
+    Conditions:
+      HasTargetRole2: !Not [!Equals [!Ref TargetRole2, ""]]
+
+    Resources:
+      CIDeployRole:
+        Type: AWS::IAM::Role
+        Properties:
+          AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action: sts:AssumeRole
+                Effect: Allow
+                Principal:
+                  AWS:
+                    - !Ref TargetRole
+                    - !If
+                      - HasTargetRole2
+                      - !Ref TargetRole2
+                      - !Ref AWS::NoValue
+    ```
