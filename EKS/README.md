@@ -7,7 +7,7 @@ Jump to
 - [CDK for Kubernetes cdk8s / cdk8s+](#cdk-for-Kubernetes-cdk8s)
 - [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
 - [EKS Persistent Storage](eks-persistent-storage)
-- [EKS logging](#eks-logging)
+- [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
 - [Collecting metrics with built-in Kubernetes monitoring tools](#collecting-metrics-with-built-in-kubernetes-monitoring-tools)
 - [Kubernetes Metrics Server](#kubernetes-metrics-server)
 
