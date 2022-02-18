@@ -170,4 +170,6 @@ alias update-aws-session-manager-plugin='. ${REPO_HOME}/SSM/install-aws-session-
 
 alias update-awscii-cli='sudo npm i -g @mhlabs/awscii-cli@latest'
 
+alias update-git-secrets='. ${REPO_HOME}/Useful-tools/git-secrets/install-git-secrets.sh'
+
 alias update-sam2aws='. ${REPO_HOME}/saml2aws/install-saml2aws.sh'
