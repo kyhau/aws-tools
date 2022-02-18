@@ -2,13 +2,16 @@
 # Set to fail script if any command fails.
 set -e
 
-INSTALL_DIR="$HOME/.local/"
+INSTALL_DIR="$HOME/workspaces/github"
 
 pushd $INSTALL_DIR
 
-[[ ! -d "$REPO_DIR" ]] || git clone https://github.com/awslabs/git-secrets
+if [[ ! -d "git-secrets" ]]; then
+  git clone https://github.com/awslabs/git-secrets
+fi
 
 pushd git-secrets
+git pull
 sudo make install
 
 popd
