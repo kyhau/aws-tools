@@ -10,6 +10,7 @@ Jump to
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
 - [Collecting metrics with built-in Kubernetes monitoring tools](#collecting-metrics-with-built-in-kubernetes-monitoring-tools)
 - [Kubernetes Metrics Server](#kubernetes-metrics-server)
+- [Useful Architecture Diagrams](#useful-architecture-diagrams)
 
 ---
 ## Useful Libs and Tools
@@ -136,3 +137,9 @@ kubectl get --raw /apis/metrics.k8s.io/v1beta1/nodes/<NODE_NAME> | jq
 # 2.b) To query the CPU and memory usage of a pod
 kubectl get --raw /apis/metrics.k8s.io/v1beta1/namespaces/<NAMESPACE>/pods/<POD_NAME> | jq
 ```
+
+---
+## Useful Architecture Diagrams
+
+### Overview of Kubernetes Architecture
+![Overview of Kubernetes Architecture](https://i.redd.it/cqud3rjkss361.png)
