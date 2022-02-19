@@ -59,7 +59,8 @@ Jump to
 - [cdk8s-team/cdk8s](https://github.com/cdk8s-team/cdk8s)
 - [cdk8s-team/cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli)
 - [cdk8s-team/cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus)
-- [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd)
+- Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd)
+- CDK Pipelines for EKS Cluster(s) [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster)
 
 ---
 ## EKS IAM OIDC Provider
