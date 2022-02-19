@@ -1,67 +1,76 @@
 # CloudFormation Notes
 
-- [Useful Libs and Tools](#useful-libs-and-tools)
-- [Useful Articles and Blogs](#useful-articles-and-blogs)
-- [CDN Syntax](#cfn-syntax)
+- [Useful CLIs, Libs and Tools](#useful-clis-libs-and-tools)
+- [Useful templates](#useful-templates)
+- [CFN Customer Resource Provider Plugins](#cfn-custom-resource-provider-plugins-and-custom-resources)
+- [CFN Marcos](#cfn-marcos)
+- [CFN Syntax](#cfn-syntax)
 
 ---
-## Useful Libs and Tools
+## Useful CLIs, Libs and Tools
 
-| Description | Repo/Link |
-| :--- | :--- |
-| `cfn` - AWS CloudFormation CLI | [aws-cloudformation/aws-cloudformation-cli](https://github.com/aws-cloudformation/cloudformation-cli) |
-| `cfn-guard` - AWS CloudFormation Guard | [aws-cloudformation/cloudformation-guard](https://github.com/aws-cloudformation/cloudformation-guard) |
-| AWS CloudFormation Handling Region parity| [aws-samples/aws-cloudformation-region-parity](https://github.com/aws-samples/aws-cloudformation-region-parity) |
-| `cfn-lint` - AWS CloudFormation Linter | [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) |
-| AWS CloudFormation Macros | [aws-cloudformation/aws-cloudformation-macros](https://github.com/aws-cloudformation/aws-cloudformation-macros) |
-| AWS CloudFormation Registry (public/private extensions/modules) | [User Guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry.html) |
-| AWS CloudFormation Resource Provider Python Plugin | [aws-cloudformation/cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) |
-| AWS CloudFormation Resources and Projects | [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation) |
-| AWS CloudFormation Sample Templates | [awslabs/aws-cloudformation-templates](https://github.com/awslabs/aws-cloudformation-templates) |
-| AWS CloudFormation Template Flip (cfn-flip) | [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) |
-| [AWS predefined CloudWatch metric filters and alarms](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/use-cloudformation-template-to-create-cloudwatch-alarms.html) |[CloudWatch_Alarms_for_CloudTrail_API_Activity.zip](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/samples/CloudWatch_Alarms_for_CloudTrail_API_Activity.zip)|
-| AWSUtility::CloudFormation::CommandRunner | [aws-cloudformation/aws-cloudformation-resource-providers-awsutilities-commandrunner](https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-awsutilities-commandrunner) |
-| CloudMapper | [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper) |
-| CloudFormer | [CloudFormer for creating templates from existing AWS resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html) |
-| Former2 generates CloudFormation / Terraform / Troposphere templates from existing AWS resources | [iann0036/former2](https://github.com/iann0036/former2) |
+- `cfn`: CloudFormation CLI. [aws-cloudformation/aws-cloudformation-cli](https://github.com/aws-cloudformation/cloudformation-cli)
+
+- `cfn-flip`: converts CloudFormation templates between JSON and YAML formats. [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip)
+
+- `cfn-format`: reads in an existing CloudFormation template and outputs a cleanly-formatted, easy-to-read copy of the same template adhering to standards as used in AWS documentation. [awslabs/aws-cloudformation-template-formatter](https://github.com/awslabs/aws-cloudformation-template-formatter)
+
+- `cfn-guard`: provides developers a general purpose domain-specific language (DSL) to express policy-as-code and then validate their JSON- and YAML-formatted data against that code. [aws-cloudformation/cloudformation-guard](https://github.com/aws-cloudformation/cloudformation-guard)
+
+- `cfn-lint`: validates CloudFormation yaml/json templates against the CloudFormation spec and additional checks. [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint)
+
+- `cfn_nag`: looks for patterns in CloudFormation templates that may indicate insecure infrastructure. [stelligent/cfn_nag](https://github.com/stelligent/cfn_nag)
+
+- `cfn-skeleton`: consumes the published CloudFormation specification and generates skeleton CloudFormation templates with mandatory and optional parameters of chosen resource types pre-filled with placeholder values. [cfn-skeleton](https://github.com/awslabs/aws-cloudformation-template-builder)
+
+- `sceptre`: manages the creation, update and deletion of stacks while providing meta commands which allow users to retrieve information about their stacks. [sceptre](https://sceptre.cloudreach.com/)
+
+- `taskcat`: tests CloudFormation templates. It deploys your CloudFormation template in multiple AWS Regions and generates a report with a pass/fail grade for each region. taskcat is implemented as a Python class that you import, instantiate, and run. [aws-quickstart/taskcat](https://github.com/aws-quickstart/taskcat)
+
+- [CloudFormer](https://aws.amazon.com/blogs/devops/building-aws-cloudformation-templates-using-cloudformer/)
+ (beta): creates CloudFormation templates from existing AWS resources.
+
+- [CloudMapper](https://github.com/duo-labs/cloudmapper): analyzes AWS environments, supports auditing for security issues. [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper)
+
+- [Former2]((https://github.com/iann0036/former2)): generates CloudFormation / Terraform / Troposphere templates from existing AWS resources. [iann0036/former2](https://github.com/iann0036/former2)
+
+- CloudFormation Region parity: handles Region parity with IaC. [aws-samples/aws-cloudformation-region-parity](https://github.com/aws-samples/aws-cloudformation-region-parity)
+
 
 ---
-## Useful Articles and Blogs
+## Useful Templates
 
-- [AWS CloudFormer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html)
- (beta) - creates AWS CloudFormation templates from existing AWS resources.
+- AWS predefined CloudWatch metric filters and alarms
+  ([CloudWatch_Alarms_for_CloudTrail_API_Activity.zip](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/samples/CloudWatch_Alarms_for_CloudTrail_API_Activity.zip)). See also [User Guide](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/use-cloudformation-template-to-create-cloudwatch-alarms.html).
 
-- `cfn-flip` [awslabs/aws-cfn-template-flip](https://github.com/awslabs/aws-cfn-template-flip) -
-  converts AWS CloudFormation templates between JSON and YAML formats, making use of the YAML format's short function
-  syntax where possible.
-  - `pip install cfn_flip`
+- CloudFormation Resources and Projects: [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation)
 
-- cfn-format [awslabs/aws-cloudformation-template-formatter](https://github.com/awslabs/aws-cloudformation-template-formatter) -
-  reads in an existing AWS CloudFormation template and outputs a cleanly-formatted, easy-to-read copy of the same template adhering to standards as used in AWS documentation.
 
-- `cfn-lint` [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint) -
-  validates CloudFormation yaml/json templates against the CloudFormation spec and additional checks.
-  - `pip install cfn-lint`
+---
+## CFN Custom Resource Provider Plugins and Custom Resources
 
-- [stelligent/cfn_nag](https://github.com/stelligent/cfn_nag) -
-  looks for patterns in CloudFormation templates that may indicate insecure infrastructure.
+- CloudFormation Resource Provider Python Plugin - [aws-cloudformation/cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin)
 
-- [cfn-skeleton](https://github.com/awslabs/aws-cloudformation-template-builder) -
-  consumes the published CloudFormation specification and generates skeleton CloudFormation templates with mandatory and optional parameters of chosen resource types pre-filled with placeholder values.
+- `AWSUtility::CloudFormation::CommandRunner`: this resource allows users to run Bash commands in any CloudFormation stack. [aws-cloudformation/aws-cloudformation-resource-providers-awsutilities-commandrunner](https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-awsutilities-commandrunner)
 
-- [sceptre](https://sceptre.cloudreach.com/) -
-  manages the creation, update and deletion of stacks while providing meta commands which allow users to retrieve
-  information about their stacks.
 
-- [aws-quickstart/taskcat](https://github.com/aws-quickstart/taskcat) -
-  tests AWS CloudFormation templates. It deploys your AWS CloudFormation template in multiple AWS Regions and
-  generates a report with a pass/fail grade for each region.
-  taskcat is implemented as a Python class that you import, instantiate, and run.
+---
+## CFN Hooks
+
+- `Generic::SecretsProtection::Hook`: protects against accidental secrets exposure by observing every property of every AWS resource type.
+  [iann0036/cfn-hook](https://github.com/iann0036/cfn-hooks/tree/main/Generic-SecretsProtection-Hook)
+
+
+---
+## CFN Marcos
+
+- [aws-cloudformation/aws-cloudformation-macros](https://github.com/aws-cloudformation/aws-cloudformation-macros): examples of AWS CloudFormation macros.
+
 
 ---
 ## CFN Syntax
 
-- [Understanding AWS CloudFormation !Sub Syntax](https://www.fischco.org/technica/2017/cloud-formation-sub/)
+- [Understanding CloudFormation !Sub Syntax](https://www.fischco.org/technica/2017/cloud-formation-sub/)
 
 - Passing value to UserData to set EC2 env variable https://stackoverflow.com/questions/54858072/aws-cloudformation-userdata-ec2-environment-variable
     ```
