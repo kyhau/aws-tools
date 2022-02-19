@@ -52,6 +52,7 @@ pip install -r requirements-cli.txt
 - [EBS, EFS](./EBS-EFS.md)
 - [FirewallManager](./FirewallManager.md)
 - [Glue](./Glue.md)
+- [Kinesis](./Kinesis/README.md)
 - [SecurityHub](./SecurityHub/README.md)
 - [SQS](./SQS/README.md)
 - [SSM](./SSM/README.md)
