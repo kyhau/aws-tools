@@ -1,0 +1,257 @@
+AWSTemplateFormatVersion: 2010-09-09
+# StackName: runner-amazonlinux2min-x86-ec2
+# Note-1: Tags of ImageBuilder resources are not inherited from CloudFormation Stack Tags.
+# Note-2: Adding, removing, renaming Tags requires change of Version; otherwise Internal Failure shown in CFN console.
+
+Parameters:
+  CommonStackName:
+    Description: The name of the common stack
+    Type: String
+    Default: runner-build-common
+  ImageName:
+    Description: The image name
+    Type: String
+    Default: runner-amazonlinux2min-x86-ec2
+  ImageVersion:
+    Description: The semantic version of the Image Recipe
+    Type: String
+    Default: 0.0.1
+  LogGroupRetentionInDays:
+    Description: The number of days to retain the log events in the CloudWatch Log Group of the Image build
+    Type: Number
+    AllowedValues: [1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653]
+    Default: 1
+  RunnerVersion:
+    Description: GitHub Actions Runner version see https://github.com/actions/runner/releases
+    Type: String
+    Default: "2.287.1"
+
+Resources:
+  ImageInfrastructureSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName}-infrastructure-sg
+      SecurityGroupEgress:
+        - CidrIp: "0.0.0.0/0"
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId: !ImportValue account:vpc01:id
+
+  # Specifies the infrastructure within which to build and test your image.
+  ImageInfrastructureConfiguration:
+    Type: AWS::ImageBuilder::InfrastructureConfiguration
+    Properties:
+      Name: !Sub ${AWS::StackName}
+      InstanceProfileName:
+        Fn::ImportValue: !Sub ${CommonStackName}:InstanceProfile
+      # Specify an S3 bucket and EC2 Image Builder will save logs to the bucket.
+      Logging:
+        S3Logs:
+          S3BucketName:
+            Fn::ImportValue: !Sub ${CommonStackName}:ImageBuilderLogBucketName
+          S3KeyPrefix: !Ref ImageName
+      SecurityGroupIds:
+        - !GetAtt ImageInfrastructureSG.GroupId
+      SubnetId: !ImportValue account:vpc01:subnet-app-c-id
+      # If you would like to keep the instance running after a failed build, set TerminateInstanceOnFailure to false.
+      TerminateInstanceOnFailure: true
+
+  # The CloudWatch LogGroup for the image build logs is provided to ensure the LogGroup is cleaned up if the stack is deleted.
+  ImageBuildLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/imagebuilder/${ImageName}
+      RetentionInDays: !Ref LogGroupRetentionInDays
+
+  ComponentGit: # TODO move to its own stack
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: git-linux
+      Description: Install Git
+      ChangeDescription: Initial version
+      Version: "1.0.0" # Need to change this version whenever you change anything in Component (including Tags).
+      Platform: Linux
+      SupportedOsVersions:
+        - Amazon Linux 2
+      Tags:
+        Description: Install the latest version of Git
+        Name: git-linux
+      Data: |
+          name: Git
+          description: Install the latest version of Git
+          schemaVersion: 1.0
+
+          constants:
+            - fail:
+                type: string
+                value: "1"
+
+          phases:
+            - name: build
+              steps:
+                - name: InstallGit
+                  action: ExecuteBash
+                  inputs:
+                    commands:
+                      - yum install -y git
+
+            - name: validate
+              steps:
+                - name: FindGit
+                  action: ExecuteBash
+                  inputs:
+                    commands:
+                      - |
+                        which git
+                        if [[ $? == 1 ]]; then
+                          echo "Git is not installed. Failing validation."
+                          exit {{ fail }}
+                        fi
+                - name: Version
+                  action: ExecuteBinary
+                  inputs:
+                    path: git
+                    arguments:
+                      - '--version'
+
+  ComponentGitHubActionsRunner: # TODO move to its own stack?
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: github-actions-runner-linux
+      Description: Install GitHub Actions Runner
+      ChangeDescription: Initial version
+      Version: "1.0.0" # Need to change this version whenever you change anything in Component (including Tags).
+      # KmsKeyId: TODO
+      Platform: Linux
+      SupportedOsVersions:
+        - Amazon Linux 2
+      Tags:
+        Description: Install GitHub Actions Runner
+        Name: github-actions-runner-linux
+      Data: |
+        name: GitHub Actions Runner
+        description: Install GitHub Actions Runner
+        schemaVersion: 1.0
+
+        parameters:
+          - RunnerVersion:
+              description: GitHub Actions Runner version
+              type: string
+
+        constants:
+          - fail:
+              type: string
+              value: "1"
+
+        phases:
+          - name: build
+            steps:
+              - name: DownloadGitHubActionsRunner
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      mkdir -p /home/ec2-user/actions-runner
+                      cd /home/ec2-user/actions-runner
+                      curl -O -L https://github.com/actions/runner/releases/download/v{{ RunnerVersion }}/actions-runner-linux-x64-{{ RunnerVersion }}.tar.gz
+                      tar xzf ./actions-runner-linux-x64-{{ RunnerVersion }}.tar.gz
+
+          - name: validate
+            steps:
+              - name: FindGitHubActionsRunnerRunsh
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      if [[ ! -e "/home/ec2-user/actions-runner/run.sh" ]]; then
+                        echo "GitHub Actions Runner run.sh not found. Failing validation."
+                        exit {{ fail }}
+                      fi
+
+          - name: test
+            steps:
+              - name: FindGitHubActionsRunnerRunsh
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      if [[ ! -e "/home/ec2-user/actions-runner/run.sh" ]]; then
+                        echo "GitHub Actions Runner run.sh not found. Failing test."
+                        exit {{ fail }}
+                      fi
+
+  ImageRecipe:
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Ref ImageName
+      Version: !Ref ImageVersion # Need to change this version whenever you change anything in Component (including Tags).
+      # The parent image of the image recipe. The string must be either an Image ARN (SemVers is ok) or an AMI ID.
+      ParentImage: !Sub arn:${AWS::Partition}:imagebuilder:${AWS::Region}:aws:image/amazon-linux-2-x86/x.x.x
+      Components:
+        - ComponentArn: !Ref ComponentGit
+        - ComponentArn: !Ref ComponentGitHubActionsRunner
+          Parameters:
+            - Name: RunnerVersion
+              Value:
+                - !Ref RunnerVersion
+      Tags:
+        Description: !Sub ImageBuild Recipe of ${ImageName}
+        Name: !Ref ImageName
+      AdditionalInstanceConfiguration:
+        UserDataOverride:
+          Fn::Base64: !Sub |
+            #!/bin/bash
+            echo "CheckPt: No AdditionalInstanceConfiguration ${AWS::Region}"
+
+  NewImage:
+    Type: AWS::ImageBuilder::Image
+    Properties:
+      ImageRecipeArn: !Ref ImageRecipe
+      InfrastructureConfigurationArn: !Ref ImageInfrastructureConfiguration
+
+  DistributionConfiguration:
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub ${AWS::StackName}-ami-distro-config
+      Description: !Sub ${AWS::StackName}-ami-distro-config
+      Distributions:
+        - Region: ap-southeast-2
+          AmiDistributionConfiguration:
+            Name: !Sub "${AWS::StackName}-{{ imagebuilder:buildDate }}"
+            Description: !Sub ${AWS::StackName}-ami-distro-config-1
+            AmiTags:
+              BuildVersion: "{{ imagebuilder:buildVersion }}"
+              Description: Install the latest version of Git
+              Name: !Sub "${ImageName}-{{ imagebuilder:buildDate }}"
+            LaunchPermissionConfiguration:
+              UserIds:
+                - "123456789012" # # TODO more work needed for org/cross-account sharing
+      Tags:
+        Description: !Sub ${AWS::StackName}-ami-distro-config
+        Name: !Sub ${AWS::StackName}-ami-distro-config
+
+  ImagePipeline:
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub ${AWS::StackName} image pipeline
+      Description: !Sub ${AWS::StackName}-image-pipeline
+      ImageRecipeArn: !Ref ImageRecipe
+      InfrastructureConfigurationArn: !Ref ImageInfrastructureConfiguration
+      DistributionConfigurationArn: !Ref DistributionConfiguration
+      ImageTestsConfiguration:
+        ImageTestsEnabled: false
+        TimeoutMinutes: 90
+      Schedule:
+        ScheduleExpression: "cron(0 0 * * ? *)"
+        PipelineExecutionStartCondition: EXPRESSION_MATCH_ONLY
+      Status: DISABLED
+      Tags:
+        Description: !Sub ${AWS::StackName} image pipeline
+        Name: !Sub ${AWS::StackName}-image-pipeline
+
+Outputs:
+  ImageId:
+    Description: The Image Id
+    Value: !GetAtt NewImage.ImageId
