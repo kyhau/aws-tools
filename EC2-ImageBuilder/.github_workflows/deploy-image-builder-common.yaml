@@ -1,0 +1,76 @@
+name: deploy-image-builder-common
+
+on:
+  push:
+    paths:
+      - .github/workflows/deploy-image-builder-common.yaml
+      - cf/image-builder-common.yaml
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy-image-builder-common:
+    env:
+      AWS_ROLE_SESSION_NAME: GitHubActionsRunnerImageBuildCommon
+      region: ap-southeast-2
+    name: Deploy image-builder-common CloudFormation Stack
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Info
+        run: |
+          echo "github.ref: ${{ github.ref }}"
+          echo "pwd: $PWD"
+
+      - name: Set env.account env.logbucketretention env.stacksuffix
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            echo "account=TODO" >> $GITHUB_ENV
+            echo "logbucketretention=30" >> $GITHUB_ENV
+            echo "stacksuffix=" >> $GITHUB_ENV
+          else
+            echo "account=TODO" >> $GITHUB_ENV
+            echo "logbucketretention=7" >> $GITHUB_ENV
+            echo "stacksuffix=-dev" >> $GITHUB_ENV
+          fi
+
+      - name: Set env.accountid
+        run: |
+          echo "accountid=$(aws ssm get-parameter --name "/global/accounts" --region ap-southeast-2 --query 'Parameter.Value' --output text | jq -r '.[] | select(.name=="${{ env.account }}") | .accountid')" >> $GITHUB_ENV
+
+      - name: Show env
+        run: |
+          echo "account: ${{ env.account }}"
+          echo "accountid: ${{ env.accountid }}"
+          echo "logbucketretention: ${{ env.logbucketretention }}"
+          echo "region: ${{ env.region }}"
+          echo "stacksuffix: ${{ env.stacksuffix }}"
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.region }}
+          role-duration-seconds: 900
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::${{ env.accountid }}:role/github-ci-deploy
+
+      - name: Deploy image-builder-common${{ env.stacksuffix }} CloudFormation Stack to ${{ env.account }} ${{ env.region }}
+        env:
+          AWS_REGION: ${{ env.region }}
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: image-builder-common${{ env.stacksuffix }}
+          capabilities: CAPABILITY_IAM
+          no-fail-on-empty-changeset: 1
+          template: cf/image-builder-common.yaml
+          parameter-overrides: >-
+            ImageBuilderLogBucketDeleteContentInDays=${{ env.logbucketretention }}
+          tags: '[
+            {"Key": "Branch", "Value": "${{ github.ref }}"},
+            {"Key": "Description", "Value": "Image Builder Common"},
+            {"Key": "Hash", "Value": "${{ github.sha }}"},
+            {"Key": "LastDeployUser", "Value": "${{ github.actor }}"},
+            {"Key": "SourceRepo", "Value": "https://github.com/kyhau/aws-tools"}
+          ]'

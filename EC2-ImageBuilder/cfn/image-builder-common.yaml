@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: 2010-09-09
+# StackName: image-builder-common
+
+Parameters:
+  ImageBuilderLogBucketDeleteContentInDays:
+    Description: Indicates the number of days after creation when objects are deleted from S3 and S3 Glacier.
+    Type: Number
+    Default: 7
+
+Resources:
+  # Create an S3 Bucket for logs. When deleting the stack, make sure to empty the bucket first.
+  ImageBuilderLogBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AccessControl: LogDeliveryWrite
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfter14Days
+            Status: Enabled
+            ExpirationInDays: !Ref ImageBuilderLogBucketDeleteContentInDays
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Metadata:
+      Comment: Role to be used by instance during image build.
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/EC2InstanceProfileForImageBuilder
+      Path: /executionServiceEC2Role/
+
+  InstanceRoleLoggingPolicy:
+    Type: AWS::IAM::Policy
+    Metadata:
+      Comment: Allows the instance to save log files to an S3 bucket.
+    Properties:
+      PolicyName: ImageBuilderLogBucketPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - s3:PutObject
+            Effect: Allow
+            Resource:
+              - !Sub arn:${AWS::Partition}:s3:::${ImageBuilderLogBucket}/*
+      Roles:
+        - !Ref InstanceRole
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /executionServiceEC2Role/
+      Roles:
+        - !Ref InstanceRole
+
+Outputs:
+  ImageBuilderLogBucketName:
+    Description: ImageBuilderLogBucket Name
+    Value: !Ref ImageBuilderLogBucket
+    Export:
+      Name: !Sub ${AWS::StackName}:ImageBuilderLogBucketName
+  InstanceProfile:
+    Description: Instance Profile
+    Value: !Ref InstanceProfile
+    Export:
+      Name: !Sub ${AWS::StackName}:InstanceProfile

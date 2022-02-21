@@ -1,0 +1,81 @@
+name: deploy-runner-amazonlinux2-x86-ec2
+
+on:
+  push:
+    paths:
+      - .github/workflows/deploy-runner-amazonlinux2-x86-ec2.yaml
+      - cf/runner-amazonlinux2-x86-ec2.yaml
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy-runner-amazonlinux2-x86-ec2:
+    env:
+      AWS_ROLE_SESSION_NAME: GitHubActionsRunnerImageBuild
+      region: ap-southeast-2
+    name: Deploy runner-amazonlinux2-x86-ec2 CloudFormation Stack
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Info
+        run: |
+          echo "github.ref: ${{ github.ref }}"
+          echo "pwd: $PWD"
+
+      - name: Set env.account env.loggroupretention env.stacksuffix
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            echo "account=TODO" >> $GITHUB_ENV
+            echo "loggroupretention=30" >> $GITHUB_ENV
+            echo "stacksuffix=" >> $GITHUB_ENV
+          else
+            echo "account=TODO" >> $GITHUB_ENV
+            echo "loggroupretention=7" >> $GITHUB_ENV
+            echo "stacksuffix=-dev" >> $GITHUB_ENV
+          fi
+
+      - name: Set env.accountid
+        run: |
+          echo "accountid=$(aws ssm get-parameter --name "/global/accounts" --region ap-southeast-2 --query 'Parameter.Value' --output text | jq -r '.[] | select(.name=="${{ env.account }}") | .accountid')" >> $GITHUB_ENV
+
+      - name: Show env
+        run: |
+          echo "account: ${{ env.account }}"
+          echo "accountid: ${{ env.accountid }}"
+          echo "loggroupretention: ${{ env.loggroupretention }}"
+          echo "region: ${{ env.region }}"
+          echo "stacksuffix: ${{ env.stacksuffix }}"
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.region }}
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::${{ env.accountid }}:role/github-ci-deploy
+
+      - name: Deploy runner-amazonlinux2-x86-ec2${{ env.stacksuffix }} CloudFormation Stack to ${{ env.account }} ${{ env.region }}
+        env:
+          AWS_REGION: ${{ env.region }}
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: runner-amazonlinux2-x86-ec2${{ env.stacksuffix }}
+          capabilities: CAPABILITY_IAM
+          no-fail-on-empty-changeset: 1
+          template: cf/runner-amazonlinux2-x86-ec2.yaml
+          timeout-in-minutes: 60
+          parameter-overrides: >-
+            CommonStackName=image-builder-common${{ env.stacksuffix }},
+            ImageName=runner-amazonlinux2-x86-ec2,
+            ImageVersion=0.0.1,
+            LogGroupRetentionInDays=${{ env.loggroupretention }},
+            RunnerVersion=2.287.1
+          tags: '[
+            {"Key": "Branch", "Value": "${{ github.ref }}"},
+            {"Key": "Description", "Value": "GitHub Runner base image runner-amazonlinux2-x86-ec2"},
+            {"Key": "Hash", "Value": "${{ github.sha }}"},
+            {"Key": "LastDeployUser", "Value": "${{ github.actor }}"},
+            {"Key": "SourceRepo", "Value": "https://github.com/kyhau/aws-tools"}
+          ]'
