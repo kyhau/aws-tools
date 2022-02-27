@@ -1,5 +1,18 @@
 # IAM
 
+- [Useful Libs and Tools](#useful-libs-and-tools)
+- [Useful Articles and Blogs](#useful-articles-and-blogs)
+
+---
+## Useful Libs and Tools
+
+- AWS IAM Policy Simulator - [IAM Policy Simulator Console](https://policysim.aws.amazon.com/)
+- AWS Managed Policies (list/monitor) - [z0ph/aws_managed_policies](https://github.com/z0ph/aws_managed_policies/tree/master/policies)
+- AWS Policy Generator - [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
+
+---
+## Useful Articles and Blogs
+
 - AWS console does not support switch roles transitively (double role switching).
     > When you switch roles in the AWS Management Console, the console always uses your original credentials to authorize the switch. This applies whether you sign in as an IAM user, as a SAML-federated role, or as a web-identity federated role. For example, if you switch to RoleA, it uses your original user or federated role credentials to determine if you are allowed to assume RoleA. If you then try to switch to RoleB while you are using RoleA, your original user or federated role credentials are used to authorize your attempt. The credentials for RoleA are not used for this action.
     - See https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_permissions-to-switch.html
@@ -7,7 +20,7 @@
 
 - [Refining Permissions Using Service Last Accessed Data](
   https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor.html)
- 
+
 ## In Go
 
 Assume role go v2
