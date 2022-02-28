@@ -17,6 +17,7 @@
 - Automated Incident Response with SSM - [aws-samples/automated-incident-response-with-ssm](https://github.com/aws-samples/automated-incident-response-with-ssm)
 - amazon-detective-multiaccount-scripts - [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts)
 - Open source tools for AWS security - [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools)
+- Ultimate DevSecOps library - [sottlmarek/DevSecOps](https://github.com/sottlmarek/DevSecOps)
 - cloud-custodian - [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian)
 - CloudGoat - [RhinoSecurityLabs/cloudgoat](https://github.com/RhinoSecurityLabs/cloudgoat)
 - git-secrets - [awslabs/git-secrets](https://github.com/awslabs/git-secrets)
