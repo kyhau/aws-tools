@@ -2,9 +2,10 @@
 
 Jump to
 - [EKS tools and libs](#eks-tools-and-libs)
-- Kubernetes tools (non-AWS): [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/main/useful-tools/kubernetes)
+- [Kubernetes tools (non-AWS)](#kubernetes-tools-non-aws)
 - [QuickStart](#quick-start)
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
+- [EKS security and access control](#eks-security-and-access-control)
 - [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
 
 
@@ -17,6 +18,8 @@ Jump to
     - [cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) - cdk8s+ (cdk8s-plus) is a software development framework that provides high level abstractions for authoring Kubernetes applications.
     - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd) - Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK
     - [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
+    - Gotchas
+        - [aws-cdk-lib.aws_eks.Cluster](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.Cluster.html) supports specifying only one Security Group (but CloudFormation/Console support list of Security Groups).
 - [eksctl](https://github.com/weaveworks/eksctl) - Official CLI for Amazon EKS
 - [eks-distro](https://github.com/aws/eks-distro)
     - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters.
@@ -32,6 +35,13 @@ Jump to
 - [EKS persistent storage](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
     - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
     - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
+
+
+---
+## Kubernetes tools (non-AWS)
+
+- [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/main/useful-tools/kubernetes)
+
 
 ---
 ## Quick Start
@@ -69,6 +79,23 @@ Jump to
 - [Send logs to CloudWatch Logs with Fluent Bit or Fluentd](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html)
 - [Setting up Container Insights on Amazon EKS and Kubernetes](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html)
 
+
+---
+## EKS security and access control
+
+- [EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+    - [Enabling DNS resolution for Amazon EKS cluster endpoints](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/)
+    - [DNS Resolution for EKS Clusters Using Private Endpoints](https://aws.amazon.com/about-aws/whats-new/2019/12/dns-resolution-for-eks-clusters-using-private-endpoints/)
+    - [Understanding Amazon EKS Cluster Private Endpoint Access](https://faun.pub/understanding-amazon-eks-cluster-private-endpoint-access-76ca52bf978a)
+- [How do I provide access to other IAM users and roles after cluster creation in Amazon EKS?](https://aws.amazon.com/premiumsupport/knowledge-center/amazon-eks-cluster-access/)
+    -  Important: Keep the following in mind:
+        - Avoid syntax errors (such as typos) when you update the `aws-auth` ConfigMap. These errors can affect the permissions of all IAM users and roles updated within the ConfigMap of the Amazon EKS cluster.
+        - It's a best practice to avoid adding `cluster_creator` to the ConfigMap, because improperly modifying the ConfigMap can cause all IAM users and roles (including `cluster_creator`) to permanently lose access to the Amazon EKS cluster.
+        - You don't need to add `cluster_creator` to the `aws-auth` ConfigMap to get admin access to the Amazon EKS cluster. By default, the `cluster_creator` has admin access to the Amazon EKS cluster that it created.
+- [Manage Amazon EKS with Okta SSO](https://aws.amazon.com/blogs/containers/manage-amazon-eks-with-okta-sso/)
+    - > EKS uses IAM to provide authentication to your Kubernetes cluster, but it still relies on native Kubernetes Role-Based Access Control (RBAC) for authorization. This means that IAM is only used for authentication of valid IAM entities. All permissions for interacting with your Amazon EKS cluster’s Kubernetes API is managed through the native Kubernetes RBAC system.
+    - https://github.com/aws-samples/eks-rbac-sso
+    -
 
 ---
 ## EKS IAM OIDC Provider
