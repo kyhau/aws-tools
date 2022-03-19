@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Identity Federation for GitHub Actions
+
+Parameters:
+  GitHubRepoName:
+    Description: GitHub repo name owner/repo
+    Type: String
+  RoleName:
+    Description: Name of the IAM Role to be created
+    Type: String
+
+Resources:
+  GitHubOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      ClientIdList:
+        - sts.amazonaws.com
+      ThumbprintList:
+        - 6938fd4d98bab03faadb97b34396831e3780aea1
+      Url: https://token.actions.githubusercontent.com
+
+  GitHubOidcRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref GitHubOidcProvider
+            Condition:
+              ForAnyValue:StringLike:
+                token.actions.githubusercontent.com:sub:
+                  - !Sub repo:${GitHubRepoName}:*
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/IAMFullAccess
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      RoleName: !Ref RoleName
+
+Outputs:
+  GitHubOidcProviderArn:
+    Description: ARN of the specified AWS::IAM::OIDCProvider resource
+    Value: !GetAtt GitHubOidcProvider.Arn
+  GitHubOidcRoleArn:
+    Description: ARN of the role
+    Value: !GetAtt GitHubOidcRole.Arn
+  GitHubOidcRoleId:
+    Description: Role ID
+    Value: !GetAtt GitHubOidcRole.RoleId

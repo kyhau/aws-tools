@@ -1,0 +1,73 @@
+name: deploy-000-oidc-github-actions
+
+on:
+  push:
+    paths:
+      - .github/workflows/deploy-000-oidc-github-actions.yaml
+      - cfn/IAM-OIDC-github.yaml
+
+env:
+  AWS_REGION: ap-southeast-2
+  RoleName: TODO-GitHub-OIDC-DeployRole
+
+jobs:
+  lint:
+    name: Run cfn-lint and yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run yamllint
+        run: |
+          yamllint -c .github/linters/.yaml-lint.yaml -f parsable --format standard \
+            .github/workflows/deploy-000-oidc-github-actions.yaml \
+            cfn/IAM-OIDC-github.yaml
+
+      - name: Install cfn-lint
+        run: pip install cfn-lint
+
+      - name: Run cfn-lint
+        run: |
+          cp .github/linters/.cfnlintrc .
+          cfn-lint cfn/IAM-OIDC-github.yaml
+
+  deploy-000-oidc-github-actions:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    name: Deploy IAM OIDC Role
+    needs: [lint]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        account: [K_AWS_01, K_AWS_02]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: aws-credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        env:
+          AWS_ACCESS_KEY_ID_NAME: ${{ matrix.account }}_ACCESS_KEY_ID
+          AWS_SECRET_ACCESS_KEY_NAME: ${{ matrix.account }}_SECRET_ACCESS_KEY
+          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+        with:
+          aws-access-key-id: ${{ secrets[env.AWS_ACCESS_KEY_ID_NAME] }}
+          aws-secret-access-key: ${{ secrets[env.AWS_SECRET_ACCESS_KEY_NAME] }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy IAM-OIDC-github to ${{ matrix.account }}
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: IAM-OIDC-github
+          capabilities: CAPABILITY_NAMED_IAM
+          no-fail-on-empty-changeset: 1
+          parameter-overrides: >-
+            GitHubRepoName=${{ github.repository }},
+            RoleName=${{ env.RoleName }}
+          tags: '[
+            {"Key": "Branch", "Value": "${{ github.ref }}"},
+            {"Key": "Hash", "Value": "${{ github.sha }}"},
+            {"Key": "LastDeployUser", "Value": "${{ github.actor }}"},
+            {"Key": "Repository", "Value": "https://github.com/${{ github.repository }}"},
+            {"Key": "Scope", "Value": "account"}
+          ]'
+          template: cfn/IAM-OIDC-github.yaml
+          termination-protection: 1
