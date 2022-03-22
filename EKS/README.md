@@ -84,9 +84,43 @@ Jump to
 ## EKS security and access control
 
 - [EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
-    - [Enabling DNS resolution for Amazon EKS cluster endpoints](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/)
-    - [DNS Resolution for EKS Clusters Using Private Endpoints](https://aws.amazon.com/about-aws/whats-new/2019/12/dns-resolution-for-eks-clusters-using-private-endpoints/)
-    - [Understanding Amazon EKS Cluster Private Endpoint Access](https://faun.pub/understanding-amazon-eks-cluster-private-endpoint-access-76ca52bf978a)
+    - Private access for EKS cluster's Kubernetes API server endpoint (Kubernetes control plane API)
+        - A cluster that has been configured to only allow private access can only be accessed from the following: ([Source](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/))
+            - The VPC where the worker nodes reside.
+            - Networks that have been peered with that VPC.
+            - A network that has been connected to AWS through Direct Connect (DX) or a VPN.
+        - However, the name of the Kubernetes cluster endpoint is only resolvable from the worker node VPC, for the following reasons:
+            - The Route 53 private hosted zone that is created for the endpoint is only associated with the worker node VPC.
+            - The private hosted zone is created in a separate AWS managed account and cannot be altered.
+        - The cluster's API server endpoint is resolved by public DNS servers to a private IP address from the VPC. When you do a DNS query for your API server endpoint (e.g. `9FF86DB0668DC670F27F426024E7CDBD.sk1.us-east-1.eks.amazonaws.com`) it will return private IP of EKS Endpoint (e.g. 10.10.10.20).
+            - However, `.gr7.ap-southeast-2.eks.amazonaws.com` is NOT unique to account or region.
+                ```
+                Account-1:
+                  ap-southeast-2:  https://FD743253263F9932A1C1359F134D9B08.gr7.ap-southeast-2.eks.amazonaws.com
+                  ap-southeast-1:  https://7296B66098508057814BDC28DD6442FE.gr7.ap-southeast-1.eks.amazonaws.com
+                Account-2:
+                  ap-southeast-2:  https://0395CA66195A658536B531CA06F3246D.gr7.ap-southeast-2.eks.amazonaws.com
+                  ap-southeast-2:  https://C2D57012E496E6903F975147013EE156.sk1.ap-southeast-2.eks.amazonaws.com
+                Account-3:
+                  us-east-1:       https://9FF86DB0668DC670F27F426024E7CDBD.sk1.us-east-1.eks.amazonaws.com
+                ```
+    - How to enable private access for the EKS cluster's Kubernetes API server endpoint?
+        1. Update `Cluster.endpointAccess` to `PRIVATE`.
+        1. Create or update your “Security Group to use for Control Plane ENIs” with the ingress rules for your client (e.g. `kubectl`) to access the Kubernetes control plane API from the deployment agents (e.g. GitHub Actions Workflow)
+            - In CloudFormation, it is a Security Group in [ResourcesVpcConfig.SecurityGroupIds](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-eks-cluster-resourcesvpcconfig.html).
+            - In CDK, it is securityGroup in [aws-cdk-lib.aws_eks.Cluster](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.Cluster.html) `ClusterProps`.
+        1. If your deployment agent is in another VPC / AWS account, then you will need a solution for directing the DNS request to the corresponding VPC / account.
+    - How do I lock down API access to specific IP addresses in my Amazon EKS cluster?
+        - You can, optionally, limit the CIDR blocks that can access the public endpoint. If you limit access to specific CIDR blocks, then it is recommended that you also enable the private endpoint, or ensure that the CIDR blocks that you specify include the addresses that nodes and Fargate pods (if you use them) access the public endpoint from.
+        1. Update `Cluster.endpointAccess` to `PUBLIC_AND_PRIVATE`.
+            - In CloudFormation, add the CIDR to `ResourcesVpcConfig.PublicAccessCidrs`.
+            - In CDK, add the CIDR to `endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE.onlyFrom(...)` in [aws-cdk-lib.aws_eks.Cluster](https://github.com/aws/aws-cdk/blob/master/packages/%40aws-cdk/aws-eks/lib/cluster.ts) `ClusterProps`.
+        - See [How do I lock down API access to specific IP addresses in my Amazon EKS cluster?](https://aws.amazon.com/premiumsupport/knowledge-center/eks-lock-api-access-IP-addresses/)
+        - See [Amazon EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+    - DNS resolution for EKS cluster endpoints
+        - [Enabling DNS resolution for Amazon EKS cluster endpoints](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/)
+        - [DNS Resolution for EKS Clusters Using Private Endpoints](https://aws.amazon.com/about-aws/whats-new/2019/12/dns-resolution-for-eks-clusters-using-private-endpoints/)
+        - [Understanding Amazon EKS Cluster Private Endpoint Access](https://faun.pub/understanding-amazon-eks-cluster-private-endpoint-access-76ca52bf978a)
 - [How do I provide access to other IAM users and roles after cluster creation in Amazon EKS?](https://aws.amazon.com/premiumsupport/knowledge-center/amazon-eks-cluster-access/)
     -  Important: Keep the following in mind:
         - Avoid syntax errors (such as typos) when you update the `aws-auth` ConfigMap. These errors can affect the permissions of all IAM users and roles updated within the ConfigMap of the Amazon EKS cluster.
