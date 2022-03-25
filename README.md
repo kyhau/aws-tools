@@ -35,6 +35,7 @@ pip install -r requirements-cli.txt
 
 - [Amplify](./Amplify/)
 - [APIGateway](./APIGateway/)
+- [AppSync](./AppSync/)
 - [Athena](./Athena/)
 - [AutoScaling](./AutoScaling.md)
 - [AWS-Tools](./AWS-Tools/)
