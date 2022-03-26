@@ -151,6 +151,7 @@ alias update-aws-amplify-cli='. ${REPO_HOME}/Amplify/install_amplify_cli.sh'
 
 alias update-aws-cdk='. ${REPO_HOME}/CDK/install-cdk-v2.sh'
 alias update-aws-cdk-assume-role-credential-plugin='sudo npm install -g cdk-assume-role-credential-plugin@latest'
+alias update-aws-cdk-import='. ${REPO_HOME}/CDK/install-cdk-import.sh'
 alias update-aws-cdk8s-cli='. ${REPO_HOME}/cdk8s/install-cdk8s-cli.sh'
 
 alias update-aws-cfn-guard='. ${REPO_HOME}/CloudFormation/install-cfn-guard.sh'
