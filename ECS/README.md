@@ -7,7 +7,6 @@
 ## Useful Libs and Tools
 
 - [amazon-ecs-cli-v2](https://aws.amazon.com/blogs/containers/announcing-the-amazon-ecs-cli-v2/) - Amazon ECS CLI v2
-- [bottlerocket-ecs-updater](https://github.com/bottlerocket-os/bottlerocket-ecs-updater) - Bottlerocket ECS Updater is a service you can install into your ECS cluster that helps you keep your Bottlerocket container instances up to date.
 - [copilot-cli](https://github.com/aws/copilot-cli) - AWS Copilot CLI - containerize apps on ECS/Fargate
 - [aws-samples/aws-fargate-fast-autoscaler](https://github.com/aws-samples/aws-fargate-fast-autoscaler) = AWS Fargate Fast AutoScaler (with CDK)
 - [docker/ecs-plugin](https://github.com/docker/ecs-plugin) - Docker CLI plugin for ECS

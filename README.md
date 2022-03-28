@@ -39,6 +39,7 @@ pip install -r requirements-cli.txt
 - [Athena](./Athena/)
 - [AutoScaling](./AutoScaling.md)
 - [AWS-Tools](./AWS-Tools/)
+- [Bottlerocket](./Bottlerocket/)
 - [CDK](./CDK/)
 - [CloudFormation](./CloudFormation/)
 - [CloudFront-S3](./CloudFront-S3/)
