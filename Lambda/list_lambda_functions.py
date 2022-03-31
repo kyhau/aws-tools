@@ -24,7 +24,14 @@ class Helper(AwsApiHelper):
             if self._detailed:
                 print(json.dumps(item, indent=2))
             else:
-                print(", ".join([item.get("FunctionArn"), item.get("Runtime")]))
+                print(", ".join([
+                    item.get("FunctionArn"),
+                    account_id,
+                    self.profile_name,
+                    region,
+                    item.get("FunctionName"),
+                    item.get("Runtime"),
+                ]))
 
             if function_name and function_name == item.get("FunctionName", "").lower():
                 return True

@@ -24,7 +24,15 @@ class Helper(AwsApiHelper):
             if self._detailed:
                 print(json.dumps(item, indent=2))
             else:
-                print(f'{item.get("LayerArn")}, {item.get("LatestMatchingVersion", {}).get("CompatibleRuntimes")}')
+                print(", ".join([
+                    item["LatestMatchingVersion"]["LayerVersionArn"],
+                    account_id,
+                    region,
+                    item.get("LayerName"),
+                    str(item.get("LatestMatchingVersion", {}).get("CompatibleRuntimes")),
+                    self.profile_name,
+                ]))
+
 
             if layer_name and layer_name == item.get("LayerName", "").lower():
                 return True

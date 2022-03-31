@@ -57,6 +57,7 @@ class AwsApiHelper():
         start = time()
         try:
             for (session, account_id, profile_name) in MultiAccountHelper().sessions(profile):
+                self.profile_name = profile_name
                 if self.process_account(session, account_id, region, service, kwargs) is not None:
                     break
             self.post_process()

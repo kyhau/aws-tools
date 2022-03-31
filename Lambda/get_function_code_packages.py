@@ -1,5 +1,5 @@
 """
-Read in a csv file (account_id, region, function_name, profile) and
+Read in a csv file (FunctionArn, AccountId, ProfileName, Region, FunctionName, Runtime) and
 downloads the package zip file of the Lambda functions.
 """
 import csv
@@ -37,10 +37,12 @@ def unzip_file(downloaded_zip_file, dest_folder):
 def main():
     lines = read_csv_file(INPUT_FILE)
     for line in lines:
-        account_id = line[0]
-        region = line[1]
-        function_name = line[2]
-        profile = line[3]
+        # function_arn = line[0]
+        account_id = line[1]
+        profile = line[2]
+        region = line[3]
+        function_name = line[4]
+        # function_runtime = line[5]
 
         logging.info("---------------------------------------")
         logging.info(f"Checking {account_id} {region} {function_name}")
@@ -53,12 +55,12 @@ def main():
         if code["RepositoryType"] == "S3":
             logging.info(code["Location"])
 
-            downloaded_zip_file = f"downloads/{account_id}/{function_name}.zip"
-            os.makedirs(f"downloads/{account_id}", exist_ok=True)
+            downloaded_zip_file = f"downloads/functions/{account_id}/{function_name}.zip"
+            os.makedirs(f"downloads/functions/{account_id}", exist_ok=True)
 
             download_file(code["Location"], downloaded_zip_file)
 
-            dest_folder = f"local/{account_id}/{function_name}"
+            dest_folder = f"local/functions/{account_id}/{function_name}"
             os.makedirs(dest_folder, exist_ok=True)
             unzip_file(downloaded_zip_file, dest_folder)
 
