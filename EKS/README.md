@@ -4,10 +4,10 @@ Jump to
 - [EKS tools and libs](#eks-tools-and-libs)
 - [Kubernetes tools (non-AWS)](#kubernetes-tools-non-aws)
 - [QuickStart](#quick-start)
+- [AWS Secrets Manager and Kubernetes Secrets](#aws-secrets-manager-and-kubernetes-secrets)
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
 - [EKS security and access control](#eks-security-and-access-control)
 - [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
-
 
 ---
 ## EKS tools and libs
@@ -65,6 +65,13 @@ Jump to
 - EKS Best Practices https://aws.github.io/aws-eks-best-practices/
 - EKS Workshop https://www.eksworkshop.com
 - AWSQS::Kubernetes::Helm https://github.com/aws-quickstart/quickstart-helm-resource-provider
+
+
+---
+## AWS Secrets Manager and Kubernetes Secrets
+
+- [External Secrets provider - AWS Secrets Manager](https://external-secrets.io/provider-aws-secrets-manager/)
+- [Managing Kubernetes Secrets with AWS Secrets Manager](https://thenewstack.io/managing-kubernetes-secrets-with-aws-secrets-manager/), Janakiram MSV, 19 Jul 2021
 
 
 ---
