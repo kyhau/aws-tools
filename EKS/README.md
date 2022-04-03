@@ -72,6 +72,7 @@ Jump to
 
 - [External Secrets provider - AWS Secrets Manager](https://external-secrets.io/provider-aws-secrets-manager/)
 - [Managing Kubernetes Secrets with AWS Secrets Manager](https://thenewstack.io/managing-kubernetes-secrets-with-aws-secrets-manager/), Janakiram MSV, 19 Jul 2021
+- [kubernetes-external-secrets](https://github.com/external-secrets/kubernetes-external-secrets) (Deprecated) but README is useful (AWS Secrets Manager, dataFrom)
 
 
 ---
