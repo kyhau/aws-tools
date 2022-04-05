@@ -16,6 +16,7 @@ Jump to
     - [cdk8s](https://github.com/cdk8s-team/cdk8s) - CDK for Kubernetes
     - [cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) - CLI for CDK for Kubernetes
     - [cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) - cdk8s+ (cdk8s-plus) is a software development framework that provides high level abstractions for authoring Kubernetes applications.
+    - [aws-samples/amazon-eks-using-cdk-typescript](https://github.com/aws-samples/amazon-eks-using-cdk-typescript) - A sample project that deploys an EKS Cluster following a set of best practices with options to install additional addons. Easy deployment of the EBS CSI Driver, EFS CSI Driver, FluentBit Centralized Logging using Cloudwatch, Cluster Autoscaler, ALB Ingress Controller, Secrets CSI Driver and Network Policy Engine. 
     - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd) - Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK
     - [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
     - Gotchas
