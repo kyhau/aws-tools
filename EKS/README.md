@@ -16,7 +16,7 @@ Jump to
     - [cdk8s](https://github.com/cdk8s-team/cdk8s) - CDK for Kubernetes
     - [cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) - CLI for CDK for Kubernetes
     - [cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) - cdk8s+ (cdk8s-plus) is a software development framework that provides high level abstractions for authoring Kubernetes applications.
-    - [aws-samples/amazon-eks-using-cdk-typescript](https://github.com/aws-samples/amazon-eks-using-cdk-typescript) - A sample project that deploys an EKS Cluster following a set of best practices with options to install additional addons. Easy deployment of the EBS CSI Driver, EFS CSI Driver, FluentBit Centralized Logging using Cloudwatch, Cluster Autoscaler, ALB Ingress Controller, Secrets CSI Driver and Network Policy Engine. 
+    - [aws-samples/amazon-eks-using-cdk-typescript](https://github.com/aws-samples/amazon-eks-using-cdk-typescript) - A sample project that deploys an EKS Cluster following a set of best practices with options to install additional addons. Easy deployment of the EBS CSI Driver, EFS CSI Driver, FluentBit Centralized Logging using Cloudwatch, Cluster Autoscaler, ALB Ingress Controller, Secrets CSI Driver and Network Policy Engine.
     - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd) - Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK
     - [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
     - Gotchas
@@ -87,7 +87,9 @@ Jump to
         - [CloudWatch Container Insights adds support for EKS Fargate using AWS Distro for OpenTelemetry](https://aws.amazon.com/about-aws/whats-new/2022/02/amazon-cloudwatch-eks-fargate-distro-opentelemetry/)
 - [Send logs to CloudWatch Logs with Fluent Bit or Fluentd](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html)
 - [Setting up Container Insights on Amazon EKS and Kubernetes](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html)
-
+- Metrics and Alarms
+    - [EKS and Kubernetes Container Insights metrics list](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-metrics-EKS.html)
+    - [CloudWatch metrics to generate various alarms for your EKS Cluster based on assigned metrics](https://www.eksworkshop.com/intermediate/250_cloudwatch_container_insights/cwalarms/)
 
 ---
 ## EKS security and access control
