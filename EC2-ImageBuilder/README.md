@@ -26,3 +26,4 @@
 ---
 ## Useful Templates
 - [aws-samples/amazon-ec2-image-builder-samples](https://github.com/aws-samples/amazon-ec2-image-builder-samples)
+- [aws-samples/build-and-deploy-docker-images-to-aws-using-ec2-image-builder](https://github.com/aws-samples/build-and-deploy-docker-images-to-aws-using-ec2-image-builder/)
