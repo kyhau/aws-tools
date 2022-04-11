@@ -90,6 +90,8 @@ Jump to
 - Metrics and Alarms
     - [EKS and Kubernetes Container Insights metrics list](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-metrics-EKS.html)
     - [CloudWatch metrics to generate various alarms for your EKS Cluster based on assigned metrics](https://www.eksworkshop.com/intermediate/250_cloudwatch_container_insights/cwalarms/)
+- See also
+    - [Kubernetes Alerting | Best Practices in 2022](https://www.containiq.com/post/kubernetes-alerting-best-practices)
 
 ---
 ## EKS security and access control
