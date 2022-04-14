@@ -8,6 +8,8 @@ Jump to
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
 - [EKS security and access control](#eks-security-and-access-control)
 - [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
+- [CDK EKS+K8s Examples](#cdk-eksk8s-examples)
+- [CDK / CDK8s Gotchas](#cdk--cdk8s-gotchas)
 
 ---
 ## EKS tools and libs
@@ -16,13 +18,8 @@ Jump to
     - [cdk8s](https://github.com/cdk8s-team/cdk8s) - CDK for Kubernetes
     - [cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) - CLI for CDK for Kubernetes
     - [cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) - cdk8s+ (cdk8s-plus) is a software development framework that provides high level abstractions for authoring Kubernetes applications.
-    - Gotchas
-        - [aws-cdk-lib.aws_eks.Cluster](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.Cluster.html) supports specifying only one Security Group (but CloudFormation/Console support list of Security Groups).
-- CDK EKS+K8s examples
-    - [aws-samples/amazon-eks-using-cdk-typescript](https://github.com/aws-samples/amazon-eks-using-cdk-typescript) - A sample project that deploys an EKS Cluster following a set of best practices with options to install additional addons. Easy deployment of the EBS CSI Driver, EFS CSI Driver, FluentBit Centralized Logging using Cloudwatch, Cluster Autoscaler, ALB Ingress Controller, Secrets CSI Driver and Network Policy Engine.
-    - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd) - Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK
-    - [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
-    - [aws-quickstart/quickstart-helm-resource-provider](https://github.com/aws-quickstart/quickstart-helm-resource-provider) - `AWSQS::Kubernetes::Helm` - An AWS CloudFormation resource provider for the management of helm 3 resources in EKS and self-managed Kubernetes clusters
+    - [CDK EKS+K8s Examples](#cdk-eksk8s-examples)
+    - [cdk / cdk8s Gotchas](#cdk--cdk8s-gotchas)
 - [eksctl](https://github.com/weaveworks/eksctl) - Official CLI for Amazon EKS
 - [eks-distro](https://github.com/aws/eks-distro)
     - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters.
@@ -31,9 +28,14 @@ Jump to
 - [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
 [how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 - [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK)
-- [karpenter](https://github.com/aws/karpenter) - AWS Karpenter - Kubernetes Cluster Autoscaler
 - [aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) - AWS EKS Cluster Controller
+- [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter - Kubernetes Cluster Autoscaler
 - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes
+- aws-observability for EKS
+    - [aws-observability/aws-otel-collector](https://github.com/aws-observability/aws-otel-collector) - AWS Distro for OpenTelemetry Collector
+    - [aws-observability/aws-otel-helm-charts](https://github.com/aws-observability/aws-otel-helm-charts) -  AWS Distro for OpenTelemetry (ADOT) Helm Charts
+    - [aws-observability/amp-eks-iam](https://github.com/aws-observability/amp-eks-iam) - Tool providing easy IAM setup on EKS for Amazon Managed Service for Prometheus (AMP) users.
+    - [aws-observability/amp-k8s-config-examples](https://github.com/aws-observability/amp-k8s-config-examples) - Configurations for Prometheus including Kubernetes (k8s) Helm charts and Operators
 - [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
 - [EKS persistent storage](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
     - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
@@ -67,7 +69,6 @@ Jump to
 - [kube-bench](https://github.com/aquasecurity/kube-bench) is a tool that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. https://github.com/aquasecurity/kube-bench
 - EKS Best Practices https://aws.github.io/aws-eks-best-practices/
 - EKS Workshop https://www.eksworkshop.com
-- AWSQS::Kubernetes::Helm https://github.com/aws-quickstart/quickstart-helm-resource-provider
 
 
 ---
@@ -147,6 +148,7 @@ Jump to
     - https://github.com/aws-samples/eks-rbac-sso
     -
 
+
 ---
 ## EKS IAM OIDC Provider
 
@@ -166,3 +168,19 @@ You need to run `ekctl utils associate-iam-oidc-provider`,
         iam:TagOpenIDConnectProvider
         ```
     - CloudTrail does NOT show the events as well (e.g. `CreateOpenIDConnectProvider`)
+
+
+---
+## CDK EKS+K8s Examples
+
+- [aws-samples/amazon-eks-using-cdk-typescript](https://github.com/aws-samples/amazon-eks-using-cdk-typescript) - A sample project that deploys an EKS Cluster following a set of best practices with options to install additional addons. Easy deployment of the EBS CSI Driver, EFS CSI Driver, FluentBit Centralized Logging using Cloudwatch, Cluster Autoscaler, ALB Ingress Controller, Secrets CSI Driver and Network Policy Engine.
+- [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd) - Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK
+- [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
+- [aws-quickstart/quickstart-helm-resource-provider](https://github.com/aws-quickstart/quickstart-helm-resource-provider) - `AWSQS::Kubernetes::Helm` - An AWS CloudFormation resource provider for the management of helm 3 resources in EKS and self-managed Kubernetes clusters
+
+
+---
+## cdk / cdk8s Gotchas
+
+- [aws-cdk-lib.aws_eks.Cluster](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.Cluster.html) supports specifying only one Security Group (but CloudFormation/Console support list of Security Groups).
+- Currently there is no way to get FilterName using CDK, see [aws-cdk/issues/8141](https://github.com/aws/aws-cdk/issues/8141). Workaround: `const clusterSubFilterName = clusterSubFilter.stack.getLogicalId(clusterSubFilter.node.defaultChild as CfnSubscriptionFilter)`.
