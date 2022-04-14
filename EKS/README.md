@@ -27,7 +27,7 @@ Jump to
 - [kubectl (Amazon EKS-vended)](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
 - [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
 [how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
-- [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK)
+- [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK), e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller
 - [aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) - AWS EKS Cluster Controller
 - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter - Kubernetes Cluster Autoscaler
 - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes
@@ -177,6 +177,7 @@ You need to run `ekctl utils associate-iam-oidc-provider`,
 - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd) - Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK
 - [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
 - [aws-quickstart/quickstart-helm-resource-provider](https://github.com/aws-quickstart/quickstart-helm-resource-provider) - `AWSQS::Kubernetes::Helm` - An AWS CloudFormation resource provider for the management of helm 3 resources in EKS and self-managed Kubernetes clusters
+- [aws-samples/aws-lambda-layer-kubectl](https://github.com/aws-samples/aws-lambda-layer-kubectl) - How to create your own Lambda layer with kubectl in CDK
 
 
 ---
