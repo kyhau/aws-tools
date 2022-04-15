@@ -174,6 +174,7 @@ You need to run `ekctl utils associate-iam-oidc-provider`,
 ## CDK EKS+K8s Examples
 
 - [aws-samples/amazon-eks-using-cdk-typescript](https://github.com/aws-samples/amazon-eks-using-cdk-typescript) - A sample project that deploys an EKS Cluster following a set of best practices with options to install additional addons. Easy deployment of the EBS CSI Driver, EFS CSI Driver, FluentBit Centralized Logging using Cloudwatch, Cluster Autoscaler, ALB Ingress Controller, Secrets CSI Driver and Network Policy Engine.
+- [aws-samples/cdk-eks-fargate](https://github.com/aws-samples/cdk-eks-fargate) - leverage cdk, cdk8s and cdk8s+ to provision an ESK cluster with Fargate node groups, deploy workloads and expose Kubernetes services.
 - [aws-samples/amazon-eks-cdk-blue-green-cicd](https://github.com/aws-samples/amazon-eks-cdk-blue-green-cicd) - Building CI/CD with Blue/Green and Canary Deployments on EKS using CDK
 - [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
 - [aws-quickstart/quickstart-helm-resource-provider](https://github.com/aws-quickstart/quickstart-helm-resource-provider) - `AWSQS::Kubernetes::Helm` - An AWS CloudFormation resource provider for the management of helm 3 resources in EKS and self-managed Kubernetes clusters
