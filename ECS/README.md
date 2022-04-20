@@ -15,6 +15,8 @@
 ---
 ## Useful Articles and Blogs
 
+1. Scaling
+    1. [Scaling containers on AWS in 2022](https://www.vladionescu.me/posts/scaling-containers-on-aws-in-2022/)
 1. Access
     1. [Using Amazon ECS Exec to access your containers on AWS Fargate and Amazon EC2](https://aws.amazon.com/blogs/containers/new-using-amazon-ecs-exec-access-your-containers-fargate-ec2/)
 1. Fargate
