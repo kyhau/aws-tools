@@ -19,7 +19,7 @@ Jump to
     - [cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) - CLI for CDK for Kubernetes
     - [cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) - cdk8s+ (cdk8s-plus) is a software development framework that provides high level abstractions for authoring Kubernetes applications.
     - [CDK EKS+K8s Examples](#cdk-eksk8s-examples)
-    - [cdk / cdk8s Gotchas](#cdk--cdk8s-gotchas)
+    - cdk / cdk8s [Gotchas](#cdk--cdk8s-gotchas)
 - [eksctl](https://github.com/weaveworks/eksctl) - Official CLI for Amazon EKS
 - [eks-distro](https://github.com/aws/eks-distro)
     - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters.

@@ -7,10 +7,7 @@ alias browser='/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 
 alias aws-acm-list-certificates='python ${REPO_HOME}/ACM/list_certificates.py'
 
-alias aws-ami-latest-ecs-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_eks_ami.py ecs'
-alias aws-ami-latest-eks-optimized-ami='python ${REPO_HOME}/AMI/get_latest_ecs_eks_ami.py eks'
-alias aws-ami-latest-ec2-linux-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py linux'
-alias aws-ami-latest-ec2-windows-amis='python ${REPO_HOME}/AMI/get_latest_ec2_amis.py windows'
+alias aws-ami-latest='python ${REPO_HOME}/AMI/get_latest_amis.py'
 
 alias aws-apigws='python ${REPO_HOME}/APIGateway/list_api_gateways.py'
 alias aws-apigw-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw.py'
