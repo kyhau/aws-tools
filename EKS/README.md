@@ -40,7 +40,9 @@ Jump to
 - [EKS persistent storage](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
     - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
     - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
-
+- Kubectl Handler
+   - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v1/docs/aws-eks-readme.html
+     > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
 
 ---
 ## Kubernetes tools (non-AWS)
@@ -146,7 +148,6 @@ Jump to
 - [Manage Amazon EKS with Okta SSO](https://aws.amazon.com/blogs/containers/manage-amazon-eks-with-okta-sso/)
     - > EKS uses IAM to provide authentication to your Kubernetes cluster, but it still relies on native Kubernetes Role-Based Access Control (RBAC) for authorization. This means that IAM is only used for authentication of valid IAM entities. All permissions for interacting with your Amazon EKS cluster’s Kubernetes API is managed through the native Kubernetes RBAC system.
     - https://github.com/aws-samples/eks-rbac-sso
-    -
 
 
 ---
