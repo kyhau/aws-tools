@@ -37,11 +37,12 @@ Jump to
     - [aws-observability/amp-eks-iam](https://github.com/aws-observability/amp-eks-iam) - Tool providing easy IAM setup on EKS for Amazon Managed Service for Prometheus (AMP) users.
     - [aws-observability/amp-k8s-config-examples](https://github.com/aws-observability/amp-k8s-config-examples) - Configurations for Prometheus including Kubernetes (k8s) Helm charts and Operators
 - [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
+- [eks-event-watcher](https://github.com/aws-samples/eks-event-watcher) - EKS (control plane) event watcher
 - [EKS persistent storage](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
     - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
     - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
 - Kubectl Handler
-   - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v1/docs/aws-eks-readme.html
+   - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
 
 ---
