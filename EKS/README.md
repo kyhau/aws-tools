@@ -8,6 +8,7 @@ Jump to
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
 - [EKS security and access control](#eks-security-and-access-control)
 - [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
+- [EKS with Fargate](#eks-with-fargate)
 - [CDK EKS+K8s Examples](#cdk-eksk8s-examples)
 - [CDK / CDK8s Gotchas](#cdk--cdk8s-gotchas)
 
@@ -172,6 +173,20 @@ You need to run `ekctl utils associate-iam-oidc-provider`,
         iam:TagOpenIDConnectProvider
         ```
     - CloudTrail does NOT show the events as well (e.g. `CreateOpenIDConnectProvider`)
+
+
+---
+## EKS with Fargate
+
+There are some potential drawbacks to using Fargate with EKS, both operational and for workload security. ([Source](https://www.stackrox.io/blog/securing-eks-cluster-add-ons-dashboard-fargate-ec2-components-and-more/))
+
+1. Kubernetes network policies silently have no effect on pods assigned to Fargate nodes. Daemon sets, which put a pod for a service on each node, cannot place pods on the Fargate virtual nodes. Even if Calico could run as a sidecar in a pod, it would not have permission to manage the pod’s routing, which requires root privileges. Fargate only allows unprivileged containers.
+2. Active security monitoring of a container’s actions on Fargate becomes difficult or nearly impossible.
+3. Any metrics or log collectors that a user may normally run as a cluster daemon set will also have to be converted to sidecars, if possible.
+4. EKS still requires clusters that use Fargate for all their pod scheduling to have at least one node.
+5. The exact security implications and vulnerabilities of running EKS pods on Fargate remain unknown for now.
+
+See also [AWS Fargate considerations](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html#fargate-considerations).
 
 
 ---
