@@ -44,6 +44,8 @@ Jump to
 - Kubectl Handler
    - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
+- Calico add-on - network policy engine for Kubernetes
+   - https://docs.aws.amazon.com/eks/latest/userguide/calico.html 
 
 ---
 ## Kubernetes tools (non-AWS)
