@@ -20,8 +20,8 @@ Resources:
       Name: !Ref WorkgroupName
       Description: !Ref WorkgroupDescription
       State: ENABLED
-      WorkGroupConfigurationUpdates:
-        ResultConfigurationUpdates:
+      WorkGroupConfiguration:
+        ResultConfiguration:
           OutputLocation: !Ref OutputLocation
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain

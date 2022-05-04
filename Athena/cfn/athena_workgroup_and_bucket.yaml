@@ -50,8 +50,8 @@ Resources:
       Name: !Ref AWS::StackName
       Description: !Ref AWS::StackName
       State: ENABLED
-      WorkGroupConfigurationUpdates:
-        ResultConfigurationUpdates:
+      WorkGroupConfiguration:
+        ResultConfiguration:
           EncryptionConfiguration:
             EncryptionOption:  !If
               - UseKms
