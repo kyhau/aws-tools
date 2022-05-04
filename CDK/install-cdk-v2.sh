@@ -7,6 +7,7 @@ set -e
 #npm cache clear --force
 #sudo apt-get install -y nodejs
 
+echo "INFO: cdk version: $(cdk --version)"
 echo "INFO: node version: $(node --version)"
 echo "INFO: npm version: $(npm --version)"
 
