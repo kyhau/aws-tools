@@ -4,6 +4,12 @@
 
 set -e
 
+if [ -x "$(command -v eksctl)" ]; then
+  echo "INFO: eksctl version: $(eksctl version)"
+else
+  echo "INFO: eksctl not installed"
+fi
+
 echo "INFO: Downloading eksctl"
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C .
 
@@ -11,5 +17,4 @@ echo "INFO: Moving binary to ~/.local/bin"
 mkdir -p ~/.local/bin
 mv eksctl ~/.local/bin/
 
-echo "INFO: Checking version"
-echo "eksctl version: $(eksctl version)"
+echo "INFO: eksctl version: $(eksctl version)"
