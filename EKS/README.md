@@ -5,6 +5,8 @@ Jump to
 - [Kubernetes tools (non-AWS)](#kubernetes-tools-non-aws)
 - [QuickStart](#quick-start)
 - [AWS Secrets Manager and Kubernetes Secrets](#aws-secrets-manager-and-kubernetes-secrets)
+- [Node-based autoscaling](#node-based-autoscaling)
+- [Pod-based autoscaling](#pod-based-autoscaling)
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
 - [EKS security and access control](#eks-security-and-access-control)
 - [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
@@ -46,7 +48,7 @@ Jump to
    - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
 - Calico add-on - network policy engine for Kubernetes
-   - https://docs.aws.amazon.com/eks/latest/userguide/calico.html 
+   - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
 
 ---
 ## Kubernetes tools (non-AWS)
@@ -83,6 +85,24 @@ Jump to
 - [External Secrets provider - AWS Secrets Manager](https://external-secrets.io/provider-aws-secrets-manager/)
 - [Managing Kubernetes Secrets with AWS Secrets Manager](https://thenewstack.io/managing-kubernetes-secrets-with-aws-secrets-manager/), Janakiram MSV, 19 Jul 2021
 - [kubernetes-external-secrets](https://github.com/external-secrets/kubernetes-external-secrets) (Deprecated) but README is useful (AWS Secrets Manager, dataFrom)
+
+
+---
+## Node-based autoscaling
+Adding or removing nodes as needed
+- [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
+- [Karpenter](https://karpenter.sh/docs/getting-started/)
+
+Cluster Autoscaler vs. Karpenter
+- https://kubesandclouds.com/index.php/2022/01/04/karpenter-vs-cluster-autoscaler/
+- https://towardsdev.com/karpenter-vs-cluster-autoscaler-dd877b91629b
+
+
+---
+## Pod-based autoscaling
+
+- [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) – add or remove more pods to the deployment as needed
+- [Vertical Pod Autoscaler](https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler) – resize pod's CPU and memory requests and limits to match the load
 
 
 ---
