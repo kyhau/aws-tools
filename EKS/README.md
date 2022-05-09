@@ -92,6 +92,8 @@ Jump to
 Adding or removing nodes as needed
 - [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
 - [Karpenter](https://karpenter.sh/docs/getting-started/)
+   - https://github.com/aws/karpenter 
+   - [aws-samples/cdk-eks-karpenter](https://github.com/aws-samples/cdk-eks-karpenter)
 
 Cluster Autoscaler vs. Karpenter
 - https://kubesandclouds.com/index.php/2022/01/04/karpenter-vs-cluster-autoscaler/
@@ -218,6 +220,7 @@ See also [AWS Fargate considerations](https://docs.aws.amazon.com/eks/latest/use
 - [aws-samples/aws-cdk-pipelines-eks-cluster](https://github.com/aws-samples/aws-cdk-pipelines-eks-cluster) - CDK Pipelines for EKS Cluster(s)
 - [aws-quickstart/quickstart-helm-resource-provider](https://github.com/aws-quickstart/quickstart-helm-resource-provider) - `AWSQS::Kubernetes::Helm` - An AWS CloudFormation resource provider for the management of helm 3 resources in EKS and self-managed Kubernetes clusters
 - [aws-samples/aws-lambda-layer-kubectl](https://github.com/aws-samples/aws-lambda-layer-kubectl) - How to create your own Lambda layer with kubectl in CDK
+- [aws-samples/cdk-eks-karpenter](https://github.com/aws-samples/cdk-eks-karpenter) - This construct configures the necessary dependencies and installs Karpenter on an EKS cluster managed by AWS CDK.
 
 
 ---
