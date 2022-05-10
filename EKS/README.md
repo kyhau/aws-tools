@@ -103,9 +103,12 @@ Cluster Autoscaler vs. Karpenter
 ---
 ## Pod-based autoscaling
 
-- [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) – add or remove more pods to the deployment as needed
-- [Vertical Pod Autoscaler](https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler) – resize pod's CPU and memory requests and limits to match the load
+1. [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) – add or remove more pods to the deployment as needed
+2. [Vertical Pod Autoscaler](https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler) – resize pod's CPU and memory requests and limits to match the load
 
+Autoscaling EKS on Fargate
+1. [Autoscaling EKS on Fargate with custom metrics](https://aws.amazon.com/blogs/containers/autoscaling-eks-on-fargate-with-custom-metrics/) with HorizontalPodAutoscaler
+   - Examples of configuring autoscaling based on HTTP traffic, CPU and/or memory usage, App Mesh traffic
 
 ---
 ## EKS Montoring, Logging, Alerting
