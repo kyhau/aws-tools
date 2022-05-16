@@ -135,6 +135,8 @@ alias cdk-synth='cdk synth'
 alias cdk-synth-no-staging='cdk synth --no-staging'
 
 alias eksctl-get-iamidentitymapping='eksctl get iamidentitymapping'
+alias eksctl-get-nodegroup-output-json='eksctl get nodegroup --output=json'
+alias eksctl-get-nodegroup-output-yaml='eksctl get nodegroup --output=yaml'
 
 alias sam-beta-cdk-build='sam-beta-cdk build'
 alias sam-beta-cdk-local-invoke='sam-beta-cdk local invoke'
