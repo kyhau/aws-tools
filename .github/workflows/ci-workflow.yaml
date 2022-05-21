@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@master
 
       - name: Run yamllint
-        run: yamllint -c ./.github/linters/.yaml-lint.yaml .github/
+        run: yamllint -c ./.github/linters/.yaml-lint.yaml -f parsable --format standard .github/
 
       - name: Install cfn-lint
         run: |
@@ -30,6 +30,22 @@ jobs:
           cp .github/linters/.cfnlintrc .
           cfn-lint ./**/cfn/*.yaml
 
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.8@master
+        continue-on-error: true # To make sure that SARIF upload gets called
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --sarif-file-output=snyk.sarif
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: snyk.sarif
+
   build:
     needs: lint
     runs-on: ubuntu-latest
@@ -39,7 +55,7 @@ jobs:
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@master
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
