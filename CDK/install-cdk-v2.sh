@@ -7,7 +7,12 @@ set -e
 #npm cache clear --force
 #sudo apt-get install -y nodejs
 
-echo "INFO: cdk version: $(cdk --version)"
+if [ -x "$(command -v cdk)" ]; then
+  echo "INFO: cdk version: $(cdk --version)"
+else
+  echo "INFO: cdk not installed"
+fi
+
 echo "INFO: node version: $(node --version)"
 echo "INFO: npm version: $(npm --version)"
 
