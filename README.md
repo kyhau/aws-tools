@@ -6,6 +6,7 @@
 
 This repo provides some tools and sample code I created for building with AWS.
 
+---
 ## For running Python scripts
 
 Most of the Python scripts support multi accounts and regions.
@@ -24,11 +25,22 @@ pip install -r requirements.txt
 source .aliases
 ```
 
-## For running shell scripts
+## For running CLI tools and shell scripts
 
 ```
 pip install -r requirements-cli.txt
 ```
+
+---
+## Quick links for news, blogs and resources
+
+- [What's New with AWS?](https://aws.amazon.com/new/?nc2=h_ql_exm&whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&wn-featured-announcements.sort-by=item.additionalFields.numericSort&wn-featured-announcements.sort-order=asc) | feed https://aws.amazon.com/blogs/aws/feed/
+- [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture)
+- [Amazon Serverless Land Blogs](https://serverlessland.com/blog)
+- [AWS re:Post](https://repost.aws/)
+- [Amazon Builder's Library](https://aws.amazon.com/builders-library)
+- [Cloud Pegboard](https://cloudpegboard.com/detail.html)
+- [AWS Edge Chat](https://soundcloud.com/awsedgechat)
 
 ---
 ## Some Notes
