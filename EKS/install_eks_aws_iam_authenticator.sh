@@ -1,31 +1,24 @@
 #!/bin/bash
-# Install Amazon EKS-vended aws-iam-authenticator
-# https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
+# Install Amazon EKS aws-iam-authenticator
+# https://github.com/kubernetes-sigs/aws-iam-authenticator/releases
 
 set -e
 
-VERSION=1.21.2
-REL_DATE=2021-07-05
+if [ -x "$(command -v aws-iam-authenticator)" ]; then
+  echo "INFO: aws-iam-authenticator version: $(aws-iam-authenticator version)"
+else
+  echo "INFO: aws-iam-authenticator not installed"
+fi
 
-echo "Downloading the Amazon EKS-vended aws-iam-authenticator binary from Amazon S3..."
-pushd ~
-curl -o aws-iam-authenticator "https://amazon-eks.s3-us-west-2.amazonaws.com/${VERSION}/${REL_DATE}/bin/linux/amd64/aws-iam-authenticator"
+VERSION=$(curl -Ls https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/latest | grep 'href="/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.[0-9]*.[0-9]*/aws-iam-authenticator_0.[0-9]*.[0-9]_linux_amd64' | awk -F '/' '{print $6}' | cut -c 2-)
 
+echo "INFO: Downloading aws-iam-authenticator binary from Amazon S3"
+curl -L -o aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v${VERSION}/aws-iam-authenticator_${VERSION}_linux_amd64
 chmod +x ./aws-iam-authenticator
 
-echo "Coping binary to ~/.local/bin and create a symlink for bookmarking the version..."
+echo "INFO: Coping binary to ~/.local/bin"
 mkdir -p ~/.local/bin
-rm ~/.local/bin/aws-iam-authenticator || true
-rm ~/.local/bin/aws-iam-authenticator-v${VERSION} || true
-
+# rm ~/.local/bin/aws-iam-authenticator || true
 mv aws-iam-authenticator ~/.local/bin/
-pushd ~/.local/bin
-ln -s aws-iam-authenticator aws-iam-authenticator-v${VERSION}
-popd
 
-popd
-
-echo "Checking version..."
-aws-iam-authenticator version
-
-echo "Try aws-iam-authenticator help"
+echo "INFO: aws-iam-authenticator version: $(aws-iam-authenticator version)"
