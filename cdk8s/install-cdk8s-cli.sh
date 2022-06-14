@@ -2,6 +2,12 @@
 # https://github.com/cdk8s-team/cdk8s-cli
 set -e
 
+if [ -x "$(command -v cdk8s)" ]; then
+  echo "INFO: cdk8s version: $(cdk8s --version)"
+else
+  echo "INFO: cdk8s not installed"
+fi
+
 # Prerequisites
 # - Node.js (>= 10.3.0)
 #npm cache clear --force
