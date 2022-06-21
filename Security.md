@@ -12,6 +12,8 @@
 ---
 ## Useful Libs and Tools
 
+- Amazon Security Bulletins - https://aws.amazon.com/security/security-bulletins/
+- Amazon Linux Security Center - https://alas.aws.amazon.com/announcements.html
 - AWS Security Benchmark - [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark)
 - AWS Self-Service Security Assessment tool - [awslabs/aws-security-assessment-solution](https://github.com/awslabs/aws-security-assessment-solution)
 - Automated Incident Response with SSM - [aws-samples/automated-incident-response-with-ssm](https://github.com/aws-samples/automated-incident-response-with-ssm)
