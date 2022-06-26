@@ -21,6 +21,7 @@ Jump to
 - For CDK8s, see [here](../EKS/README.md)
 - [aws-cdk](https://github.com/aws/aws-cdk) - AWS CDK
 - [cdk-import](https://github.com/cdklabs/cdk-import) - Generates CDK L1 constructs for public CloudFormation Registry types and modules
+- [jsii-docgen](https://github.com/cdklabs/jsii-docgen) - Generates markdown reference documentation for jsii modules
 - [constructs.dev](https://constructs.dev/) - AWS CDK Construct Hub - Find reusable components for your cloud applications
 - [cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) - [AWS CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/)
 - [awslabs/aws-solutions-constructs](https://github.com/awslabs/aws-solutions-constructs) - [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/api-reference.html)
