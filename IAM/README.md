@@ -11,6 +11,7 @@
 - AWS IAM Policy Simulator - [IAM Policy Simulator Console](https://policysim.aws.amazon.com/)
 - AWS Managed Policies (list/monitor) - [z0ph/aws_managed_policies](https://github.com/z0ph/aws_managed_policies/tree/master/policies)
 - AWS Policy Generator - [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
+- [aws.permissions.cloud](https://aws.permissions.cloud/) - uses a variety of information gathered within the IAM Dataset and exposes that information in a clean, easy-to-read format.
 
 ---
 ## Useful Articles and Blogs
