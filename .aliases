@@ -34,7 +34,7 @@ alias aws-cognito-users='python ${REPO_HOME}/Cognito/cognito_users.py'
 
 alias aws-config-query='python ${REPO_HOME}/Config/query_configservice.py'
 
-alias aws-database-status-check='python ${REPO_HOME}/_multi_services/databases_status_check.py'
+alias aws-database-status-check='python ${REPO_HOME}/Others/list_databases_status.py'
 
 alias aws-ddb-delete-table-item='python ${REPO_HOME}/DynamoDB/delete_table_items.py'
 alias aws-ddb-enable-contributor-insights='aws dynamodb update-contributor-insights --contributor-insights-action ENABLE --table-name '
@@ -77,15 +77,15 @@ alias aws-msk-list-nodes='python ${REPO_HOME}/MSK/msk_list_nodes.py'
 alias aws-organizations-list-accounts='python ${REPO_HOME}/Organizations/list_accounts.py'
 alias aws-organizations-list-policies='python ${REPO_HOME}/Organizations/list_policies.py'
 
-alias aws-public-account-ids='python ${REPO_HOME}/_multi_services/aws-public-account-ids.py'
-alias aws-public-ip-address-ranges='python ${REPO_HOME}/_multi_services/aws-public-ip-address-ranges.py'
+alias aws-public-account-ids='python ${REPO_HOME}/AWS-Public/aws-public-account-ids.py'
+alias aws-public-ip-address-ranges='python ${REPO_HOME}/AWS-Public/aws-public-ip-address-ranges.py'
 
 alias aws-rds-cluster-endpoints='python ${REPO_HOME}/RDS/list_rds_cluster_endpoints.py'
 alias aws-rds-clusters='python ${REPO_HOME}/RDS/list_rds_clusters.py'
 alias aws-rds-instances='python ${REPO_HOME}/RDS/list_rds_instances.py'
 
 alias aws-resource-list-with-config='python ${REPO_HOME}/Config/list_resources_with_configservice.py'
-alias aws-resource-list-with-resourcegroupstaggingapi='python ${REPO_HOME}/_multi_services/list_resources_with_resourcegroupstaggingapi.py'
+alias aws-resource-list-with-resourcegroupstaggingapi='python ${REPO_HOME}/Others/list_resources_with_resourcegroupstaggingapi.py'
 
 alias aws-r53-hostedzones='python ${REPO_HOME}/Route53/list_hosted_zones.py'
 alias aws-r53-resolver-endpoints-and-ips='python ${REPO_HOME}/Route53/list_resolver_endpoints_and_ips.py'
@@ -108,7 +108,7 @@ alias aws-ssm-rdp='aws ssm start-session --document-name AWS-StartPortForwarding
 
 alias aws-subnet-ip-usage='python ${REPO_HOME}/VPC/available_ip_address_count.py'
 
-alias aws-tag-list='python ${REPO_HOME}/_multi_services/list_tags.py'
+alias aws-tag-list='python ${REPO_HOME}/Others/list_tags.py'
 
 alias aws-trustedadvisor-list-result='python ${REPO_HOME}/TrustedAdvisor/trusted_advisor_check_result.py'
 
@@ -153,7 +153,7 @@ alias update-aws-amplify-cli='. ${REPO_HOME}/Amplify/install_amplify_cli.sh'
 alias update-aws-cdk='. ${REPO_HOME}/CDK/install-cdk-v2.sh'
 alias update-aws-cdk-assume-role-credential-plugin='sudo npm install -g cdk-assume-role-credential-plugin@latest'
 alias update-aws-cdk-import='. ${REPO_HOME}/CDK/install-cdk-import.sh'
-alias update-aws-cdk8s-cli='. ${REPO_HOME}/cdk8s/install-cdk8s-cli.sh'
+alias update-aws-cdk8s-cli='. ${REPO_HOME}/CDK/install-cdk8s-cli.sh'
 
 alias update-aws-cfn-guard='. ${REPO_HOME}/CloudFormation/install-cfn-guard.sh'
 
@@ -174,6 +174,6 @@ alias update-aws-session-manager-plugin='. ${REPO_HOME}/SSM/install-aws-session-
 
 alias update-awscii-cli='sudo npm i -g @mhlabs/awscii-cli@latest'
 
-alias update-git-secrets='. ${REPO_HOME}/Useful-tools/git-secrets/install-git-secrets.sh'
+alias update-git-secrets='. ${REPO_HOME}/Others/git-secrets/install-git-secrets.sh'
 
 alias update-sam2aws='. ${REPO_HOME}/saml2aws/install-saml2aws.sh'

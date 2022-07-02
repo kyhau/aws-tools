@@ -1,7 +1,7 @@
 """
 aws configservice list-discovered-resources ---resource-type ##
 
-See also _multi_services/list_resources_with_resourcegroupstaggingapi.py
+See also Uncategorised/list_resources_with_resourcegroupstaggingapi.py
 """
 import click
 import logging
