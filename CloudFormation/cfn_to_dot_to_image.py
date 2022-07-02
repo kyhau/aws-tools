@@ -5,7 +5,7 @@ pip install cfn-lint pydot
 pip install click
 """
 from os import makedirs, rename, system
-from os.path import basename, dirname, exists, join
+from os.path import basename, join
 
 import click
 
