@@ -99,15 +99,15 @@ pip install -r requirements-cli.txt
 Some Specific Topics
 
 - [App Mesh](./AppMesh.md)
-- [Chaos Engineering](./Useful-tools/ChaosEngineering.md)
-- [Closing Account](./Useful-tools/ClosingAccount.md)
-- [Data Sources](./Useful-tools/DataSources.md)
-- [Encryption](./Useful-tools/Encryption.md)
+- [Chaos Engineering](./Others/ChaosEngineering.md)
+- [Closing Account](./Others/ClosingAccount.md)
+- [Data Sources](./Others/DataSources.md)
+- [Encryption](./Others/Encryption.md)
 - [Networking](./Networking/)
+- [Other useful tools](./Others/)
 - [Security](./Security.md)
 - [Serverless](./Serverless.md)
-- [Service Limits](./Useful-tools/ServiceLimits.md)
-- [Useful tools](./Useful-tools/)
+- [Service Limits](./Others/ServiceLimits.md)
 - [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
 
 Other Notes
