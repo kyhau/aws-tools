@@ -3,49 +3,22 @@ import json
 
 import click
 import requests
+from helper.selector import prompt_multi_selection
 
-IP_TYPES = [
-    "ipv4",
-    "ipv6",
-]
-
-SERVICES = [
-    "AMAZON",
-    "AMAZON_APPFLOW",
-    "AMAZON_CONNECT",
-    "API_GATEWAY",
-    "CHIME_MEETINGS",
-    "CHIME_VOICECONNECTOR",
-    "CLOUD9",
-    "CLOUDFRONT",
-    "CODEBUILD",
-    "DYNAMODB",
-    "EBS",
-    "EC2",
-    "EC2_INSTANCE_CONNECT",
-    "GLOBALACCELERATOR",
-    "KINESIS_VIDEO_STREAMS",
-    "ROUTE53",
-    "ROUTE53_HEALTHCHECKS",
-    "ROUTE53_HEALTHCHECKS_PUBLISHING",
-    "ROUTE53_RESOLVER",
-    "S3",
-    "WORKSPACES_GATEWAYS",
-]
+IP_TYPES = {
+    "ipv4": ("ip_prefix", "prefixes"),
+    "ipv6": ("ipv6_prefix", "ipv6_prefixes")
+}
 
 SOURCE = "https://ip-ranges.amazonaws.com/ip-ranges.json"
 
 
-def list_ip_ranges(service, ip_type, region, prefix):
-    data = requests.get().json(SOURCE)
-
-    key_prefix, key_prefixes = ("ip_prefix", "prefixes") if ip_type == "ipv4" else ("ipv6_prefix", "ipv6_prefixes")
-
-    prefixes = data[key_prefixes]
+def list_ip_ranges(data, services, ip_type, region, prefix):
+    key_prefix, key_prefixes = IP_TYPES[ip_type]
 
     ret = []
-    for item in prefixes:
-        if item["service"] != service:
+    for item in data[key_prefixes]:
+        if item["service"] not in services:
             continue
         if region and region != item["region"]:
             continue
@@ -55,16 +28,30 @@ def list_ip_ranges(service, ip_type, region, prefix):
         ret.append(item)
 
     print(json.dumps(ret, indent=2))
-    print(f"CreateDate: {data['createDate']}")
+
+
+def select_services(data, ip_type):
+    _, key_prefixes = IP_TYPES[ip_type]
+    services = sorted(set( d["service"] for d in data[key_prefixes]))
+    resp = prompt_multi_selection("Service", options=services, pre_selected_options=[])
+    return resp["Services"]
 
 
 @click.command(help="Get AWS public IP ranges")
 @click.option("--prefix", "-p", help="Find the specified prefix e.g. 52.65.0.0/16 or 52.65.0.0; all if not specified")
 @click.option("--region", "-r", help="AWS Region; not specified for all regions", default="ap-southeast-2")
-@click.option("--service", "-s", required=True, type=click.Choice(SERVICES, case_sensitive=False))
-@click.option("--ip-type", "-t", required=True, type=click.Choice(IP_TYPES, case_sensitive=False), default="ipv4", show_default=True)
-def main(prefix, region, service, ip_type):
-    list_ip_ranges(service.upper(), ip_type.lower(), region, prefix)
+@click.option("--ip-type", "-t", type=click.Choice(IP_TYPES, case_sensitive=False), default="ipv4", show_default=True)
+@click.option("--services", "-s", multiple=True)
+def main(prefix, region, ip_type, services):
+    data = requests.get(SOURCE).json()
+    ip_type = ip_type.lower()
+
+    if services:
+        services = list(map(str.upper, services))
+    else:
+        services = select_services(data, ip_type)
+
+    list_ip_ranges(data, services, ip_type.lower(), region, prefix)
 
 
 if __name__ == "__main__":
