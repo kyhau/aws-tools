@@ -1,7 +1,7 @@
-# EKS Notes
+# EKS and AWS Controllers for Kubernetes
 
 Jump to
-- [EKS tools and libs](#eks-tools-and-libs)
+- [AWS EKS, AWS Controllers for Kubernetes and related tools and libs](#aws-eks-aws-controllers-for-kubernetes-and-related-tools-and-libs)
 - [Kubernetes tools (non-AWS)](#kubernetes-tools-non-aws)
 - [QuickStart](#quick-start)
 - [AWS Secrets Manager and Kubernetes Secrets](#aws-secrets-manager-and-kubernetes-secrets)
@@ -15,7 +15,7 @@ Jump to
 - [CDK / CDK8s Gotchas](#cdk--cdk8s-gotchas)
 
 ---
-## EKS tools and libs
+## AWS EKS, AWS Controllers for Kubernetes and related tools and libs
 
 - CDK
     - [cdk8s](https://github.com/cdk8s-team/cdk8s) - CDK for Kubernetes
@@ -30,7 +30,9 @@ Jump to
 - [kubectl (Amazon EKS-vended)](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
 - [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
 [how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
-- [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK), e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller
+- [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK)
+    - e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller, lambda-controller
+    - [aws-controllers-k8s/test-infra](https://github.com/aws-controllers-k8s/test-infra) - This repository contains a framework for functional integration (e2e) testing of AWS Controllers for Kubernetes (ACK) service controllers.
 - [aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) - AWS EKS Cluster Controller
 - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter - Kubernetes Cluster Autoscaler
 - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes
@@ -92,7 +94,7 @@ Jump to
 Adding or removing nodes as needed
 - [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
 - [Karpenter](https://karpenter.sh/docs/getting-started/)
-   - https://github.com/aws/karpenter 
+   - https://github.com/aws/karpenter
    - [aws-samples/cdk-eks-karpenter](https://github.com/aws-samples/cdk-eks-karpenter)
 
 Cluster Autoscaler vs. Karpenter
