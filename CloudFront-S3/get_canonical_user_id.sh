@@ -18,5 +18,5 @@
 #    2.1)  s3:ListAllMyBuckets
 #    2.2)  s3:GetBucketAcl.
 
-canonical_user_id=$(aws s3api list-buckets --query "Owner.ID" --output text "$@")
+canonical_user_id=$(aws s3api list-buckets --query Owner.ID --output text)
 echo "$canonical_user_id"
