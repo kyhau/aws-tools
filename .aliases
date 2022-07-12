@@ -17,7 +17,7 @@ alias aws-apis-test='python ${REPO_HOME}/API/check_aws_apis.py'
 
 alias aws-athena-query-execution='python ${REPO_HOME}/Athena/athena_query_execution.py'
 
-alias aws-canonical-user-id='. ${REPO_HOME}/CloudFront-S3/get_canonical_user_id.sh'
+alias aws-canonical-user-id='aws s3api list-buckets --query Owner.ID --output text'
 
 alias aws-cloudformation-to-dot-to-image='python ${REPO_HOME}/CloudFormation/cfn_to_dot_to_image.py'
 alias aws-cloudformation-list-stacks='python ${REPO_HOME}/CloudFormation/list_stacks.py'
