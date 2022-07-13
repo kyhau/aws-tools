@@ -49,6 +49,7 @@ Jump to
 ---
 ## Performance Optimisation
 
+- [Optimizing Node.js dependencies in AWS Lambda](https://aws.amazon.com/blogs/compute/optimizing-node-js-dependencies-in-aws-lambda/), AWS, 13 JUL 2022
 - [Optimizing AWS Lambda function performance for Java](https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/), AWS, 31 MAR 2022
 - [How to Make Your Lambda Functions Run Faster (and Cheaper)](https://hackernoon.com/how-to-make-your-lambda-functions-run-faster-and-cheaper-gp2034jl) by webiny on 2020-11-25
 - [Shave 99.93% off your Lambda bill with this one weird trick](
