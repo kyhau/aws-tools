@@ -1,2 +1,0 @@
-locustio              # https://github.com/locustio/locust
-realbrowserlocusts    # https://github.com/nickboucart/realbrowserlocusts

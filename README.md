@@ -118,7 +118,7 @@ Other AWS related tools
 
 - AWS CLI interactive productivity booster (aws-shell) [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
 - AWS Cloud Digital Interface (CDI) Software Development Kit (SDK) is a set of libraries and documentation for you to build - AWS Deployment Framework (ADF) [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework)
-- AWS Distributed Load Testing - [awslabs/distributed-load-testing-on-aws](https://github.com/awslabs/
+- AWS Distributed Load Testing - [awslabs/distributed-load-testing-on-aws](https://github.com/awslabs/distributed-load-testing-on-aws)
 - AWS IoT Greengrass Core SDK (Python) [aws/aws-greengrass-core-sdk-python](https://github.com/aws/aws-greengrass-core-sdk-python)
 - AWS IoT Device SDK (Python) [aws/aws-iot-device-sdk-python](https://github.com/aws/aws-iot-device-sdk-python)
 - AWS ParallelCluster (enhanced version of CfnCluster) [aws/aws-parallelcluster](https://github.com/aws/aws-parallelcluster)
@@ -126,7 +126,7 @@ Other AWS related tools
 - AWS Proton Sample Fargate Templates - [aws-samples/aws-proton-sample-fargate-service](https://github.com/aws-samples/aws-proton-sample-fargate-service)
 - AWS SaaS Boost - [awslabs/aws-saas-boost](https://github.com/awslabs/aws-saas-boost)
 - Amazon Honeycode - [builder.honeycode.aws](https://builder.honeycode.aws/)
-distributed-load-testing-on-aws)
+
 - Amazon Ion Python - [amzn/ion-python](https://github.com/amzn/ion-python)
 - AutoML Toolkit for Deep Learning - [awslabs/autogluon](https://github.com/awslabs/autogluon)
 live video solutions on AWS - [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-sdk)
