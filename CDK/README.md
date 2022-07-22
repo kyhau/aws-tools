@@ -18,7 +18,7 @@ Jump to
 ---
 ## Useful Libs and Tools
 
-- For CDK8s, see [here](../EKS/README.md)
+- For CDK8s, see [EKS/README.md](../EKS/README.md)
 - [aws-cdk](https://github.com/aws/aws-cdk) - AWS CDK
 - [cdk-import](https://github.com/cdklabs/cdk-import) - Generates CDK L1 constructs for public CloudFormation Registry types and modules
 - [jsii-docgen](https://github.com/cdklabs/jsii-docgen) - Generates markdown reference documentation for jsii modules
@@ -36,4 +36,4 @@ Jump to
 
 - [CDK Getting Started Guide](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
 - [CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html)
-- [CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/)
+- [Testing CDK Applications in Any Language](https://aws.amazon.com/blogs/developer/testing-cdk-applications-in-any-language/), AWS, 9 NOV 2021
