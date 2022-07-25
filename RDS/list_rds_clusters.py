@@ -25,11 +25,12 @@ class Helper(AwsApiHelper):
                 print(json.dumps(item, indent=2, default=str))
             else:
                 print(", ".join([
-                    item["DatabaseName"],
+                    item.get("DatabaseName", ""),
                     item["DBClusterIdentifier"],
                     item["Status"],
                     item["Engine"],
                     item["EngineMode"],
+                    item["EngineVersion"],
                     item["Endpoint"],
                     "IamAuthEnabled" if item["IAMDatabaseAuthenticationEnabled"] else "IamAuthDisabled"
                 ]))
