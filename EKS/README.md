@@ -51,6 +51,9 @@ Jump to
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
 - Calico add-on - network policy engine for Kubernetes
    - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+- AWS FIS (Fault Injection Simulator)
+   - FIS supports [ChaosMesh and Litmus](https://aws.amazon.com/about-aws/whats-new/2022/07/aws-fault-injection-simulator-supports-chaosmesh-litmus-experiments/) experiments for containerized applications running on EKS.
+     > E.g. run a stress test on a pod’s CPU using ChaosMesh or Litmus faults while terminating a randomly selected percentage of cluster nodes using FIS fault actions.
 
 ---
 ## Kubernetes tools (non-AWS)
