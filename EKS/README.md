@@ -8,9 +8,12 @@ Jump to
 - [Node-based autoscaling](#node-based-autoscaling)
 - [Pod-based autoscaling](#pod-based-autoscaling)
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
-- [EKS security and access control](#eks-security-and-access-control)
+- [EKS cluster endpoint](#eks-cluster-endpoint)
+- [EKS access control](#eks-access-control)
+- [EKS security](#eks-security)
 - [EKS IAM OIDC Provider](#eks-iam-oidc-provider)
 - [EKS with Fargate](#eks-with-fargate)
+- [Stress test](#stress-test)
 - [CDK EKS+K8s Examples](#cdk-eksk8s-examples)
 - [CDK / CDK8s Gotchas](#cdk--cdk8s-gotchas)
 
@@ -51,9 +54,6 @@ Jump to
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
 - Calico add-on - network policy engine for Kubernetes
    - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
-- AWS FIS (Fault Injection Simulator)
-   - FIS supports [ChaosMesh and Litmus](https://aws.amazon.com/about-aws/whats-new/2022/07/aws-fault-injection-simulator-supports-chaosmesh-litmus-experiments/) experiments for containerized applications running on EKS.
-     > E.g. run a stress test on a pod’s CPU using ChaosMesh or Litmus faults while terminating a randomly selected percentage of cluster nodes using FIS fault actions.
 
 ---
 ## Kubernetes tools (non-AWS)
@@ -134,46 +134,50 @@ Autoscaling EKS on Fargate
     - [Kubernetes Alerting | Best Practices in 2022](https://www.containiq.com/post/kubernetes-alerting-best-practices)
 
 ---
-## EKS security and access control
+## [EKS cluster endpoint
 
-- [EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
-    - Private access for EKS cluster's Kubernetes API server endpoint (Kubernetes control plane API)
-        - A cluster that has been configured to only allow private access can only be accessed from the following: ([Source](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/))
-            - The VPC where the worker nodes reside.
-            - Networks that have been peered with that VPC.
-            - A network that has been connected to AWS through Direct Connect (DX) or a VPN.
-        - However, the name of the Kubernetes cluster endpoint is only resolvable from the worker node VPC, for the following reasons:
-            - The Route 53 private hosted zone that is created for the endpoint is only associated with the worker node VPC.
-            - The private hosted zone is created in a separate AWS managed account and cannot be altered.
-        - The cluster's API server endpoint is resolved by public DNS servers to a private IP address from the VPC. When you do a DNS query for your API server endpoint (e.g. `9FF86DB0668DC670F27F426024E7CDBD.sk1.us-east-1.eks.amazonaws.com`) it will return private IP of EKS Endpoint (e.g. 10.10.10.20).
-            - However, `.gr7.ap-southeast-2.eks.amazonaws.com` is NOT unique to account or region.
-                ```
-                Account-1:
-                  ap-southeast-2:  https://FD743253263F9932A1C1359F134D9B08.gr7.ap-southeast-2.eks.amazonaws.com
-                  ap-southeast-1:  https://7296B66098508057814BDC28DD6442FE.gr7.ap-southeast-1.eks.amazonaws.com
-                Account-2:
-                  ap-southeast-2:  https://0395CA66195A658536B531CA06F3246D.gr7.ap-southeast-2.eks.amazonaws.com
-                  ap-southeast-2:  https://C2D57012E496E6903F975147013EE156.sk1.ap-southeast-2.eks.amazonaws.com
-                Account-3:
-                  us-east-1:       https://9FF86DB0668DC670F27F426024E7CDBD.sk1.us-east-1.eks.amazonaws.com
-                ```
-    - How to enable private access for the EKS cluster's Kubernetes API server endpoint?
-        1. Update `Cluster.endpointAccess` to `PRIVATE`.
-        1. Create or update your “Security Group to use for Control Plane ENIs” with the ingress rules for your client (e.g. `kubectl`) to access the Kubernetes control plane API from the deployment agents (e.g. GitHub Actions Workflow)
-            - In CloudFormation, it is a Security Group in [ResourcesVpcConfig.SecurityGroupIds](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-eks-cluster-resourcesvpcconfig.html).
-            - In CDK, it is securityGroup in [aws-cdk-lib.aws_eks.Cluster](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.Cluster.html) `ClusterProps`.
-        1. If your deployment agent is in another VPC / AWS account, then you will need a solution for directing the DNS request to the corresponding VPC / account.
-    - How do I lock down API access to specific IP addresses in my Amazon EKS cluster?
-        - You can, optionally, limit the CIDR blocks that can access the public endpoint. If you limit access to specific CIDR blocks, then it is recommended that you also enable the private endpoint, or ensure that the CIDR blocks that you specify include the addresses that nodes and Fargate pods (if you use them) access the public endpoint from.
-        1. Update `Cluster.endpointAccess` to `PUBLIC_AND_PRIVATE`.
-            - In CloudFormation, add the CIDR to `ResourcesVpcConfig.PublicAccessCidrs`.
-            - In CDK, add the CIDR to `endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE.onlyFrom(...)` in [aws-cdk-lib.aws_eks.Cluster](https://github.com/aws/aws-cdk/blob/master/packages/%40aws-cdk/aws-eks/lib/cluster.ts) `ClusterProps`.
-        - See [How do I lock down API access to specific IP addresses in my Amazon EKS cluster?](https://aws.amazon.com/premiumsupport/knowledge-center/eks-lock-api-access-IP-addresses/)
-        - See [Amazon EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
-    - DNS resolution for EKS cluster endpoints
-        - [Enabling DNS resolution for Amazon EKS cluster endpoints](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/)
-        - [DNS Resolution for EKS Clusters Using Private Endpoints](https://aws.amazon.com/about-aws/whats-new/2019/12/dns-resolution-for-eks-clusters-using-private-endpoints/)
-        - [Understanding Amazon EKS Cluster Private Endpoint Access](https://faun.pub/understanding-amazon-eks-cluster-private-endpoint-access-76ca52bf978a)
+[EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+
+- Private access for EKS cluster's Kubernetes API server endpoint (Kubernetes control plane API)
+    - A cluster that has been configured to only allow private access can only be accessed from the following: ([Source](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/))
+        - The VPC where the worker nodes reside.
+        - Networks that have been peered with that VPC.
+        - A network that has been connected to AWS through Direct Connect (DX) or a VPN.
+    - However, the name of the Kubernetes cluster endpoint is only resolvable from the worker node VPC, for the following reasons:
+        - The Route 53 private hosted zone that is created for the endpoint is only associated with the worker node VPC.
+        - The private hosted zone is created in a separate AWS managed account and cannot be altered.
+    - The cluster's API server endpoint is resolved by public DNS servers to a private IP address from the VPC. When you do a DNS query for your API server endpoint (e.g. `9FF86DB0668DC670F27F426024E7CDBD.sk1.us-east-1.eks.amazonaws.com`) it will return private IP of EKS Endpoint (e.g. 10.10.10.20).
+        - However, `.gr7.ap-southeast-2.eks.amazonaws.com` is NOT unique to account or region.
+            ```
+            Account-1:
+                ap-southeast-2:  https://FD743253263F9932A1C1359F134D9B08.gr7.ap-southeast-2.eks.amazonaws.com
+                ap-southeast-1:  https://7296B66098508057814BDC28DD6442FE.gr7.ap-southeast-1.eks.amazonaws.com
+            Account-2:
+                ap-southeast-2:  https://0395CA66195A658536B531CA06F3246D.gr7.ap-southeast-2.eks.amazonaws.com
+                ap-southeast-2:  https://C2D57012E496E6903F975147013EE156.sk1.ap-southeast-2.eks.amazonaws.com
+            Account-3:
+                us-east-1:       https://9FF86DB0668DC670F27F426024E7CDBD.sk1.us-east-1.eks.amazonaws.com
+            ```
+- How to enable private access for the EKS cluster's Kubernetes API server endpoint?
+    1. Update `Cluster.endpointAccess` to `PRIVATE`.
+    1. Create or update your “Security Group to use for Control Plane ENIs” with the ingress rules for your client (e.g. `kubectl`) to access the Kubernetes control plane API from the deployment agents (e.g. GitHub Actions Workflow)
+        - In CloudFormation, it is a Security Group in [ResourcesVpcConfig.SecurityGroupIds](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-eks-cluster-resourcesvpcconfig.html).
+        - In CDK, it is securityGroup in [aws-cdk-lib.aws_eks.Cluster](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.Cluster.html) `ClusterProps`.
+    1. If your deployment agent is in another VPC / AWS account, then you will need a solution for directing the DNS request to the corresponding VPC / account.
+- How do I lock down API access to specific IP addresses in my Amazon EKS cluster?
+    - You can, optionally, limit the CIDR blocks that can access the public endpoint. If you limit access to specific CIDR blocks, then it is recommended that you also enable the private endpoint, or ensure that the CIDR blocks that you specify include the addresses that nodes and Fargate pods (if you use them) access the public endpoint from.
+    1. Update `Cluster.endpointAccess` to `PUBLIC_AND_PRIVATE`.
+        - In CloudFormation, add the CIDR to `ResourcesVpcConfig.PublicAccessCidrs`.
+        - In CDK, add the CIDR to `endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE.onlyFrom(...)` in [aws-cdk-lib.aws_eks.Cluster](https://github.com/aws/aws-cdk/blob/master/packages/%40aws-cdk/aws-eks/lib/cluster.ts) `ClusterProps`.
+    - See [How do I lock down API access to specific IP addresses in my Amazon EKS cluster?](https://aws.amazon.com/premiumsupport/knowledge-center/eks-lock-api-access-IP-addresses/)
+    - See [Amazon EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+- DNS resolution for EKS cluster endpoints
+    - [Enabling DNS resolution for Amazon EKS cluster endpoints](https://aws.amazon.com/blogs/compute/enabling-dns-resolution-for-amazon-eks-cluster-endpoints/)
+    - [DNS Resolution for EKS Clusters Using Private Endpoints](https://aws.amazon.com/about-aws/whats-new/2019/12/dns-resolution-for-eks-clusters-using-private-endpoints/)
+    - [Understanding Amazon EKS Cluster Private Endpoint Access](https://faun.pub/understanding-amazon-eks-cluster-private-endpoint-access-76ca52bf978a)
+
+---
+## EKS access control
 - [How do I provide access to other IAM users and roles after cluster creation in Amazon EKS?](https://aws.amazon.com/premiumsupport/knowledge-center/amazon-eks-cluster-access/)
     -  Important: Keep the following in mind:
         - Avoid syntax errors (such as typos) when you update the `aws-auth` ConfigMap. These errors can affect the permissions of all IAM users and roles updated within the ConfigMap of the Amazon EKS cluster.
@@ -182,7 +186,13 @@ Autoscaling EKS on Fargate
 - [Manage Amazon EKS with Okta SSO](https://aws.amazon.com/blogs/containers/manage-amazon-eks-with-okta-sso/)
     - > EKS uses IAM to provide authentication to your Kubernetes cluster, but it still relies on native Kubernetes Role-Based Access Control (RBAC) for authorization. This means that IAM is only used for authentication of valid IAM entities. All permissions for interacting with your Amazon EKS cluster’s Kubernetes API is managed through the native Kubernetes RBAC system.
     - https://github.com/aws-samples/eks-rbac-sso
+
+---
+## EKS security
+
 - [Configure mutual TLS authentication for applications running on Amazon EKS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/configure-mutual-tls-authentication-for-applications-running-on-amazon-eks.html) with NLB
+- [Amazon Detective Supports Kubernetes Workloads on Amazon EKS for Security Investigations](https://aws.amazon.com/blogs/aws/amazon-detective-supports-kubernetes-workloads-on-amazon-eks-for-security-investigations/)
+- [Amazon GuardDuty protects Amazon Elastic Kubernetes Service clusters](https://aws.amazon.com/about-aws/whats-new/2022/01/amazon-guardduty-elastic-kubernetes-service-clusters/)
 
 ---
 ## EKS IAM OIDC Provider
@@ -218,6 +228,12 @@ There are some potential drawbacks to using Fargate with EKS, both operational a
 
 See also [AWS Fargate considerations](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html#fargate-considerations).
 
+---
+## Stress test
+
+- AWS FIS (Fault Injection Simulator)
+   - FIS supports [ChaosMesh and Litmus](https://aws.amazon.com/about-aws/whats-new/2022/07/aws-fault-injection-simulator-supports-chaosmesh-litmus-experiments/) experiments for containerized applications running on EKS.
+     > E.g. run a stress test on a pod’s CPU using ChaosMesh or Litmus faults while terminating a randomly selected percentage of cluster nodes using FIS fault actions.
 
 ---
 ## CDK EKS+K8s Examples
