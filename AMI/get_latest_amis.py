@@ -1,16 +1,28 @@
 """
-bash:
-aws ssm get-parameters-by-path --path "/aws/service/ami-amazon-linux-latest" | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
-aws ssm get-parameters-by-path --path "/aws/service/ami-windows-latest" | jq '.Parameters[] | "\(.Value) \(.Version) \(.ARN)"'
-
-aws ssm get-parameters "$@" --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id --query "Parameters[0].Value" --output text
-aws ssm get-parameters "$@" --names /aws/service/eks/optimized-ami/1.14/amazon-linux-2/recommended/image_id --query "Parameters[0].Value" --output text
+Find AMI ID of the latest
+- ECS optimized Bottlerocket AMIs
+- EKS optimized Bottlerocket AMIs
+- EC2 Linux AMIs
+- ECS optimized Amazon Linux 1/2 AMIs
+- EKS optimized Amazon Linux 1/2 AMIs
+= EC2 Windows AMIs
+kayh@SBL-5CD9525269:/c/Workspaces/github/aw
 """
 import json
 
 import click
 from boto3.session import Session
 from helper.selector import prompt_multi_selection
+
+
+def get_bottlerocket_ecs_meta_dict():
+    # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-bottlerocket.html
+    return {
+        "/aws/service/bottlerocket/aws-ecs-1/arm64": "Amazon ECS-Optimized Bottlerocket (arm64) AMI",
+        "/aws/service/bottlerocket/aws-ecs-1/x86_64": "Amazon ECS-Optimized Bottlerocket (x86_64) AMI",
+        "/aws/service/bottlerocket/aws-ecs-1-nvidia/arm64": "Amazon ECS-Optimized (NVIDIA GPU support) Bottlerocket (arm64) AMI",
+        "/aws/service/bottlerocket/aws-ecs-1-nvidia/x86_64": "Amazon ECS-Optimized (NVIDIA GPU support) Bottlerocket (x86_64) AMI",
+    }
 
 
 def get_ecs_meta_dict():
@@ -25,7 +37,7 @@ def get_ecs_meta_dict():
     }
 
 
-def get_eks_meta_dict():
+def get_eks_meta_dict(get_bottlerocket=False):
     # https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html
     K8S_VERSIONS = [
         "1.22",
@@ -38,10 +50,17 @@ def get_eks_meta_dict():
 
     # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id.html
     ami_variants = {}
-    for k8s_version in K8S_VERSIONS:
-        ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2"] = "Amazon EKS-optimized Amazon Linux 2 (x86_64) AMI"
-        ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-arm64"] = "Amazon EKS-optimized Amazon Linux 2 (arm64) AMI"
-        ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-gpu"] = "Amazon EKS-optimized Amazon Linux 2 (GPU) AMI"
+    if get_bottlerocket:
+        for k8s_version in K8S_VERSIONS:
+            ami_variants[f"/aws/service/bottlerocket/aws-k8s-{k8s_version}/arm64"] = "Amazon EKS-optimized Bottlerocket (arm64 Standard) AMI"
+            ami_variants[f"/aws/service/bottlerocket/aws-k8s-{k8s_version}/x86_64"] = "Amazon EKS-optimized Bottlerocket (x86_64 Standard) AMI"
+            ami_variants[f"/aws/service/bottlerocket/aws-k8s-{k8s_version}-nvidia/arm64"] = "Amazon EKS-optimized Bottlerocket (arm64 NVIDIA) AMI"
+            ami_variants[f"/aws/service/bottlerocket/aws-k8s-{k8s_version}-nvidia/x86_64"] = "Amazon EKS-optimized Bottlerocket (x86_64 NVIDIA) AMI"
+    else:
+        for k8s_version in K8S_VERSIONS:
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2"] = "Amazon EKS-optimized Amazon Linux 2 (x86_64) AMI"
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-arm64"] = "Amazon EKS-optimized Amazon Linux 2 (arm64) AMI"
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-gpu"] = "Amazon EKS-optimized Amazon Linux 2 (GPU) AMI"
 
     return ami_variants
 
@@ -64,11 +83,14 @@ def get_parameters(param_path, region, session):
     for region in session.get_available_regions("ssm") if region == "all" else [region]:
         try:
             client = session.client("ssm", region_name=region)
+            print(param_path)
             for item in client.get_parameters(Names=[param_path])["Parameters"]:
-                v = item.pop("Value")
+                print(item)
                 del item["Name"]
                 del item["Type"]
-                item.update(json.loads(v))
+                if "{" in item["Value"]:
+                    v = item.pop("Value")
+                    item.update(json.loads(v))
                 print(json.dumps(item, default=str, indent=2, sort_keys=True))
         except Exception as e:
             print(f"Skip region {region} due to error: {e}")
@@ -83,6 +105,24 @@ def cli_main(ctx, profile, region):
     ctx.obj = {"session": session, "region": region}
 
 
+@cli_main.command(help="Find ECS optimized Bottlerocket AMIs")
+@click.pass_context
+def bottlerocket_ecs(ctx):
+    region, session = ctx.obj["region"], ctx.obj["session"]
+    resp = prompt_multi_selection("AMI", options=list(get_bottlerocket_ecs_meta_dict().keys()), pre_selected_options=[])
+    for name in resp["AMIs"]:
+        get_parameters(param_path=f"{name}/latest/image_id", region=region, session=session)
+
+
+@cli_main.command(help="Find EKS optimized Bottlerocket AMIs")
+@click.pass_context
+def bottlerocket_eks(ctx):
+    region, session = ctx.obj["region"], ctx.obj["session"]
+    resp = prompt_multi_selection("AMI", options=list(get_eks_meta_dict(True).keys()), pre_selected_options=[])
+    for name in resp["AMIs"]:
+        get_parameters(param_path=f"{name}/latest/image_id", region=region, session=session)
+
+
 @cli_main.command(help="Find EC2 Linux AMIs")
 @click.pass_context
 def ec2(ctx):
@@ -93,7 +133,7 @@ def ec2(ctx):
         print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
 
 
-@cli_main.command(help="Find ECS AMIs")
+@cli_main.command(help="Find ECS optimized AMIs")
 @click.pass_context
 def ecs(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
@@ -102,7 +142,7 @@ def ecs(ctx):
         get_parameters(param_path=f"{name}/recommended", region=region, session=session)
 
 
-@cli_main.command(help="Find EKS AMIs")
+@cli_main.command(help="Find EKS optimized AMIs")
 @click.pass_context
 def eks(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
