@@ -31,11 +31,8 @@ yamllint
 # Serverless
 
 #aws-sam-cli         # require docker
-
 #chalice             # AWS Chalice
-
 #awscli-local        # LocalStack AWS CLI - https://github.com/localstack/awscli-local
-
 #localstack          # Local AWS cloud stack - https://github.com/localstack/localstack
 
 ################################################################################

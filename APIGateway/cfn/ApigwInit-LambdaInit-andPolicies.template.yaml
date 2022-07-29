@@ -150,7 +150,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Ref 'LambdaFunctionName'
-      Runtime: python3.6
+      Runtime: python3.9
       Handler: LambdaFunction.lambda_handler
       MemorySize: 128
       Timeout: 30
