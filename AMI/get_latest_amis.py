@@ -4,9 +4,8 @@ Find AMI ID of the latest
 - EKS optimized Bottlerocket AMIs
 - EC2 Linux AMIs
 - ECS optimized Amazon Linux 1/2 AMIs
-- EKS optimized Amazon Linux 1/2 AMIs
-= EC2 Windows AMIs
-kayh@SBL-5CD9525269:/c/Workspaces/github/aw
+- EKS optimized Amazon Linux 2 AMIs
+- EC2 Windows AMIs
 """
 import json
 
