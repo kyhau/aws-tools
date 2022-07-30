@@ -4,6 +4,7 @@ Jump to
 - [AWS EKS, AWS Controllers for Kubernetes and related tools and libs](#aws-eks-aws-controllers-for-kubernetes-and-related-tools-and-libs)
 - [Kubernetes tools (non-AWS)](#kubernetes-tools-non-aws)
 - [QuickStart](#quick-start)
+- [Networking](#networking)
 - [AWS Secrets Manager and Kubernetes Secrets](#aws-secrets-manager-and-kubernetes-secrets)
 - [Node-based autoscaling](#node-based-autoscaling)
 - [Pod-based autoscaling](#pod-based-autoscaling)
@@ -52,8 +53,11 @@ Jump to
 - Kubectl Handler
    - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
-- Calico add-on - network policy engine for Kubernetes
-   - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+- Neworking
+    - [amazon-vpc-cni-k8s](https://github.com/aws/amazon-vpc-cni-k8s) - Networking plugin for pod networking in Kubernetes using ENIs on AWS.
+    - Calico add-on - network policy engine for Kubernetes
+       - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+
 
 ---
 ## Kubernetes tools (non-AWS)
@@ -82,6 +86,21 @@ Jump to
 - [kube-bench](https://github.com/aquasecurity/kube-bench) is a tool that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. https://github.com/aquasecurity/kube-bench
 - EKS Best Practices https://aws.github.io/aws-eks-best-practices/
 - EKS Workshop https://www.eksworkshop.com
+
+
+---
+## Networking
+
+### Max number of pods per EC2 instance
+
+- With certain EC2 instance type (e.g. m5.24xlarge), the instance can have 15 ENIs with 50 ipv4 addresses per ENI. (See [Available IP Per ENI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI))
+- This will give you 750 IP addresses per host, and thus will limit the true number of pods you can run per host to 750.
+
+### Amazon VPC CNI plugin for K8s
+- [amazon-vpc-cni-k8s](https://github.com/aws/amazon-vpc-cni-k8s) - Networking plugin for pod networking in Kubernetes using ENIs on AWS.
+
+### Calico add-on - network policy engine for Kubernetes
+- https://docs.aws.amazon.com/eks/latest/userguide/calico.html
 
 
 ---
@@ -133,8 +152,9 @@ Autoscaling EKS on Fargate
 - See also
     - [Kubernetes Alerting | Best Practices in 2022](https://www.containiq.com/post/kubernetes-alerting-best-practices)
 
+
 ---
-## [EKS cluster endpoint
+## EKS cluster endpoint
 
 [EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 
@@ -187,12 +207,14 @@ Autoscaling EKS on Fargate
     - > EKS uses IAM to provide authentication to your Kubernetes cluster, but it still relies on native Kubernetes Role-Based Access Control (RBAC) for authorization. This means that IAM is only used for authentication of valid IAM entities. All permissions for interacting with your Amazon EKS cluster’s Kubernetes API is managed through the native Kubernetes RBAC system.
     - https://github.com/aws-samples/eks-rbac-sso
 
+
 ---
 ## EKS security
 
 - [Configure mutual TLS authentication for applications running on Amazon EKS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/configure-mutual-tls-authentication-for-applications-running-on-amazon-eks.html) with NLB
 - [Amazon Detective Supports Kubernetes Workloads on Amazon EKS for Security Investigations](https://aws.amazon.com/blogs/aws/amazon-detective-supports-kubernetes-workloads-on-amazon-eks-for-security-investigations/)
 - [Amazon GuardDuty protects Amazon Elastic Kubernetes Service clusters](https://aws.amazon.com/about-aws/whats-new/2022/01/amazon-guardduty-elastic-kubernetes-service-clusters/)
+
 
 ---
 ## EKS IAM OIDC Provider
@@ -228,12 +250,14 @@ There are some potential drawbacks to using Fargate with EKS, both operational a
 
 See also [AWS Fargate considerations](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html#fargate-considerations).
 
+
 ---
 ## Stress test
 
 - AWS FIS (Fault Injection Simulator)
    - FIS supports [ChaosMesh and Litmus](https://aws.amazon.com/about-aws/whats-new/2022/07/aws-fault-injection-simulator-supports-chaosmesh-litmus-experiments/) experiments for containerized applications running on EKS.
      > E.g. run a stress test on a pod’s CPU using ChaosMesh or Litmus faults while terminating a randomly selected percentage of cluster nodes using FIS fault actions.
+
 
 ---
 ## CDK EKS+K8s Examples
