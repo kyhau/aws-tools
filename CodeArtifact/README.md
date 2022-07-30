@@ -31,4 +31,7 @@
     - In addition, all packages that are available to the upstream repository through an external connection to a public repository are available to the downstream repository.
     - ([Source](https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html))
 
+## Examples
+
+- https://github.com/aws-samples/aws-codeartifact-semantic-release-example
 
