@@ -2,6 +2,7 @@
 
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [ECS - ENI trunking](#ecs---eni-trunking)
 
 ---
 ## Useful Libs and Tools
@@ -14,6 +15,8 @@
 
 ---
 ## Useful Articles and Blogs
+
+ℹ️ Predictive Auto-Scaling only supports by EC2, not ECS. See [Container Roadmap](https://github.com/aws/containers-roadmap/issues/1574)
 
 1. Scaling
     1. [Scaling containers on AWS in 2022](https://www.vladionescu.me/posts/scaling-containers-on-aws-in-2022/)
@@ -70,3 +73,24 @@
         # List the instances that are part of an Auto Scaling group
         aws autoscaling describe-auto-scaling-instances --instance-ids <instance id #1> <instance id #2>
         ```
+
+---
+## ECS - ENI trunking
+
+([Source](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/container-instance-eni.html))
+
+ℹ️ This feature is not available on Fargate.
+
+Each ECS task that uses the `awsvpc` network mode receives its own ENI, which is attached to the container instance that hosts it. There is a default limit to the number of network interfaces that can be attached to an EC2 instance, and the primary network interface counts as one.
+
+ECS supports launching container instances with increased ENI density using supported EC2 instance types. When you use these instance types and opt in to the `awsvpcTrunking` account setting, additional ENIs are available on newly launched container instances. This configuration allows you to place more tasks using the `awsvpc` network mode on each container instance.
+
+### Example: c5.large instance
+
+- By default, a c5.large instance may have up to `3` ENIs attached to it.
+    - The primary network interface for the instance counts as `1`.
+    - Each task using the `awsvpc` network mode requires an ENI, you can typically only run `2` such tasks on this instance type.
+- With `awsvpcTrunking` enabled, a c5.large instance has an increased ENI limit of `12`.
+    - The container instance will have the primary network interface\, and
+    - ECS creates and attaches a "trunk" network interface to the container instance,
+    - So this configuration allows you to launch `10` tasks on the container instance instead of the current `2` tasks.
