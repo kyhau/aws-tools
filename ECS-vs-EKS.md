@@ -60,14 +60,14 @@ See also
 
 (Diagram [source](https://medium.com/swlh/eks-vs-ecs-orchestrating-containers-on-aws-9d49d3ff7f8d))
 
+### ECS flow
+1. The client sends a request to the ALB.
+2. ALB forwards request to one of the tasks providing the service.
+
 ### EKS flow
 1. The client sends a request to ELB.
 2. ELB distributes the request to one of the nodes (aka EC2 instances).
 3. A proxy running on the node is forwarding the request to one of the pods providing the service.
-
-### ECS flow
-1. The client sends a request to the ALB.
-2. ALB forwards request to one of the tasks providing the service.
 
 The proxy running on each node is distributing requests randomly or based on the round robin algorithm among all pods running in the cluster. Doing so increases the network traffic between EC2 instances and between AZs which consumes network capacity and adds latency.
 
