@@ -7,10 +7,11 @@ Jump to
 ---
 ## Useful Libs and Tools
 
-- Update Botttlerocket https://github.com/bottlerocket-os/bottlerocket#updates
+- Update Bottlerocket https://github.com/bottlerocket-os/bottlerocket#updates
 - ECS
     - [ECS-optimized Bottlerocket AMIs](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-bottlerocket.html)
     - [bottlerocket-ecs-updater](https://github.com/bottlerocket-os/bottlerocket-ecs-updater) - Bottlerocket ECS Updater is a service you can install into your ECS cluster that helps you keep your Bottlerocket container instances up to date.
+    - [adamjkeller/bottlerocket-ecs-updater-cdk](https://github.com/adamjkeller/bottlerocket-ecs-updater-cdk) - deploy a demo container to Amazon ECS using Bottlerocket OS for the compute. In addition, a construct was created for the Bottlerocket updater based off of the CFN template required to deploy it.
 - EKS
     - [EKS-optimized Bottlerocket AMIs](https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami-bottlerocket.html)
     - [bottlerocket-update-operator](https://github.com/bottlerocket-os/bottlerocket-update-operator) - Bottlerocket update operator is a Kubernetes operator that coordinates Bottlerocket updates on hosts in a cluster.
