@@ -32,8 +32,6 @@ Jump to
     - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters.
     - [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro)
 - [kubectl (Amazon EKS-vended)](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
-- [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
-[how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 - [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK)
     - e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller, lambda-controller
     - [aws-controllers-k8s/test-infra](https://github.com/aws-controllers-k8s/test-infra) - This repository contains a framework for functional integration (e2e) testing of AWS Controllers for Kubernetes (ACK) service controllers.
@@ -53,11 +51,17 @@ Jump to
 - Kubectl Handler
    - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
+- Access control, security
+    - [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
+    [how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
+    - [Amazon GuardDuty for EKS Protection](https://aws.amazon.com/about-aws/whats-new/2022/01/amazon-guardduty-elastic-kubernetes-service-clusters/)
 - Neworking
     - [amazon-vpc-cni-k8s](https://github.com/aws/amazon-vpc-cni-k8s) - Networking plugin for pod networking in Kubernetes using ENIs on AWS.
     - Calico add-on - network policy engine for Kubernetes
        - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
-
+- Test
+    - [aws-k8s-tester](https://github.com/aws/aws-k8s-tester) - is a set of utilities and libraries for "testing" Kubernetes on AWS.
+    - AWS FIS (Fault Injection Simulator) with [ChaosMesh and Litmus support](https://aws.amazon.com/about-aws/whats-new/2022/07/aws-fault-injection-simulator-supports-chaosmesh-litmus-experiments/) for stress testing EKS
 
 ---
 ## Kubernetes tools (non-AWS)
