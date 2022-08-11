@@ -74,6 +74,7 @@ pip install -r requirements-cli.txt
 - [EMR](./EMR/)
 - [FirewallManager](./WAF-FirewallManager-Shield/)
 - [Glue](./Glue.md)
+- [Graviton](./Graviton.md)
 - [Lambda](./Lambda/)
 - [Kinesis](./Kinesis/)
 - [MSK](./MSK/)
@@ -128,7 +129,6 @@ Other AWS related tools
 - AWS Proton Sample Fargate Templates - [aws-samples/aws-proton-sample-fargate-service](https://github.com/aws-samples/aws-proton-sample-fargate-service)
 - AWS SaaS Boost - [awslabs/aws-saas-boost](https://github.com/awslabs/aws-saas-boost)
 - Amazon Honeycode - [builder.honeycode.aws](https://builder.honeycode.aws/)
-
 - Amazon Ion Python - [amzn/ion-python](https://github.com/amzn/ion-python)
 - AutoML Toolkit for Deep Learning - [awslabs/autogluon](https://github.com/awslabs/autogluon)
 live video solutions on AWS - [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-sdk)
