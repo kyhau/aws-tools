@@ -127,7 +127,7 @@ Resources:
                   - mobileanalytics:PutEvents
                   - cognito-sync:*
                   - cognito-identity:*
-                Resource: !Sub "arn:aws:cognito-identity:${AWS::Region}:${AWS::AccountId}:identitypool/${IdentityPool}"
+                Resource: !Sub "arn:${AWS::Partition}:cognito-identity:${AWS::Region}:${AWS::AccountId}:identitypool/${IdentityPool}"
               - Effect: Allow
                 Action:
                   - dynamodb:GetItem
@@ -136,7 +136,7 @@ Resources:
                   - dynamodb:PutItem
                   - dynamodb:UpdateItem
                   - dynamodb:DeleteItem
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LoginTrailTableName}"
+                Resource: !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LoginTrailTableName}"
                 Condition:
                   ForAllValues:StringEquals:
                     dynamodb:LeadingKeys:
@@ -167,7 +167,7 @@ Resources:
                 Action:
                   - mobileanalytics:PutEvents
                   - cognito-sync:*
-                Resource: !Sub "arn:aws:cognito-identity:${AWS::Region}:${AWS::AccountId}:identitypool/${IdentityPool}"
+                Resource: !Sub "arn:${AWS::Partition}:cognito-identity:${AWS::Region}:${AWS::AccountId}:identitypool/${IdentityPool}"
 
   IdentityPoolRoleAttachment:
     Type: AWS::Cognito::IdentityPoolRoleAttachment

@@ -29,18 +29,18 @@ Resources:
           - Effect: Allow
             Action:
               - s3:ListAllMyBuckets     # if need console access
-            Resource: arn:aws:s3:::*
+            Resource: !Sub arn:${AWS::Partition}:s3:::*
           - Effect: Allow
             Action:
               - s3:GetBucketLocation    # if need console access
               - s3:ListBucket           # if need to list root-level items, folders in the given bucket
-            Resource: !Sub 'arn:aws:s3:::${BucketName}'
+            Resource: !Sub arn:${AWS::Partition}:s3:::${BucketName}
           - Effect: Allow
             Action:
               - s3:PutObject*
               - s3:GetObject
               - s3:DeleteObject
-            Resource: !Sub 'arn:aws:s3:::${BucketName}/*'
+            Resource: !Sub arn:${AWS::Partition}:s3:::${BucketName}/*
       Groups:
         - !If
           - ReadWriteDeleteGroupNameSpecified

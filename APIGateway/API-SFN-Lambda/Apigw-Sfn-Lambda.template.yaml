@@ -64,7 +64,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - states:DescribeExecution
-                Resource: arn:aws:states:ap-southeast-2:818427450946:execution:K-SFN-StateMachine*
+                Resource: !Sub arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:execution:K-SFN-StateMachine*
       RoleName: !Sub ${ApiName}-Lambda-ExecutionRole
 
   SfnFunction:
@@ -86,6 +86,8 @@ Resources:
 
   SfnFunctionLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/lambda/${SfnFunction}
       RetentionInDays: !Ref LogRetention
@@ -149,6 +151,8 @@ Resources:
 
   ApigwFunctionLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/lambda/${ApigwFunction}
       RetentionInDays: !Ref LogRetention
@@ -175,7 +179,7 @@ Resources:
                   - lambda:InvokeFunction
                   - lambda:ListFunctions
                 Resource:
-                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${SfnFunctionName}*"
+                  - !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${SfnFunctionName}*
               - Effect: Allow
                 Action:
                   - logs:CreateLogDelivery
@@ -195,6 +199,8 @@ Resources:
 
   StateMachineLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/vendedlogs/states/${StateMachineName}-Logs
       RetentionInDays: !Ref LogRetention
@@ -270,7 +276,7 @@ Resources:
               }
         TimeoutInMillis: 29000
         Type: AWS
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:states:action/StartExecution"
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:states:action/StartExecution
       MethodResponses:
         - ResponseModels:
             application/json: Empty
@@ -294,7 +300,7 @@ Resources:
         PassthroughBehavior: WHEN_NO_MATCH
         TimeoutInMillis: 29000
         Type: AWS_PROXY
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApigwFunction.Arn}/invocations"
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApigwFunction.Arn}/invocations
       MethodResponses:
         - ResponseModels:
             application/json: Empty
@@ -305,6 +311,8 @@ Resources:
 
   ApigwLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub API-Gateway-Execution-Logs_${ApiGatewayRestApi}/${ApiStageName}
       RetentionInDays: !Ref LogRetention
@@ -339,7 +347,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt ApigwFunction.Arn
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/GET/execution"
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/GET/execution
 
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment

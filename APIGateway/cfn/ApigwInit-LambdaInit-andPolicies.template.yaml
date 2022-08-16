@@ -46,7 +46,7 @@ Resources:
       Action: lambda:invokeFunction
       FunctionName: !GetAtt 'LambdaFunction.Arn'
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*'
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*'
   ApigExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -73,7 +73,7 @@ Resources:
             Action:
               - execute-api:Invoke
             Resource:
-              - !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*'
+              - !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*'
       Groups:
         - !Ref InternalGroupCI
         - !Ref InternalGroupDev
@@ -186,7 +186,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - logs:*
-                Resource: arn:aws:logs:*:*:*
+                Resource: !Sub arn:${AWS::Partition}:logs:*:*:*
       ManagedPolicyArns:
         - !Ref 'LambdaExecuteTodoProdDynamoDBPolicyArn'
         - !Ref 'LambdaExecuteTodoTestDynamoDBPolicyArn'
@@ -194,10 +194,7 @@ Resources:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       Description: Managed Policy for creating/updating the specified lambda function
-      ManagedPolicyName: !Join
-        - '-'
-        - - !Ref 'ApigName'
-          - LambdaExecute
+      ManagedPolicyName: !Sub ${ApigName}-LambdaExecute
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -212,34 +209,15 @@ Resources:
               - lambda:GetAlias
               - lambda:UpdateAlias
               - lambda:PublishVersion
-            Resource:
-              - !Join
-                - ':'
-                - - arn:aws:lambda
-                  - !Ref 'AWS::Region'
-                  - !Ref 'AWS::AccountId'
-                  - function
-                  - !Ref 'LambdaFunctionName'
+            Resource: !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunctionName}
           - Effect: Allow
             Action:
               - iam:Passrole
-            Resource: !Join
-              - ''
-              - - 'arn:aws:iam::'
-                - !Ref 'AWS::AccountId'
-                - :role/
-                - !Ref 'LambdaExecuteRoleName'
+            Resource: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}/:role/${LambdaExecuteRoleName}
           - Effect: Allow
             Action:
               - lambda:InvokeFunction
-            Resource:
-              - !Join
-                - ':'
-                - - arn:aws:lambda
-                  - !Ref 'AWS::Region'
-                  - !Ref 'AWS::AccountId'
-                  - function
-                  - !Ref 'LambdaFunctionName'
+            Resource: !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunctionName}
       Groups:
         - !Ref 'InternalGroupCI'
       Roles:

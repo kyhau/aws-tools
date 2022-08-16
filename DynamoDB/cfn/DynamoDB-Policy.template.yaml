@@ -29,7 +29,7 @@ Resources:
             Action:
               - dynamodb:ListTables
               - dynamodb:ListStreams
-            Resource: arn:aws:dynamodb:::*
+            Resource: !Sub arn:${AWS::Partition}:dynamodb:::*
           - Effect: Allow
             Action:
               - dynamodb:BatchGetItem
@@ -48,7 +48,7 @@ Resources:
               - dynamodb:UpdateItem
               - dynamodb:UpdateTable
               - dynamodb:UntagResource
-            Resource: !Sub 'arn:aws:dynamodb:::${TableName}'
+            Resource: !Sub arn:${AWS::Partition}:dynamodb:::${TableName}
       Groups: !If
         - HasGroupName
         - - !Ref 'GroupName'

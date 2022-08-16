@@ -56,7 +56,7 @@ Resources:
             Action:
               - s3:GetObject
             Effect: Allow
-            Resource: !Sub 'arn:aws:s3:::${AppBucketName}/*'
+            Resource: !Sub 'arn:${AWS::Partition}:s3:::${AppBucketName}/*'
             Principal: '*'
 
 Outputs:
@@ -65,7 +65,4 @@ Outputs:
     Value: !GetAtt 'S3Bucket.WebsiteURL'
   S3BucketSecureURL:
     Description: Name of S3 bucket to hold website content
-    Value: !Join
-      - ''
-      - - https://
-        - !GetAtt S3Bucket.DomainName
+    Value: !Sub "https://${S3Bucket.DomainName}"
