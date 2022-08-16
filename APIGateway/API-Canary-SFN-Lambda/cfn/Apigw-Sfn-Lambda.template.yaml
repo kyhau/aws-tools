@@ -86,6 +86,8 @@ Resources:
 
   SfnFunctionLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/lambda/${SfnFunction}
       RetentionInDays: !Ref LogRetention
@@ -356,7 +358,7 @@ Resources:
         Type: AWS_PROXY
         Uri: !Join
           - ''
-          - - 'arn:${AWS::Partition}:apigateway:'
+          - - 'arn:aws:apigateway:'
             - !Ref AWS::Region
             - ':lambda:path/2015-03-31/functions/'
             - !GetAtt ApigwFunction.Arn
