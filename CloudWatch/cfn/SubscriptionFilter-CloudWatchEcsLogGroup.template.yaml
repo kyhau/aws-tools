@@ -35,7 +35,7 @@ Resources:
       Principal: !Sub 'logs.${AWS::Region}.amazonaws.com'
       SourceAccount: !Ref 'AWS::AccountId'
       SourceArn: !Sub
-        - 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LogGroupName}:*'
+        - 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LogGroupName}:*'
         - {LogGroupName: !Ref CloudWatchEcsLogGroupName}
 
 Outputs:

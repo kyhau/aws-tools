@@ -12,7 +12,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Ref TaskStoppedHandlerLambdaFunctionName
-      Runtime: python3.6
+      Runtime: python3.8
       Handler: TaskStoppedHandler.lambda_handler
       MemorySize: 2048
       Timeout: 60

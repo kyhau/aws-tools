@@ -42,9 +42,9 @@ Resources:
             Effect: "Allow"
             Action:
               - s3:GetObject
-            Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
+            Resource: !Sub arn:${AWS::Partition}:s3:::${S3Bucket}/*
             Principal:
-              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAI}"
+              AWS: !Sub arn:${AWS::Partition}:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAI}
 
   CFDistribution:
     Type: AWS::CloudFront::Distribution

@@ -90,7 +90,7 @@
       "Type": "AWS::Lambda::Function",
       "DependsOn": ["LambdaExecutionRole"],
       "Properties": {
-        "Runtime": "python3.6",
+        "Runtime": "python3.7",
         "Handler": "index.lambda_handler",
         "MemorySize": 2048,
         "Timeout": 10,

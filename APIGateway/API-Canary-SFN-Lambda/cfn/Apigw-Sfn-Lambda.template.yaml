@@ -64,7 +64,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - states:DescribeExecution
-                Resource: arn:aws:states:ap-southeast-2:818427450946:execution:K-SFN-StateMachine*
+                Resource: !Sub arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:execution:K-SFN-StateMachine*
       RoleName: !Sub ${ApiName}-Lambda-ExecutionRole
 
   SfnFunction:
@@ -199,7 +199,7 @@ Resources:
                   - lambda:InvokeFunction
                   - lambda:ListFunctions
                 Resource:
-                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${SfnFunctionName}*"
+                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${SfnFunctionName}*"
               - Effect: Allow
                 Action:
                   - logs:CreateLogDelivery
@@ -330,7 +330,7 @@ Resources:
               }
         TimeoutInMillis: 29000
         Type: AWS
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:states:action/StartExecution"
+        Uri: !Sub "arn:${AWS::Partition}:apigateway:${AWS::Region}:states:action/StartExecution"
       MethodResponses:
         - ResponseModels:
             application/json: Empty
@@ -356,7 +356,7 @@ Resources:
         Type: AWS_PROXY
         Uri: !Join
           - ''
-          - - 'arn:aws:apigateway:'
+          - - 'arn:${AWS::Partition}:apigateway:'
             - !Ref AWS::Region
             - ':lambda:path/2015-03-31/functions/'
             - !GetAtt ApigwFunction.Arn
@@ -407,7 +407,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt ApigwFunction.Arn
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/GET/execution"
+      SourceArn: !Sub "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/GET/execution"
 
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment

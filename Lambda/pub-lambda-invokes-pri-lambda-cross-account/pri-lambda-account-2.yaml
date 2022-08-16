@@ -88,6 +88,8 @@ Resources:
 
   LambdaLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/lambda/${LambdaFunction}
       RetentionInDays: !Ref LogRetention
@@ -101,7 +103,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: !Sub arn:aws:iam::${OtherAccountId}:root
+              AWS: !Sub arn:${AWS::Partition}:iam::${OtherAccountId}:root
             Action: sts:AssumeRole
       Policies:
         - PolicyName: !Sub ${LambdaInvokeRoleName}Policy

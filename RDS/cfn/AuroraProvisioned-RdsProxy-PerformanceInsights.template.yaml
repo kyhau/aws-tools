@@ -132,7 +132,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - kms:Decrypt
-                Resource: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/secretsmanager
+                Resource: !Sub arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/secretsmanager
                 Condition:
                   StringEquals:
                     "kms:ViaService": !Sub secretsmanager.${AWS::Region}.amazonaws.com
@@ -194,7 +194,7 @@ Resources:
               !Join [
                 "",
                 [
-                  !Sub "arn:aws:rds-db:${AWS::Region}:${AWS::AccountId}:dbuser:",
+                  !Sub "arn:${AWS::Partition}:rds-db:${AWS::Region}:${AWS::AccountId}:dbuser:",
                   !Select [6, !Split [":", !GetAtt DBProxy.DBProxyArn]],
                   "/",
                   !Sub "{{resolve:secretsmanager:${MasterSecret}:SecretString:username}}",

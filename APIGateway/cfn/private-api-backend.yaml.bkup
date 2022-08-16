@@ -233,7 +233,7 @@ Resources:
         - Effect: Allow
           Action: execute-api:Invoke
           Resource:
-            Fn::Sub: arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${rAPI}/*
+            Fn::Sub: arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${rAPI}/*
   rAPI:
     Type: AWS::Serverless::Api
     DependsOn: rAPIFunction
@@ -279,7 +279,7 @@ Resources:
             get:
               x-amazon-apigateway-integration:
                 uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${rAPIFunction.Arn}/invocations
+                  Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${rAPIFunction.Arn}/invocations
                 content_handling: CONVERT_TO_TEXT
                 passthroughBehaviour: when_no_match
                 httpMethod: POST
@@ -324,7 +324,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: api-backend.handler
-      Runtime: python3.7
+      Runtime: python3.8
       Description: Receives API requests for invocations through API Gateway
       MemorySize: 128
       Timeout: 10
@@ -336,7 +336,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: rAPI
-      CodeUri: s3://private-api-deployment-ap-southeast-2-818427450946/78f61f94d358e82299c7f3e1b2014561
+      CodeUri: s3://private-api-deployment-ap-southeast-2-123456789012/78f61f94d358e82299c7f3e1b2014561
       Environment:
         Variables:
           DDB_TABLE:
@@ -396,7 +396,7 @@ Resources:
     DependsOn: rAPIStage
     Properties:
       ResourceArn:
-        Fn::Sub: arn:aws:apigateway:${AWS::Region}::/restapis/${rAPI}/stages/${pAPIStageName}
+        Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}::/restapis/${rAPI}/stages/${pAPIStageName}
       WebACLArn:
         Fn::GetAtt:
         - rWAF
@@ -406,9 +406,9 @@ Resources:
     Condition: cDeployToVPC
     Properties:
       Description: Retrieve prefix lists for use in Security Groups
-      Runtime: python3.7
+      Runtime: python3.8
       Handler: lambda_function.handler
-      CodeUri: s3://private-api-deployment-ap-southeast-2-818427450946/3256beaa6ed5fec6c779c8c6d3b08d9e
+      CodeUri: s3://private-api-deployment-ap-southeast-2-123456789012/3256beaa6ed5fec6c779c8c6d3b08d9e
       Timeout: 300
       Environment:
         Variables:

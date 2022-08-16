@@ -26,7 +26,7 @@ Resources:
           - Sid: "Enable IAM User Permissions"
             Effect: "Allow"
             Principal:
-              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+              AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
             Action: "kms:*"
             Resource: "*"
 
@@ -75,9 +75,8 @@ Resources:
 
   KmsAlias:
     Type: AWS::KMS::Alias
-    DependsOn: KmsKey
     Properties:
-      AliasName: !Join ["", ["alias/", !Ref KmsAliasName]]
+      AliasName: !Sub alias/${KmsAliasName}
       TargetKeyId: !Ref KmsKey
 
 Outputs:

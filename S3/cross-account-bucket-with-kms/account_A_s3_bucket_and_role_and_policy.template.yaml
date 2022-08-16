@@ -47,7 +47,7 @@ Resources:
           - Sid: "Enable IAM User Permissions"
             Effect: "Allow"
             Principal:
-              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+              AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"
             Action: "kms:*"
             Resource: "*"
 
@@ -90,14 +90,14 @@ Resources:
 
   KmsAlias:
     Type: AWS::KMS::Alias
-    DependsOn: KmsKey
     Properties:
-      AliasName: !Sub "alias/${BucketName}-kms"
+      AliasName: !Sub alias/${BucketName}-kms
       TargetKeyId: !Ref KmsKey
 
   S3Bucket:
     Type: AWS::S3::Bucket
-    DependsOn: KmsKey
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       BucketName: !Ref BucketName
       AccessControl: BucketOwnerFullControl
@@ -115,7 +115,6 @@ Resources:
 
   BucketPolicy:
     Type: AWS::S3::BucketPolicy
-    DependsOn: S3Bucket
     Properties:
       Bucket: !Ref S3Bucket
       PolicyDocument:
@@ -149,15 +148,12 @@ Resources:
             - s3:PutObject
           Condition:
             StringNotLike:
-              s3:x-amz-server-side-encryption-aws-kms-key-id: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+              s3:x-amz-server-side-encryption-aws-kms-key-id: !Sub "arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*"
           Resource:
             - !Sub ${S3Bucket.Arn}/*
 
   S3ReadPolicy:
     Type: AWS::IAM::ManagedPolicy
-    DependsOn:
-      - IamRole
-      - S3Bucket
     Properties:
       Description: "Allow to decrypt the AWS KMS key and also download from the S3 bucket"
       PolicyDocument:

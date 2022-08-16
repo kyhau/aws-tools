@@ -40,19 +40,19 @@ Resources:
                 Action:
                   - s3:GetObject
                 Resource:
-                  - !Sub 'arn:aws:s3:::${S3BucketName}/*'
+                  - !Sub 'arn:${AWS::Partition}:s3:::${S3BucketName}/*'
               - Effect: Allow
                 Action:
                   - s3:PutObject
                   - s3:DeleteObject
                 Resource:
-                  - !Sub 'arn:aws:s3:::${LambdaZipsBucket}/*'
+                  - !Sub 'arn:${AWS::Partition}:s3:::${LambdaZipsBucket}/*'
   CopyZipsFunction:
     Type: AWS::Lambda::Function
     Properties:
       Description: Copies objects from a source S3 bucket to a destination
       Handler: index.handler
-      Runtime: python2.7
+      Runtime: python3.8
       Role: !GetAtt 'CopyZipsRole.Arn'
       Timeout: 240
       Code:
@@ -147,15 +147,15 @@ Resources:
             Statement:
               - Effect: Allow
                 Resource:
-                  - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*'
-                  - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*:*'
+                  - !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*'
+                  - !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*:*'
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
               - Effect: Allow
                 Resource:
-                  - !Sub 'arn:aws:s3:::${LambdaZipsBucket}/quickstart-examples/samples/cloudformation-codebuild-container/${CodeBuildBundle}'
+                  - !Sub 'arn:${AWS::Partition}:s3:::${LambdaZipsBucket}/quickstart-examples/samples/cloudformation-codebuild-container/${CodeBuildBundle}'
                 Action:
                   - s3:GetObject
                   - s3:GetObjectVersion
@@ -163,7 +163,7 @@ Resources:
                 Resource:
                   Fn::Join:
                     - ''
-                    - - !Sub 'arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/'
+                    - - !Sub 'arn:${AWS::Partition}:ecr:${AWS::Region}:${AWS::AccountId}:repository/'
                       - !Ref ECRRepository
                 Action:
                   - ecr:DescribeImages
@@ -187,7 +187,7 @@ Resources:
       Description: Builds a docker container and pushes container images to ECR
       ServiceRole: !GetAtt 'CodeBuildRole.Arn'
       Artifacts:
-        Type: no_artifacts
+        Type: NO_ARTIFACTS
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
@@ -200,7 +200,7 @@ Resources:
           - Name: IMAGE_REPO_NAME
             Value: !Ref ECRRepository
           - Name: IMAGE_TAG
-            Value: 'latest'  
+            Value: 'latest'
           - Name: url_path
             Value: 'placeholder'
           - Name: url_query
@@ -271,7 +271,7 @@ Resources:
       BuildProjectName: !Ref CodeBuildProject
       ECRRepository: !Ref ECRRepository
       # cfn_signal_url: is part of the event by default hence missing here
-      # cfn_stack_id: is part of the event by default 
+      # cfn_stack_id: is part of the event by default
       # cfn_request_id: also part of the event
       # cfn_logical_resource_id: also part of the event
       # Lambda function passes the above into the build project when invoking StartBuild
@@ -283,7 +283,7 @@ Resources:
         S3Bucket: !Ref LambdaZipsBucket
         S3Key: !Sub "quickstart-examples/samples/cloudformation-codebuild-container/${LambdaCodePath}"
       Handler: "lambda_codebuild.lambda_handler"
-      Runtime: python2.7
+      Runtime: python3.9
       Timeout: 300
       Role: !GetAtt CodeBuildLambdaExecutionRole.Arn
   CodeBuildLambdaExecutionRole:
@@ -311,10 +311,10 @@ Resources:
           - Effect: Allow
             Action:
               - logs:*
-            Resource: arn:aws:logs:*:*:*
+            Resource: !Sub arn:${AWS::Partition}:logs:*:*:*
           - Effect: Allow
             Resource:
-              - !Sub 'arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/${ECRRepository}'
+              - !Sub 'arn:${AWS::Partition}:ecr:${AWS::Region}:${AWS::AccountId}:repository/${ECRRepository}'
             Action:
               - ecr:DescribeImages
               - ecr:ListImages
@@ -324,4 +324,4 @@ Resources:
             Action:
               - s3:GetObject
               - s3:PutObject
-            Resource: arn:aws:s3:::*  
+            Resource: !Sub arn:${AWS::Partition}:s3:::*

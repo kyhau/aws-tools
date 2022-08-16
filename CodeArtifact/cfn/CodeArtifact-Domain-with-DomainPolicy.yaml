@@ -32,7 +32,7 @@ Resources:
               - codeartifact:ReadFromRepository
             Effect: Allow
             Principal:
-              AWS: !Sub arn:aws:iam::${OtherAccountId}:root
+              AWS: !Sub arn:${AWS::Partition}:iam::${OtherAccountId}:root
             Resource: "*"
             Sid: Contributor domain access
 

@@ -48,6 +48,8 @@ Resources:
 
   LambdaLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/lambda/${LambdaFunction}
       RetentionInDays: !Ref LogRetention
@@ -74,7 +76,7 @@ Resources:
                   - lambda:InvokeFunction
                   - lambda:ListFunctions
                 Resource:
-                  - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${FunctionName}*"
+                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${FunctionName}*"
               - Effect: Allow
                 Action:
                   - logs:CreateLogDelivery
@@ -94,6 +96,8 @@ Resources:
 
   StateMachineLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub /aws/stepfunction/${StateMachineName}
       RetentionInDays: !Ref LogRetention
