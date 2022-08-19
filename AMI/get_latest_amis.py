@@ -82,9 +82,7 @@ def get_parameters(param_path, region, session):
     for region in session.get_available_regions("ssm") if region == "all" else [region]:
         try:
             client = session.client("ssm", region_name=region)
-            print(param_path)
             for item in client.get_parameters(Names=[param_path])["Parameters"]:
-                print(item)
                 del item["Name"]
                 del item["Type"]
                 if "{" in item["Value"]:
@@ -109,7 +107,7 @@ def cli_main(ctx, profile, region):
 def bottlerocket_ecs(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     resp = prompt_multi_selection("AMI", options=list(get_bottlerocket_ecs_meta_dict().keys()), pre_selected_options=[])
-    for name in resp["AMIs"]:
+    for name in resp.get("AMIs", []):
         get_parameters(param_path=f"{name}/latest/image_id", region=region, session=session)
 
 
@@ -118,7 +116,7 @@ def bottlerocket_ecs(ctx):
 def bottlerocket_eks(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     resp = prompt_multi_selection("AMI", options=list(get_eks_meta_dict(True).keys()), pre_selected_options=[])
-    for name in resp["AMIs"]:
+    for name in resp.get("AMIs", []):
         get_parameters(param_path=f"{name}/latest/image_id", region=region, session=session)
 
 
@@ -128,7 +126,7 @@ def ec2(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     data = get_parameters_by_path(param_path="/aws/service/ami-amazon-linux-latest", region=region, session=session)
     resp = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
-    for arn in resp["AMIs"]:
+    for arn in resp.get("AMIs", []):
         print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
 
 
@@ -137,7 +135,7 @@ def ec2(ctx):
 def ecs(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     resp = prompt_multi_selection("AMI", options=list(get_ecs_meta_dict().keys()), pre_selected_options=[])
-    for name in resp["AMIs"]:
+    for name in resp.get("AMIs", []):
         get_parameters(param_path=f"{name}/recommended", region=region, session=session)
 
 
@@ -146,7 +144,7 @@ def ecs(ctx):
 def eks(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     resp = prompt_multi_selection("AMI", options=list(get_eks_meta_dict().keys()), pre_selected_options=[])
-    for name in resp["AMIs"]:
+    for name in resp.get("AMIs", []):
         get_parameters(param_path=f"{name}/recommended", region=region, session=session)
 
 
@@ -156,7 +154,7 @@ def windows(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     data = get_parameters_by_path(param_path="/aws/service/ami-windows-latest", region=region, session=session)
     resp = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
-    for arn in resp["AMIs"]:
+    for arn in resp.get("AMIs", []):
         print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
 
 
