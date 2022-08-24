@@ -30,7 +30,7 @@ def prompt_single_selection(name, options):
 
 def prompt_multi_selection(name, options, pre_selected_options):
     if not options:
-        raise ValueError("No roles retrieved for selection.")
+        raise ValueError("No options retrieved for selection.")
 
     questions = [
         {

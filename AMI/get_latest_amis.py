@@ -125,9 +125,10 @@ def bottlerocket_eks(ctx):
 def ec2(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     data = get_parameters_by_path(param_path="/aws/service/ami-amazon-linux-latest", region=region, session=session)
-    resp = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
-    for arn in resp.get("AMIs", []):
-        print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
+    if data:
+        resp = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
+        for arn in resp.get("AMIs", []):
+            print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
 
 
 @cli_main.command(help="Find ECS optimized AMIs")
@@ -153,9 +154,10 @@ def eks(ctx):
 def windows(ctx):
     region, session = ctx.obj["region"], ctx.obj["session"]
     data = get_parameters_by_path(param_path="/aws/service/ami-windows-latest", region=region, session=session)
-    resp = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
-    for arn in resp.get("AMIs", []):
-        print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
+    if data:
+        resp = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
+        for arn in resp.get("AMIs", []):
+            print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
 
 
 if __name__ == "__main__":
