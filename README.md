@@ -11,7 +11,7 @@ This repo provides some tools and sample code I created for building with AWS.
 
 Most of the Python scripts support multi accounts and regions.
 
-Python 3.6 +
+Python 3.7 +
 
 ```
 # Create and activate virtual env (optional)
@@ -82,7 +82,7 @@ pip install -r requirements-cli.txt
 - [OpenSearch (prev. ElasticSearch Service)](./OpenSearch/)
 - [Organizations](./Organizations/)
 - [RDS](./RDS/)
-- [RedShift](./Redshift/)
+- [Redshift](./Redshift/)
 - [Route 53](./Route53/)
 - [SageMaker](./SageMaker/)
 - [SAM, Serverless Application Registry](./SAM-and-ServerlessApplicationRepository/)
