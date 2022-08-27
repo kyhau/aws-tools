@@ -6,6 +6,8 @@
 
 This repo provides some tools and sample code I created for building with AWS.
 
+All notable changes to this project will be documented in [CHANGELOG](./CHANGELOG.md).
+
 ---
 ## For running Python scripts
 
