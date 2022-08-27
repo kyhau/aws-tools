@@ -1,43 +1,36 @@
+# Install CLI tools
+
 pip
 awscli
-#aws-shell
-#aws-encryption-sdk-cli   # CLI wrapper around aws-encryption-sdk-python
+#aws-shell                # https://github.com/awslabs/aws-shell
+#aws-encryption-sdk-cli   # CLI wrapper around aws-encryption-sdk-python, https://github.com/aws/aws-encryption-sdk-cli
 #aws-parallelcluster      # https://github.com/aws/aws-parallelcluster
-#awsebcli                 # AWS Elastic Beanstalk CLI
-#awslimitchecker
-#c7n                      # cloud-custodian
-
-################################################################################
-# CDK
-
-# CDK v2; require `npm install -g aws-cdk@next`
-#aws-cdk-lib>=2.0.0rc1
-#constructs>=10.0.0
-
-# CDK v1; require `npm install -g aws-cdk`
-#aws-cdk.core
+#awsebcli                 # https://github.com/aws/aws-elastic-beanstalk-cli
+#awslimitchecker          # https://github.com/jantman/awslimitchecker
+#c7n                      # cloud-custodian, https://github.com/cloud-custodian/cloud-custodian
 
 ################################################################################
 # CloudFormation
 
-cfn-flip
-cfn-lint                  # require aws-sam-translator
-cloudformation-cli        # cfn
-cloudformation-cli-python-plugin
-pydot                     # use tegether with cfn-lint to generate DOT file, require graphviz
-yamllint
+cfn-flip                  # https://github.com/awslabs/aws-cfn-template-flip
+cfn-lint                  # require aws-sam-translator, https://github.com/aws-cloudformation/cfn-lint
+cloudformation-cli        # https://github.com/aws-cloudformation/cloudformation-cli
+cloudformation-cli-python-plugin  # https://github.com/aws-cloudformation/cloudformation-cli-python-plugin
+yamllint                  # https://github.com/adrienverge/yamllint
 
 ################################################################################
 # Serverless
 
-#aws-sam-cli         # require docker
-#chalice             # AWS Chalice
-#awscli-local        # LocalStack AWS CLI - https://github.com/localstack/awscli-local
-#localstack          # Local AWS cloud stack - https://github.com/localstack/localstack
+#aws-sam-cli              # require docker, https://github.com/aws/aws-sam-cli
+#chalice                  # https://github.com/aws/chalice
+#awscli-local             # https://github.com/localstack/awscli-local
+#localstack               # https://github.com/localstack/localstack
 
 ################################################################################
 # Useful tools
 
-#demoshell           # https://github.com/dhellmann/demoshell
-httpie               # https://github.com/httpie/httpie
-yq                   # Command-line YAML/XML processor - jq wrapper for YAML/XML documents
+#demoshell                # https://github.com/dhellmann/demoshell
+httpie                    # https://github.com/httpie/httpie
+#pipdeptree               # https://github.com/naiquevin/pipdeptree
+#pydot                    # use tegether with cfn-lint to generate DOT file, require graphviz
+yq                        # YAML/XML processor - jq wrapper for YAML/XML documents, https://github.com/kislyuk/yq

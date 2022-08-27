@@ -2,20 +2,20 @@
 
 [![githubactions](https://github.com/kyhau/aws-tools/workflows/Build-Test/badge.svg)](https://github.com/kyhau/aws-tools/actions)
 [![travisci](https://travis-ci.org/kyhau/aws-tools.svg?branch=master)](https://travis-ci.org/kyhau/aws-tools)
-[![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
+[![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
 
 This repo provides some tools and sample code I created for building with AWS.
 
 ---
 ## For running Python scripts
 
-Most of the Python scripts support multi accounts and regions.
+Most of the Python scripts support processing multiple AWS accounts and regions using `AwsApiHelper` in the common [helper.aws.AwsApiHelper](./_common/helper/aws.py) module.
 
 Python 3.7 +
 
 ```
 # Create and activate virtual env (optional)
-virtualenv env -p python3.10
+virtualenv env -p python3.9
 . env/bin/activate
 
 # Install the required packages

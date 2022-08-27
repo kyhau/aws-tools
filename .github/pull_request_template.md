@@ -1,6 +1,6 @@
 ## Proposed changes
 - Describe why the change is needed and the proposed changes
-- [Ticket](link-to-the-ticket)
+- Ticket: (link-to-the-ticket)
 
 ## Type of change
 - [x] Bugfix (non-breaking change which fixes an issue)
