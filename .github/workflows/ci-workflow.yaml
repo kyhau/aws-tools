@@ -21,12 +21,9 @@ jobs:
       - name: Run yamllint
         run: yamllint -c ./.github/linters/.yaml-lint.yaml -f parsable --format standard .github/
 
-      - name: Install cfn-lint
-        run: |
-          pip install cfn-lint
-
       - name: Run cfn-lint
         run: |
+          pip install cfn-lint
           cp .github/linters/.cfnlintrc .
           cfn-lint ./**/cfn/*.yaml
 
@@ -51,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.8, 3.9, 3.10]
 
     steps:
       - name: Checkout sources
@@ -75,6 +72,9 @@ jobs:
           elif [[ "${{ matrix.python-version }}" == "3.9" ]]
           then
             echo "::set-output name=toxenv::py39"
+          elif [[ "${{ matrix.python-version }}" == "3.10" ]]
+          then
+            echo "::set-output name=toxenv::py310"
           else
             exit 1
           fi
