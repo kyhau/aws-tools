@@ -28,28 +28,32 @@ jobs:
           cfn-lint ./**/cfn/*.yaml
 
   security:
+    name: Run Snyk to check for vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout sources
+        uses: actions/checkout@master
+
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.8@master
+        uses: snyk/actions/python-3.9@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --all-projects --severity-threshold=high --sarif-file-output=snyk.sarif
+
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: snyk.sarif
 
   build:
+    name: Build and test
     needs: lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8, 3.9, "3.10"]
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@master
@@ -64,7 +68,8 @@ jobs:
           python -m pip install --upgrade pip virtualenv setuptools tox
           pip install -r _common/requirements-build.txt
 
-      - id: ToxSetting
+      - name: Set tox setting
+        id: ToxSetting
         run: |
           if [[ "${{ matrix.python-version }}" == "3.8" ]]
           then
