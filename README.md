@@ -9,7 +9,7 @@ This repo provides some tools and sample code I created for building with AWS.
 ---
 ## For running Python scripts
 
-Most of the Python scripts support multi accounts and regions.
+Most of the Python scripts support processing multiple AWS accounts and regions using `AwsApiHelper` in the common [helper.aws.AwsApiHelper](./_common/helper/aws.py) module.
 
 Python 3.7 +
 
