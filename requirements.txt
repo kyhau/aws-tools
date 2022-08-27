@@ -1,23 +1,21 @@
+# Install the helper module - common lib for the Python tools in this repo
 -e _common/.
 
 ################################################################################
 # AWS related packages
 
 boto3~=1.18
-#aws-embedded-metrics
-#aws-encryption-sdk
-#aws-lambda-powertools
-#aws-xray-sdk
-#chalice            # AWS Chalice
-#pyathena
-#rdklib             # Lib for running custom AWS Config Rules at scale using Lambda Layer.
-#sagemaker
-#stepfunctions
-#AWSIoTPythonSDK
-
-################################################################################
-# AWS CloudFormation Resource Provider Python Plugin (preview)
-#git+https://github.com/aws-cloudformation/aws-cloudformation-rpdk-python-plugin.git#egg=cloudformation-cli-python-plugin
+#aws-embedded-metrics     # https://github.com/awslabs/aws-embedded-metrics-python
+#aws-encryption-sdk       # https://github.com/aws/aws-encryption-sdk-python
+#aws-lambda-powertools    # https://github.com/awslabs/aws-lambda-powertools-python
+#aws-xray-sdk             # https://github.com/aws/aws-xray-sdk-python/
+#awsiotsdk                # https://github.com/aws/aws-iot-device-sdk-python-v2
+#chalice                  # https://github.com/aws/chalice
+#pyathena                 # https://github.com/laughingman7743/PyAthena/
+#pycognito                # replace warrant, https://github.com/pvizeli/pycognito
+#rdk                      # https://github.com/awslabs/aws-config-rdk
+#sagemaker                # https://github.com/aws/sagemaker-python-sdk/
+#stepfunctions            # https://github.com/aws/aws-step-functions-data-science-sdk-python
 
 ################################################################################
 # AWS CDK v2 related packages
@@ -41,18 +39,16 @@ boto3~=1.18
 ################################################################################
 # Non aws related packages
 
-click~=8.0
-fire~=0.4               # google/python-fire
-#apispec~=5.1            # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
+click~=8.0                # https://github.com/pallets/click
+fire~=0.4                 # https://github.com/google/python-fire
+#apispec~=5.1             # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
 #black
-#dataclasses-json~=0.5   # provides a simple API for encoding and decoding dataclasses to and from JSON
+#dataclasses-json~=0.5    # provides a simple API for encoding and decoding dataclasses to and from JSON
 #faker
-#pipdeptree
-#pycognito              # replace warrant
 #pyyaml~=5.1
 #pypiwin32==220
 #toml~=0.10
-#typer~=0.2             # click alternative
+#typer~=0.2               # click alternative
 
 ################################################################################
 # Kafka
