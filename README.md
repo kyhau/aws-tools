@@ -29,23 +29,19 @@ Most of the Python scripts support processing multiple AWS accounts (via AWS pro
 
 
 Support Python 3.7, 3.8, 3.9, 3.10
+```
+pip3 install -r requirements.txt
+```
+Set aliases (Optional)
 
 ```
-# Create and activate virtual env (optional)
-virtualenv env -p python3.9
-. env/bin/activate
-
-# Install the required packages
-pip install -r requirements.txt
-
-# Set aliases (Optional)
 source .aliases
 ```
 
 ## For running CLI tools and shell scripts
 
 ```
-pip install -r requirements-cli.txt
+pip3 install -r requirements-cli.txt
 ```
 
 ---
