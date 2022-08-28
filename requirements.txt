@@ -5,6 +5,7 @@
 # AWS related packages
 
 boto3~=1.18
+#amazon.ion               # https://github.com/amzn/ion-python
 #aws-embedded-metrics     # https://github.com/awslabs/aws-embedded-metrics-python
 #aws-encryption-sdk       # https://github.com/aws/aws-encryption-sdk-python
 #aws-lambda-powertools    # https://github.com/awslabs/aws-lambda-powertools-python
