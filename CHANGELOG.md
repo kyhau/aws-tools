@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-08-29
+
+### Changed
+
+   * Updated list_resources_with_configservice.py to add option `--ls` and `resource-type`.
+   * Updated _common/helper/selector.py to support custom message.
+
 ## 2022-08-27
 
 ### Changed
