@@ -13,14 +13,14 @@ custom_style = style_from_dict(
 )
 
 
-def prompt_single_selection(name, options):
+def prompt_single_selection(name, options, message=None):
     if not options:
-        raise ValueError("No profiles retrieved for selection.")
+        raise ValueError("No options retrieved for selection.")
 
     questions = [
         {
             "choices": options,
-            "message": f"Please choose the {name}",
+            "message": message if message else f"Please choose the {name}",
             "name": name,
             "type": "list",
         }
@@ -28,7 +28,7 @@ def prompt_single_selection(name, options):
     return prompt(questions, style=custom_style)
 
 
-def prompt_multi_selection(name, options, pre_selected_options):
+def prompt_multi_selection(name, options, pre_selected_options, message=None):
     if not options:
         raise ValueError("No options retrieved for selection.")
 
@@ -43,7 +43,7 @@ def prompt_multi_selection(name, options, pre_selected_options):
                     }
                 for option in options
             ],
-            "message": f"Please choose the {name}",
+            "message": message if message else f"Please choose the {name}",
             "name": f"{name}s",
             "type": "checkbox",
         }
