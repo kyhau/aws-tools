@@ -7,7 +7,11 @@ Jump to
 - [Networking](#networking)
 - [AWS Secrets Manager and Kubernetes Secrets](#aws-secrets-manager-and-kubernetes-secrets)
 - [Node-based autoscaling](#node-based-autoscaling)
+    - Cluster Autoscaler
+    - Karpenter
 - [Pod-based autoscaling](#pod-based-autoscaling)
+    - Horizontal Pod Autoscaler
+    - Vertical Pod Autoscaler
 - [EKS Montoring, Logging, Alerting](#eks-montoring-logging-alerting)
 - [EKS cluster endpoint](#eks-cluster-endpoint)
 - [EKS access control](#eks-access-control)
@@ -123,10 +127,15 @@ Adding or removing nodes as needed
    - https://github.com/aws/karpenter
    - [aws-samples/cdk-eks-karpenter](https://github.com/aws-samples/cdk-eks-karpenter)
 
-Cluster Autoscaler vs. Karpenter
+### Cluster Autoscaler vs. Karpenter
 - https://kubesandclouds.com/index.php/2022/01/04/karpenter-vs-cluster-autoscaler/
 - https://towardsdev.com/karpenter-vs-cluster-autoscaler-dd877b91629b
 
+### Karpenter improvements ([Source](https://kubesandclouds.com/index.php/2022/01/04/karpenter-vs-cluster-autoscaler/))
+- Designed to handle the full flexibility of the cloud: Karpenter has the ability to efficiently address the full range of instance types available through AWS. Cluster autoscaler was not originally built with the flexibility to handle hundreds of instance types, zones, and purchase options.
+- Group-less node provisioning: Karpenter manages each instance directly, without using additional orchestration mechanisms like node groups. This enables it to retry in milliseconds instead of minutes when capacity is unavailable. It also allows Karpenter to leverage diverse instance types, availability zones, and purchase options without the creation of hundreds of node groups.
+- Scheduling enforcement: Cluster autoscaler doesn’t bind pods to the nodes it creates. Instead, it relies on the kube-scheduler to make the same scheduling decision after the node has come online. A node that Karpenter launches has its pods bound immediately. The kubelet doesn’t have to wait for the scheduler or for the node to become ready. It can start preparing the container runtime immediately, including pre-pulling the image. This can shave seconds off of node startup latency.
+- [Workload Consolidation for Karpenter](https://aws.amazon.com/about-aws/whats-new/2022/08/workload-consolidation-karpenter/): Workload consolidation for Karpenter automatically looks for opportunities to reschedule these workloads onto a set of more cost-efficient EC2 instances, whether they are already in the cluster or need to be launched.
 
 ---
 ## Pod-based autoscaling
