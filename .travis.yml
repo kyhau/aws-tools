@@ -3,20 +3,20 @@ sudo: false
 
 matrix:
   include:
-  - python: 3.7
-    dist: focal
-    env: TOXENV=py37
-  - python: 3.8
-    dist: focal
-    env: TOXENV=py38
-  - python: 3.9
-    dist: focal
-    env: TOXENV=py39
-  - python: nightly
-    dist: focal
-    env: TOXENV=py310
+    - python: 3.7
+      dist: focal
+      env: TOXENV=py37
+    - python: 3.8
+      dist: focal
+      env: TOXENV=py38
+    - python: 3.9
+      dist: focal
+      env: TOXENV=py39
+    - python: nightly
+      dist: focal
+      env: TOXENV=py310
   allow_failures:
-  - env: TOXENV=py310
+    - env: TOXENV=py310
 
 before_install:
   - python -m pip install --upgrade setuptools pip virtualenv
