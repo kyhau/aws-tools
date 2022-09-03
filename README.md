@@ -15,6 +15,7 @@ All notable changes to this project will be documented in [CHANGELOG](./CHANGELO
 - Python, Shell, PowerShell, JavaScript, TypeScript, Go, Docker
 - [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [AWS SAM](https://aws.amazon.com/serverless/sam/)
 - [cfn-lint](https://github.com/aws-cloudformation/cfn-lint) is used to validate CloudFormation templates in this repository.
+- [CodeQL](https://codeql.github.com) is [enabled](.github/workflows/codeql-analysis.yml) in this repository.
 - [Dependabot version updates](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) in this repository.
 - [Snyk](https://github.com/snyk/actions) is enabled in the GitHub Actions [workflow](.github/workflows/build-test-common-helper.yaml).
 
