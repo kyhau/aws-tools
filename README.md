@@ -4,6 +4,7 @@
 [![githubactions](https://github.com/kyhau/aws-tools/workflows/Lint/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml)
 [![travisci](https://travis-ci.org/kyhau/aws-tools.svg?branch=master)](https://travis-ci.org/kyhau/aws-tools)
 [![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
+[![CodeQL](https://github.com/kyhau/aws-tools/workflows/CodeQL/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml)
 
 This repository includes some tools and sample code I created for building with AWS.
 
