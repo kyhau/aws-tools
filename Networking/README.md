@@ -1,5 +1,9 @@
 # Networking
 
+- Visual Fn.Cidr tool (NEW): https://kyhau.github.io/visual-subnet-tools/fncidr.html
+- Visual subnet calculator (modified): https://kyhau.github.io/visual-subnet-tools/subnets.html
+
+---
 ## Useful Libs and Tools
 
 | Description | Repo/Link |
