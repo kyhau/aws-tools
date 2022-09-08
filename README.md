@@ -90,6 +90,7 @@ pip3 install -r requirements-cli.txt
 - [Route 53](./Route53/)
 - [SageMaker](./SageMaker/)
 - [SAM, Serverless Application Registry](./SAM-and-ServerlessApplicationRepository/)
+- [Seekable OCI (SOCI)](./SOCI/) for lazy loading container images
 - [SecurityHub](./SecurityHub/)
 - [Shield](./WAF-FirewallManager-Shield/)
 - [SQS](./SQS/)
