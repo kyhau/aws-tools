@@ -26,40 +26,44 @@ Jump to
 ## AWS EKS, AWS Controllers for Kubernetes and related tools and libs
 
 - CDK
-    - [cdk8s](https://github.com/cdk8s-team/cdk8s) - CDK for Kubernetes
-    - [cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) - CLI for CDK for Kubernetes
-    - [cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) - cdk8s+ (cdk8s-plus) is a software development framework that provides high level abstractions for authoring Kubernetes applications.
-    - [CDK EKS+K8s Examples](#cdk-eksk8s-examples)
-    - cdk / cdk8s [Gotchas](#cdk--cdk8s-gotchas)
-- [eksctl](https://github.com/weaveworks/eksctl) - Official CLI for Amazon EKS
-- [eks-distro](https://github.com/aws/eks-distro)
-    - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create reliable and secure Kubernetes clusters.
-    - [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro)
-- [kubectl (Amazon EKS-vended)](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
-- [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK)
-    - e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller, lambda-controller
+    - [cdk8s](https://github.com/cdk8s-team/cdk8s) - Core library
+    - [cdk8s-cli](https://github.com/cdk8s-team/cdk8s-cli) - Command-Line interface
+    - [cdk8s-plus](https://github.com/cdk8s-team/cdk8s-plus) - (cdk8s+ or cdk8s-plus) High-Level constructs for Kubernetes core
+    - [Examples](#cdk-eksk8s-examples) - cdk / cdk8s / k8s
+    - [Gotchas](#cdk--cdk8s-gotchas) - cdk / cdk8s
+- CLIs
+    - [eksctl](https://github.com/weaveworks/eksctl) - CLI tool for creating EKS clusters
+- EKS Distro
+    - [eks-distro](https://github.com/aws/eks-distro) - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create Kubernetes clusters
+    - EKS Distro in [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro)
+- EKS charts (Helm)
+    - [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
+- Controllers
+    - [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK), e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller, lambda-controller
     - [aws-controllers-k8s/test-infra](https://github.com/aws-controllers-k8s/test-infra) - This repository contains a framework for functional integration (e2e) testing of AWS Controllers for Kubernetes (ACK) service controllers.
-- [aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) - AWS EKS Cluster Controller
-- [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter - Kubernetes Cluster Autoscaler
-- [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes
-- aws-observability for EKS
+    - [aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) - AWS EKS Cluster Controller
+    - [zone-aware-controllers-for-k8s](https://github.com/aws/zone-aware-controllers-for-k8s) - Kubernetes controllers for zone (AZ) aware rollouts and disruptions.
+    - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node
+- Scaling
+    - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter - Kubernetes Cluster Autoscaler
+Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes
+- Kubectl Handler
+   - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
+     > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
+- Persistent storage [doc](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
+    - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
+    - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
+- MLTA
     - [aws-observability/aws-otel-collector](https://github.com/aws-observability/aws-otel-collector) - AWS Distro for OpenTelemetry Collector
     - [aws-observability/aws-otel-helm-charts](https://github.com/aws-observability/aws-otel-helm-charts) -  AWS Distro for OpenTelemetry (ADOT) Helm Charts
     - [aws-observability/amp-eks-iam](https://github.com/aws-observability/amp-eks-iam) - Tool providing easy IAM setup on EKS for Amazon Managed Service for Prometheus (AMP) users.
     - [aws-observability/amp-k8s-config-examples](https://github.com/aws-observability/amp-k8s-config-examples) - Configurations for Prometheus including Kubernetes (k8s) Helm charts and Operators
-- [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
-- [eks-event-watcher](https://github.com/aws-samples/eks-event-watcher) - EKS (control plane) event watcher
-- [EKS persistent storage](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
-    - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
-    - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
-- Kubectl Handler
-   - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
-     > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
+    - [eks-event-watcher](https://github.com/aws-samples/eks-event-watcher) - EKS (control plane) event watcher
 - Access control, security
     - [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
     [how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
     - [Amazon GuardDuty for EKS Protection](https://aws.amazon.com/about-aws/whats-new/2022/01/amazon-guardduty-elastic-kubernetes-service-clusters/)
-- Neworking
+- Networking
     - [amazon-vpc-cni-k8s](https://github.com/aws/amazon-vpc-cni-k8s) - Networking plugin for pod networking in Kubernetes using ENIs on AWS.
     - Calico add-on - network policy engine for Kubernetes
        - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
@@ -77,9 +81,6 @@ Jump to
 ## Quick Start
 
 - EKS Kubernetes [versions and release calendar](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-release-calendar)
-- EKS Distro
-    - https://gallery.ecr.aws/?searchTerm=EKS+Distro
-    - https://github.com/aws/eks-distro
 - ALB Controller - https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
 - ALB Ingress - https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
 - https
