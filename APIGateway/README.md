@@ -1,20 +1,21 @@
 # API Gateway
 
 Jump to
+- [Examples for demo](#examples-for-demo)
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [Private API Gateways](#private-api-gateways)
 - [Public API Gateway and VPC Private DNS setting](#public-api-gateway-and-vpc-private-dns-setting)
 
+---
+## Examples for demo
+- [access-private-apigw-in-another-account](https://github.com/kyhau/access-private-apigw-in-another-account) - This repo provides a working example for calling a private API Gateway REST API from another AWS account, including CloudFormation templates, API test code and GitHub Actions workflows.
 
 ---
 ## Useful Libs and Tools
 
-| Description | Repo/Link |
-| :--- | :--- |
-| Amazon API Gateway CORS Configurator | [aws-samples/amazon-api-gateway-cors-configurator](https://github.com/aws-samples/amazon-api-gateway-cors-configurator) |
-| [Amazon API Gateway Serverless Developer Portal](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-developer-portal.html) | [awslabs/aws-api-gateway-developer-portal](https://github.com/awslabs/aws-api-gateway-developer-portal) |
-
+- [amazon-api-gateway-cors-configurator](https://github.com/aws-samples/amazon-api-gateway-cors-configurator) - Amazon API Gateway CORS Configurator
+- [aws-api-gateway-developer-portal](https://github.com/awslabs/aws-api-gateway-developer-portal) - Amazon API Gateway Serverless Developer Portal, see also [Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-developer-portal.html)
 
 ---
 ## Useful Articles and Blogs
@@ -38,8 +39,9 @@ Jump to
 ## Private API Gateways
 
 1. Private API invocation between two separate AWS accounts
-    1. [How can I access an API Gateway private REST API in another AWS account using an interface VPC endpoint?](https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-private-cross-account-vpce/), AWS, 2021-10-11
-    1. AWS Cross Account Private API demo - [aws-samples/aws-cross-account-private-api-demo](https://github.com/aws-samples/aws-cross-account-private-api-demo)
+    1. [access-private-apigw-in-another-account](https://github.com/kyhau/access-private-apigw-in-another-account) - This repo provides a working example for calling a private API Gateway REST API from another AWS account, including CloudFormation templates, API test code and GitHub Actions workflows.
+    2. [How can I access an API Gateway private REST API in another AWS account using an interface VPC endpoint?](https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-private-cross-account-vpce/), AWS, 2021-10-11
+    3. AWS Cross Account Private API demo - [aws-samples/aws-cross-account-private-api-demo](https://github.com/aws-samples/aws-cross-account-private-api-demo)
 1. [Be careful with AWS Private API Gateway Endpoints](https://st-g.de/2019/07/be-careful-with-aws-private-api-gateway-endpoints), 2019-07-24
     - The setting **Enable Private DNS Name**,  will prevent all access to any regional/public API Gateway in the whole AWS region!
     - Solution 1:
