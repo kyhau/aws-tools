@@ -1,6 +1,7 @@
 # Bottlerocket Notes
 
 Jump to
+- [CDK/CFN examples for demo](#ecdkcfn-examples-for-demo)
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [Bottlerocket Security](#bottlerocket-security)
@@ -17,6 +18,10 @@ Jump to
 - [Bottlerocket vs. Fargate](#bottlerocket-vs-fargate)
 - [Using Bottlerocket with or without a container orchestrator?](#using-bottlerocket-with-or-without-a-container-orchestrator)
 - ["No pod metric collected" error when using Bottlerocket for EKS](#no-pod-metric-collected-error-when-using-bottlerocket-for-eks)
+
+---
+## ECDK/CFN examples for demo
+- https://github.com/kyhau/bottlerocket-ecs-cdk
 
 ---
 ## Useful Libs and Tools
