@@ -1,10 +1,11 @@
 # ImageBuilder Notes
 
-- [My notes](#my-notes)
+- [Gotchas](#gotchas)
+    - [Gotchas - AWS::ImageBuilder::ContainerRecipe](#gotchas---awsimagebuildercontainerrecipe)
 - [Useful Templates](#useful-templates)
 
 ---
-## My notes
+## Gotchas
 
 - If something is not right at early stage (e.g. parse file in Component Data) => `Internal Failure` in CDN console, but not log in S3 nor CW Logs.
 
@@ -22,6 +23,13 @@
 
 - Whenever a change to Recipe (include Git Component)
     - Build time ~30 mins
+
+### Gotchas - AWS::ImageBuilder::ContainerRecipe
+
+- In `AWS::ImageBuilder::ContainerRecipe`, `Parameters` is supported only from Console and AWS CLI, but not from CloudFormation.
+
+- In `AWS::ImageBuilder::ContainerRecipe`, `ParentImage` (or `Base image` in Console) cannot reference in another AWS account's ECR repo - this is not mentioned in [AWS documentation](https://docs.aws.amazon.com/imagebuilder/latest/userguide/create-container-recipes.html). Confirmed with AWS support.
+
 
 ---
 ## Useful Templates
