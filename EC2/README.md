@@ -2,13 +2,14 @@
 
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
-- [CloudWatch Agent](../CloudWatch/README.md)
 - [On-Demand Instance vCPUs limits](#on-demand-instance-vcpus-limits)
+- [Encryption in transit](#encryption-in-transit)
 - [Quick Start Linux utilities](#quick-start-linux-utilities)
 - [Amazon Linux 2 amazon-linux-extras repository](#amazon-linux-2-amazon-linux-extras-repository)
     - [How do I install a software package from the Extras Library on an EC2 instance running Amazon Linux 2?](#how-do-i-install-a-software-package-from-the-extras-library-on-an-ec2-instance-running-amazon-linux-2)
     - [Package list of amazon-linux-extras](#package-list-of-amazon-linux-extras)
     - [Install Python 3](#install-python-3)
+- [CloudWatch Agent](../CloudWatch/README.md)
 
 ---
 ## Useful Libs and Tools
@@ -31,6 +32,13 @@ There is a limit on the number of running On-Demand Instances per AWS account pe
     - Even though EC2 automatically increases your On-Demand Instance limits based on your usage, you can request a limit increase if necessary. See Request a limit increase for details.
 
 See also https://aws.amazon.com/premiumsupport/knowledge-center/ec2-on-demand-instance-vcpu-increase/.
+
+
+---
+## Encryption in transit
+
+AWS add an additional layer of encryption to the newer instance types for encryption in transit.
+- See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html#encryption-transit
 
 
 ---
