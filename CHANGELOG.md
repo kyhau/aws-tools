@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## 2022-09-22
 
+### Added
+
+   * Added [MLTA.md](./MLTA.md) - How does Amazon Managed Service for Prometheus relate to Amazon CloudWatch? Which one should I use?
+
+### Changed
+
+   * Updated EC2 notes - On-Demand Instance vCPUs limits
+   * Updated EC2 notes - Encryption in transit
+   * Updated EC2 notes - Amazon Linux 2 amazon-linux-extras repository
+   * Updated Security note - mTLS notes - Mutual Transport Layer Security (mutual TLS or mTLS) authentication
+
 ### Removed
 
    * Removed IAM/set_aws_config.py.
@@ -19,12 +30,10 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-   * Updated build-test-common-helper.yaml (76767c2 from @kyhau)
-   * Updated pull_request_template.md (76767c2 from @kyhau)
+   * Updated workflow build-test-common-helper.yaml (76767c2 from @kyhau)
    * Updated requirements.txt (76767c2 from @kyhau)
    * Updated requirements-cli.txt (76767c2 from @kyhau)
-   * Updated CloudFront notes (#175) (76767c2 from @kyhau)
-   * Updated CloudFront notes (#175) (dec4bfe from @kyhau)
+   * Updated CloudFront notes - OAC (#175) (76767c2 from @kyhau)
 
 ## 2022-08-24
 
@@ -42,20 +51,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-   * Added AWS CLI README (6c3f713 from @kyhau)
-
-## 2022-08-16
-
-### Changed
-
-   * Updated AWS::Partition (#170) (0465c21 from @kyhau)
-   * Updated AWS::Partition (#169) (59848bd from @kyhau)
+   * Added [AWS CLI README](./awscli/README.md) (6c3f713 from @kyhau)
 
 ## 2022-08-11
 
 ### Added
 
-   * Added Graviton.md (#167) (b4c836a from @kyhau)
+   * Added [Graviton.md](Graviton.md) (#167) (b4c836a from @kyhau)
 
 ## 2022-07-31
 
