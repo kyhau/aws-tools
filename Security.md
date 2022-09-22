@@ -3,6 +3,7 @@
 
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Configure mutual Transport Layer Security (mutual TLS or mTLS) authentication with AWS services](#configure-mutual-transport-layer-security-mutual-tls-or-mtls-authentication-with-aws-services)
 - [Firewall Manager, WAF, Shield](./WAF-FirewallManager-Shield/README.md)
 - [IAM](./IAM/)
 - [Instance Metadata Service (IMDS)](./Security/aws_metadata/)
@@ -37,3 +38,21 @@
 - AWS Security Documentation by Category - [docs.aws.amazon.com/security](https://docs.aws.amazon.com/security/)
 - AWS Security Reference Architecture (AWS SRA) - [docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/architecture.html)
 - A Secure Cloud - Repository of customizable AWS security configurations and best practices - [asecure.cloud/](https://asecure.cloud/)
+
+
+---
+## Configure mutual Transport Layer Security (mutual TLS or mTLS) authentication with AWS services
+
+### General
+
+- In order to support doing TLS handshake for mTLS, you need a L4 load balancer like AWS NLB, not ALB.
+- Public AWS ACM does not allow you to export private key which means your client won’t be able to present the client certificate to validate. You might need to use things like [Private Certificate Authority - AWS Certificate Manager - Amazon Web Services (AWS) 7](https://aws.amazon.com/certificate-manager/private-certificate-authority/) or some other CA to generate client certificate for you. See [this Stack Overflow post - How do I get client certificate from ACM?](https://stackoverflow.com/questions/64606582/how-do-i-get-client-certificate-from-acm).
+
+### How to configure mTLS authentication for applications running on Amazon EKS
+
+- NLB → NGINX → Application service and pod
+- See https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/configure-mutual-tls-authentication-for-applications-running-on-amazon-eks.html
+
+### How to configure mTLS authentication for Amazon API Gateway
+
+- See https://aws.amazon.com/blogs/compute/introducing-mutual-tls-authentication-for-amazon-api-gateway/

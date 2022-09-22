@@ -1,7 +1,7 @@
 # Bottlerocket Notes
 
 Jump to
-- [CDK/CFN examples for demo](#ecdkcfn-examples-for-demo)
+- [CDK/CloudFormation examples for demo](#cdkcloudformation-examples-for-demo)
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [Bottlerocket Security](#bottlerocket-security)
@@ -19,9 +19,11 @@ Jump to
 - [Using Bottlerocket with or without a container orchestrator?](#using-bottlerocket-with-or-without-a-container-orchestrator)
 - ["No pod metric collected" error when using Bottlerocket for EKS](#no-pod-metric-collected-error-when-using-bottlerocket-for-eks)
 
+
 ---
-## ECDK/CFN examples for demo
+## CDK/CloudFormation examples for demo
 - https://github.com/kyhau/bottlerocket-ecs-cdk
+
 
 ---
 ## Useful Libs and Tools
@@ -36,8 +38,10 @@ Jump to
     - [bottlerocket-update-operator](https://github.com/bottlerocket-os/bottlerocket-update-operator) - Bottlerocket update operator is a Kubernetes operator that coordinates Bottlerocket updates on hosts in a cluster.
     - [aws-samples/amazon-eks-bottlerocket-nodes-on-graviton2](https://github.com/aws-samples/amazon-eks-bottlerocket-nodes-on-graviton2) - deploy a EKS cluster composed of two Managed Node Groups, one configured with x86-based and the other with Graviton2-based EC2 instance type, both of which utilize Bottlerocket-based AMI.
 
+
 ---
 ## Useful Articles and Blogs
+
 - [Using a Bottlerocket AMI with Amazon ECS](https://github.com/bottlerocket-os/bottlerocket/blob/develop/QUICKSTART-ECS.md)
 - https://aws.amazon.com/blogs/containers/bottlerocket-a-year-in-the-life/
 - Quick Start
@@ -46,6 +50,7 @@ Jump to
 - [Bottlerocket Security Guidance](https://github.com/bottlerocket-os/bottlerocket/blob/develop/SECURITY_GUIDANCE.md)
 - [Bottlerocket Packages](https://github.com/bottlerocket-os/bottlerocket/tree/develop/packages)
 - [Bottlerocket Public Roadmap](https://github.com/orgs/bottlerocket-os/projects/1)
+
 
 ---
 ## Bottlerocket Security
