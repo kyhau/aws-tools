@@ -6,7 +6,9 @@ Jump to
 - [On-Demand Instance vCPUs limits](#on-demand-instance-vcpus-limits)
 - [Quick Start Linux utilities](#quick-start-linux-utilities)
 - [Amazon Linux 2 amazon-linux-extras repository](#amazon-linux-2-amazon-linux-extras-repository)
-
+    - [How do I install a software package from the Extras Library on an EC2 instance running Amazon Linux 2?](#how-do-i-install-a-software-package-from-the-extras-library-on-an-ec2-instance-running-amazon-linux-2)
+    - [Package list of amazon-linux-extras](#package-list-of-amazon-linux-extras)
+    - [Install Python 3](#install-python-3)
 
 ---
 ## Useful Libs and Tools
@@ -123,4 +125,27 @@ Last updated on 2022-09-09
  63  postgresql14             available    [ =stable ]
  64  firefox                  available    [ =stable ]
  65  lustre                   available    [ =stable ]
+```
+
+### Install Python 3
+
+Add to Dockerfile (example)
+
+```
+USER root
+
+# Keep python to point to python2.7, as yum does not support Python3
+# see https://stackoverflow.com/questions/11213520/yum-crashed-with-keyboard-interrupt-error
+
+RUN amazon-linux-extras install -y python3.8 \
+  && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1 \
+  && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.8 1 \
+  && update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3.8 1
+
+USER ec2-user
+
+ENV HOME=/home/ec2-user
+ENV PATH="${PATH}:${HOME}/.local/bin"
+RUN mkdir -p ${HOME}/.local/bin \
+  && python3 -m pip install -U pip yamllint
 ```
