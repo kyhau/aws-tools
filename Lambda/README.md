@@ -57,10 +57,7 @@ Jump to
 
 Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2.
 
-In general it should be fine to upgrade from Python 3.6 to 3.9.
-
-But there are cases you'll need to make some changes. For example:
-- If you have code utilizing some sys call, e.g. `curl` - `curl` is not installed in Amazon Linux 2 by default.
+In general it should be fine to upgrade from Python 3.6 to 3.9. But there are cases you'll need to make some changes. For example: If you have code utilizing some sys call, e.g. `curl` - `curl` is not installed in Amazon Linux 2 by default.
 
 
 ### AWS CLI not allowing valid JSON in payload parameter with lambda invoke
