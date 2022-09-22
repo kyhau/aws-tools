@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-09-22
+
+### Removed
+
+   * Removed IAM/set_aws_config.py.
+
 ## 2022-08-29
 
 ### Changed
