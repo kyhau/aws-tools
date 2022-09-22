@@ -7,15 +7,15 @@
 ---
 ## Gotchas
 
-- If something is not right at early stage (e.g. parse file in Component Data) => `Internal Failure` in CDN console, but not log in S3 nor CW Logs.
+- If something is not right at early stage (e.g. parse file in Component Data), you will see `Internal Failure` in CloudFormation console, but the errors may not be logged in S3 nor CloudWatch Logs.
 
 - CloudWatch Logs - `/aws/imagebuilder/${ImageName}`
-	- Logging things happen in the EC2 instance of the build only
-	- Not for Component Data syntax error, Version conflict
+	- Logging things happen in the EC2 instance of the build only.
+	- Not for Component Data syntax error, version conflict, etc.
 
-- Tags are not inherited from CFN stack for all ImageBuilder resources (Component, Image Recipe / Container Recipe, Infrastructure configuration, Distribution, Image Pipeline)
+- Tags are not inherited from the CloudFormation stack for all Image Builder resources (Component, Image Recipe / Container Recipe, Infrastructure configuration, Distribution, Image Pipeline).
 
-- Adding, removing, renaming Tags, need to change Version; otherwise `Internal Failure` will be shown in CFN console, nothing in S3 log nor CW logs. Also need to update upstream resource's version e.g. Recipe Version.
+- Adding, removing, renaming Tags, need to change Version; otherwise `Internal Failure` will be shown in the CloudFormation console, nothing in S3 log nor CW logs. Also need to update upstream resource's version e.g. Recipe Version.
 
 - Separating Component and Recipe in different templates?
 	- ARN includes build number: `arn:aws:imagebuilder:ap-southeast-2:123456789012:component/git/1.0.1/1`
@@ -28,7 +28,7 @@
 
 - In `AWS::ImageBuilder::ContainerRecipe`, `Parameters` is supported only from Console and AWS CLI, but not from CloudFormation.
 
-- In `AWS::ImageBuilder::ContainerRecipe`, `ParentImage` (or `Base image` in Console) cannot reference in another AWS account's ECR repo - this is not mentioned in [AWS documentation](https://docs.aws.amazon.com/imagebuilder/latest/userguide/create-container-recipes.html). Confirmed with AWS support.
+- In `AWS::ImageBuilder::ContainerRecipe`, `ParentImage` (or `Base image` in Console) cannot reference another AWS account's ECR repo - this is not mentioned in [AWS documentation](https://docs.aws.amazon.com/imagebuilder/latest/userguide/create-container-recipes.html). Confirmed with AWS support.
 
 
 ---
