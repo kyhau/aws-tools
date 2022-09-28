@@ -3,6 +3,7 @@
 
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Incident Response](#incident-response)
 - [Configure mutual Transport Layer Security (mutual TLS or mTLS) authentication with AWS services](#configure-mutual-transport-layer-security-mutual-tls-or-mtls-authentication-with-aws-services)
 - [Firewall Manager, WAF, Shield](./WAF-FirewallManager-Shield/README.md)
 - [IAM](./IAM/)
@@ -17,7 +18,6 @@
 - Amazon Linux Security Center - https://alas.aws.amazon.com/announcements.html
 - AWS Security Benchmark - [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark)
 - AWS Self-Service Security Assessment tool - [awslabs/aws-security-assessment-solution](https://github.com/awslabs/aws-security-assessment-solution)
-- Automated Incident Response with SSM - [aws-samples/automated-incident-response-with-ssm](https://github.com/aws-samples/automated-incident-response-with-ssm)
 - amazon-detective-multiaccount-scripts - [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts)
 - Open source tools for AWS security - [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools)
 - Ultimate DevSecOps library - [sottlmarek/DevSecOps](https://github.com/sottlmarek/DevSecOps)
@@ -38,6 +38,13 @@
 - AWS Security Documentation by Category - [docs.aws.amazon.com/security](https://docs.aws.amazon.com/security/)
 - AWS Security Reference Architecture (AWS SRA) - [docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/architecture.html)
 - A Secure Cloud - Repository of customizable AWS security configurations and best practices - [asecure.cloud/](https://asecure.cloud/)
+
+
+---
+## Incident Response
+
+- [aws-samples/automated-incident-response-with-ssm](https://github.com/aws-samples/automated-incident-response-with-ssm) - Automated Incident Response with SSM
+- [easttimor/aws-incident-response](https://github.com/easttimor/aws-incident-response) - Investigation of API activity using Athena and notification of actions using EventBridge
 
 
 ---
