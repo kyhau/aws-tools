@@ -6,6 +6,7 @@ Jump to
 
 ---
 ## Useful Links
+- [AWS Solution - Cognito User Profiles Export Reference Architecture](https://aws.amazon.com/solutions/implementations/cognito-user-profiles-export-reference-architecture/)
 - [Adding Advanced Security to a User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-settings-advanced-security.html)
 - [Using serverless to load test Amazon API Gateway with authorization](https://aws.amazon.com/blogs/compute/using-serverless-to-load-test-amazon-api-gateway-with-authorization/)
 - [Understanding Amazon Cognito Authentication](https://aws.amazon.com/blogs/mobile/understanding-amazon-cognito-authentication/)
