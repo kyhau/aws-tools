@@ -39,7 +39,8 @@ def get_ecs_meta_dict():
 def get_eks_meta_dict(get_bottlerocket=False):
     # https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html
     K8S_VERSIONS = [
-        "1.22",
+        "1.23",
+        "1.22",K8S_VERSIONS
         "1.21",
         "1.20",
         "1.19",
