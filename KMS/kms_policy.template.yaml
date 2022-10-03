@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  Create KMS Key, and Key policies (which are resource policies that control access to the Customer Master Keys (CMKs)).
+  Create KMS Key and Key policies which are resource policies that control access to the Customer Master Keys (CMKs).
 
 Parameters:
   KeyAdminRoleArn:
@@ -16,6 +16,8 @@ Parameters:
 Resources:
   KmsKey:
     Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       EnableKeyRotation: True
       KeyPolicy:
@@ -23,32 +25,32 @@ Resources:
         Statement:
           # Give the account full control of a key, allowing IAM identity policies to control access.
           # Removing the policy, nothing can use the key. AWS support is required.
-          - Sid: "Enable IAM User Permissions"
-            Effect: "Allow"
+          - Sid: Enable IAM User Permissions
+            Effect: Allow
             Principal:
               AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
-            Action: "kms:*"
+            Action: kms:*
             Resource: "*"
 
           # Key administrators can admin keys, not use them.
           # Permissions granted via IAM policy, or key policy, or both.
-          - Sid: "Allow administration of the key"
-            Effect: "Allow"
+          - Sid: Allow administration of the key
+            Effect: Allow
             Principal:
               AWS: !Ref KeyAdminRoleArn
             Action:
-              - "kms:Create*"
-              - "kms:Describe*"
-              - "kms:Enable*"
-              - "kms:List*"
-              - "kms:Put*"
-              - "kms:Update*"
-              - "kms:Revoke*"
-              - "kms:Disable*"
-              - "kms:Get*"
-              - "kms:Delete*"
-              - "kms:ScheduleKeyDeletion"    # allow for key deletion
-              - "kms:CancelKeyDeletion"      # allow for key deletion
+              - kms:Create*
+              - kms:Describe*
+              - kms:Enable*
+              - kms:List*
+              - kms:Put*
+              - kms:Update*
+              - kms:Revoke*
+              - kms:Disable*
+              - kms:Get*
+              - kms:Delete*
+              - kms:ScheduleKeyDeletion  # allow for key deletion
+              - kms:CancelKeyDeletion    # allow for key deletion
             Resource: "*"
 
           # * Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
@@ -58,13 +60,13 @@ Resources:
           # * Whenever possible, use key policies to give users permission to call the Decrypt operation on the CMK,
           #   instead of IAM policies. Otherwise, you might create an IAM user policy that gives the user Decrypt
           #   permission on all CMKs.
-          - Sid: "Allow use of the key"
-            Effect: "Allow"
+          - Sid: Allow use of the key
+            Effect: Allow
             Principal:
               AWS:
                 - !Ref KeyUserRoleArn
-                # - "arn:aws:iam::109876543210:user/User1"    # parent account
-                # - "arn:aws:iam::012345678901:root"          # external account
+                # - arn:aws:iam::109876543210:user/User1    # parent account
+                # - arn:aws:iam::012345678901:root          # external account
             Action:
               - kms:Decrypt
               - kms:DescribeKey
@@ -75,6 +77,8 @@ Resources:
 
   KmsAlias:
     Type: AWS::KMS::Alias
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       AliasName: !Sub alias/${KmsAliasName}
       TargetKeyId: !Ref KmsKey
