@@ -74,6 +74,7 @@ pip3 install -r requirements-cli.txt
 - [ECS](./ECS/)
 - [ECS vs. EKS](./ECS-vs-EKS.md)
 - [EKS](./EKS/)
+- [ElastiCache for Redis](./ElastiCache-Redis/)
 - [ELB](./ELB/)
 - [EMR](./EMR/)
 - [FirewallManager](./WAF-FirewallManager-Shield/)
