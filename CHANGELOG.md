@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-10-04
+
+### Changed
+
+   * Updated [AMI/get_latest_amis.py](AMI/get_latest_amis.py) to support ECS and EKS optimized Windows Servers AMI search.
+
 ## 2022-09-22
 
 ### Added
