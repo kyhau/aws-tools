@@ -3,7 +3,7 @@
 Jump to
 - [My small examples for demo](#my-small-examples-for-demo)
 - [Useful Libs and Tools](#useful-libs-and-tools)
-- [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Useful Articles and Blogs](#useful-articles-and-blog-posts)
 
 
 ---
@@ -37,7 +37,8 @@ Jump to
 - [kolomied/awesome-cdk](https://github.com/kolomied/awesome-cdk) - Awesome CDK
 
 ---
-## Useful Articles and Blogs
+## Useful Articles and Blog Posts
 
+- [Bootstrapping multiple AWS accounts for AWS CDK using CloudFormation StackSets](https://aws.amazon.com/blogs/mt/bootstrapping-multiple-aws-accounts-for-aws-cdk-using-cloudformation-stacksets/), AWS, 04 OCT 2022
 - [Manage application security and compliance with the AWS Cloud Development Kit and cdk-nag](https://aws.amazon.com/blogs/devops/manage-application-security-and-compliance-with-the-aws-cloud-development-kit-and-cdk-nag/), AWS, 25 MAY 2022
 - [Testing CDK Applications in Any Language](https://aws.amazon.com/blogs/developer/testing-cdk-applications-in-any-language/), AWS, 9 NOV 2021
