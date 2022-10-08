@@ -6,12 +6,13 @@
       "Action": [
         "cloudformation:CreateChangeSet",
         "cloudformation:CreateStack",
+        "cloudformation:DeleteChangeSet",
         "cloudformation:DescribeChangeSet",
         "cloudformation:DescribeStacks",
         "cloudformation:ExecuteChangeSet"
       ],
       "Resource": [
-        "arn:aws:cloudformation:*:*:stack/K-GitHub-OIDC-DeployRole*",
+        "arn:aws:cloudformation:*:*:stack/Role-K-GitHub-OIDC-*",
         "arn:aws:cloudformation:*:*:stack/K-GitHub-OIDC-Provider*"
       ]
     },
@@ -35,7 +36,8 @@
         "iam:AttachRolePolicy",
         "iam:CreateRole",
         "iam:DetachRolePolicy",
-        "iam:GetRole"
+        "iam:GetRole",
+        "iam:UpdateAssumeRolePolicy"
       ],
       "Resource": "arn:aws:iam::*:role/K-GitHub-OIDC-*"
     }
