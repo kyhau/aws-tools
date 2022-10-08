@@ -12,7 +12,6 @@
         "cloudformation:ExecuteChangeSet"
       ],
       "Resource": [
-        "arn:aws:cloudformation:*:*:stack/Role-K-GitHub-OIDC-*",
         "arn:aws:cloudformation:*:*:stack/K-GitHub-OIDC-Provider*"
       ]
     },
