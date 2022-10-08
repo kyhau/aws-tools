@@ -21,6 +21,7 @@ yamllint                  # https://github.com/adrienverge/yamllint
 ################################################################################
 # Serverless
 
+#awslambdaric             # https://github.com/aws/aws-lambda-python-runtime-interface-client
 #aws-sam-cli              # require docker, https://github.com/aws/aws-sam-cli
 #chalice                  # https://github.com/aws/chalice
 #awscli-local             # https://github.com/localstack/awscli-local

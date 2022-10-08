@@ -15,7 +15,9 @@ Jump to
     - [Estimate concurrent requests](#estimate-concurrent-requests)
     - [Throttling error and asynchronous/synchronous invocations](#throttling-error-and-asynchronoussynchronous-invocations)
     - [Operational metrics](#operational-metrics)
-- [Container Images, Lambda Layers, Lambda Extensions](#container-images-lambda-layers-lambda-extensions)
+- [Lambda Container Images](#lambda-container-images)
+- [Lambda Layers](#lambda-layers)
+- [Lambda Extensions](#lambda-extensions)
 - [Performance Optimisation](#performance-optimisation)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 
@@ -23,10 +25,17 @@ Jump to
 ---
 ## Useful Libs and Tools
 
-- [AWS Lambda Extensions API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html)
-- [AWS Lambda Logs API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-logs-api.html)
-- [AWS Lambda Runtime API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html)
-- AWS Lambda Powertools
+- Lambda execution environment
+    - [AWS Lambda Extensions API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html)
+    - [AWS Lambda Logs API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-logs-api.html)
+    - [AWS Lambda Runtime API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html)
+    - [aws-lambda-extensions](https://github.com/aws-samples/aws-lambda-extensions/) - AWS Lambda Extensions sample projects
+- Lambda Container Images
+    - [gallery.ecr.aws/lambda](https://gallery.ecr.aws/lambda?page=1) - AWS Lambda base images
+    - [awslambdaric](https://github.com/aws/aws-lambda-python-runtime-interface-client) - AWS Lambda Python Runtime Interface Client (RIC)
+    - [aws-lambda-runtime-interface-emulator](https://github.com/aws/aws-lambda-runtime-interface-emulator/)  -  AWS Lambda Runtime Interface Emulator (RIE)
+    - Example: https://docs.aws.amazon.com/lambda/latest/dg/python-image.html
+- Lambda Powertools
     - [cdk-aws-lambda-powertools-layer](https://github.com/awslabs/cdk-aws-lambda-powertools-layer) - AWS Lambda powertools layer
     - [aws-lambda-powertools-java](https://github.com/awslabs/aws-lambda-powertools-java) - AWS Lambda Powertools for Java
     - [aws-lambda-powertools-python](https://github.com/awslabs/aws-lambda-powertools-python) - AWS Lambda Powertools for Python
@@ -38,16 +47,12 @@ Jump to
     - [aws-lambda-powertools-typescript](https://github.com/awslabs/aws-lambda-powertools-typescript) - AWS Lambda Powertools for TypeScript
 - [aws-lambda-builders](https://github.com/aws/aws-lambda-builders) - Lambda Builders is a Python library to compile, build and package AWS Lambda functions for several runtimes & frameworks. Lambda Builders is the brains behind the `sam build`.
 - [aws-lambda-developer-guide](https://github.com/awsdocs/aws-lambda-developer-guide) - AWS Lambda Developer Guide with examples
-- [aws-lambda-extensions](https://github.com/aws-samples/aws-lambda-extensions/) - AWS Lambda Extensions sample projects
-- [aws-lambda-python-runtime-interface-client](https://github.com/aws/aws-lambda-python-runtime-interface-client) - AWS Lambda Python Runtime Interface Client
-- [aws-lambda-runtime-interface-emulator](https://github.com/aws/aws-lambda-runtime-interface-emulator/)  -  AWS Lambda Runtime Interface Emulator
 - [authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) - Authorization Lambda@Edge (Node.js)
 - [alexcasalboni/aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning) - AWS Lambda Power Tuning is a state machine powered by AWS Step Functions that helps you optimize your Lambda functions for cost and/or performance in a data-driven way.
 - [lambci/docker-lambda](https://github.com/lambci/docker-lambda) - A sandboxed local environment that replicates the live AWS Lambda environment
-- CDK, CLI, SAM
-    - Using SAM CLI with the CDK to test a Lambda function locally
-        - Example: https://github.com/kyhau/slack-command-app-cdk
-        - https://docs.aws.amazon.com/cdk/latest/guide/sam.html
+- Using SAM CLI with the CDK to test a Lambda function locally
+    - https://docs.aws.amazon.com/cdk/latest/guide/sam.html
+    - Example: https://github.com/kyhau/slack-command-app-cdk
 
 
 ---
@@ -192,15 +197,21 @@ See [Understanding AWS Lambda scaling and throughput](https://aws.amazon.com/blo
 
 
 ---
+## Lambda Container Images
 
-## Container Images, Lambda Layers, Lambda Extensions
-
-- Working with Lambda layers and extensions in container images ([blog post](https://aws.amazon.com/blogs/compute/working-with-lambda-layers-and-extensions-in-container-images/))
 - Optimizing Lambda functions packaged as container images ([blog post](https://aws.amazon.com/blogs/compute/optimizing-lambda-functions-packaged-as-container-images/))
+- Working with Lambda layers and extensions in container images ([blog post](https://aws.amazon.com/blogs/compute/working-with-lambda-layers-and-extensions-in-container-images/))
 
 
 ---
+## Lambda Layers
 
+
+---
+## Lambda Extensions
+
+
+---
 ## Performance Optimisation
 
 Some good reads:
