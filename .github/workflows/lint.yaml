@@ -21,8 +21,8 @@ jobs:
       - name: Run yamllint
         run: yamllint -c ./.github/linters/.yaml-lint.yaml -f parsable --format standard .github/
 
+      - name: Install cfn-lint
+        run: pip install cfn-lint
+
       - name: Run cfn-lint
-        run: |
-          pip install cfn-lint
-          cp .github/linters/.cfnlintrc .
-          cfn-lint ./**/cfn/*.yaml
+        run: cfn-lint --config-file .github/linters/.cfnlintrc
