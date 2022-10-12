@@ -84,6 +84,9 @@ alias aws-public-ip-address-ranges='python ${REPO_HOME}/AWS-Public/aws-public-ip
 alias aws-rds-cluster-endpoints='python ${REPO_HOME}/RDS/list_rds_cluster_endpoints.py'
 alias aws-rds-clusters='python ${REPO_HOME}/RDS/list_rds_clusters.py'
 alias aws-rds-instances='python ${REPO_HOME}/RDS/list_rds_instances.py'
+alias aws-rds-describe-db-engine-versions-aurora='aws rds describe-db-engine-versions --engine aurora --query "DBEngineVersions[].EngineVersion"'
+alias aws-rds-describe-db-engine-versions-aurora-mysql='aws rds describe-db-engine-versions --engine aurora-mysql --query "DBEngineVersions[].EngineVersion"'
+alias aws-rds-describe-db-engine-versions-aurora-postgresql='aws rds describe-db-engine-versions --engine aurora-postgresql --query "DBEngineVersions[].EngineVersion"'
 
 alias aws-resource-list-with-config='python ${REPO_HOME}/Config/list_resources_with_configservice.py'
 alias aws-resource-list-with-resourcegroupstaggingapi='python ${REPO_HOME}/Others/list_resources_with_resourcegroupstaggingapi.py'
