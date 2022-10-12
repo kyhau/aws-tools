@@ -59,7 +59,7 @@ Resources:
   PSQLVPCSecGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: !Join [ '', ['SG for RDS ', !Ref DBName, ' in VPC: ', !Ref DBVpc] ]
+      GroupDescription: !Join ['', ['SG for RDS ', !Ref DBName, ' in VPC: ', !Ref DBVpc]]
       VpcId: !Ref DBVpc
       SecurityGroupIngress:
         - IpProtocol: tcp

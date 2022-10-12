@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-10-12
+
+### Added
+
+   * Added [AuroraServerless-v2-postgresql.template.yaml](./RDS/cfn/AuroraServerless-v2-postgresql.template.yaml) - CloudFormation template for Aurora Serverless v2 PostgreSQL database cluster
+
 ## 2022-10-04
 
 ### Changed

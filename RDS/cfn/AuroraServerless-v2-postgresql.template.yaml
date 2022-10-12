@@ -1,14 +1,8 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description: Aurora Serverless v1 database cluster
+AWSTemplateFormatVersion: 2010-09-09
+Description: Aurora Serverless v2 PostgreSQL database cluster
+Transform: AWS::LanguageExtensions
 
 Parameters:
-  AutoPause:
-    Description: A value that indicates whether to allow or disallow automatic pause for an Aurora DB cluster in serverless DB engine mode.
-    Type: String
-    AllowedValues:
-      - true
-      - false
-    Default: true
   AlarmIntegrationEndpoint:
     Description: The HTTPS integration endpoint to send SNS alarm messages.
     Type: String
@@ -18,28 +12,25 @@ Parameters:
     Type: Number
     Default: 4
   DatabaseName:
-    Description: The name of your database.
+    Description: The name of your database. If you don't provide a name, then Amazon RDS won't create a database in this DB cluster.
     Type: String
   DBClusterParameterGroup:
     Description: The name of the DB cluster parameter group to associate with this DB cluster.
     Type: String
-  Engine:
-    Description: The name of the database engine to be used for this DB cluster.
+  DBInstanceParameterGroup:
+    Description: The name of the DB instance parameter group to associate with these DB instances.
     Type: String
-    AllowedValues:
-      - aurora-postgresql
-      - aurora-mysql
-    Default: aurora-postgresql
   EngineVersion:
     Description: The version number of the database engine to use. Optional.
     Type: String
-    Default: ""
+    Default: 14.4
   HostedZoneName:
     Description: The name of the hosted zone that you want to create records in (must include a trailing dot e.g. www.example.com.). Optional.
     Type: String
   MasterUsername:
     Description: The name of the master user for the DB cluster.
     Type: String
+    Default: DefaultMasterUser
   MasterPassword:
     Description: The master password for the DB cluster. Auto generated if not specified.
     Type: String
@@ -54,7 +45,7 @@ Parameters:
     Type: Number
     Default: 2
   NetworkSubnetIds:
-    Description: Subnet IDs
+    Description: Subnet IDs. Add subnets to cover at least 2 AZs.
     Type: List<AWS::EC2::Subnet::Id>
   NetworkVpcId:
     Description: The ID of the VPC for the security group.
@@ -63,42 +54,20 @@ Parameters:
     Description: The identifier for the DB cluster snapshot.
     Type: String
     Default: ""
+  Stage:
+    Description: Deployment type.
+    Type: String
+    Default: dev
+    AllowedValues: [prd, stg, dev]
 
 Conditions:
   ConfigureAlarms: !Not [!Equals [!Ref AlarmIntegrationEndpoint, ""]]
-  ConfigureEngineVersion: !Not [!Equals [!Ref EngineVersion, ""]]
-  ConfigureParameterGroup: !Not [!Equals [!Ref DBClusterParameterGroup, ""]]
+  ConfigureDBClusterParameterGroup: !Not [!Equals [!Ref DBClusterParameterGroup, ""]]
+  ConfigureDBInstanceParameterGroup: !Not [!Equals [!Ref DBInstanceParameterGroup, ""]]
   ConfigureRecordSet: !Not [!Equals [!Ref HostedZoneName, ""]]
   GeneratePassword: !Equals [!Ref MasterPassword, ""]
+  IsProduction: !Equals [!Ref Stage, prd]
   RestoreSnapshot: !Not [!Equals [!Ref SnapshotToRestore, ""]]
-
-Outputs:
-  MasterUsername:
-    Description: The name of the master user for the DB cluster.
-    Value: !Ref MasterUsername
-    Export:
-      Name: !Sub ${AWS::StackName}-MasterUsername
-  MasterSecretArn:
-    Description: The secret ARN for the DB master username and password.
-    Value: !Ref MasterSecret
-    Export:
-      Name: !Sub ${AWS::StackName}-MasterSecretArn
-  SecurityGroupId:
-    Description: The security group ID for the DB cluster.
-    Value: !Ref SecurityGroup
-    Export:
-      Name: !Sub ${AWS::StackName}-SG-ID
-  EndpointAddress:
-    Description: The connection endpoint for the DB cluster.
-    Value: !GetAtt Cluster.Endpoint.Address
-    Export:
-      Name: !Sub ${AWS::StackName}-EndpointAddress
-  CustomEndpointAddress:
-    Condition: ConfigureRecordSet
-    Description: The custom connection endpoint for the DB cluster.
-    Value: !Ref Route53RecordSet
-    Export:
-      Name: !Sub ${AWS::StackName}-CustomEndpointAddress
 
 Resources:
   DBSubnetGroup:
@@ -117,6 +86,8 @@ Resources:
 
   MasterSecret:
     Type: AWS::SecretsManager::Secret
+    DeletionPolicy: !If [IsProduction, Retain, Delete]
+    UpdateReplacePolicy: !If [IsProduction, Retain, Delete]
     Properties:
       Name: !Ref AWS::StackName
       Description: Database username and password
@@ -177,23 +148,20 @@ Resources:
 
   Cluster:
     Type: AWS::RDS::DBCluster
-    DeletionPolicy: Snapshot
-    UpdateReplacePolicy: Snapshot
+    DeletionPolicy: !If [IsProduction, Retain, Delete]
+    UpdateReplacePolicy: !If [IsProduction, Retain, Delete]
     Properties:
       BackupRetentionPeriod: !Ref BackupRetentionPeriod
       DatabaseName: !Ref DatabaseName
       DBClusterParameterGroupName: !If
-        - ConfigureParameterGroup
+        - ConfigureDBClusterParameterGroup
         - !Ref DBClusterParameterGroup
         - !Ref AWS::NoValue
       DBSubnetGroupName: !Ref DBSubnetGroup
+      DeletionProtection: !If [IsProduction, true, false]
       EnableHttpEndpoint: true
-      Engine: !Ref Engine
-      EngineMode: serverless
-      EngineVersion: !If
-        - ConfigureEngineVersion
-        - !Ref EngineVersion
-        - !Ref AWS::NoValue
+      Engine: aurora-postgresql
+      EngineVersion: !Ref EngineVersion
       KmsKeyId: !Ref KmsKey
       MasterUsername: !If
         - RestoreSnapshot
@@ -203,8 +171,7 @@ Resources:
         - RestoreSnapshot
         - !Ref AWS::NoValue
         - !Sub "{{resolve:secretsmanager:${MasterSecret}:SecretString:password}}"
-      ScalingConfiguration:
-        AutoPause: !Ref AutoPause
+      ServerlessV2ScalingConfiguration:
         MaxCapacity: !Ref MaxCapacity
         MinCapacity: !Ref MinCapacity
       SnapshotIdentifier:
@@ -212,6 +179,44 @@ Resources:
       StorageEncrypted: true
       VpcSecurityGroupIds:
         - !Ref SecurityGroup
+
+  RDSDBInstance1:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: !If [IsProduction, Snapshot, Delete]
+    UpdateReplacePolicy: !If [IsProduction, Snapshot, Delete]
+    Properties:
+      DBClusterIdentifier: !Ref Cluster
+      DBInstanceClass: db.serverless
+      DBParameterGroupName: !If
+        - ConfigureDBInstanceParameterGroup
+        - !Ref DBInstanceParameterGroup
+        - !Ref AWS::NoValue
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      EnablePerformanceInsights: true
+      Engine: aurora-postgresql
+      EngineVersion: !Ref EngineVersion
+      PerformanceInsightsKMSKeyId: !Ref KmsKey
+      PerformanceInsightsRetentionPeriod: 7  # Valid values are 7 or 731 (2 years)
+      PubliclyAccessible: false
+
+  RDSDBInstance2:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: !If [IsProduction, Snapshot, Delete]
+    UpdateReplacePolicy: !If [IsProduction, Snapshot, Delete]
+    Properties:
+      DBClusterIdentifier: !Ref Cluster
+      DBInstanceClass: db.serverless
+      DBParameterGroupName: !If
+        - ConfigureDBInstanceParameterGroup
+        - !Ref DBInstanceParameterGroup
+        - !Ref AWS::NoValue
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      EnablePerformanceInsights: true
+      Engine: aurora-postgresql
+      EngineVersion: !Ref EngineVersion
+      PerformanceInsightsKMSKeyId: !Ref KmsKey
+      PerformanceInsightsRetentionPeriod: 7  # Valid values are 7 or 731 (2 years)
+      PubliclyAccessible: false
 
   ################################################################################
   # Route53
@@ -494,3 +499,31 @@ Resources:
             }
           ]
         }
+
+Outputs:
+  MasterUsername:
+    Description: The name of the master user for the DB cluster.
+    Value: !Ref MasterUsername
+    Export:
+      Name: !Sub ${AWS::StackName}-MasterUsername
+  MasterSecretArn:
+    Description: The secret ARN for the DB master username and password.
+    Value: !Ref MasterSecret
+    Export:
+      Name: !Sub ${AWS::StackName}-MasterSecretArn
+  SecurityGroupId:
+    Description: The security group ID for the DB cluster.
+    Value: !Ref SecurityGroup
+    Export:
+      Name: !Sub ${AWS::StackName}-SG-ID
+  EndpointAddress:
+    Description: The connection endpoint for the DB cluster.
+    Value: !GetAtt Cluster.Endpoint.Address
+    Export:
+      Name: !Sub ${AWS::StackName}-EndpointAddress
+  CustomEndpointAddress:
+    Condition: ConfigureRecordSet
+    Description: The custom connection endpoint for the DB cluster.
+    Value: !Ref Route53RecordSet
+    Export:
+      Name: !Sub ${AWS::StackName}-CustomEndpointAddress
