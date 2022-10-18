@@ -154,7 +154,7 @@ alias sam-local-generate-event='sam local generate-event'
 alias sam-local-start-api='sam local start-api'
 alias sam-local-start-lambda='sam local start-lambda'
 
-alias update-aws-amplify-cli='. ${REPO_HOME}/Amplify/install_amplify_cli.sh'
+alias update-aws-amplify-cli='npm install -g @aws-amplify/cli'
 
 alias update-aws-cdk='. ${REPO_HOME}/CDK/install-cdk-v2.sh'
 alias update-aws-cdk-assume-role-credential-plugin='sudo npm install -g cdk-assume-role-credential-plugin@latest'
