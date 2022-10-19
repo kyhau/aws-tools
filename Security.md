@@ -66,6 +66,7 @@
 - [Automating mutual TLS setup for Amazon API Gateway](https://aws.amazon.com/blogs/compute/automating-mutual-tls-setup-for-amazon-api-gateway/)
 - [Introducing mutual TLS authentication for Amazon API Gateway](https://aws.amazon.com/blogs/compute/introducing-mutual-tls-authentication-for-amazon-api-gateway/)
 - [Propagating valid mTLS client certificate identity to downstream services using Amazon API Gateway](https://aws.amazon.com/blogs/compute/propagating-valid-mtls-client-certificate-identity-to-downstream-services-using-amazon-api-gateway/)
+    - Repo: https://github.com/aws-samples/api-gateway-certificate-propagation
 
 ### How to configure mTLS authentication for AWS App Mesh
 
