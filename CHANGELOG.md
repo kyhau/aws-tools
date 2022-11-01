@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-11-01
+
+   * Added [shield_attack_event_ips.py](./WAF-FirewallManager-Shield/shield_attack_event_ips.py) - A helper script that print details of the attack(s) of the given attack ID or resource ARN, or check if the top 5 contributor IPs of a shield attack are in give IP ranges.
+
 ## 2022-10-12
 
 ### Added
