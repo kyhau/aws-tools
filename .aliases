@@ -103,8 +103,10 @@ alias aws-secretsmanager-get-secret='python ${REPO_HOME}/SecretManager/get_secre
 
 alias aws-securityhub-list-standards-controls='python ${REPO_HOME}/SecurityHub/list_securityhub_standard_controls.py'
 
-alias aws-sfn-start-local='. ${REPO_HOME}//StepFunctions/start_stepfunctions_local.sh'
-alias aws-sfn-start-local-container='. ${REPO_HOME}//StepFunctions/start_stepfunctions_local_docker.sh'
+alias aws-sfn-start-local='. ${REPO_HOME}/StepFunctions/start_stepfunctions_local.sh'
+alias aws-sfn-start-local-container='. ${REPO_HOME}/StepFunctions/start_stepfunctions_local_docker.sh'
+
+alias aws-shield-attack-event-ips='python ${REPO_HOME}/WAF-FirewallManager-Shield/aws_shield_attack_event_ips.py'
 
 alias aws-sts-decode-authorization-message='aws sts decode-authorization-message --encoded-message'
 alias aws-sts-get-caller-identity='aws sts get-caller-identity'
