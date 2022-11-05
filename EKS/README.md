@@ -43,10 +43,11 @@ Jump to
     - [aws-controllers-k8s/test-infra](https://github.com/aws-controllers-k8s/test-infra) - This repository contains a framework for functional integration (e2e) testing of AWS Controllers for Kubernetes (ACK) service controllers.
     - [aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) - AWS EKS Cluster Controller
     - [zone-aware-controllers-for-k8s](https://github.com/aws/zone-aware-controllers-for-k8s) - Kubernetes controllers for zone (AZ) aware rollouts and disruptions.
-    - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node
+- Maintenance
+    - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node Termination Handler (NTH) - Gracefully handle EC2 instance shutdown within Kubernetes
+    - [deploy-nth-to-eks](https://github.com/aws-samples/deploy-nth-to-eks) - Automate Deployment of Node Termination Handler (NTH) in Self Managed Worker Node in EKS Cluster using CICD Pipeline
 - Scaling
-    - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter - Kubernetes Cluster Autoscaler
-Termination Handler - Gracefully handle EC2 instance shutdown within Kubernetes
+    - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter
 - Kubectl Handler
    - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
