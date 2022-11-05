@@ -111,7 +111,7 @@ alias aws-shield-attack-event-ips='python ${REPO_HOME}/WAF-FirewallManager-Shiel
 alias aws-sts-decode-authorization-message='aws sts decode-authorization-message --encoded-message'
 alias aws-sts-get-caller-identity='aws sts get-caller-identity'
 
-alias aws-ssm-describe-sessions-history ='aws ssm describe-sessions --state History'
+alias aws-ssm-describe-sessions-history='aws ssm describe-sessions --state History'
 alias aws-ssm-list-documents='aws ssm list-documents'
 alias aws-ssm-parameters-list-global-infrastructure='. ${REPO_HOME}/SSM/ssm_parameters_list.sh'
 alias aws-ssm-start-session='aws ssm start-session --target'
