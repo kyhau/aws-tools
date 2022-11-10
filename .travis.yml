@@ -12,11 +12,14 @@ matrix:
     - python: 3.9
       dist: focal
       env: TOXENV=py39
+    - python: 3.10
+      dist: focal
+      env: TOXENV=py10
     - python: nightly
       dist: focal
-      env: TOXENV=py310
+      env: TOXENV=py11
   allow_failures:
-    - env: TOXENV=py310
+    - env: TOXENV=py11
 
 before_install:
   - python -m pip install --upgrade setuptools pip virtualenv

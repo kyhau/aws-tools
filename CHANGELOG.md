@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-11-10
+
+### Added
+
+   * Support Python 3.11 in build and tests.
+
+### Changed
+
+   * Replaced `m2r2` with `pypandoc`.
+   * Replaced `set-output` in workflow.
+
 ## 2022-11-01
 
    * Added [shield_attack_event_ips.py](./WAF-FirewallManager-Shield/shield_attack_event_ips.py) - A helper script that print details of the attack(s) of the given attack ID or resource ARN, or check if the top 5 contributor IPs of a shield attack are in give IP ranges.
