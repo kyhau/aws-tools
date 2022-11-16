@@ -33,6 +33,9 @@ Jump to
     - [Gotchas](#cdk--cdk8s-gotchas) - cdk / cdk8s
 - CLIs
     - [eksctl](https://github.com/weaveworks/eksctl) - CLI tool for creating EKS clusters
+- EKS Blueprints
+    - [Bootstrapping clusters with EKS Blueprints](https://aws.amazon.com/blogs/containers/bootstrapping-clusters-with-eks-blueprints/)
+    - [App2Container Support for EKS Blueprints](https://aws.amazon.com/about-aws/whats-new/2022/11/app2container-support-eks-blueprints/)
 - EKS Distro
     - [eks-distro](https://github.com/aws/eks-distro) - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create Kubernetes clusters
     - EKS Distro in [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro)
