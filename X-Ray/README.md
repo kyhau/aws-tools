@@ -37,7 +37,13 @@
 ---
 ## SQS to Lambda
 
-SQS supports X-Ray tracing but it does not propagate the trace to a Lambda function.Lambda always starts a new trace.
+Update:
+> AWS X-Ray adds trace linking for event-driven applications built on Amazon SQS and AWS Lambda (https://aws.amazon.com/about-aws/whats-new/2022/11/aws-x-ray-trace-linking-event-driven-applications-amazon-sqs-lambda/)
+
+
+Previous approach:
+
+(Outdated): SQS supports X-Ray tracing but it does not propagate the trace to a Lambda function. Lambda always starts a new trace.-
 
 See:
 - aws-xray-sdk-node: https://github.com/aws/aws-xray-sdk-node/issues/208.
