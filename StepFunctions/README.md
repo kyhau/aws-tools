@@ -20,6 +20,16 @@
 
 Ref: https://stackoverflow.com/questions/57959933/what-does-refill-rate-mean-for-aws-step-functions
 
+
+> State Transitioning Limit is related to what you are trying to do. Each Lambda execution counts as at least one StateTransition. It depends on your state machine.
+<br>
+For example if you have a wait state after Task State (Lambda) then you have two StateTransitions for each lambda call.
+
+> If you are executing 1 Lambda per state machine, then you should consider StartExecution limits too:
+
+Ref: https://stackoverflow.com/questions/66178900/can-step-function-handle-500-execution-per-second
+
+
 ## API Gateway Integration
 
 Notes
