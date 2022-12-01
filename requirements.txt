@@ -14,6 +14,7 @@ boto3~=1.18
 #chalice                  # https://github.com/aws/chalice
 #pyathena                 # https://github.com/laughingman7743/PyAthena/
 #pycognito                # replace warrant, https://github.com/pvizeli/pycognito
+#pywren                   # https://github.com/pywren/pywren
 #rdk                      # https://github.com/awslabs/aws-config-rdk
 #sagemaker                # https://github.com/aws/sagemaker-python-sdk/
 #stepfunctions            # https://github.com/aws/aws-step-functions-data-science-sdk-python
