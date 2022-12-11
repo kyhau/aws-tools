@@ -41,6 +41,7 @@ Jump to
     - EKS Distro in [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro)
 - EKS charts (Helm)
     - [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
+- [eks-node-viewer](https://github.com/awslabs/eks-node-viewer) - a tool for visualizing dynamic node usage within a cluster. It was originally developed as an internal tool at AWS for demonstrating consolidation with Karpenter.
 - Controllers
     - [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK), e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller, lambda-controller
     - [aws-controllers-k8s/test-infra](https://github.com/aws-controllers-k8s/test-infra) - This repository contains a framework for functional integration (e2e) testing of AWS Controllers for Kubernetes (ACK) service controllers.
