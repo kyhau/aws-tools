@@ -36,11 +36,11 @@ Jump to
 - EKS Blueprints
     - [Bootstrapping clusters with EKS Blueprints](https://aws.amazon.com/blogs/containers/bootstrapping-clusters-with-eks-blueprints/)
     - [App2Container Support for EKS Blueprints](https://aws.amazon.com/about-aws/whats-new/2022/11/app2container-support-eks-blueprints/)
+- EKS Charts (Helm)
+    - [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
 - EKS Distro
     - [eks-distro](https://github.com/aws/eks-distro) - EKS Distro (EKS-D) is a Kubernetes distribution based on and used by EKS to create Kubernetes clusters
     - EKS Distro in [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro)
-- EKS charts (Helm)
-    - [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
 - Controllers
     - [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK), e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller, lambda-controller
     - [aws-controllers-k8s/test-infra](https://github.com/aws-controllers-k8s/test-infra) - This repository contains a framework for functional integration (e2e) testing of AWS Controllers for Kubernetes (ACK) service controllers.
