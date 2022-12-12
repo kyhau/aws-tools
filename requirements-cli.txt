@@ -20,6 +20,11 @@ cloudformation-cli-python-plugin  # https://github.com/aws-cloudformation/cloudf
 yamllint                  # https://github.com/adrienverge/yamllint
 
 ################################################################################
+# EKS
+
+# hardeneks               # https://github.com/aws-samples/hardeneks
+
+################################################################################
 # Serverless
 
 #awslambdaric             # https://github.com/aws/aws-lambda-python-runtime-interface-client

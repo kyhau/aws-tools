@@ -41,38 +41,39 @@ Jump to
     - EKS Distro in [ECR Public Gallery](https://gallery.ecr.aws/?searchTerm=EKS+Distro)
 - EKS charts (Helm)
     - [eks-charts](https://github.com/aws/eks-charts) - AWS EKS Charts (Helm)
-- [eks-node-viewer](https://github.com/awslabs/eks-node-viewer) - a tool for visualizing dynamic node usage within a cluster. It was originally developed as an internal tool at AWS for demonstrating consolidation with Karpenter.
 - Controllers
     - [aws-controllers-k8s](https://github.com/aws/aws-controllers-k8s/) - AWS Controllers for Kubernetes (ACK), e.g. eks-controller, ec2-controller, s3-controller, apigatewayv2-controller, lambda-controller
     - [aws-controllers-k8s/test-infra](https://github.com/aws-controllers-k8s/test-infra) - This repository contains a framework for functional integration (e2e) testing of AWS Controllers for Kubernetes (ACK) service controllers.
     - [aws-eks-cluster-controller](https://github.com/awslabs/aws-eks-cluster-controller) - AWS EKS Cluster Controller
     - [zone-aware-controllers-for-k8s](https://github.com/aws/zone-aware-controllers-for-k8s) - Kubernetes controllers for zone (AZ) aware rollouts and disruptions.
-- Maintenance
-    - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node Termination Handler (NTH) - Gracefully handle EC2 instance shutdown within Kubernetes
-    - [deploy-nth-to-eks](https://github.com/aws-samples/deploy-nth-to-eks) - Automate Deployment of Node Termination Handler (NTH) in Self Managed Worker Node in EKS Cluster using CICD Pipeline
-- Scaling
-    - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter
 - Kubectl Handler
    - KubectlHandler cab be used to restrict calling `kubebtl` / `helm` commands within a VPC-hosted Lambda function. See https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks-readme.html.
      > The kubectl handler uses kubectl, helm and the aws CLI in order to interact with the cluster. These are bundled into AWS Lambda layers included in the @aws-cdk/lambda-layer-awscli and @aws-cdk/lambda-layer-kubectl modules.
-- Persistent storage [doc](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
-    - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
-    - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
+- Access control, security, hardening
+    - [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
+    [how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
+    - [Amazon GuardDuty for EKS Protection](https://aws.amazon.com/about-aws/whats-new/2022/01/amazon-guardduty-elastic-kubernetes-service-clusters/)
+    - [hardeneks](https://github.com/aws-samples/hardeneks) - Hardeneks runs checks to see if an EKS cluster follows [EKS Best Practices](https://aws.github.io/aws-eks-best-practices/).
+- Maintenance
+    - [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler) - AWS Node Termination Handler (NTH) - Gracefully handle EC2 instance shutdown within Kubernetes
+    - [deploy-nth-to-eks](https://github.com/aws-samples/deploy-nth-to-eks) - Automate Deployment of Node Termination Handler (NTH) in Self Managed Worker Node in EKS Cluster using CICD Pipeline
 - MLTA
+    - [eks-event-watcher](https://github.com/aws-samples/eks-event-watcher) - EKS (control plane) event watcher
+    - [eks-node-viewer](https://github.com/awslabs/eks-node-viewer) - a tool for visualizing dynamic node usage within a cluster. It was originally developed as an internal tool at AWS for demonstrating consolidation with Karpenter.
     - [aws-observability/aws-otel-collector](https://github.com/aws-observability/aws-otel-collector) - AWS Distro for OpenTelemetry Collector
     - [aws-observability/aws-otel-helm-charts](https://github.com/aws-observability/aws-otel-helm-charts) -  AWS Distro for OpenTelemetry (ADOT) Helm Charts
     - [aws-observability/amp-eks-iam](https://github.com/aws-observability/amp-eks-iam) - Tool providing easy IAM setup on EKS for Amazon Managed Service for Prometheus (AMP) users.
     - [aws-observability/amp-k8s-config-examples](https://github.com/aws-observability/amp-k8s-config-examples) - Configurations for Prometheus including Kubernetes (k8s) Helm charts and Operators
-    - [eks-event-watcher](https://github.com/aws-samples/eks-event-watcher) - EKS (control plane) event watcher
-- Access control, security
-    - [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) - AWS IAM Authenticator for Kubernetes,
-    [how-to-install](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
-    - [Amazon GuardDuty for EKS Protection](https://aws.amazon.com/about-aws/whats-new/2022/01/amazon-guardduty-elastic-kubernetes-service-clusters/)
 - Networking
     - [amazon-vpc-cni-k8s](https://github.com/aws/amazon-vpc-cni-k8s) - Networking plugin for pod networking in Kubernetes using ENIs on AWS.
     - Calico add-on - network policy engine for Kubernetes
        - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
-- Test
+- Persistent storage [doc](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
+    - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
+    - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
+- Scaling
+    - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter
+- Testing
     - [aws-k8s-tester](https://github.com/aws/aws-k8s-tester) - is a set of utilities and libraries for "testing" Kubernetes on AWS.
     - AWS FIS (Fault Injection Simulator) with [ChaosMesh and Litmus support](https://aws.amazon.com/about-aws/whats-new/2022/07/aws-fault-injection-simulator-supports-chaosmesh-litmus-experiments/) for stress testing EKS
 
