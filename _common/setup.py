@@ -14,7 +14,8 @@ __requirements__ = [
     "boto3~=1.12",
     "click>=7.1,<9.0",
     "docker>=4.2,<7.0",
-    "PyInquirer~=1.0",
+    #"PyInquirer~=1.0",
+    "InquirerPy",
     "pyyaml>=5.2",
     "toml~=0.10",
 ]

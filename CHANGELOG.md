@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-12-13
+
+### Changed
+
+   * Use `InquirerPy` instead of `PyInquirer` for CLI selector.
+
 ## 2022-11-10
 
 ### Added

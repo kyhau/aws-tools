@@ -1,61 +1,42 @@
-from PyInquirer import Token, prompt, style_from_dict
+from InquirerPy import inquirer
+from InquirerPy.base.control import Choice
 
-custom_style = style_from_dict(
-    {
-        Token.Separator: "#6C6C6C",
-        Token.QuestionMark: "#FF9D00 bold",
-        Token.Selected: "#5F819D",
-        Token.Pointer: "#FF9D00 bold",
-        Token.Instruction: "",  # default
-        Token.Answer: "#5F819D bold",
-        Token.Question: "",
-    }
-)
+# See also https://inquirerpy.readthedocs.io/en/latest/pages/style.html?highlight=style#customising-style
 
 
 def prompt_single_selection(name, options, message=None):
     if not options:
         raise ValueError("No options retrieved for selection.")
 
-    questions = [
-        {
-            "choices": options,
-            "message": message if message else f"Please choose the {name}",
-            "name": name,
-            "type": "list",
-        }
-    ]
-    return prompt(questions, style=custom_style)
+    return inquirer.select(
+        message=message if message else f"Please choose the {name}",
+        choices=options,
+        default=None,
+    ).execute()
 
 
 def prompt_multi_selection(name, options, pre_selected_options, message=None):
     if not options:
         raise ValueError("No options retrieved for selection.")
 
-    questions = [
-        {
-            "choices": [
-                    {
-                        "name": option,
-                        "checked": True
-                        if option in pre_selected_options
-                        else False,
-                    }
-                for option in options
-            ],
-            "message": message if message else f"Please choose the {name}",
-            "name": f"{name}s",
-            "type": "checkbox",
-        }
+    choices = [
+        Choice(option, enabled=option in pre_selected_options)
+        for option in options
     ]
-    return prompt(questions, style=custom_style)
+
+    return inquirer.checkbox(
+        message=message if message else f"Please choose the {name}",
+        choices=choices,
+        cycle=True,
+        transformer=lambda result: f"{len(result)} {name} selected",
+    ).execute()
 
 
 def test_1():
     options = ["A", "B", "C", "D"]
     name = "grade"
     resp = prompt_single_selection(name, options)
-    print(resp)  # {'grade': 'A'}
+    print(resp)  # 'A'
 
 
 def test_2():
@@ -63,8 +44,8 @@ def test_2():
     pre_selected_options = ['B']
     name = "grade"
     resp = prompt_multi_selection(name, options, pre_selected_options)
-    print(resp)  # {'grades': ['B']}
-
+    print(resp)  # ['B', 'C']
 
 # if __name__ == "__main__":
 #     test_1()
+#     test_2()
