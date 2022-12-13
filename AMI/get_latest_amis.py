@@ -116,14 +116,14 @@ def get_parameters(param_path, region, session):
 def get_amis_from_get_parameters_by_path(param_path, region, session):
     data = get_parameters_by_path(param_path=param_path, region=region, session=session)
     if data:
-        resp = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
-        for arn in resp.get("AMIs", []):
+        amis = prompt_multi_selection("AMI", options=list(data.keys()), pre_selected_options=[])
+        for arn in amis:
             print(json.dumps(data[arn], default=str, indent=2, sort_keys=True))
 
 
 def get_amis_from_get_parameters(ami_dict, region, session):
-    resp = prompt_multi_selection("AMI", options=list(ami_dict.keys()), pre_selected_options=[])
-    for name in resp.get("AMIs", []):
+    amis = prompt_multi_selection("AMI", options=list(ami_dict.keys()), pre_selected_options=[])
+    for name in amis:
         get_parameters(param_path=f"{name}/image_id", region=region, session=session)
 
 

@@ -33,8 +33,7 @@ def list_ip_ranges(data, services, ip_type, region, prefix):
 def select_services(data, ip_type):
     _, key_prefixes = IP_TYPES[ip_type]
     services = sorted(set( d["service"] for d in data[key_prefixes]))
-    resp = prompt_multi_selection("Service", options=services, pre_selected_options=[])
-    return resp["Services"]
+    return prompt_multi_selection("Service", options=services, pre_selected_options=[])
 
 
 @click.command(help="Get AWS public IP ranges")
