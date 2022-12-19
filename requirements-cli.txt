@@ -41,3 +41,4 @@ httpie                    # https://github.com/httpie/httpie
 #pipdeptree               # https://github.com/naiquevin/pipdeptree
 #pydot                    # use tegether with cfn-lint to generate DOT file, require graphviz
 #yq                       # YAML/XML processor - jq wrapper for YAML/XML documents, https://github.com/kislyuk/yq
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
