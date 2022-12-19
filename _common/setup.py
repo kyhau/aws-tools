@@ -11,13 +11,12 @@ __summary__ = "This package includes some simple scripts for setting up local de
 __uri__ = "https://github.com/kyhau/aws-tools/"
 
 __requirements__ = [
-    "boto3~=1.12",
-    "click>=7.1,<9.0",
-    "docker>=4.2,<7.0",
-    #"PyInquirer~=1.0",
-    "InquirerPy",
-    "pyyaml>=5.2",
-    "toml~=0.10",
+    "boto3==1.26.32",
+    "click==8.1.3",
+    "docker==6.0.1",
+    "InquirerPy==0.1.0",
+    "pyyaml==6.0",
+    "toml==0.10.2",
 ]
 
 __entry_points__ = {
@@ -41,7 +40,6 @@ except (ImportError, IOError, OSError) as e:
 
 CLASSIFIERS = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
