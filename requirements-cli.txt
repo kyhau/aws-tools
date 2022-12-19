@@ -15,8 +15,8 @@ awscurl                   # https://github.com/okigan/awscurl
 
 cfn-flip                  # https://github.com/awslabs/aws-cfn-template-flip
 cfn-lint                  # require aws-sam-translator, https://github.com/aws-cloudformation/cfn-lint
-cloudformation-cli        # https://github.com/aws-cloudformation/cloudformation-cli
-cloudformation-cli-python-plugin  # https://github.com/aws-cloudformation/cloudformation-cli-python-plugin
+#cloudformation-cli       # https://github.com/aws-cloudformation/cloudformation-cli
+#cloudformation-cli-python-plugin  # https://github.com/aws-cloudformation/cloudformation-cli-python-plugin
 yamllint                  # https://github.com/adrienverge/yamllint
 
 ################################################################################
@@ -40,5 +40,4 @@ yamllint                  # https://github.com/adrienverge/yamllint
 httpie                    # https://github.com/httpie/httpie
 #pipdeptree               # https://github.com/naiquevin/pipdeptree
 #pydot                    # use tegether with cfn-lint to generate DOT file, require graphviz
-yq                        # YAML/XML processor - jq wrapper for YAML/XML documents, https://github.com/kislyuk/yq
-setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+#yq                       # YAML/XML processor - jq wrapper for YAML/XML documents, https://github.com/kislyuk/yq
