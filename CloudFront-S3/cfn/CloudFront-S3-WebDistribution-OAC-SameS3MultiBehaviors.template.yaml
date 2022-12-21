@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
   Launch a static website backed by an S3 bucket and served via https through
-  CloudFront with OAI.
+  CloudFront with OAC.
 
 Parameters:
   AppBucketName:
@@ -54,11 +54,15 @@ Resources:
     DeletionPolicy: Delete
     UpdateReplacePolicy: Delete
 
-  CloudFrontOAI:
-    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+  CloudFrontOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
     Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: !Sub ${S3Bucket}-origin-access-identity
+      OriginAccessControlConfig:
+        Description: Default Origin Access Control
+        Name: !Ref AWS::StackName
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
 
   S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -67,13 +71,16 @@ Resources:
       PolicyDocument:
         Statement:
           -
-            Sid: AllowCloudFrontAccessIdentity
+            Sid: AllowCloudFrontServicePrincipal
             Effect: Allow
             Action:
               - s3:GetObject
             Resource: !Sub arn:${AWS::Partition}:s3:::${S3Bucket}/*
             Principal:
-              AWS: !Sub arn:${AWS::Partition}:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAI}
+              Service: cloudfront.amazonaws.com
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${CFDistribution}
 
   CFDistribution:
     Type: AWS::CloudFront::Distribution
@@ -83,7 +90,8 @@ Resources:
           - DomainName: !GetAtt S3Bucket.DomainName
             Id: !Sub ${S3Bucket}S3OriginId
             S3OriginConfig:
-              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOAI}
+              OriginAccessIdentity: ""
+            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
 
         CacheBehaviors:
           - AllowedMethods:
