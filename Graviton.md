@@ -16,19 +16,21 @@ Jump to
 - Amazon RDS - up to 35% better performance at 20% lower cost over comparable x86-based instances
 - Amazon Elasticache (Redis, Memcached) - up to 45% better performance at 20% lower cost over comparable x86-based instances
 - Amazon EMR - up to 15% improved performance and up to 35% lower cost for Spark workloads versus comparable x86-based instances
+- Amazon EKS - up to 40% better performance and 20% lower cost than comparable x86-based instances.
+- Amazon OpenSearch Service - up to 30% better price-performance than comparable x86-based instances. (OpenSearch versions and Elasticsearch versions 7.9 and above)
 
 See also [AWS Graviton Fast Start](https://aws.amazon.com/ec2/graviton/fast-start/) and [blog post](https://aws.amazon.com/blogs/aws/graviton-fast-start-a-new-program-to-help-move-your-workloads-to-aws-graviton/).
 
 
 ---
 ## Instances Powered by Arm-based AWS Graviton Processors - **Sydney**
-Source [AWS Graviton](https://aws.amazon.com/ec2/graviton/) and [availability and pricing](https://aws.amazon.com/ec2/pricing/on-demand/) (last checked on 2022-07-29)
+Source [AWS Graviton](https://aws.amazon.com/ec2/graviton/) and [availability and pricing](https://aws.amazon.com/ec2/pricing/on-demand/) (last checked on 2022-12-22)
 
 | | Instance types | Powered by | Sydney? | Built for
 |--|--|--|--|--|
 | General Purpose | M6g, M6gd | AWS Graviton2 | Yes | General purpose workloads with balanced compute, memory, and networking|
 | General Purpose | T4g | AWS Graviton2 | Yes | Burstable general purpose workloads|
-| Compute Optimized | C7g | AWS Graviton3 | No | Compute-intensive workloads|
+| Compute Optimized | C7g, C7gn | AWS Graviton3 | No | Compute-intensive workloads|
 | Compute Optimized | C6g, C6gd, C6gn | AWS Graviton2 | Yes | Compute and network-intensive workloads, such as HPC, video encoding, gaming, and CPU-based ML inference.|
 | Memory Optimized | R6g, R6gd | AWS Graviton2 | Yes | Memory-intensive workloads such as open-source databases (MySQL, MariaDB, and PostgreSQL), or in-memory caches (Redis, KeyDB, Memcached).|
 | Memory Optimized | X2gd | AWS Graviton2 | No | Lowest cost per GiB of memory in Amazon EC2|
