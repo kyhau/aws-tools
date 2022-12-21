@@ -102,6 +102,7 @@ pip3 install -r requirements-cli.txt
 - [VPC](./VPC/)
 - [VPC Endpoint](./VPC-Endpoint/)
 - [WAF, Firewall Manager, Shield](./WAF-FirewallManager-Shield/)
+- [WorkSpaces](./WorkSpaces/)
 - [X-Ray](./X-Ray/)
 
 Some Specific Topics
