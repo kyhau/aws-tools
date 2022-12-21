@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-12-21
+
+### Added
+
+    * Added CloudFormation [template](CloudFront-S3/cfn/CloudFront-S3-WebDistribution-OAC-SameS3MultiBehaviors.template.yaml) for creating CloudFront with an Amazon S3 bucket as the origin and OAC.
+
 ## 2022-12-13
 
 ### Changed
