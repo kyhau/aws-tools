@@ -49,7 +49,7 @@ jobs:
           echo "region: ${{ env.region }}"
           echo "stacksuffix: ${{ env.stacksuffix }}"
 
-      - uses: aws-actions/configure-aws-credentials@v1
+      - uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           aws-region: ${{ env.region }}
           role-duration-seconds: 900
