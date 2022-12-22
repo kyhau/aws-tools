@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
   Launch a CloudFront web distribution to serve content from a single S3 origin, multiple behaviours,
-  with OAC for origin access control.
+  with OAC for origin access control, and a custom domain name.
 
 Parameters:
   AppBucketName:
@@ -21,6 +21,16 @@ Parameters:
   LogsBucketName:
     Description: Bucket name for the application logging.
     Type: String
+  AcmIdentifier:
+    Description: Identifier of the ACM certificate.
+    Type: String
+    AllowedPattern: .+
+    ConstraintDescription: Provide the identifier of ACM certificate (us-east-1 only).
+  CanonicalName:
+    Description: Custom domain name (CNAME).
+    Type: String
+    AllowedPattern: .+
+    ConstraintDescription: Provide the CNAME (www.example.com).
 
 Resources:
   S3Bucket:
@@ -155,7 +165,11 @@ Resources:
           Prefix: cloudfront
         PriceClass: PriceClass_100
         ViewerCertificate:
-          CloudFrontDefaultCertificate: true
+          AcmCertificateArn: !Sub arn:${AWS::Partition}:acm:us-east-1:${AWS::AccountId}:certificate/${AcmIdentifier}
+          MinimumProtocolVersion: TLSv1.2_2019
+          SslSupportMethod: sni-only
+        Aliases:
+          - !Ref CanonicalName
 
 Outputs:
   CFDistributionDomainName:

@@ -1,11 +1,44 @@
 # CloudFront
 
 Jump to
+- [Provision CloudFront with templates in this directory](#steps-to-provision-cloudfront)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [OAC vs. OAI](#oac-vs-oai)
 - [S3 Website endpoint vs. S3 REST API endpoint](#s3-website-endpoint-vs-s3-rest-api-endpoint)
 - [My QuickStart CloudFormation templates](./cfn/)
-- [Steps to provision CloudFront](#steps-to-provision-cloudfront)
+
+
+---
+## Steps to provision CloudFront
+
+If using custom domain/CNAME, do also (1), (2) and (4); if not, only (3).
+
+1. Upload a server (ssl) certificate to IAM [using aws-cli](
+   http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate):
+
+   ```
+   aws iam upload-server-certificate \
+       --server-certificate-name example \
+       --certificate-body file://example.crt \
+       --private-key file://example.key \
+       --certificate-chain file://intermediate.crt \
+       --path /cloudfront/
+   ```
+
+2. To retrieve the `ServerCertificateId` or other certificate details:
+
+   ```
+   aws iam list-server-certificates (--profile your-aws-profile)
+   ```
+
+3. Use CloudFormation template `CloudFront-S3-WebDistribution-xxx.template` to
+    1. Create S3 bucket with Static Website, Versioning and Logging enabled.
+    1. Create Bucket Policy for PublicRead access (if using Custom Origins approach).
+    1. Create a Managed Policy for managing and uploading files to the S3 bucket.
+    1. Attach the Managed Policy to the given Group.
+    1. Create a CloudFront Distribution
+
+4. Add new Route53 record set for each CloudFront Alias as CNAME pointing to the CloudFront Domain name.
 
 
 ---
@@ -55,38 +88,3 @@ When using OAC, a typical request and response workflow will be:
 
 3. See also https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteEndpoints.html#WebsiteRestEndpointDiff.
 
-
----
-## Steps to provision CloudFront
-
-1. Create a IAM Group for deployment using `IAM-Group-ForDeployment.template` with CloudFormation.
-
-1. Create a S3 Log bucket as the root-logs bucket (for all logging) using `S3-RootLogs.template` with CloudFormation.
-
-1. Upload a server (ssl) certificate to IAM [using aws-cli](
-   http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate):
-
-   ```
-   > aws iam upload-server-certificate \
-        --server-certificate-name example \
-        --certificate-body file://example.crt \
-        --private-key file://example.key \
-        --certificate-chain file://intermediate.crt \
-        --path /cloudfront/
-   ```
-
-   To retrieve the `ServerCertificateId` or other certificate details:
-
-   ```
-   > aws iam list-server-certificates (--profile your-aws-profile)
-   ```
-
-1. Use CloudFormation template `CloudFront-S3-WebDistribution-xxx.template` to
-    1. Create S3 bucket with Static Website, Versioning and Logging enabled.
-    1. Create Bucket Policy for PublicRead access (if using Custom Origins approach).
-    1. Create a Managed Policy for managing and uploading files to the S3 bucket.
-    1. Attach the Managed Policy to the given Group.
-    1. Create a CloudFront Distribution
-
-1. Add new Route53 record set for each CloudFront Alias as CNAME pointing to
-   the CloudFront Domain name.

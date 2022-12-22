@@ -1,26 +1,25 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
-  Launch a CloudFront web distribution to serve content from a single S3 origin, multiple behaviours,
-  with OAC for origin access control.
+  Launch a CloudFront web distribution to serve content from a single S3 origin,
+  with OAI for origin access control, and a custom domain name.
 
 Parameters:
   AppBucketName:
     Description: Name of the s3 bucket to create for website source files.
     Type: String
-  AppBucketPathPattern1:
-    Description: >
-      The path pattern to be added to CloudFront Behaviours to route to the origin.
-      E.g. the path pattern "images/*.jpg" routes all requests for ".jpg" files in
-      the images directory and in all subdirectories below the images directory to
-      S3 bucket or the web server that you specify in Origin.
-    Type: String
-  AppBucketPathPattern2:
-    Description: >
-      The path pattern to be added to CloudFront Behaviours to route to the origin.
-    Type: String
   LogsBucketName:
     Description: Bucket name for the application logging.
     Type: String
+  AcmIdentifier:
+    Description: Identifier of the ACM certificate.
+    Type: String
+    AllowedPattern: .+
+    ConstraintDescription: Provide the identifier of ACM certificate (us-east-1 only).
+  CanonicalName:
+    Description: Custom domain name (CNAME).
+    Type: String
+    AllowedPattern: .+
+    ConstraintDescription: Provide the CNAME (www.example.com).
 
 Resources:
   S3Bucket:
@@ -54,15 +53,11 @@ Resources:
     DeletionPolicy: Delete
     UpdateReplacePolicy: Delete
 
-  CloudFrontOriginAccessControl:
-    Type: AWS::CloudFront::OriginAccessControl
+  CloudFrontOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
-      OriginAccessControlConfig:
-        Description: Default Origin Access Control
-        Name: !Ref AWS::StackName
-        OriginAccessControlOriginType: s3
-        SigningBehavior: always
-        SigningProtocol: sigv4
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub ${S3Bucket}-origin-access-identity
 
   S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -71,16 +66,13 @@ Resources:
       PolicyDocument:
         Statement:
           -
-            Sid: AllowCloudFrontServicePrincipal
+            Sid: AllowCloudFrontAccessIdentity
             Effect: Allow
             Action:
               - s3:GetObject
             Resource: !Sub arn:${AWS::Partition}:s3:::${S3Bucket}/*
             Principal:
-              Service: cloudfront.amazonaws.com
-            Condition:
-              StringEquals:
-                AWS:SourceArn: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${CFDistribution}
+              AWS: !Sub arn:${AWS::Partition}:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAI}
 
   CFDistribution:
     Type: AWS::CloudFront::Distribution
@@ -90,40 +82,7 @@ Resources:
           - DomainName: !GetAtt S3Bucket.DomainName
             Id: !Sub ${S3Bucket}S3OriginId
             S3OriginConfig:
-              OriginAccessIdentity: ""
-            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
-
-        CacheBehaviors:
-          - AllowedMethods:
-              - GET
-              - HEAD
-              - OPTIONS
-            DefaultTTL: 900
-            ForwardedValues:
-              QueryString: false
-              Cookies:
-                Forward: none
-            MaxTTL: 900
-            MinTTL: 0
-            PathPattern: !Ref AppBucketPathPattern1
-            TargetOriginId: !Sub ${S3Bucket}S3OriginId
-            ViewerProtocolPolicy: redirect-to-https
-
-          - AllowedMethods:
-              - GET
-              - HEAD
-              - OPTIONS
-            DefaultTTL: 900
-            ForwardedValues:
-              QueryString: false
-              Cookies:
-                Forward: none
-            MaxTTL: 900
-            MinTTL: 0
-            PathPattern: !Ref AppBucketPathPattern2
-            TargetOriginId: !Sub ${S3Bucket}S3OriginId
-            ViewerProtocolPolicy: redirect-to-https
-
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOAI}
         Comment: !Sub CloudFront origin for ${AppBucketName}
         CustomErrorResponses:
           - ErrorCode: 403
@@ -155,7 +114,11 @@ Resources:
           Prefix: cloudfront
         PriceClass: PriceClass_100
         ViewerCertificate:
-          CloudFrontDefaultCertificate: true
+          AcmCertificateArn: !Sub arn:${AWS::Partition}:acm:us-east-1:${AWS::AccountId}:certificate/${AcmIdentifier}
+          MinimumProtocolVersion: TLSv1.2_2019
+          SslSupportMethod: sni-only
+        Aliases:
+          - !Ref CanonicalName
 
 Outputs:
   CFDistributionDomainName:

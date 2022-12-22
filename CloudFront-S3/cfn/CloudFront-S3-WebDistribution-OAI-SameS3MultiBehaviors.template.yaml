@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
-  Launch a static website backed by an S3 bucket and served via https through
-  CloudFront with OAI.
+  Launch a CloudFront web distribution to serve content from a single S3 origin, multiple behaviours,
+  with OAI for origin access control.
 
 Parameters:
   AppBucketName:
@@ -19,7 +19,7 @@ Parameters:
       The path pattern to be added to CloudFront Behaviours to route to the origin.
     Type: String
   LogsBucketName:
-    Description: Bucket name for the application logging
+    Description: Bucket name for the application logging.
     Type: String
 
 Resources:
@@ -146,6 +146,8 @@ Resources:
           IncludeCookies: false
           Prefix: cloudfront
         PriceClass: PriceClass_100
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
 
 Outputs:
   CFDistributionDomainName:

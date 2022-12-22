@@ -1,14 +1,14 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
-  Launch a static website backed by an S3 bucket and served via https through
-  CloudFront with OAI.
+  Launch a CloudFront web distribution to serve content from a single S3 origin,
+  with OAI for origin access control.
 
 Parameters:
   AppBucketName:
     Description: Name of the s3 bucket to create for website source files.
     Type: String
   LogsBucketName:
-    Description: Bucket name for the application logging
+    Description: Bucket name for the application logging.
     Type: String
 
 Resources:
@@ -22,14 +22,32 @@ Resources:
         BlockPublicPolicy: true
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+
+  LogsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: LogDeliveryWrite
+      BucketName: !Ref LogsBucketName
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteContentAfter1Day
+            Status: Enabled
+            ExpirationInDays: 1
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
 
   CloudFrontOAI:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
       CloudFrontOriginAccessIdentityConfig:
-        Comment: !Sub "${S3Bucket}-origin-access-identity"
+        Comment: !Sub ${S3Bucket}-origin-access-identity
 
   S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -39,7 +57,7 @@ Resources:
         Statement:
           -
             Sid: AllowCloudFrontAccessIdentity
-            Effect: "Allow"
+            Effect: Allow
             Action:
               - s3:GetObject
             Resource: !Sub arn:${AWS::Partition}:s3:::${S3Bucket}/*
@@ -52,10 +70,10 @@ Resources:
       DistributionConfig:
         Origins:
           - DomainName: !GetAtt S3Bucket.DomainName
-            Id: !Sub "${S3Bucket}S3OriginId"
+            Id: !Sub ${S3Bucket}S3OriginId
             S3OriginConfig:
-              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOAI}"
-        Comment: !Sub "CloudFront origin for ${AppBucketName}"
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOAI}
+        Comment: !Sub CloudFront origin for ${AppBucketName}
         CustomErrorResponses:
           - ErrorCode: 403
             ResponseCode: 200
@@ -75,16 +93,18 @@ Resources:
               Forward: none
           MaxTTL: 900
           MinTTL: 0
-          TargetOriginId: !Sub "${S3Bucket}S3OriginId"
+          TargetOriginId: !Sub ${S3Bucket}S3OriginId
           ViewerProtocolPolicy: redirect-to-https
         DefaultRootObject: index.html
         Enabled: true
         HttpVersion: http2
         Logging:
-          Bucket: !Sub "${LogsBucketName}.s3.amazonaws.com"
+          Bucket: !Sub ${LogsBucket}.s3.amazonaws.com
           IncludeCookies: false
           Prefix: cloudfront
         PriceClass: PriceClass_100
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
 
 Outputs:
   CFDistributionDomainName:
