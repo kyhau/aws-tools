@@ -89,6 +89,7 @@ pip3 install -r requirements-cli.txt
 - [RDS](./RDS/)
 - [Redshift](./Redshift/)
 - [Route 53](./Route53/)
+- [S3](./S3/)
 - [SageMaker](./SageMaker/)
 - [SAM, Serverless Application Registry](./SAM-and-ServerlessApplicationRepository/)
 - [Seekable OCI (SOCI)](./SOCI/) for lazy loading container images
