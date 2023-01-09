@@ -1,5 +1,9 @@
-# Troubleshooting
+# S3
 
+- Replicate different subsets of objects from one account to another account with [replication configuration](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html)
+
+---
+## Troubleshooting
 See also https://docs.aws.amazon.com/AmazonS3/latest/dev/troubleshooting.html
 
 ---
@@ -14,4 +18,3 @@ Solution 1:
    s3 =
      multipart_threshold = 150MB
    ```
- 
