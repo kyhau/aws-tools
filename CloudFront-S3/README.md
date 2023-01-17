@@ -1,11 +1,18 @@
 # CloudFront
 
 Jump to
+- [Useful Libs and Tools](#useful-libs-and-tools)
 - [Provision CloudFront with templates in this directory](#steps-to-provision-cloudfront)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [OAC vs. OAI](#oac-vs-oai)
 - [S3 Website endpoint vs. S3 REST API endpoint](#s3-website-endpoint-vs-s3-rest-api-endpoint)
 - [My QuickStart CloudFormation templates](./cfn/)
+
+
+---
+## Useful Libs and Tools
+
+- [amazon-cloudfront-multi-function-packager](https://github.com/aws-samples/amazon-cloudfront-multi-function-packager) - This tool allows you to package multiple Edge Functions - Lambda@Edge or CloudFront Functions into a single function with minimal code changes.
 
 
 ---

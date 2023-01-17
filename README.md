@@ -53,7 +53,7 @@ pip3 install -r requirements-cli.txt
 - [APIGateway](./APIGateway/)
 - [AppSync](./AppSync/)
 - [Athena](./Athena/)
-- [AutoScaling](./AutoScaling.md)
+- [AutoScaling](./AutoScaling/)
 - [AWS-Tools](./AWS-Tools/)
 - [Bottlerocket](./Bottlerocket/)
 - [CDK](./CDK/)
