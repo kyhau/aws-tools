@@ -41,7 +41,6 @@ def list_items_with_pagination(client, table_name, field_name=None, field_value=
     Note that this approach will return low level data
     See https://stackoverflow.com/questions/36780856/complete-scan-of-dynamodb-with-boto3
     """
-    paginator = client.get_paginator("scan")
     operation_params = {"TableName": table_name,}
     if field_name and field_value:
         operation_params.update({
@@ -50,6 +49,8 @@ def list_items_with_pagination(client, table_name, field_name=None, field_value=
                 ":x": {"S": field_value}
             }
         })
+
+    paginator = client.get_paginator("scan")
     for page in paginator.paginate(**operation_params):
         yield page["Items"]
 
@@ -66,7 +67,7 @@ def cli_main(ctx, profile, region):
 
 @cli_main.command(help="Print all DynamoDB tables")
 @click.pass_context
-def list(ctx):
+def ls(ctx):
     ddb_client = ctx.obj["session"].client("dynamodb", ctx.obj["region"])
     for page in ddb_client.get_paginator("list_tables").paginate().result_key_iters():
         for item in page:
@@ -89,6 +90,10 @@ def describe(ctx, table_name):
 @click.pass_context
 def scan(ctx, table_name, field_name, field_value):
     start = time()
+
+    # The following version uses resource.
+    # See list_items_with_pagination() above for the version using client instead of resource
+
     table = ctx.obj["session"].resource("dynamodb", ctx.obj["region"]).Table(table_name)
 
     params = {}
@@ -98,7 +103,7 @@ def scan(ctx, table_name, field_name, field_value):
     resp = table.scan(**params)
     for item in resp["Items"]:
         print(item)
-    
+
     while "LastEvaluatedKey" in resp:
         params.update({"ExclusiveStartKey": resp["LastEvaluatedKey"]})
         resp = table.scan(**params)
