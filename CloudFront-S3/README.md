@@ -6,6 +6,7 @@ Jump to
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [OAC vs. OAI](#oac-vs-oai)
 - [S3 Website endpoint vs. S3 REST API endpoint](#s3-website-endpoint-vs-s3-rest-api-endpoint)
+- [CloudFront Functions and Lambda@Edge](#cloudfront-functions-and-lambdaedge)
 - [My QuickStart CloudFormation templates](./cfn/)
 
 
@@ -56,6 +57,7 @@ If using custom domain/CNAME, do also (1), (2) and (4); if not, only (3).
 - https://vimalpaliwal.com/blog/2018/10/10f435c29f/serving-multiple-s3-buckets-via-single-aws-cloudfront-distribution.html
 - https://stackoverflow.com/questions/20632828/aws-cloud-formation-script-to-create-s3-bucket-and-distribution
 
+
 ---
 ## OAC vs. OAI
 
@@ -77,6 +79,7 @@ When using OAC, a typical request and response workflow will be:
 2. CloudFront edge locations receive the requests. If the requested object is not already cached, CloudFront signs the requests using OAC signing protocol (SigV4 is currently supported.)
 3. S3 origins authenticate, authorize, or deny the requests. When configuring OAC, you can choose among three signing behaviors – “Do not sign requests”, “Sign requests”, and sign requests but “Do not override authorization header”. For details, see ([Source](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-cloudfront-introduces-origin-access-control-oac/)).
 
+
 ---
 ## S3 Website endpoint vs. S3 REST API endpoint
 
@@ -95,3 +98,9 @@ When using OAC, a typical request and response workflow will be:
 
 3. See also https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteEndpoints.html#WebsiteRestEndpointDiff.
 
+
+---
+## CloudFront Functions and Lambda@Edge
+
+See the difference between CloudFront Functions and Lambda@Edge here:
+https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/
