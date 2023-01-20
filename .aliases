@@ -5,109 +5,109 @@ REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 alias browser='/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 
-alias aws-acm-list-certificates='python ${REPO_HOME}/ACM/list_certificates.py'
+alias aws-acm-list-certificates='python3 ${REPO_HOME}/ACM/list_certificates.py'
 
-alias aws-ami-latest='python ${REPO_HOME}/AMI/get_latest_amis.py'
+alias aws-ami-latest='python3 ${REPO_HOME}/AMI/get_latest_amis.py'
 
-alias aws-apigws='python ${REPO_HOME}/APIGateway/list_api_gateways.py'
-alias aws-apigw-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw.py'
-alias aws-apigw-v2-deploy='python ${REPO_HOME}/APIGateway/deploy_apigw_v2.py'
+alias aws-apigws='python3 ${REPO_HOME}/APIGateway/list_api_gateways.py'
+alias aws-apigw-deploy='python3 ${REPO_HOME}/APIGateway/deploy_apigw.py'
+alias aws-apigw-v2-deploy='python3 ${REPO_HOME}/APIGateway/deploy_apigw_v2.py'
 
-alias aws-apis-test='python ${REPO_HOME}/API/check_aws_apis.py'
+alias aws-apis-test='python3 ${REPO_HOME}/API/check_aws_apis.py'
 
-alias aws-athena-query-execution='python ${REPO_HOME}/Athena/athena_query_execution.py'
+alias aws-athena-query-execution='python3 ${REPO_HOME}/Athena/athena_query_execution.py'
 
 alias aws-canonical-user-id='aws s3api list-buckets --query Owner.ID --output text'
 
-alias aws-cloudformation-to-dot-to-image='python ${REPO_HOME}/CloudFormation/cfn_to_dot_to_image.py'
-alias aws-cloudformation-list-stacks='python ${REPO_HOME}/CloudFormation/list_stacks.py'
+alias aws-cloudformation-to-dot-to-image='python3 ${REPO_HOME}/CloudFormation/cfn_to_dot_to_image.py'
+alias aws-cloudformation-list-stacks='python3 ${REPO_HOME}/CloudFormation/list_stacks.py'
 alias aws-cloudformation-validate-template='aws cloudformation validate-template --template-body'
 
 alias aws-cloudtrail-event-names='browser https://gist.github.com/pkazi/8b5a1374771f6efa5d55b92d8835718c'
-alias aws-cloudtrail-lookup-events='python ${REPO_HOME}/CloudTrail/cloudtrail_lookup_events.py'
-alias aws-cloudtrail-list-security-event-names='python ${REPO_HOME}/CloudTrail/list_cloudtrail_security_event_names.py'
+alias aws-cloudtrail-lookup-events='python3 ${REPO_HOME}/CloudTrail/cloudtrail_lookup_events.py'
+alias aws-cloudtrail-list-security-event-names='python3 ${REPO_HOME}/CloudTrail/list_cloudtrail_security_event_names.py'
 
-alias aws-cloudwatch-insights='python ${REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights.py'
-alias aws-cloudwatch-log-send-sample-event='python ${REPO_HOME}/CloudWatch/send_cloudwatch_log_event.py'
-alias aws-cloudwatch-put-cloudwatch-dashboard='python ${REPO_HOME}/CloudWatch/put_cloudwatch_dashboard.py'
+alias aws-cloudwatch-insights='python3 ${REPO_HOME}/CloudWatch/CloudWatch-LogsInsights/cloudwatch_logs_insights.py'
+alias aws-cloudwatch-log-send-sample-event='python3 ${REPO_HOME}/CloudWatch/send_cloudwatch_log_event.py'
+alias aws-cloudwatch-put-cloudwatch-dashboard='python3 ${REPO_HOME}/CloudWatch/put_cloudwatch_dashboard.py'
 
-alias aws-cognito-token='python ${REPO_HOME}/Cognito/cognito_token.py'
-alias aws-cognito-users='python ${REPO_HOME}/Cognito/cognito_users.py'
+alias aws-cognito-token='python3 ${REPO_HOME}/Cognito/cognito_token.py'
+alias aws-cognito-users='python3 ${REPO_HOME}/Cognito/cognito_users.py'
 
-alias aws-config-query='python ${REPO_HOME}/Config/query_configservice.py'
+alias aws-config-query='python3 ${REPO_HOME}/Config/query_configservice.py'
 
-alias aws-database-status-check='python ${REPO_HOME}/Others/list_databases_status.py'
+alias aws-database-status-check='python3 ${REPO_HOME}/Others/list_databases_status.py'
 
-alias aws-ddb-delete-table-item='python ${REPO_HOME}/DynamoDB/delete_table_items.py'
+alias aws-ddb-delete-table-item='python3 ${REPO_HOME}/DynamoDB/delete_table_items.py'
 alias aws-ddb-enable-contributor-insights='aws dynamodb update-contributor-insights --contributor-insights-action ENABLE --table-name '
-alias aws-ddb-search='python ${REPO_HOME}/DynamoDB/search_dynamodb.py'
+alias aws-ddb-search='python3 ${REPO_HOME}/DynamoDB/search_dynamodb.py'
 alias aws-ddb-start-local='. ${REPO_HOME}/DynamoDB/start_dynamodb_local.sh'
 
-alias aws-ec2-instances='python ${REPO_HOME}/EC2/list_ec2_instances.py'
-alias aws-ec2-check-userdata='python ${REPO_HOME}/EC2/UserData/check_UserData.py'
+alias aws-ec2-instances='python3 ${REPO_HOME}/EC2/list_ec2_instances.py'
+alias aws-ec2-check-userdata='python3 ${REPO_HOME}/EC2/UserData/check_UserData.py'
 alias aws-ec2-create-key-pair='.  ${REPO_HOME}/EC2/create_key_pair.sh'
-alias aws-ec2-db-instances-based-on-ports='python ${REPO_HOME}/RDS/list_ec2_db_instances_based_on_ports.py'
-alias aws-ec2-unreachable='python ${REPO_HOME}/EC2/list_ec2_unreachable.py'
-alias aws-ec2-security-groups='python ${REPO_HOME}/VPC/list_security_groups.py'
+alias aws-ec2-db-instances-based-on-ports='python3 ${REPO_HOME}/RDS/list_ec2_db_instances_based_on_ports.py'
+alias aws-ec2-unreachable='python3 ${REPO_HOME}/EC2/list_ec2_unreachable.py'
+alias aws-ec2-security-groups='python3 ${REPO_HOME}/VPC/list_security_groups.py'
 
-alias aws-ecr-list-used-images-having-critical-or-high-severity-findings='python ${REPO_HOME}/ECR/list_used_images_having_critical_or_high_severity_findings.py'
+alias aws-ecr-list-used-images-having-critical-or-high-severity-findings='python3 ${REPO_HOME}/ECR/list_used_images_having_critical_or_high_severity_findings.py'
 alias aws-ecr-get-login='aws ecr get-login --no-include-email'
 
 alias aws-ecs-account-setting-fargateVCPULimit='aws ecs list-account-settings --effective-settings --name fargateVCPULimit'
 
-alias aws-guardduty-findings='python ${REPO_HOME}/GuardDuty/list_findings.py'
+alias aws-guardduty-findings='python3 ${REPO_HOME}/GuardDuty/list_findings.py'
 
-alias aws-iam-account-authorization-details='python ${REPO_HOME}/IAM/account_authorization_details.py'
-alias aws-iam-list-aws-managed-policies-to-files='python ${REPO_HOME}/IAM/list_aws_managaed_policies_to_files.sh'
-alias aws-iam-list-users='python ${REPO_HOME}/IAM/list_iam_users.py'
-alias aws-iam-lookup-identities='python ${REPO_HOME}/Security/lookup_iam_identities.py'
+alias aws-iam-account-authorization-details='python3 ${REPO_HOME}/IAM/account_authorization_details.py'
+alias aws-iam-list-aws-managed-policies-to-files='python3 ${REPO_HOME}/IAM/list_aws_managaed_policies_to_files.sh'
+alias aws-iam-list-users='python3 ${REPO_HOME}/IAM/list_iam_users.py'
+alias aws-iam-lookup-identities='python3 ${REPO_HOME}/Security/lookup_iam_identities.py'
 
 alias aws-inspector-cvelist-ap-southeast-2='curl https://s3.ap-southeast-2.amazonaws.com/rules-engine.ap-southeast-2/CVEList.txt'
-alias aws-inspector-list-results='python ${REPO_HOME}/Inspector/inspector_helper.py'
+alias aws-inspector-list-results='python3 ${REPO_HOME}/Inspector/inspector_helper.py'
 
-alias aws-ip-lookup='python ${REPO_HOME}/VPC/find_subnet_for_ip.py'
+alias aws-ip-lookup='python3 ${REPO_HOME}/VPC/find_subnet_for_ip.py'
 alias aws-ip-ranges='curl https://ip-ranges.amazonaws.com/ip-ranges.json'
 alias aws-ip-ranges-link='echo https://ip-ranges.amazonaws.com/ip-ranges.json'
 
-alias aws-lambda-add-permission-for-apigw='python ${REPO_HOME}/APIGateway/lambda_permissions_for_apigw.py'
-alias aws-lambda-deploy='python ${REPO_HOME}/Lambda/deploy_lambda.py'
-alias aws-lambda-functions='python ${REPO_HOME}/Lambda/list_lambda_functions.py'
-alias aws-lambda-layers='python ${REPO_HOME}/Lambda/list_lambda_layers.py'
+alias aws-lambda-add-permission-for-apigw='python3 ${REPO_HOME}/APIGateway/lambda_permissions_for_apigw.py'
+alias aws-lambda-deploy='python3 ${REPO_HOME}/Lambda/deploy_lambda.py'
+alias aws-lambda-functions='python3 ${REPO_HOME}/Lambda/list_lambda_functions.py'
+alias aws-lambda-layers='python3 ${REPO_HOME}/Lambda/list_lambda_layers.py'
 
 alias aws-msk-cluster-bootstrap-broker-string='aws kafka get-bootstrap-brokers --query BootstrapBrokerStringTls --cluster-arn '
 alias aws-msk-cluster-zookeeper-connect-string='aws kafka describe-cluster --query ClusterInfo.ZookeeperConnectString --cluster-arn '
-alias aws-msk-list-nodes='python ${REPO_HOME}/MSK/msk_list_nodes.py'
+alias aws-msk-list-nodes='python3 ${REPO_HOME}/MSK/msk_list_nodes.py'
 
-alias aws-organizations-list-accounts='python ${REPO_HOME}/Organizations/list_accounts.py'
-alias aws-organizations-list-policies='python ${REPO_HOME}/Organizations/list_policies.py'
+alias aws-organizations-list-accounts='python3 ${REPO_HOME}/Organizations/list_accounts.py'
+alias aws-organizations-list-policies='python3 ${REPO_HOME}/Organizations/list_policies.py'
 
-alias aws-public-account-ids='python ${REPO_HOME}/AWS-Public/aws-public-account-ids.py'
-alias aws-public-ip-address-ranges='python ${REPO_HOME}/AWS-Public/aws-public-ip-address-ranges.py'
+alias aws-public-account-ids='python3 ${REPO_HOME}/AWS-Public/aws-public-account-ids.py'
+alias aws-public-ip-address-ranges='python3 ${REPO_HOME}/AWS-Public/aws-public-ip-address-ranges.py'
 
-alias aws-rds-cluster-endpoints='python ${REPO_HOME}/RDS/list_rds_cluster_endpoints.py'
-alias aws-rds-clusters='python ${REPO_HOME}/RDS/list_rds_clusters.py'
-alias aws-rds-instances='python ${REPO_HOME}/RDS/list_rds_instances.py'
+alias aws-rds-cluster-endpoints='python3 ${REPO_HOME}/RDS/list_rds_cluster_endpoints.py'
+alias aws-rds-clusters='python3 ${REPO_HOME}/RDS/list_rds_clusters.py'
+alias aws-rds-instances='python3 ${REPO_HOME}/RDS/list_rds_instances.py'
 alias aws-rds-describe-db-engine-versions-aurora='aws rds describe-db-engine-versions --engine aurora --query "DBEngineVersions[].EngineVersion"'
 alias aws-rds-describe-db-engine-versions-aurora-mysql='aws rds describe-db-engine-versions --engine aurora-mysql --query "DBEngineVersions[].EngineVersion"'
 alias aws-rds-describe-db-engine-versions-aurora-postgresql='aws rds describe-db-engine-versions --engine aurora-postgresql --query "DBEngineVersions[].EngineVersion"'
 
-alias aws-resource-list-with-config='python ${REPO_HOME}/Config/list_resources_with_configservice.py'
-alias aws-resource-list-with-resourcegroupstaggingapi='python ${REPO_HOME}/Others/list_resources_with_resourcegroupstaggingapi.py'
+alias aws-resource-list-with-config='python3 ${REPO_HOME}/Config/list_resources_with_configservice.py'
+alias aws-resource-list-with-resourcegroupstaggingapi='python3 ${REPO_HOME}/Others/list_resources_with_resourcegroupstaggingapi.py'
 
-alias aws-r53-hostedzones='python ${REPO_HOME}/Route53/list_hosted_zones.py'
-alias aws-r53-resolver-endpoints-and-ips='python ${REPO_HOME}/Route53/list_resolver_endpoints_and_ips.py'
+alias aws-r53-hostedzones='python3 ${REPO_HOME}/Route53/list_hosted_zones.py'
+alias aws-r53-resolver-endpoints-and-ips='python3 ${REPO_HOME}/Route53/list_resolver_endpoints_and_ips.py'
 
-alias aws-s3-buckets='python ${REPO_HOME}/S3/list_s3_buckets.py'
+alias aws-s3-buckets='python3 ${REPO_HOME}/S3/list_s3_buckets.py'
 alias aws-s3-size='aws s3 ls --summarize --human-readable --recursive s3://'
 
-alias aws-secretsmanager-get-secret='python ${REPO_HOME}/SecretManager/get_secret.py'
+alias aws-secretsmanager-get-secret='python3 ${REPO_HOME}/SecretManager/get_secret.py'
 
-alias aws-securityhub-list-standards-controls='python ${REPO_HOME}/SecurityHub/list_securityhub_standard_controls.py'
+alias aws-securityhub-list-standards-controls='python3 ${REPO_HOME}/SecurityHub/list_securityhub_standard_controls.py'
 
 alias aws-sfn-start-local='. ${REPO_HOME}/StepFunctions/start_stepfunctions_local.sh'
 alias aws-sfn-start-local-container='. ${REPO_HOME}/StepFunctions/start_stepfunctions_local_docker.sh'
 
-alias aws-shield-attack-event-ips='python ${REPO_HOME}/WAF-FirewallManager-Shield/aws_shield_attack_event_ips.py'
+alias aws-shield-attack-event-ips='python3 ${REPO_HOME}/WAF-FirewallManager-Shield/aws_shield_attack_event_ips.py'
 
 alias aws-sts-decode-authorization-message='aws sts decode-authorization-message --encoded-message'
 alias aws-sts-get-caller-identity='aws sts get-caller-identity'
@@ -118,25 +118,25 @@ alias aws-ssm-parameters-list-global-infrastructure='. ${REPO_HOME}/SSM/ssm_para
 alias aws-ssm-start-session='aws ssm start-session --target'
 alias aws-ssm-start-session-rdp='aws ssm start-session --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["3389"],"localPortNumber"=["9999"] --target '
 
-alias aws-subnet-ip-usage='python ${REPO_HOME}/VPC/available_ip_address_count.py'
+alias aws-subnet-ip-usage='python3 ${REPO_HOME}/VPC/available_ip_address_count.py'
 
-alias aws-tag-list='python ${REPO_HOME}/Others/list_tags.py'
+alias aws-tag-list='python3 ${REPO_HOME}/Others/list_tags.py'
 
-alias aws-trustedadvisor-list-result='python ${REPO_HOME}/TrustedAdvisor/trusted_advisor_check_result.py'
+alias aws-trustedadvisor-list-result='python3 ${REPO_HOME}/TrustedAdvisor/trusted_advisor_check_result.py'
 
-alias aws-vpc-flow-logs='python ${REPO_HOME}/VPC/vpc_flow_logs.py'
-alias aws-vpcs='python ${REPO_HOME}/VPC/list_vpcs.py'
+alias aws-vpc-flow-logs='python3 ${REPO_HOME}/VPC/vpc_flow_logs.py'
+alias aws-vpcs='python3 ${REPO_HOME}/VPC/list_vpcs.py'
 
-alias aws-vpc-endpoints='python ${REPO_HOME}/VPC-Endpoint/vpc_endpoints.py'
-alias aws-vpc-endpoint-gateway-prefix-list='python ${REPO_HOME}/VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
-alias aws-vpc-endpoint-services='python ${REPO_HOME}/VPC-Endpoint/vpc_endpoint_services.py'
+alias aws-vpc-endpoints='python3 ${REPO_HOME}/VPC-Endpoint/vpc_endpoints.py'
+alias aws-vpc-endpoint-gateway-prefix-list='python3 ${REPO_HOME}/VPC-Endpoint/gateway_vpc_endpoint_prefix_lists.py'
+alias aws-vpc-endpoint-services='python3 ${REPO_HOME}/VPC-Endpoint/vpc_endpoint_services.py'
 
-alias aws-vpn-connections='python ${REPO_HOME}/VPC/list_vpn_connections.py'
+alias aws-vpn-connections='python3 ${REPO_HOME}/VPC/list_vpn_connections.py'
 
-alias aws-workspaces-details='python ${REPO_HOME}/Workspaces/list_workspaces_details.py'
-alias aws-workspace-restore-rebuild='python ${REPO_HOME}/Workspaces/workspace_restore_rebuild.py'
+alias aws-workspaces-details='python3 ${REPO_HOME}/Workspaces/list_workspaces_details.py'
+alias aws-workspace-restore-rebuild='python3 ${REPO_HOME}/Workspaces/workspace_restore_rebuild.py'
 
-alias aws-xray-sampling-rule='python ${REPO_HOME}/X-Ray/xray-sampling/xray_sampling_rule.py*'
+alias aws-xray-sampling-rule='python3 ${REPO_HOME}/X-Ray/xray-sampling/xray_sampling_rule.py*'
 
 alias cdk-bootstrap='cdk bootstrap'
 alias cdk-deploy='cdk deploy'
