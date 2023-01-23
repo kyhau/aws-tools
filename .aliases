@@ -7,6 +7,7 @@ alias browser='/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 
 alias aws-acm-list-certificates='python3 ${REPO_HOME}/ACM/list_certificates.py'
 
+alias aws-ami-find-by-amiid='aws ec2 describe-images --image-id '
 alias aws-ami-latest='python3 ${REPO_HOME}/AMI/get_latest_amis.py'
 
 alias aws-apigws='python3 ${REPO_HOME}/APIGateway/list_api_gateways.py'
