@@ -72,6 +72,7 @@ Jump to
 - Persistent storage [doc](https://aws.amazon.com/premiumsupport/knowledge-center/eks-persistent-storage/)
     - [aws-ebs-csi-driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) - AWS EBS CSI Driver on Kubernetes
     - [aws-efs-csi-driver](https://github.com/kubernetes-sigs/aws-efs-csi-driver) - AWS EFS CSI Driver on Kubernetes
+    - Using Amazon EBS snapshots for persistent storage with your Amazon EKS cluster by leveraging add-ons ([blog post](https://aws.amazon.com/blogs/containers/using-amazon-ebs-snapshots-for-persistent-storage-with-your-amazon-eks-cluster-by-leveraging-add-ons/))
 - Scaling
     - [aws-karpenter](https://github.com/aws/karpenter) - AWS Karpenter
 - Testing
