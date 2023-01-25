@@ -3,6 +3,7 @@
 pip
 awscli
 awscurl                   # https://github.com/okigan/awscurl
+awslogs                   # https://github.com/jorgebastida/awslogs
 #aws-shell                # https://github.com/awslabs/aws-shell
 #aws-encryption-sdk-cli   # CLI wrapper around aws-encryption-sdk-python, https://github.com/aws/aws-encryption-sdk-cli
 #aws-parallelcluster      # https://github.com/aws/aws-parallelcluster
