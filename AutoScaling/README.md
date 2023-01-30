@@ -5,8 +5,19 @@
 2. AWS Auto Scaling Custom Resources - [aws/aws-auto-scaling-custom-resource](https://github.com/aws/aws-auto-scaling-custom-resource)
 
 ---
+## Scheduled scaling
 
-# Scheduled scaling
+ℹ️ The cron expression formats used in `AWS::AutoScaling::ScheduledAction` and `AWS::ApplicationAutoScaling::ScalableTarget` are different.
+- For ASG / `AWS::AutoScaling::ScheduledAction`
+  (see [details](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-autoscaling-scheduledaction)):
+   ```
+   [Minute] [Hour] [DayOfMonth] [MonthOfYear] [DayOfWeek]
+   ```
+- For Fargate / `AWS::ApplicationAutoScaling::ScalableTarget`
+  (see [details](https://docs.aws.amazon.com/autoscaling/application/userguide/scheduled-scaling-using-cron-expressions.html)):
+   ```
+   cron(Minutes Hours DayOfMonth Month DayOfWeek Year)
+   ```
 
 ## ECS
 - AWS::ApplicationAutoScaling::ScalableTarget

@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create AWS::AutoScaling::ScheduledAction for scaling AutoScalingGroup.
+
+Parameters:
+  CapacityScaleIn:
+    Description: The minimum value that you plan to scale in to.
+    Type: Number
+  CapacityScaleOut:
+    Description: The maximum value that you plan to scale out to.
+    Type: Number
+  CronScaleIn:
+    Description: The cron expressions for scale in.
+    Type: String
+    Default: "0 20 * * MON-FRI"
+  CronScaleOut:
+    Description: The cron expressions for scale out.
+    Type: String
+    Default: "45 7 * * MON-FRI"
+  CronTimezone:
+    Description: The time zone for a cron expression. If a time zone is not provided, UTC is used by default.
+    Type: String
+    Default: ""
+  ResourceStackName:
+    Description: The stack name of the AutoScalingGroup resource.
+    Type: String
+
+Conditions:
+  UseUTC: !Equals [!Ref CronTimezone, ""]
+
+Resources:
+  ScaleInScheduledAction:
+    Type: AWS::AutoScaling::ScheduledAction
+    Properties:
+      AutoScalingGroupName: !ImportValue
+        Fn::Sub: ${ResourceStackName}:AutoScalingGroupName
+      DesiredCapacity: !Ref CapacityScaleIn
+      MaxSize: !Ref CapacityScaleOut
+      MinSize: !Ref CapacityScaleIn
+      Recurrence: !Ref CronScaleIn
+      TimeZone: !If [UseUTC, !Ref AWS::NoValue, !Ref CronTimezone]
+  ScaleOutScheduledAction:
+    Type: AWS::AutoScaling::ScheduledAction
+    Properties:
+      AutoScalingGroupName: !ImportValue
+        Fn::Sub: ${ResourceStackName}:AutoScalingGroupName
+      DesiredCapacity: !Ref CapacityScaleOut
+      MaxSize: !Ref CapacityScaleOut
+      MinSize: !Ref CapacityScaleIn
+      Recurrence: !Ref CronScaleOut
+      TimeZone: !If [UseUTC, !Ref AWS::NoValue, !Ref CronTimezone]
