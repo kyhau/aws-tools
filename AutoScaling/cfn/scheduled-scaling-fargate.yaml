@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create AWS::ApplicationAutoScaling for scaling ECS cluster.
+
+Parameters:
+  CapacityScaleIn:
+    Description: The minimum value that you plan to scale in to.
+    Type: Number
+  CapacityScaleOut:
+    Description: The maximum value that you plan to scale out to.
+    Type: Number
+  CronScaleIn:
+    Description: The cron expressions "cron(fields)" for scale in.
+    Type: String
+    Default: "cron(30 19 ? * MON-FRI *)"
+  CronScaleOut:
+    Description: The cron expressions "cron(fields)" for scale out.
+    Type: String
+    Default: "cron(0 7 ? * MON-FRI *)"
+  CronTimezone:
+    Description: The time zone for a cron expression. If a time zone is not provided, UTC is used by default.
+    Type: String
+    Default: ""
+  ResourceStackName:
+    Description: The stack name of the ECS resources.
+    Type: String
+
+Conditions:
+  UseUTC: !Equals [!Ref CronTimezone, ""]
+
+Resources:
+  ScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: application-autoscaling.amazonaws.com
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-scaling
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - cloudwatch:DescribeAlarms
+                  - cloudwatch:PutMetricAlarm
+                  - ecs:DescribeServices
+                  - ecs:UpdateService
+                Effect: Allow
+                Resource: "*"
+
+  ScalableTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: !Ref CapacityScaleOut
+      MinCapacity: !Ref CapacityScaleIn
+      ResourceId: !Sub
+        - service/${ECS_CLUSTER_NAME}/${ECS_SERVICE_NAME}
+        - ECS_CLUSTER_NAME: !ImportValue
+            Fn::Sub: ${ResourceStackName}:ClusterName
+          ECS_SERVICE_NAME: !ImportValue
+            Fn::Sub: ${ResourceStackName}:ServiceName
+      RoleARN: !GetAtt ScalingRole.Arn
+      ScalableDimension: ecs:service:DesiredCount
+      ScheduledActions:
+        - ScalableTargetAction:
+            MaxCapacity: !Ref CapacityScaleIn
+            MinCapacity: !Ref CapacityScaleIn
+          Schedule: !Ref CronScaleIn
+          ScheduledActionName: !Sub ${AWS::StackName}-scheduled-scale-in
+          Timezone: !If [UseUTC, !Ref AWS::NoValue, !Ref CronTimezone]
+        - ScalableTargetAction:
+            MaxCapacity: !Ref CapacityScaleOut
+            MinCapacity: !Ref CapacityScaleOut
+          Schedule: !Ref CronScaleOut
+          ScheduledActionName: !Sub ${AWS::StackName}-scheduled-scale-out
+          Timezone: !If [UseUTC, !Ref AWS::NoValue, !Ref CronTimezone]
+      ServiceNamespace: ecs
