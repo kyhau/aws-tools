@@ -20,6 +20,7 @@ Jump to
 ---
 ## Useful Articles and Blogs
 
+1. [Reduce risk by implementing HttpOnly cookie authentication in Amazon API Gateway](https://aws.amazon.com/blogs/security/reduce-risk-by-implementing-httponly-cookie-authentication-in-amazon-api-gateway/), AWS, 2023-01-30
 1. [Managing multi-tenant APIs using Amazon API Gateway](https://aws.amazon.com/blogs/compute/managing-multi-tenant-apis-using-amazon-api-gateway/), AWS, 2022-06-22
 1. [Architecting multiple microservices behind a single domain with API Gateway](https://aws.amazon.com/blogs/compute/architecting-multiple-microservices-behind-a-single-domain-with-amazon-api-gateway/), AWS, 2020-09-18
 2. [Configure mTLS authentication for Amazon API Gateway](https://aws.amazon.com/blogs/compute/introducing-mutual-tls-authentication-for-amazon-api-gateway/), AWS, 2020-09-17
