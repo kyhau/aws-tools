@@ -49,6 +49,7 @@ pip3 install -r requirements-cli.txt
 ---
 ## My notes
 
+- [ADOT (AWS Distro for OpenTelemetry)](./ADOT.md)
 - [Amplify](./Amplify/)
 - [APIGateway](./APIGateway/)
 - [AppSync](./AppSync/)
@@ -114,7 +115,6 @@ Some Specific Topics
 - [ECS vs. EKS](./ECS-vs-EKS.md)
 - [Data Sources](./Others/DataSources.md)
 - [Encryption](./Others/Encryption.md)
-- [MLTA (Monitoring / Logging / Tracing / Alerting)](./MLTA.md)
 - [Mutual Transport Layer Security (mutual TLS or mTLS) authentication](./Security.md)
 - [Networking](./Networking/)
 - [Other useful tools](./Others/)
