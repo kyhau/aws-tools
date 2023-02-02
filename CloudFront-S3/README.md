@@ -102,5 +102,9 @@ When using OAC, a typical request and response workflow will be:
 ---
 ## CloudFront Functions and Lambda@Edge
 
-See the difference between CloudFront Functions and Lambda@Edge here:
+- See the difference between CloudFront Functions and Lambda@Edge here:
 https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/
+
+- [Reduce latency for end-users with multi-region APIs with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/reduce-latency-for-end-users-with-multi-region-apis-with-cloudfront/)
+    - with Lambda@Edge and Route53 latency routing
+
