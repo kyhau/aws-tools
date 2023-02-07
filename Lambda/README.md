@@ -235,5 +235,5 @@ See also [Lambda - Performance optimization](https://docs.aws.amazon.com/lambda/
 ---
 ## Useful Articles and Blogs
 
-- [Previewing environments using containerized AWS Lambda functions](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/), AWS, 2023-02-06
+- [Previewing environments using containerized AWS Lambda functions](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/) (using Lamda URL, Lambda extension), AWS, 2023-02-06
 - [How to get notified on specific Lambda function error patterns using CloudWatch](https://aws.amazon.com/blogs/mt/get-notified-specific-lambda-function-error-patterns-using-cloudwatch/), AWS, 2020-08-24
