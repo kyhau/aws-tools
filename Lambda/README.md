@@ -210,6 +210,8 @@ See [Understanding AWS Lambda scaling and throughput](https://aws.amazon.com/blo
 ---
 ## Lambda Extensions
 
+- Running a web server in Lambda with Lambda extension - [Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter) - [blog post](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/).
+
 
 ---
 ## Performance Optimisation
@@ -233,4 +235,5 @@ See also [Lambda - Performance optimization](https://docs.aws.amazon.com/lambda/
 ---
 ## Useful Articles and Blogs
 
+- [Previewing environments using containerized AWS Lambda functions](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/), AWS, 2023-02-06
 - [How to get notified on specific Lambda function error patterns using CloudWatch](https://aws.amazon.com/blogs/mt/get-notified-specific-lambda-function-error-patterns-using-cloudwatch/), AWS, 2020-08-24
