@@ -49,6 +49,7 @@ pip3 install -r requirements-cli.txt
 ---
 ## My notes
 
+- [ACM (AWS Certificate Manager) and PCA (AWS Private CA)](./ACM_PCA/)
 - [ADOT (AWS Distro for OpenTelemetry)](./ADOT.md)
 - [Amplify](./Amplify/)
 - [APIGateway](./APIGateway/)
