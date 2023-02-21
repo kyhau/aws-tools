@@ -60,7 +60,7 @@ pip3 install -r requirements-cli.txt
 - [Bottlerocket](./Bottlerocket/)
 - [CDK](./CDK/)
 - [CloudFormation](./CloudFormation/)
-- [CloudFront-S3](./CloudFront-S3/)
+- [CloudFront](./CloudFront/)
 - [CloudShell](./CloudShell/)
 - [CloudWatch](./CloudWatch/)
 - [CodeArtifact](./CodeArtifact/)
