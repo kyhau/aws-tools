@@ -3,6 +3,7 @@
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [ECS - ENI trunking](#ecs---eni-trunking)
+- [Fargate](#fargate)
 
 ---
 ## Useful Libs and Tools
@@ -94,3 +95,9 @@ ECS supports launching container instances with increased ENI density using supp
     - The container instance will have the primary network interface\, and
     - ECS creates and attaches a "trunk" network interface to the container instance,
     - So this configuration allows you to launch `10` tasks on the container instance instead of the current `2` tasks.
+
+
+---
+## Fargate
+
+- Fargate does not give same cpu capacity for each task.
