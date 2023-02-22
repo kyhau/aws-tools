@@ -48,7 +48,6 @@ pip3 install -r requirements-cli.txt
 
 ---
 ## My notes
-
 - [ACM (AWS Certificate Manager) and PCA (AWS Private CA)](./ACM_PCA/)
 - [ADOT (AWS Distro for OpenTelemetry)](./ADOT.md)
 - [Amplify](./Amplify/)
@@ -125,13 +124,23 @@ Some Specific Topics
 - [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
 
 ---
+## AWS design + build tools
+
+- [AWS Workshops](https://workshops.aws/)
+- [AWS Architecture Center](https://aws.amazon.com/architecture/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all&awsf.tech-category=*all&awsf.industries=*all&awsf.business-category=*all)
+- [AWS Solutions Library](https://aws.amazon.com/solutions/)
+- [Amazon Builder's Library](https://aws.amazon.com/builders-library)
+- [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) and [AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html)
+- [Serverless Land](https://serverlessland.com/)
+- [AWS Application Composer](https://aws.amazon.com/application-composer/) (Preview)
+
+---
 ## Quick links for news, blogs and resources
 
 - [What's New with AWS?](https://aws.amazon.com/new/?nc2=h_ql_exm&whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&wn-featured-announcements.sort-by=item.additionalFields.numericSort&wn-featured-announcements.sort-order=asc) | feed https://aws.amazon.com/blogs/aws/feed/
 - [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture)
 - [Amazon Serverless Land Blogs](https://serverlessland.com/blog)
 - [AWS re:Post](https://repost.aws/)
-- [Amazon Builder's Library](https://aws.amazon.com/builders-library)
 - [Cloud Pegboard](https://cloudpegboard.com/detail.html)
 - [AWS Edge Chat](https://soundcloud.com/awsedgechat)
 
