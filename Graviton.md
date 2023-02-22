@@ -46,3 +46,4 @@ Source [AWS Graviton](https://aws.amazon.com/ec2/graviton/) and [availability an
 
 - [porting-advisor-for-graviton](https://github.com/aws/porting-advisor-for-graviton) - Porting Advisor for Graviton, an open source project by the ARM High Performance Computing group. Originally, it was coded as a Python module that analyzed some known incompatibilities for C and Fortran code.
 - https://github.com/aws/aws-graviton-getting-started - This repository is meant to help new users start using the Arm-based AWS Graviton and Graviton2 processors which power the latest generation of Amazon EC2 instances. While it calls out specific features of the Graviton processors themselves, this repository is also **generically useful for anyone running code on Arm**.
+- [Using Porting Advisor for Graviton](https://aws.amazon.com/blogs/compute/using-porting-advisor-for-graviton/), AWS, 2023-02-21
