@@ -48,91 +48,20 @@ pip3 install -r requirements-cli.txt
 
 ---
 ## My notes
-- [ACM (AWS Certificate Manager) and PCA (AWS Private CA)](./ACM_PCA/)
-- [ADOT (AWS Distro for OpenTelemetry)](./ADOT.md)
-- [Amplify](./Amplify/)
-- [APIGateway](./APIGateway/)
-- [AppSync](./AppSync/)
-- [Athena](./Athena/)
-- [AutoScaling](./AutoScaling/)
-- [AWS-Tools](./AWS-Tools/)
-- [Bottlerocket](./Bottlerocket/)
-- [CDK](./CDK/)
-- [CloudFormation](./CloudFormation/)
-- [CloudFront](./CloudFront/)
-- [CloudShell](./CloudShell/)
-- [CloudWatch](./CloudWatch/)
-- [CodeArtifact](./CodeArtifact/)
-- [CodeStar, CodePipeline](./CodeStar-CodePipeline/)
-- [Cognito](./Cognito/)
-- [Config](./Config/)
-- [DynamoDB](./DynamoDB/)
-- [EB](./EB/)
-- [EBS, EFS](./EBS-EFS.md)
-- [EC2](./EC2/)
-- [EC2 Image Builder](./EC2-ImageBuilder/)
-- [ECR](./ECR/)
-- [ECS](./ECS/)
-- [ECS vs. EKS](./ECS-vs-EKS.md)
-- [EKS](./EKS/)
-- [ElastiCache for Redis](./ElastiCache-Redis/)
-- [ELB](./ELB/)
-- [EMR](./EMR/)
-- [FirewallManager](./WAF-FirewallManager-Shield/)
-- [Glue](./Glue.md)
-- [Graviton](./Graviton.md)
-- [Lambda](./Lambda/)
-- [Kinesis](./Kinesis/)
-- [MSK](./MSK/)
-- [Neptune](./Neptune/)
-- [OpenSearch (prev. ElasticSearch Service)](./OpenSearch/)
-- [Organizations](./Organizations/)
-- [RDS](./RDS/)
-- [Redshift](./Redshift/)
-- [Route 53](./Route53/)
-- [S3](./S3/)
-- [SageMaker](./SageMaker/)
-- [SAM, Serverless Application Registry](./SAM-and-ServerlessApplicationRepository/)
-- [Seekable OCI (SOCI)](./SOCI/) for lazy loading container images
-- [SecurityHub](./SecurityHub/)
-- [Shield](./WAF-FirewallManager-Shield/)
-- [SQS](./SQS/)
-- [SSM](./SSM/)
-- [StepFunctions](./StepFunctions/)
-- [STS](./STS/)
-- [TrustedAdvisor](./TrustedAdvisor/)
-- [VPC](./VPC/)
-- [VPC Endpoint](./VPC-Endpoint/)
-- [WAF, Firewall Manager, Shield](./WAF-FirewallManager-Shield/)
-- [WorkSpaces](./WorkSpaces/)
-- [X-Ray](./X-Ray/)
-
-Some Specific Topics
-
-- [App Mesh](./AppMesh.md)
-- [Chaos Engineering](./Others/ChaosEngineering.md)
-- [Closing Account](./Others/ClosingAccount.md)
-- [ECS vs. EKS](./ECS-vs-EKS.md)
-- [Data Sources](./Others/DataSources.md)
-- [Encryption](./Others/Encryption.md)
-- [Mutual Transport Layer Security (mutual TLS or mTLS) authentication](./Security.md)
-- [Networking](./Networking/)
-- [Other useful tools](./Others/)
-- [Security](./Security.md)
-- [Serverless](./Serverless.md)
-- [Service Limits](./Others/ServiceLimits.md)
-- [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
-
----
-## AWS design + build tools
-
-- [AWS Workshops](https://workshops.aws/)
-- [AWS Architecture Center](https://aws.amazon.com/architecture/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all&awsf.tech-category=*all&awsf.industries=*all&awsf.business-category=*all)
-- [AWS Solutions Library](https://aws.amazon.com/solutions/)
-- [Amazon Builder's Library](https://aws.amazon.com/builders-library)
-- [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) and [AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html)
-- [Serverless Land](https://serverlessland.com/)
-- [AWS Application Composer](https://aws.amazon.com/application-composer/) (Preview)
+- My notes of each service is in its folder respectively.
+- Some specific topics (no folder)
+    - [App Mesh](./AppMesh.md)
+    - [Chaos Engineering](./Others/ChaosEngineering.md)
+    - [Closing Account](./Others/ClosingAccount.md)
+    - [ECS vs. EKS](./ECS-vs-EKS.md)
+    - [Encryption](./Others/Encryption.md)
+    - [Mutual Transport Layer Security (mutual TLS or mTLS) authentication](./Security.md)
+    - [Networking](./Networking/)
+    - [Other useful tools](./Others/)
+    - [Security](./Security.md)
+    - [Serverless](./Serverless.md)
+    - [Service Limits](./Others/ServiceLimits.md)
+    - [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
 
 ---
 ## Quick links for news, blogs and resources
@@ -144,7 +73,17 @@ Some Specific Topics
 - [Cloud Pegboard](https://cloudpegboard.com/detail.html)
 - [AWS Edge Chat](https://soundcloud.com/awsedgechat)
 
-Other AWS related tools
+### AWS design + build tools
+
+- [AWS Workshops](https://workshops.aws/)
+- [AWS Architecture Center](https://aws.amazon.com/architecture/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all&awsf.tech-category=*all&awsf.industries=*all&awsf.business-category=*all)
+- [AWS Solutions Library](https://aws.amazon.com/solutions/)
+- [Amazon Builder's Library](https://aws.amazon.com/builders-library)
+- [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) and [AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html)
+- [Serverless Land](https://serverlessland.com/)
+- [AWS Application Composer](https://aws.amazon.com/application-composer/) (Preview)
+
+### Other AWS related tools
 
 - AWS CLI interactive productivity booster (aws-shell) [awslabs/aws-shell](https://github.com/awslabs/aws-shell)
 - AWS Cloud Digital Interface (CDI) Software Development Kit (SDK) is a set of libraries and documentation for you to build - AWS Deployment Framework (ADF) [awslabs/aws-deployment-framework](https://github.com/awslabs/aws-deployment-framework)
@@ -159,7 +98,7 @@ live video solutions on AWS - [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-s
 - awscii - render predefined AWS graphs in ASCII art - [mhlabs/awscii-cli](https://github.com/mhlabs/awscii-cli)
 - bash-my-aws - [bash-my-universe/bash-my-aws](https://github.com/bash-my-universe/bash-my-aws.git)
 
-Best Practices Guides
+### Best Practices Guides
 
 - [AWS Well-Architected Framework - Operational Excellence](https://wa.aws.amazon.com/wat.pillar.operationalExcellence.en.html), AWS
 - [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/), AWS
@@ -168,7 +107,7 @@ Best Practices Guides
 - [Best practices for working with Amazon Aurora Serverless](https://aws.amazon.com/blogs/database/best-practices-for-working-with-amazon-aurora-serverless/), AWS, 27 NOV 2020
 - [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf), AWS, DEC 2018
 
-Data Sources
+### Data Sources
 
 - Registry of Open Data on AWS - [registry.opendata.aws](https://registry.opendata.aws/)
 - Landset 8 satellite imagery of all land on Earth - [registry.opendata.aws/landsat-8](https://registry.opendata.aws/landsat-8/), [landsatonaws.com](https://landsatonaws.com/)
