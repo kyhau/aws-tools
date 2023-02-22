@@ -159,11 +159,6 @@ live video solutions on AWS - [aws/aws-cdi-sdk](https://github.com/aws/aws-cdi-s
 - awscii - render predefined AWS graphs in ASCII art - [mhlabs/awscii-cli](https://github.com/mhlabs/awscii-cli)
 - bash-my-aws - [bash-my-universe/bash-my-aws](https://github.com/bash-my-universe/bash-my-aws.git)
 
-Data Sources
-
-- Registry of Open Data on AWS - [registry.opendata.aws](https://registry.opendata.aws/)
-- Landset 8 satellite imagery of all land on Earth - [registry.opendata.aws/landsat-8](https://registry.opendata.aws/landsat-8/), [landsatonaws.com](https://landsatonaws.com/)
-
 Best Practices Guides
 
 - [AWS Well-Architected Framework - Operational Excellence](https://wa.aws.amazon.com/wat.pillar.operationalExcellence.en.html), AWS
@@ -173,21 +168,7 @@ Best Practices Guides
 - [Best practices for working with Amazon Aurora Serverless](https://aws.amazon.com/blogs/database/best-practices-for-working-with-amazon-aurora-serverless/), AWS, 27 NOV 2020
 - [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf), AWS, DEC 2018
 
-Workshops recommended
+Data Sources
 
-- [workshops.aws](https://workshops.aws/)
-- [Amplify Days ANZ](https://amplifydays.awsanz.com/)
-- [App Mesh Workshop](https://www.appmeshworkshop.com/)
-- [Asynchronous Messaging Workshop](https://github.com/aws-samples/asynchronous-messaging-workshop/)
-- [CDK Workshop](https://cdkworkshop.com/)
-- [CI/CD for Serverless Applications Workshops](https://cicd.serverlessworkshops.io/)
-- [Networking Immersion Day](https://networking.workshop.aws/)
-- [One Observability Workshop](https://observability.workshop.aws/)
-- [Redshift Immersion Workshop](https://redshift-immersion.workshop.aws/)
-- [Serverless applications with streaming data](https://github.com/aws-samples/serverless-streaming-data-application/tree/main)
-- [Serverless Security Workshop](https://github.com/aws-samples/aws-serverless-security-workshop/)
-- [Service Catalog Tools Workshop](https://service-catalog-tools-workshop.com/)
-- [Spot Instances Workshops](https://ec2spotworkshops.com/)
-- [Spot Instances with EKS Workshops](https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks.html)
-- [VPC Endpoint Workshop](https://www.vpcendpointworkshop.com/)
-- [Well-Architected Labs](https://wellarchitectedlabs.com/)
+- Registry of Open Data on AWS - [registry.opendata.aws](https://registry.opendata.aws/)
+- Landset 8 satellite imagery of all land on Earth - [registry.opendata.aws/landsat-8](https://registry.opendata.aws/landsat-8/), [landsatonaws.com](https://landsatonaws.com/)
