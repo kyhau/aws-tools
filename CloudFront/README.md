@@ -2,51 +2,20 @@
 
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
-- [Provision CloudFront with templates in this directory](#steps-to-provision-cloudfront)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [CloudFront Functions and Lambda@Edge](#cloudfront-functions-and-lambdaedge)
 - [OAC vs. OAI](#oac-vs-oai)
 - [S3 Website endpoint vs. S3 REST API endpoint](#s3-website-endpoint-vs-s3-rest-api-endpoint)
-- [CloudFront Functions and Lambda@Edge](#cloudfront-functions-and-lambdaedge)
+- [Provision CloudFront with templates in this directory](#steps-to-provision-cloudfront)
 - [My QuickStart CloudFormation templates](./cfn/)
 
 
 ---
 ## Useful Libs and Tools
 
-- [amazon-cloudfront-multi-function-packager](https://github.com/aws-samples/amazon-cloudfront-multi-function-packager) - This tool allows you to package multiple Edge Functions - Lambda@Edge or CloudFront Functions into a single function with minimal code changes.
+- [amazon-cloudfront-multi-function-packager](https://github.com/aws-samples/amazon-cloudfront-multi-function-packager) - Amazon CloudFront Multi-function packager tool - This tool allows you to package multiple Edge Functions - Lambda@Edge or CloudFront Functions into a single function with minimal code changes.
+- [amazon-cloudfront-functions-testing-tool](https://github.com/aws-samples/amazon-cloudfront-functions-testing-tool) - Amazon CloudFront Functions Test based on production traffic
 
-
----
-## Steps to provision CloudFront
-
-If using custom domain/CNAME, do also (1), (2) and (4); if not, only (3).
-
-1. Upload a server (ssl) certificate to IAM [using aws-cli](
-   http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate):
-
-   ```
-   aws iam upload-server-certificate \
-       --server-certificate-name example \
-       --certificate-body file://example.crt \
-       --private-key file://example.key \
-       --certificate-chain file://intermediate.crt \
-       --path /cloudfront/
-   ```
-
-2. To retrieve the `ServerCertificateId` or other certificate details:
-
-   ```
-   aws iam list-server-certificates (--profile your-aws-profile)
-   ```
-
-3. Use CloudFormation template `CloudFront-S3-WebDistribution-xxx.template` to
-    1. Create S3 bucket with Static Website, Versioning and Logging enabled.
-    1. Create Bucket Policy for PublicRead access (if using Custom Origins approach).
-    1. Create a Managed Policy for managing and uploading files to the S3 bucket.
-    1. Attach the Managed Policy to the given Group.
-    1. Create a CloudFront Distribution
-
-4. Add new Route53 record set for each CloudFront Alias as CNAME pointing to the CloudFront Domain name.
 
 
 ---
@@ -56,6 +25,22 @@ If using custom domain/CNAME, do also (1), (2) and (4); if not, only (3).
 - [Granting Permission to an Amazon CloudFront Origin Identity](http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-6)
 - https://vimalpaliwal.com/blog/2018/10/10f435c29f/serving-multiple-s3-buckets-via-single-aws-cloudfront-distribution.html
 - https://stackoverflow.com/questions/20632828/aws-cloud-formation-script-to-create-s3-bucket-and-distribution
+
+
+---
+## CloudFront Functions and Lambda@Edge
+
+- Differences between CloudFront Functions and Lambda@Edge here:
+    - [Introducing CloudFront Functions – Run Your Code at the Edge with Low Latency at Any Scale](https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/), AWS, 2021-05-03
+
+### CloudFront Functions
+
+- [Writing and testing CloudFront Functions with production traffic](https://aws.amazon.com/blogs/networking-and-content-delivery/writing-and-testing-cloudfront-functions-with-production-traffic/), AWS, 2023-02-21
+
+### Lambda@Edge
+
+- [Reduce latency for end-users with multi-region APIs with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/reduce-latency-for-end-users-with-multi-region-apis-with-cloudfront/)
+    - with Lambda@Edge and Route53 latency routing
 
 
 ---
@@ -100,16 +85,33 @@ When using OAC, a typical request and response workflow will be:
 
 
 ---
-## CloudFront Functions and Lambda@Edge
+## Steps to provision CloudFront
 
-- Differences between CloudFront Functions and Lambda@Edge here:
-    - [Introducing CloudFront Functions – Run Your Code at the Edge with Low Latency at Any Scale](https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/), AWS, 2021-05-03
+If using custom domain/CNAME, do also (1), (2) and (4); if not, only (3).
 
-### CloudFront Functions
+1. Upload a server (ssl) certificate to IAM [using aws-cli](
+   http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate):
 
-- [Writing and testing CloudFront Functions with production traffic](https://aws.amazon.com/blogs/networking-and-content-delivery/writing-and-testing-cloudfront-functions-with-production-traffic/), AWS, 2023-02-21
+   ```
+   aws iam upload-server-certificate \
+       --server-certificate-name example \
+       --certificate-body file://example.crt \
+       --private-key file://example.key \
+       --certificate-chain file://intermediate.crt \
+       --path /cloudfront/
+   ```
 
-### Lambda@Edge
+2. To retrieve the `ServerCertificateId` or other certificate details:
 
-- [Reduce latency for end-users with multi-region APIs with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/reduce-latency-for-end-users-with-multi-region-apis-with-cloudfront/)
-    - with Lambda@Edge and Route53 latency routing
+   ```
+   aws iam list-server-certificates (--profile your-aws-profile)
+   ```
+
+3. Use CloudFormation template `CloudFront-S3-WebDistribution-xxx.template` to
+    1. Create S3 bucket with Static Website, Versioning and Logging enabled.
+    1. Create Bucket Policy for PublicRead access (if using Custom Origins approach).
+    1. Create a Managed Policy for managing and uploading files to the S3 bucket.
+    1. Attach the Managed Policy to the given Group.
+    1. Create a CloudFront Distribution
+
+4. Add new Route53 record set for each CloudFront Alias as CNAME pointing to the CloudFront Domain name.
