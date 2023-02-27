@@ -25,6 +25,8 @@ Jump to
 ---
 ## Useful Libs and Tools
 
+- Lambda base container images
+    - [aws-lambda-base-images](https://github.com/aws/aws-lambda-base-images)
 - Lambda execution environment
     - [AWS Lambda Extensions API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html)
     - [AWS Lambda Logs API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-logs-api.html)
