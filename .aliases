@@ -51,6 +51,8 @@ alias aws-ec2-db-instances-based-on-ports='python3 ${REPO_HOME}/RDS/list_ec2_db_
 alias aws-ec2-unreachable='python3 ${REPO_HOME}/EC2/list_ec2_unreachable.py'
 alias aws-ec2-security-groups='python3 ${REPO_HOME}/VPC/list_security_groups.py'
 
+alias aws-ecs-list-task-definitions-inactive='aws ecs list-task-definitions --status INACTIVE --no-cli-pager'
+
 alias aws-ecr-list-used-images-having-critical-or-high-severity-findings='python3 ${REPO_HOME}/ECR/list_used_images_having_critical_or_high_severity_findings.py'
 alias aws-ecr-get-login='aws ecr get-login --no-include-email'
 
