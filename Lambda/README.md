@@ -39,6 +39,7 @@ Jump to
     - Example: https://docs.aws.amazon.com/lambda/latest/dg/python-image.html
 - Lambda Powertools
     - [cdk-aws-lambda-powertools-layer](https://github.com/awslabs/cdk-aws-lambda-powertools-layer) - AWS Lambda powertools layer
+    - [aws-lambda-powertools-dotnet](https://github.com/awslabs/aws-lambda-powertools-dotnet/) - AWS Lambda Powertools for .NET
     - [aws-lambda-powertools-java](https://github.com/awslabs/aws-lambda-powertools-java) - AWS Lambda Powertools for Java
     - [aws-lambda-powertools-python](https://github.com/awslabs/aws-lambda-powertools-python) - AWS Lambda Powertools for Python
         - https://awslabs.github.io/aws-lambda-powertools-python/core/logger/
