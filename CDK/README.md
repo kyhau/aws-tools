@@ -33,6 +33,7 @@ Jump to
 - [aws/jsii](https://github.com/aws/jsii) - AWS JSII allows code in any language to naturally interact with JavaScript classes
 - [jsii-docgen](https://github.com/cdklabs/jsii-docgen) - Generates markdown reference documentation for jsii modules
 - [cdk-patterns/serverless](https://github.com/cdk-patterns/serverless) - CDK Patterns
+- [aws-samples/aws-refactoring-to-serverless](https://github.com/aws-samples/aws-refactoring-to-serverless) - CDK implementation for the patterns in [Refactorings to Serverless](https://serverlessland.com/refactoring-serverless/intro).
 - [serverless-stack](https://github.com/serverless-stack/serverless-stack) - Serverless Stack Toolkit (SST) (extension of AWS CDK)
 - [kolomied/awesome-cdk](https://github.com/kolomied/awesome-cdk) - Awesome CDK
 
