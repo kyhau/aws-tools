@@ -19,8 +19,17 @@ Jump to
 
 ---
 ## Useful Articles and Blogs
+Performance / HA
+- [Improve web application availability with CloudFront and Route53 hybrid origin failover](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-web-application-availability-with-cloudfront-and-route53-hybrid-origin-failover/), AWS, 2023-03-03
 - [Improve Single-Page Application (SPA) Performance with a Same Domain policy using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-single-page-application-spa-performance-with-a-same-domain-policy-using-amazon-cloudfront/), AWS, 2023-03-02
     - by using CloudFront's multiple origin capability
+- [Three advanced design patterns for high available applications using Amazon CloudFront](https://aws.amazon.com/fr/blogs/networking-and-content-delivery/three-advanced-design-patterns-for-high-available-applications-using-amazon-cloudfront/), AWS, 2022-07-12
+    1. Using Route 53 Failover routing policy with health checks on the origin domain name
+    1. Using origin failover, a native feature of CloudFront
+    1. Using hybrid origin failover pattern combines both (1) and (2)
+- [Enhanced origin failover using Amazon CloudFront and AWS Lambda@Edge](https://aws.amazon.com/fr/blogs/media/enhanced-origin-failover-using-amazon-cloudfront-and-aws-lambdaedge/), AWS, 2020-10-14
+
+Other
 - [Amazon CloudFront introduces Origin Access Control (OAC)](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-cloudfront-introduces-origin-access-control-oac/), AWS, 2022-08-25
 - [Using Amazon S3 Origins and Custom Origins for Web Distributions](http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
 - [Granting Permission to an Amazon CloudFront Origin Identity](http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-6)
