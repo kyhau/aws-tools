@@ -16,9 +16,10 @@
 
 - Amazon Security Bulletins - https://aws.amazon.com/security/security-bulletins/
 - Amazon Linux Security Center - https://alas.aws.amazon.com/announcements.html
+- Amazon Detective Multiaccount Scripts - [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts)
+- Amazon Security Lake Resources [aws-samples/amazon-security-lake](https://github.com/aws-samples/amazon-security-lake)
 - AWS Security Benchmark - [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark)
 - AWS Self-Service Security Assessment tool - [awslabs/aws-security-assessment-solution](https://github.com/awslabs/aws-security-assessment-solution)
-- amazon-detective-multiaccount-scripts - [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts)
 - Open source tools for AWS security - [toniblyx/my-arsenal-of-aws-security-tools](https://github.com/toniblyx/my-arsenal-of-aws-security-tools)
 - Ultimate DevSecOps library - [sottlmarek/DevSecOps](https://github.com/sottlmarek/DevSecOps)
 - cloud-custodian - [cloud-custodian/cloud-custodian](https://github.com/cloud-custodian/cloud-custodian)
