@@ -46,6 +46,9 @@ Other
 ### CloudFront Functions
 
 - [Writing and testing CloudFront Functions with production traffic](https://aws.amazon.com/blogs/networking-and-content-delivery/writing-and-testing-cloudfront-functions-with-production-traffic/), AWS, 2023-02-21
+- [Visitor Prioritization on e-Commerce Websites with CloudFront and CloudFront Functions](https://aws.amazon.com/blogs/networking-and-content-delivery/visitor-prioritization-on-e-commerce-websites-with-cloudfront-and-cloudfront-functions/), AWS, 2023-03-23
+    - CloudFront + CloudFront Functions + WAF Bot Control
+    - Comparing to [Visitor Prioritization on e-Commerce Websites with CloudFront and Lambda@Edge](https://aws.amazon.com/jp/blogs/networking-and-content-delivery/visitor-prioritization-on-e-commerce-websites-with-cloudfront-and-lambdaedge/), AWS, 2018-07-30
 
 ### Lambda@Edge
 
