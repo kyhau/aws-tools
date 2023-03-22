@@ -52,8 +52,11 @@ Other
 
 ### Lambda@Edge
 
-- [Reduce latency for end-users with multi-region APIs with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/reduce-latency-for-end-users-with-multi-region-apis-with-cloudfront/)
+- [Reduce latency for end-users with multi-region APIs with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/reduce-latency-for-end-users-with-multi-region-apis-with-cloudfront/), AWS, 2023-01-31
     - with Lambda@Edge and Route53 latency routing
+- [Limiting requests to a web application using a Gatekeeper Solution](https://aws.amazon.com/blogs/networking-and-content-delivery/limiting-requests-to-a-web-application-using-a-gatekeeper-solution/), AWS, 2023-03-21
+    - The Gatekeeper mechanism limits requests to your web applications or APIs and prevents attacks which AWS WAF may not be the best solution.
+
 
 
 ---
