@@ -32,7 +32,7 @@ Resources:
 
           # Key administrators can admin keys, not use them.
           # Permissions granted via IAM policy, or key policy, or both.
-          - Sid: AllowAccessForKeyAdministrators
+          - Sid: Allow access for Key Administrators
             Effect: Allow
             Principal:
               AWS: !Ref KeyAdminRoleArn
