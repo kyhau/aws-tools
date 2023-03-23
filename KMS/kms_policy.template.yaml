@@ -23,18 +23,19 @@ Resources:
       KeyPolicy:
         Version: "2012-10-17"
         Statement:
-          # Give the account full control of a key, allowing IAM identity policies to control access.
-          # Removing the policy, nothing can use the key. AWS support is required.
-          - Sid: Enable IAM User Permissions
+          - Sid: EnableRootAccessAndPreventPermissionDelegation
             Effect: Allow
             Principal:
               AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
             Action: kms:*
             Resource: "*"
+            Condition:
+              StringEquals:
+                "aws:PrincipalType": Account
 
           # Key administrators can admin keys, not use them.
           # Permissions granted via IAM policy, or key policy, or both.
-          - Sid: Allow administration of the key
+          - Sid: AllowAccessForKeyAdministrators
             Effect: Allow
             Principal:
               AWS: !Ref KeyAdminRoleArn
@@ -49,8 +50,10 @@ Resources:
               - kms:Disable*
               - kms:Get*
               - kms:Delete*
+              - kms:TagResource
+              - kms:UntagResource
               - kms:ScheduleKeyDeletion  # allow for key deletion
-              - kms:CancelKeyDeletion    # allow for key deletion
+              - kms:CancelKeyDeletion  # allow for key deletion
             Resource: "*"
 
           # * Even if the user has permission to decrypt the key in their IAM policy, the user still needs the
@@ -60,7 +63,7 @@ Resources:
           # * Whenever possible, use key policies to give users permission to call the Decrypt operation on the CMK,
           #   instead of IAM policies. Otherwise, you might create an IAM user policy that gives the user Decrypt
           #   permission on all CMKs.
-          - Sid: Allow use of the key
+          - Sid: AllowUseOfTheKey
             Effect: Allow
             Principal:
               AWS:
@@ -74,6 +77,21 @@ Resources:
               - kms:GenerateDataKey*
               - kms:ReEncrypt*
             Resource: "*"
+          - Sid: AllowAttachmentOfPersistentResouces
+            Effect: Allow
+            Principal:
+              AWS:
+                - !Ref KeyUserRoleArn
+                # - arn:aws:iam::109876543210:user/User1    # parent account
+                # - arn:aws:iam::012345678901:root          # external account
+            Action:
+              - kms:CreateGrant
+              - kms:ListGrants
+              - kms:RevokeGrant
+            Resource: "*"
+            Condition:
+              Bool:
+                "kms:GrantIsForAWSResource": "true"
 
   KmsAlias:
     Type: AWS::KMS::Alias

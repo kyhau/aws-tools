@@ -20,18 +20,19 @@ Resources:
       KeyPolicy:
         Version: "2012-10-17"
         Statement:
-          # Give the account full control of a key, allowing IAM identity policies to control access.
-          # Removing the policy, nothing can use the key. AWS support is required.
-          - Sid: Enable IAM User Permissions
+          - Sid: EnableRootAccessAndPreventPermissionDelegation
             Effect: Allow
             Principal:
               AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
             Action: kms:*
             Resource: "*"
+            Condition:
+              StringEquals:
+                "aws:PrincipalType": Account
 
           # Key administrators can admin keys, not use them.
           # Permissions granted via IAM policy, or key policy, or both.
-          - Sid: Allow administration of the key
+          - Sid: AllowAccessForKeyAdministrators
             Effect: Allow
             Principal:
               AWS: !Ref KeyAdminRoleArn
@@ -46,6 +47,8 @@ Resources:
               - kms:Disable*
               - kms:Get*
               - kms:Delete*
+              - kms:TagResource
+              - kms:UntagResource
               - kms:ScheduleKeyDeletion  # allow for key deletion
               - kms:CancelKeyDeletion    # allow for key deletion
             Resource: "*"
