@@ -35,7 +35,7 @@ Resources:
 
           # Key administrators can admin keys, not use them.
           # Permissions granted via IAM policy, or key policy, or both.
-          - Sid: AllowAccessForKeyAdministrators
+          - Sid: Allow access for Key Administrators
             Effect: Allow
             Principal:
               AWS: !Ref KeyAdminRoleArn
@@ -63,7 +63,7 @@ Resources:
           # * Whenever possible, use key policies to give users permission to call the Decrypt operation on the CMK,
           #   instead of IAM policies. Otherwise, you might create an IAM user policy that gives the user Decrypt
           #   permission on all CMKs.
-          - Sid: AllowUseOfTheKey
+          - Sid: Allow use of the key
             Effect: Allow
             Principal:
               AWS:
@@ -77,7 +77,8 @@ Resources:
               - kms:GenerateDataKey*
               - kms:ReEncrypt*
             Resource: "*"
-          - Sid: AllowAttachmentOfPersistentResouces
+
+          - Sid: Allow attachment of persistent resouces
             Effect: Allow
             Principal:
               AWS:
