@@ -46,6 +46,8 @@ Other
 ### CloudFront Functions
 
 - [Writing and testing CloudFront Functions with production traffic](https://aws.amazon.com/blogs/networking-and-content-delivery/writing-and-testing-cloudfront-functions-with-production-traffic/), AWS, 2023-02-21
+- [Optimize SEO with Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/optimize-seo-with-amazon-cloudfront/), AWS, 2023-03-28
+    - with CloudFront Functions and Lambda@Edge
 - [Visitor Prioritization on e-Commerce Websites with CloudFront and CloudFront Functions](https://aws.amazon.com/blogs/networking-and-content-delivery/visitor-prioritization-on-e-commerce-websites-with-cloudfront-and-cloudfront-functions/), AWS, 2023-03-23
     - CloudFront + CloudFront Functions + WAF Bot Control
     - Comparing to [Visitor Prioritization on e-Commerce Websites with CloudFront and Lambda@Edge](https://aws.amazon.com/jp/blogs/networking-and-content-delivery/visitor-prioritization-on-e-commerce-websites-with-cloudfront-and-lambdaedge/), AWS, 2018-07-30
@@ -58,7 +60,6 @@ Other
     - with Lambda@Edge and Route53 latency routing
 - [Limiting requests to a web application using a Gatekeeper Solution](https://aws.amazon.com/blogs/networking-and-content-delivery/limiting-requests-to-a-web-application-using-a-gatekeeper-solution/), AWS, 2023-03-21
     - The Gatekeeper mechanism limits requests to your web applications or APIs and prevents attacks which AWS WAF may not be the best solution.
-
 
 
 ---
