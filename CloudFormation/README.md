@@ -1,4 +1,4 @@
-# CloudFormation Notes
+# CloudFormation (CFN) Notes
 
 - [Useful CLIs, Libs and Tools](#useful-clis-libs-and-tools)
 - [Useful templates](#useful-templates)
@@ -22,6 +22,8 @@
 - `cfn_nag`: looks for patterns in CloudFormation templates that may indicate insecure infrastructure. [stelligent/cfn_nag](https://github.com/stelligent/cfn_nag)
 
 - `cfn-skeleton`: consumes the published CloudFormation specification and generates skeleton CloudFormation templates with mandatory and optional parameters of chosen resource types pre-filled with placeholder values. [cfn-skeleton](https://github.com/awslabs/aws-cloudformation-template-builder)
+
+- `rain`: a CLI tool for working with CloudFormation templates and stacks. [aws-cloudformation/rain](https://github.com/aws-cloudformation/rain)
 
 - `sceptre`: manages the creation, update and deletion of stacks while providing meta commands which allow users to retrieve information about their stacks. [sceptre](https://sceptre.cloudreach.com/)
 
