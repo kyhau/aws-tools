@@ -13,13 +13,15 @@ Jump to
 ---
 ## Useful Libs and Tools
 
-- [amazon-cloudfront-multi-function-packager](https://github.com/aws-samples/amazon-cloudfront-multi-function-packager) - Amazon CloudFront Multi-function packager tool - This tool allows you to package multiple Edge Functions - Lambda@Edge or CloudFront Functions into a single function with minimal code changes.
+- [amazon-cloudfront-dynamic-content-timings](https://github.com/aws-samples/amazon-cloudfront-dynamic-content-timings) - A python script for CloudFront timings measurement.
 - [amazon-cloudfront-functions-testing-tool](https://github.com/aws-samples/amazon-cloudfront-functions-testing-tool) - Amazon CloudFront Functions Test based on production traffic
+- [amazon-cloudfront-multi-function-packager](https://github.com/aws-samples/amazon-cloudfront-multi-function-packager) - Amazon CloudFront Multi-function packager tool - This tool allows you to package multiple Edge Functions - Lambda@Edge or CloudFront Functions into a single function with minimal code changes.
 
 
 ---
 ## Useful Articles and Blogs
 Performance / HA
+- [Accelerate, protect and make dynamic workloads delivery cost efficient with Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/accelerate-protect-and-make-dynamic-workloads-delivery-cost-efficient-with-amazon-cloudfront/), AWS, 11 Apr 2023
 - [Improve web application availability with CloudFront and Route53 hybrid origin failover](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-web-application-availability-with-cloudfront-and-route53-hybrid-origin-failover/), AWS, 2023-03-03
 - [Improve Single-Page Application (SPA) Performance with a Same Domain policy using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-single-page-application-spa-performance-with-a-same-domain-policy-using-amazon-cloudfront/), AWS, 2023-03-02
     - by using CloudFront's multiple origin capability
