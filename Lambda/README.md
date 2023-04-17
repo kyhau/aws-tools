@@ -220,6 +220,7 @@ See [Understanding AWS Lambda scaling and throughput](https://aws.amazon.com/blo
 ## Performance Optimisation
 
 Some good reads:
+- [Optimizing AWS Lambda extensions in C# and Rust](https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-extensions-in-c-and-rust/), AWS, 13 Apr 2023
 - [Understanding AWS Lambda scaling and throughput](https://aws.amazon.com/blogs/compute/understanding-aws-lambda-scaling-and-throughput/), AWS, 18 Jul 2022
 - [Optimizing Node.js dependencies in AWS Lambda](https://aws.amazon.com/blogs/compute/optimizing-node-js-dependencies-in-aws-lambda/), AWS, 13 JUL 2022
 - [Optimizing AWS Lambda function performance for Java](https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/), AWS, 31 MAR 2022
