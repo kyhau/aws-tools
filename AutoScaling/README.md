@@ -16,6 +16,9 @@ Jump to
 ---
 ## Useful Articles and Blogs
 
+- [Choosing the right health check with Elastic Load Balancing and EC2 Auto Scaling](https://aws.amazon.com/blogs/networking-and-content-delivery/choosing-the-right-health-check-with-elastic-load-balancing-and-ec2-auto-scaling/), AWS, 11 Apr 2023
+    - There are three strategies to measure instance health: liveness checks, local health checks, and dependency health checks.
+    - See also [Implementing health checks](https://aws.amazon.com/builders-library/implementing-health-checks/)
 - AWS scaling options - AWS Auto Scaling vs. Amazon EC2 Auto Scaling vs. Auto Scaling for Other Services
     - See "Q. How is AWS Auto Scaling different than the scaling capabilities for individual services?" in https://aws.amazon.com/autoscaling/faqs/
 
