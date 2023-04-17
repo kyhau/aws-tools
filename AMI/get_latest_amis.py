@@ -24,11 +24,18 @@ def get_ecs_meta_dict(topic=TOPIC_A):
     if topic == TOPIC_A:
         # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/retrieve-ecs-optimized_AMI.html
         return {
+            "/aws/service/ecs/optimized-ami/amazon-linux-2023/recommended": "Amazon ECS-Optimized Amazon Linux 2023 (x86_64) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2023/arm64/recommended": "Amazon ECS-Optimized Amazon Linux 2023 (arm64) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2023/gpu/recommended": "Amazon ECS-Optimized Amazon Linux 2023 (GPU) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2023/inf/recommended": "Amazon ECS-Optimized Amazon Linux 2023 (Neuron) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2022/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (x86_64) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2022/arm64/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (arm64) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2022/gpu/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (GPU) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2022/inf/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (Neuron) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended": "Amazon ECS-Optimized Amazon Linux 2 (x86_64) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2/arm64/recommended": "Amazon ECS-Optimized Amazon Linux 2 (arm64) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2/gpu/recommended": "Amazon ECS-Optimized Amazon Linux 2 (GPU) AMI",
-            "/aws/service/ecs/optimized-ami/amazon-linux-2/inf/recommended": "Amazon ECS-Optimized Amazon Linux 2 (Inferentia) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2/inf/recommended": "Amazon ECS-Optimized Amazon Linux 2 (Neuron) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux/recommended": "Amazon ECS-optimized Amazon Linux (x86_64) AMI deprecated as of 2021-04-15",
         }
     if topic == TOPIC_B:
