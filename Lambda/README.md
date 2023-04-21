@@ -2,12 +2,8 @@
 
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
-- [Gotchas](#gotchas)
-    - [Lambda Python Runtimes - Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2](#lambda-python-runtimes---python-3637-are-amazon-linux-1-and-python-3839-are-amazon-linux-2)
-    - [AWS CLI not allowing valid JSON in payload parameter with lambda invoke](#aws-cli-not-allowing-valid-json-in-payload-parameter-with-lambda-invoke)
-    - [Cannot do `ping` from Lambda Function](#cannot-do-ping-from-lambda-function)
-    - [Non-async handlers and `context.callbackWaitsForEmptyEventLoop = false`](#non-async-handlers-and-contextcallbackwaitsforemptyeventloop--false)
-- [Lambda Function URLs](#lambda-function-urls)
+- [MLTA, Debugging, Error Handling](#mlta-debugging-error-handling)
+    - [How errors should be handled for Asynchronous Invocations](#how-error-should-be-handled-for-asynchronous-invocations)
 - [Code storage for uploaded Lambda functions (`CodeStorageExceededException`)](#code-storage-for-uploaded-lambda-functions-codestorageexceededexception)
 - [Lambda Scaling and Throughput](#lambda-scaling-and-throughput)
     - [Scaling Quotas](#scaling-quotas)
@@ -15,11 +11,17 @@ Jump to
     - [Estimate concurrent requests](#estimate-concurrent-requests)
     - [Throttling error and asynchronous/synchronous invocations](#throttling-error-and-asynchronoussynchronous-invocations)
     - [Operational metrics](#operational-metrics)
+- [Lambda Performance Optimisation](#lambda-performance-optimisation)
+- [Lambda Cost Optimisaton](#lambda-cost-optimisation)
+- [Lambda Function URLs](#lambda-function-urls)
 - [Lambda Container Images](#lambda-container-images)
 - [Lambda Layers](#lambda-layers)
 - [Lambda Extensions](#lambda-extensions)
-- [Performance Optimisation](#performance-optimisation)
-- [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Gotchas](#gotchas)
+    - [Lambda Python Runtimes - Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2](#lambda-python-runtimes---python-3637-are-amazon-linux-1-and-python-3839-are-amazon-linux-2)
+    - [AWS CLI not allowing valid JSON in payload parameter with lambda invoke](#aws-cli-not-allowing-valid-json-in-payload-parameter-with-lambda-invoke)
+    - [Cannot do `ping` from Lambda Function](#cannot-do-ping-from-lambda-function)
+    - [Non-async handlers and `context.callbackWaitsForEmptyEventLoop = false`](#non-async-handlers-and-contextcallbackwaitsforemptyeventloop--false)
 
 
 ---
@@ -57,64 +59,33 @@ Jump to
     - https://docs.aws.amazon.com/cdk/latest/guide/sam.html
     - Example: https://github.com/kyhau/slack-command-app-cdk
 
-
----
-## Gotchas
-
-### Lambda Python Runtimes - Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2
-
-Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2.
-
-In general it should be fine to upgrade from Python 3.6 to 3.9. But there are cases you'll need to make some changes. For example: If you have code utilizing some sys call, e.g. `curl` - `curl` is not installed in Amazon Linux 2 by default.
-
-
-### AWS CLI not allowing valid JSON in payload parameter with lambda invoke
-
-If you see error like `Invalid base64:`, it could be because since awscli 2, payloads need to be base64 encoded when invoking a Lambda function.
-
-> By default, the AWS CLI version 2 now passes all binary input and binary output parameters as base64-encoded strings. A parameter that requires binary input has its type specified as blob (binary large object) in the documentation.
-
-You will need to pass in also `--cli-binary-format raw-in-base64-out`. For example:
-```
-aws lambda invoke --function-name testsms \
-    --invocation-type Event \
-    --cli-binary-format raw-in-base64-out \
-    --payload '{"key": "test"}' response.json
-```
-See also
-- https://github.com/aws/aws-cli/issues/4968
-- https://stackoverflow.com/questions/60310607/amazon-aws-cli-not-allowing-valid-json-in-payload-parameter
-
-
-### Cannot do `ping` from Lambda Function
-
-See [AWS Lambda FAQs](https://aws.amazon.com/lambda/faqs/)
-> Lambda attempts to impose as few restrictions as possible on normal language and operating system activities, but there are a few activities that are disabled: Inbound network connections are blocked by AWS Lambda, and for outbound connections, only TCP/IP and UDP/IP sockets are supported, and ptrace (debugging) system calls are blocked. TCP port 25 traffic is also blocked as an anti-spam measure.
-
-
-### Non-async handlers and `context.callbackWaitsForEmptyEventLoop = false`
-
-- By default calling the callback() function in a NodeJS Lambda function does not end the function execution. It will continue running until the event loop is empty. A common issue with NodeJS Lambda functions continuing to run after callback is called occurs when you are holding on to open database connections.
-
-I solved my problems with set to callbackWaitsForEmptyEventLoop = false.
-  - https://stackoverflow.com/questions/53296201/request-time-out-from-aws-lambda/53312129
-  - https://stackoverflow.com/questions/37791258/lambda-timing-out-after-calling-callback
-  - https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html (edited)
-     - > For non-async handlers, function execution continues until the event loop is empty or the function times out. The response isn't sent to the invoker until all event loop tasks are finished. If the function times out, an error is returned instead. You can configure the runtime to send the response immediately by setting context.callbackWaitsForEmptyEventLoop to false.
-
-
 ---
 
-## Lambda Function URLs
+## MLTA, Debugging, Error Handling
 
-The Lambda Function URLs feature was introduced in April 2022. A function URL is a dedicated HTTP(S) endpoint for the Lambda function (`https://<url-id>.lambda-url.<region>.on.aws`)
+- Lambda Performance Insights
+- Lambda Powertools (Python, Java, TypeScript, .NET) - used as lib or as a layer
+    - Distributed tracing
+    - Structured logging
+    - Async metrics
+    - Event routing (Python only)
+    - Streaming (Python only)
+- Lambda Telemetry API (Lambda Extensions, New Relic, Sumo Logic) - deployed as layers
+    - https://aws.amazon.com/blogs/compute/introducing-the-aws-lambda-telemetry-api/
+- CloudWatch
+    - [How to get notified on specific Lambda function error patterns using CloudWatch](https://aws.amazon.com/blogs/mt/get-notified-specific-lambda-function-error-patterns-using-cloudwatch/), AWS, 2020-08-24
 
-Lambda function URLs use resource-based policies for security and access control. **When [AuthType = None](https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html), resource-based policy that grants public access, any unauthenticated user with your function URL can invoke your function)**.
 
-Recommendation:
-- Use SCP to deny following actions:
-    - `lambda:CreateFunctionUrlConfig`
-    - `lambda:UpdateFunctionUrlConfig`
+### How error should be handled for Asynchronous Invocations
+
+1. Lambda Destinations + X-Ray traces
+    - With Destinations, you will be able to send asynchronous function execution results to a destination resource without writing code.
+        For each execution status (i.e. Success and Failure), you can choose one destination from four options:
+        - another Lambda function,
+        - an SNS topic,
+        - an SQS standard queue, or
+        - EventBridge.
+2. [Dead-letter queues](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html#invocation-dlq)
 
 
 ---
@@ -200,24 +171,8 @@ See [Understanding AWS Lambda scaling and throughput](https://aws.amazon.com/blo
 
 
 ---
-## Lambda Container Images
 
-- Optimizing Lambda functions packaged as container images ([blog post](https://aws.amazon.com/blogs/compute/optimizing-lambda-functions-packaged-as-container-images/))
-- Working with Lambda layers and extensions in container images ([blog post](https://aws.amazon.com/blogs/compute/working-with-lambda-layers-and-extensions-in-container-images/))
-
-
----
-## Lambda Layers
-
-
----
-## Lambda Extensions
-
-- Running a web server in Lambda with Lambda extension - [Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter) - [blog post](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/).
-
-
----
-## Performance Optimisation
+## Lambda Performance Optimisation
 
 Some good reads:
 - [Optimizing AWS Lambda extensions in C# and Rust](https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-extensions-in-c-and-rust/), AWS, 13 Apr 2023
@@ -237,7 +192,96 @@ See also [Lambda - Performance optimization](https://docs.aws.amazon.com/lambda/
 
 
 ---
-## Useful Articles and Blogs
+
+## Lambda Cost Optimisation
+
+- Right-sizing memory allocation
+    - Tools
+        1. [AWS Lambda Power Tuning](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:451282441545:applications~aws-lambda-power-tuning)
+        2. [AWS Compute Optimizer](https://aws.amazon.com/compute-optimizer/)
+- Setting a realistic function timeout
+- Using Graviton
+- [Filtering event sources for AWS Lambda functions](https://aws.amazon.com/blogs/compute/filtering-event-sources-for-aws-lambda-functions/)
+- [Avoiding recursive invocation with Amazon S3 and AWS Lambda](https://aws.amazon.com/blogs/compute/avoiding-recursive-invocation-with-amazon-s3-and-aws-lambda/)
+
+Useful blog posts
+- [Understanding techniques to reduce AWS Lambda costs in serverless applications](https://aws.amazon.com/blogs/compute/understanding-techniques-to-reduce-aws-lambda-costs-in-serverless-applications/), AWS, 20 Apr 2023
+
+
+---
+
+## Lambda Function URLs
+
+The Lambda Function URLs feature was introduced in April 2022. A function URL is a dedicated HTTP(S) endpoint for the Lambda function (`https://<url-id>.lambda-url.<region>.on.aws`)
+
+Lambda function URLs use resource-based policies for security and access control. **When [AuthType = None](https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html), resource-based policy that grants public access, any unauthenticated user with your function URL can invoke your function)**.
+
+Recommendation:
+- Use SCP to deny following actions:
+    - `lambda:CreateFunctionUrlConfig`
+    - `lambda:UpdateFunctionUrlConfig`
+
+
+---
+## Lambda Container Images
 
 - [Previewing environments using containerized AWS Lambda functions](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/) (using Lamda URL, Lambda extension), AWS, 2023-02-06
-- [How to get notified on specific Lambda function error patterns using CloudWatch](https://aws.amazon.com/blogs/mt/get-notified-specific-lambda-function-error-patterns-using-cloudwatch/), AWS, 2020-08-24
+- Optimizing Lambda functions packaged as container images ([blog post](https://aws.amazon.com/blogs/compute/optimizing-lambda-functions-packaged-as-container-images/))
+- Working with Lambda layers and extensions in container images ([blog post](https://aws.amazon.com/blogs/compute/working-with-lambda-layers-and-extensions-in-container-images/))
+
+
+---
+
+## Lambda Layers
+
+
+---
+
+## Lambda Extensions
+
+- Running a web server in Lambda with Lambda extension - [Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter) - [blog post](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/).
+
+
+---
+## Gotchas
+
+### Lambda Python Runtimes - Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2
+
+Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2.
+
+In general it should be fine to upgrade from Python 3.6 to 3.9. But there are cases you'll need to make some changes. For example: If you have code utilizing some sys call, e.g. `curl` - `curl` is not installed in Amazon Linux 2 by default.
+
+
+### AWS CLI not allowing valid JSON in payload parameter with lambda invoke
+
+If you see error like `Invalid base64:`, it could be because since awscli 2, payloads need to be base64 encoded when invoking a Lambda function.
+
+> By default, the AWS CLI version 2 now passes all binary input and binary output parameters as base64-encoded strings. A parameter that requires binary input has its type specified as blob (binary large object) in the documentation.
+
+You will need to pass in also `--cli-binary-format raw-in-base64-out`. For example:
+```
+aws lambda invoke --function-name testsms \
+    --invocation-type Event \
+    --cli-binary-format raw-in-base64-out \
+    --payload '{"key": "test"}' response.json
+```
+See also
+- https://github.com/aws/aws-cli/issues/4968
+- https://stackoverflow.com/questions/60310607/amazon-aws-cli-not-allowing-valid-json-in-payload-parameter
+
+
+### Cannot do `ping` from Lambda Function
+
+See [AWS Lambda FAQs](https://aws.amazon.com/lambda/faqs/)
+> Lambda attempts to impose as few restrictions as possible on normal language and operating system activities, but there are a few activities that are disabled: Inbound network connections are blocked by AWS Lambda, and for outbound connections, only TCP/IP and UDP/IP sockets are supported, and ptrace (debugging) system calls are blocked. TCP port 25 traffic is also blocked as an anti-spam measure.
+
+
+### Non-async handlers and `context.callbackWaitsForEmptyEventLoop = false`
+
+- By default calling the callback() function in a NodeJS Lambda function does not end the function execution. It will continue running until the event loop is empty. A common issue with NodeJS Lambda functions continuing to run after callback is called occurs when you are holding on to open database connections.
+
+I solved my problems with set to callbackWaitsForEmptyEventLoop = false.
+  - https://stackoverflow.com/questions/53296201/request-time-out-from-aws-lambda/53312129
+  - https://stackoverflow.com/questions/37791258/lambda-timing-out-after-calling-callback
+  - https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html (edited)
+     - > For non-async handlers, function execution continues until the event loop is empty or the function times out. The response isn't sent to the invoker until all event loop tasks are finished. If the function times out, an error is returned instead. You can configure the runtime to send the response immediately by setting context.callbackWaitsForEmptyEventLoop to false.
