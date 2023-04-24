@@ -4,7 +4,7 @@ RUN go get -d -v github.com/alexellis/href-counter/
 WORKDIR /go/src/github.com/alexellis/href-counter/.
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 
-FROM alpine:latest
+FROM alpine:3.17.3
 RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
