@@ -2,11 +2,55 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-04-17
+
+### Changed
+
+   * Updated AMI/get_latest_amis.py to support AL2023 #353
+   * Updated AMI/get_latest_amis.py to support K8S_VERSIONS 1.26 #352
+
+## 2023-02-28
+
+### Changed
+
+   * Updated .aliases to add aws-ecs-list-task-definitions-inactive #324
+
+## 2023-02-23
+
+### Changed
+
+   * Updated get_latest_ami.py to support eks k8s v1.25 #318
+
+## 2023-02-15
+
+### Added
+
+   * Added .github/workflows/dependabot-auto-approve-merge.yml #307
+   * Added EKS/get_eks_oidc_thumbprint.sh #304
+
+## 2023-01-30
+
+### Added
+
+   * Added scheduled scaling cfn templates for ECS and ASG #294
+
+## 2023-01-23
+
+### Updated
+
+   * Updated .aliases to add alias aws-ami-find-by-amiid #289
+
+## 2023-12-22
+
+### Added
+
+   *  Added/updated CloudFront templates to support cname #271
+
 ## 2022-12-21
 
 ### Added
 
-    * Added CloudFormation [template](CloudFront-S3/cfn/CloudFront-S3-WebDistribution-OAC-SameS3MultiBehaviors.template.yaml) for creating CloudFront with an Amazon S3 bucket as the origin and OAC.
+   * Added CloudFormation [template](CloudFront-S3/cfn/CloudFront-S3-WebDistribution-OAC-SameS3MultiBehaviors.template.yaml) for creating CloudFront with an Amazon S3 bucket as the origin and OAC.
 
 ## 2022-12-13
 
