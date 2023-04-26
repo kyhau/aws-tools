@@ -87,6 +87,9 @@ Jump to
         - EventBridge.
 2. [Dead-letter queues](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html#invocation-dlq)
 
+Useful blog posts
+- [Implementing error handling for AWS Lambda asynchronous invocations](https://aws.amazon.com/blogs/compute/implementing-error-handling-for-aws-lambda-asynchronous-invocations/), AWS, 2023-04-25
+
 
 ---
 
