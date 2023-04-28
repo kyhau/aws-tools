@@ -1,20 +1,14 @@
 # S3
 
-- Replicate different subsets of objects from one account to another account with [replication configuration](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html)
+Jump to
+- [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Useful Libs and Tools](#useful-libs-and-tools)
 
 ---
-## Troubleshooting
-See also https://docs.aws.amazon.com/AmazonS3/latest/dev/troubleshooting.html
+## Useful Articles and Blogs
+- [What is the most secure option for storing highly sensitive / private files in S3?](https://stackoverflow.com/questions/70238041/what-is-the-most-secure-option-for-storing-highly-sensitive-private-files-in-s)
+    - SSE/CSE options and their use cases
 
 ---
-### See "An error occurred (AccessDenied) when calling the UploadPart operation: Access Denied"
-If you see "An error occurred (AccessDenied) when calling the UploadPart operation: Access Denied",
-it means the file is large and it triggered "multipart" upload.
+## Useful Libs and Tools
 
-Solution 1:
-- Update `.aws/config` and use `multipart_threshold` to avoid multipart uploading. For example:
-   ```
-   [profile your-profile-name]
-   s3 =
-     multipart_threshold = 150MB
-   ```
