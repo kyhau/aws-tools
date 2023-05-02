@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-05-03
+
+### Added
+
+   * Added ECR/test-ecr-external-image-clone.sh
+   * Added ECR/test-ecr-pull-through-cache.sh
+
 ## 2023-04-17
 
 ### Changed
