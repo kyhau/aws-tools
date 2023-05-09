@@ -3,6 +3,7 @@
 - [Useful CLIs, Libs and Tools](#useful-clis-libs-and-tools)
 - [Useful templates](#useful-templates)
 - [CFN Customer Resource Provider Plugins](#cfn-custom-resource-provider-plugins-and-custom-resources)
+- [CFN Extensions](#cfn-extensions)
 - [CFN Marcos](#cfn-marcos)
 - [CFN Syntax](#cfn-syntax)
 
@@ -47,6 +48,12 @@
 
 - CloudFormation Resources and Projects: [aws-cloudformation/awesome-cloudformation](https://github.com/aws-cloudformation/awesome-cloudformation)
 
+
+---
+## CFN Extensions
+
+- In order to use a public third-party extension in your template, you must first activate the extension for the account and region where we need to use it.
+   - You may want to keep track of source account IDs, environment levels for data tracking, labelling, alarm severities and retention purposes etc.
 
 ---
 ## CFN Custom Resource Provider Plugins and Custom Resources
