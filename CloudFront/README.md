@@ -21,6 +21,8 @@ Jump to
 ---
 ## Useful Articles and Blogs
 Performance / HA
+- [Improve Single-Page Application (SPA) Performance with a Same Domain policy using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-single-page-application-spa-performance-with-a-same-domain-policy-using-amazon-cloudfront/), AWS, 2023-05-09
+    - how you can use a same domain policy with CloudFront, to eliminate the need for enabling Cross-Origin Resource Sharing (CORS), which results in improved performance for Single-Page Applications (SPA).
 - [Accelerate, protect and make dynamic workloads delivery cost efficient with Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/accelerate-protect-and-make-dynamic-workloads-delivery-cost-efficient-with-amazon-cloudfront/), AWS, 11 Apr 2023
 - [Improve web application availability with CloudFront and Route53 hybrid origin failover](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-web-application-availability-with-cloudfront-and-route53-hybrid-origin-failover/), AWS, 2023-03-03
 - [Improve Single-Page Application (SPA) Performance with a Same Domain policy using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-single-page-application-spa-performance-with-a-same-domain-policy-using-amazon-cloudfront/), AWS, 2023-03-02
