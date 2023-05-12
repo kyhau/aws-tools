@@ -21,3 +21,11 @@ Other links
 ---
 ## Shield
 - AWS Shield Engagement Lambda - https://s3.amazonaws.com/aws-shield-lambda/ShieldEngagementLambda.pdf
+- AWS Shield Advanced can protect the following resources:
+   - CloudFront Distributions
+   - Route53 zones
+   - Application Load Balancers
+   - Network Load Balancers (Only when the NLB has a public IP which therefore falls under EIP protection - NLBs are not natively supported)
+   - Classic Load Balancers
+   - EIPs
+   - Global Accelerators
