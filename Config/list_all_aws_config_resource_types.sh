@@ -1,0 +1,1 @@
+curl -s https://github.com/awslabs/aws-config-resource-schema/tree/master/config/properties/resource-types | grep ".properties.json" | awk -F 'title=\"' '{print $2}' | awk -F '.properties.json"' '{print $1}'

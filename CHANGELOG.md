@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-05-16
+
+### Added
+
+   * Added Config/list_all_aws_config_resource_types.sh
+   * Added Config/query_configservice_aggregate.py
+   * Added predefined SQL files to be used for aggregater query in Config/sql_files/aggregate/
+       - list_count_eks_cluster_of_all_accounts.sql
+       - list_resource_types_of_all_accounts.sql
+       - resources_counts_grouped_by_account_id.sql
+
+### Changed
+
+   * Updated Config/README.md
+   * Updated .aliases
+
 ## 2023-05-03
 
 ### Added

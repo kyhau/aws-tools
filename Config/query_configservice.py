@@ -1,7 +1,11 @@
-import click
+"""
+Using select_resource_config to query resources for individual accounts.
+"""
 import logging
 from os.path import basename, exists
 from shutil import rmtree
+
+import click
 from helper.aws import AwsApiHelper
 
 logging.getLogger().setLevel(logging.DEBUG)
