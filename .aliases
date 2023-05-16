@@ -35,7 +35,9 @@ alias aws-cloudwatch-put-cloudwatch-dashboard='python3 ${REPO_HOME}/CloudWatch/p
 alias aws-cognito-token='python3 ${REPO_HOME}/Cognito/cognito_token.py'
 alias aws-cognito-users='python3 ${REPO_HOME}/Cognito/cognito_users.py'
 
+alias aws-config-list-all-resource-types='. ${REPO_HOME}/Config/list_all_aws_config_resource_types.sh'
 alias aws-config-query='python3 ${REPO_HOME}/Config/query_configservice.py'
+alias aws-config-query-aggregate='python3 ${REPO_HOME}/Config/query_configservice_aggregate.py'
 
 alias aws-database-status-check='python3 ${REPO_HOME}/Others/list_databases_status.py'
 
