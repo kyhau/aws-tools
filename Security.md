@@ -5,6 +5,7 @@
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [Incident Response](#incident-response)
 - [Configure mutual Transport Layer Security (mutual TLS or mTLS) authentication with AWS services](#configure-mutual-transport-layer-security-mutual-tls-or-mtls-authentication-with-aws-services)
+- [Options for granular control on TLS cipher suites](#options-for-granular-control-on-tls-cipher-suites)
 - [Firewall Manager, WAF, Shield](./WAF-FirewallManager-Shield/README.md)
 - [IAM](./IAM/)
 - [Instance Metadata Service (IMDS)](./Security/aws_metadata/)
@@ -74,3 +75,14 @@
 - [How to use ACM Private CA for enabling mTLS in AWS App Mesh](https://aws.amazon.com/blogs/security/how-to-use-acm-private-ca-for-enabling-mtls-in-aws-app-mesh/)
 - [Three things to consider when implementing Mutual TLS with AWS App Mesh](https://aws.amazon.com/blogs/containers/three-things-to-consider-when-implementing-mutual-tls-with-aws-app-mesh/)
 - https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html
+
+
+---
+## Options for granular control on TLS cipher suites
+
+If you want to exclude specific ciphers, you can use the following solutions to offload and control the TLS connection termination with a customized cipher suite:
+1. Network Load Balancer
+2. CloudFront distribution
+3. Self-managed reverse proxy
+
+See [Exclude cipher suites at the API gateway using a Network Load Balancer security policy](https://aws.amazon.com/blogs/security/exclude-cipher-suites-at-the-api-gateway-using-a-network-load-balancer-security-policy/)
