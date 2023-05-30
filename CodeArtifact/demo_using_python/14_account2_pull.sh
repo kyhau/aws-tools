@@ -1,15 +1,15 @@
 #!/bin/bash
 
-source .config
+source .env
 
 # Access a domain owned by an account you are authenticated to:
 
-export REPO_NAME="team-2-dev"
+export REPO_NAME=${ACCOUNT_1_SHARED_REPO_1}
 
 # aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
 #  --repository ${REPO_NAME} --format pypi --package boto3 --profile ${AWS_PROFILE_2}
 
-aws codeartifact login --tool pip --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
+aws codeartifact login --tool pip --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
   --repository ${REPO_NAME} --profile ${AWS_PROFILE_2}
 
 cat ~/.config/pip/pip.conf

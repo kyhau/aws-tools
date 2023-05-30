@@ -1,20 +1,18 @@
 #!/bin/bash
+set -e
+# https://docs.aws.amazon.com/codeartifact/latest/ug/repo-policies.html
 
-source .config
+source .env
 
+# Create a cross account domain policy for account 1
+# copy-package-versions requires codeartifact:ReadFromRepository
 
-aws codeartifact create-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_2} --description "My new repository" --profile ${AWS_PROFILE_1}
-
-#aws codeartifact update-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-# --repository ${ACCOUNT_1_SHARED_REPO_2} --upstreams repositoryName=pypi-store --profile ${AWS_PROFILE_1}
-
-
-cat > readonly_repository_policy.json << EOF
+cat > policy.json << EOF
 {
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "ReadAccess",
             "Action": [
                 "codeartifact:DescribePackageVersion",
                 "codeartifact:DescribeRepository",
@@ -27,16 +25,17 @@ cat > readonly_repository_policy.json << EOF
                 "codeartifact:ReadFromRepository"
             ],
             "Effect": "Allow",
+            "Resource": "*",
             "Principal": {
                 "AWS": "arn:aws:iam::${ACCOUNT_2_ID}:root"
-            },
-            "Resource": "*"
+            }
         }
     ]
 }
 EOF
 
-aws codeartifact put-repository-permissions-policy --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_2} --policy-document file://readonly_repository_policy.json --profile ${AWS_PROFILE_1}
 
-rm readonly_repository_policy.json
+aws codeartifact put-repository-permissions-policy --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
+  --repository ${ACCOUNT_1_SHARED_REPO_1} --policy-document file://policy.json --profile ${AWS_PROFILE_1}
+
+rm policy.json
