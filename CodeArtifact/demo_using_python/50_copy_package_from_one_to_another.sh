@@ -2,11 +2,11 @@
 # Copy packages between repositories
 # https://docs.aws.amazon.com/codeartifact/latest/ug/copy-package.html
 
-source .config
+source .env
 
-export REPO_1=team-2-dev  # owner == account 2
-export REPO_2=team-2-prd  # owner == account 2
-export REPO_3=team-2-shared-a  # owner == account 1
+export REPO_1=${ACCOUNT_2_REPO_1}  # owner == account 2
+export REPO_2=${ACCOUNT_2_REPO_2}  # owner == account 2
+export REPO_3=${ACCOUNT_1_SHARED_REPO_1}  # owner == account 1
 
 # Same domain owwner
 aws codeartifact copy-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
