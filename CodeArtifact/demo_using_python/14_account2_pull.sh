@@ -16,3 +16,5 @@ cat ~/.config/pip/pip.conf
 
 echo "TODO: pip install boto3"
 # pip install boto3
+
+rm ~/.config/pip/pip.conf
