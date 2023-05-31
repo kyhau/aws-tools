@@ -1,6 +1,14 @@
 #!/bin/bash
+set -e
 # Ref: https://aws.amazon.com/blogs/devops/integrating-aws-codeartifact-package-mgmt-flow/
-source .config
+
+source .env
+
+# You can only add one external connection to a CodeArtifact repository.
+# https://docs.aws.amazon.com/codeartifact/latest/ug/repos-upstream.html
+
+aws codeartifact create-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
+  --repository ${ACCOUNT_1_EXTERNAL_PYPI} --description "External connection pypi" --profile ${AWS_PROFILE_1}
 
 # CodeArtifact enables you to set external repository connections and replicate them within CodeArtifact.
 # An external connection reduces the downstream dependency on the remote external repository.
@@ -9,7 +17,7 @@ source .config
 # This makes it possible to consume open-source dependencies used by your application.
 
 aws codeartifact associate-external-connection --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_1} --external-connection public:pypi
+  --repository ${ACCOUNT_1_EXTERNAL_PYPI} --external-connection public:pypi --profile ${AWS_PROFILE_1}
 
 
 # public:npmjs - for the npm public repository.
