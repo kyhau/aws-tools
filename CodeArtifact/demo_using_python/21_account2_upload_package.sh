@@ -6,8 +6,8 @@ source .env
 # Download a wheel
 # mkdir dist
 # cd dist
-# pip wheel boto3==1.20.35
-# pip wheel cdk-monitoring-constructs==4.0.9
+# pip wheel click
+# pip wheel fire
 # cd ..
 
 # pip install -i https://pypi.org/simple twine
@@ -19,10 +19,13 @@ aws codeartifact login --tool twine --domain ${DOMAIN} --domain-owner ${ACCOUNT_
 
 cat ~/.pypirc
 
-# twine upload --repository codeartifact dist/boto3-1.20.35-py3-none-any.whl
-twine upload --repository codeartifact dist/cdk_monitoring_constructs-4.0.9-py3-none-any.whl
+twine upload --repository codeartifact dist/click-8.1.3-py3-none-any.whl
+twine upload --repository codeartifact dist/fire-0.5.0-py2.py3-none-any.whl
 
 aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
-  --repository ${REPO} --format pypi --package cdk-monitoring-constructs --profile ${AWS_PROFILE_2}
+  --repository ${REPO} --format pypi --package click --profile ${AWS_PROFILE_2}
+
+aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
+  --repository ${REPO} --format pypi --package fire --profile ${AWS_PROFILE_2}
 
 rm ~/.pypirc
