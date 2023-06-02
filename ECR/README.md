@@ -45,7 +45,8 @@ aws ecr describe-image-scan-findings --repository-name name --image-id imageDige
 ## Pull Through Cache
 
 ECR currently supports creating pull through cache rules for
-- ECR Public ([ECR Public Gallery](https://gallery.ecr.aws/)), and
-- Quay (Red Hat [Quay.io](http://quay.io/));
+- ECR Public ([ECR Public Gallery](https://gallery.ecr.aws/));
+- Quay (Red Hat [Quay.io](http://quay.io/)); and
+- Kubernetes container image registry ([registry.k8s.io](https://github.com/kubernetes/registry.k8s.io)).
 
 in which Docker Official Images are [available](https://aws.amazon.com/blogs/containers/docker-official-images-now-available-on-amazon-elastic-container-registry-public/) on ECR Public (only the images labelled with DOCKER OFFICIAL IMAGE; e.g. [node](https://hub.docker.com/_/node)).
