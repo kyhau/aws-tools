@@ -4,4 +4,26 @@ set -e
 source .env
 
 aws codeartifact create-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_1} --description "My new repository" --profile ${AWS_PROFILE_1}
+  --repository ${ACCOUNT_1_SHARED_REPO_1} --description "Shared repository" --profile ${AWS_PROFILE_1}
+
+# Download a wheel
+# mkdir dist
+# cd dist
+# pip wheel boto3==1.20.35
+# pip wheel cdk-monitoring-constructs==4.0.9
+# cd ..
+
+# pip install -i https://pypi.org/simple twine
+
+aws codeartifact login --tool twine --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
+   --repository ${ACCOUNT_1_SHARED_REPO_1} --profile ${AWS_PROFILE_1}
+
+cat ~/.pypirc
+
+# twine upload --repository codeartifact dist/boto3-1.20.35-py3-none-any.whl
+twine upload --repository codeartifact dist/cdk_monitoring_constructs-4.0.9-py3-none-any.whl
+
+aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
+  --repository ${ACCOUNT_1_SHARED_REPO_1} --format pypi --package cdk-monitoring-constructs --profile ${AWS_PROFILE_1}
+
+rm ~/.pypirc
