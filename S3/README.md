@@ -16,9 +16,9 @@ Jump to
 ## Useful Articles and Blogs
 
 ### VPC Enpoints
+- [Using interface endpoints to access Amazon S3 without a gateway endpoint or an internet gateway in the VPC](https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html#accessing-bucket-and-aps-from-interface-endpoints), AWS User Guide
 - [Choosing Your VPC Endpoint Strategy for Amazon S3](https://aws.amazon.com/blogs/architecture/choosing-your-vpc-endpoint-strategy-for-amazon-s3/), AWS, 2021-07-23
     - S3 gateway endpoint and interface endpoint
-
 
 ### Static Websites
 - [Hosting Internal HTTPS Static Websites with ALB, S3, and PrivateLink](https://aws.amazon.com/blogs/networking-and-content-delivery/hosting-internal-https-static-websites-with-alb-s3-and-privatelink/), AWS, 2022-12-30
