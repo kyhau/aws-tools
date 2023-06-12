@@ -11,7 +11,7 @@ __summary__ = "This package includes some simple scripts for setting up local de
 __uri__ = "https://github.com/kyhau/aws-tools/"
 
 __requirements__ = [
-    "boto3==1.26.146",
+    "boto3==1.26.151",
     "click==8.1.3",
     "docker==6.1.3",
     "InquirerPy==0.3.4",
