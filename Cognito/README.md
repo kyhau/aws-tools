@@ -6,6 +6,7 @@ Jump to
 
 ---
 ## Useful Links
+- [Should I use the hosted UI or create a custom UI in Amazon Cognito?](https://aws.amazon.com/blogs/security/use-the-hosted-ui-or-create-a-custom-ui-in-amazon-cognito/), AWS, 2023-06-09
 - [AWS Solution - Cognito User Profiles Export Reference Architecture](https://aws.amazon.com/solutions/implementations/cognito-user-profiles-export-reference-architecture/)
 - [Adding Advanced Security to a User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-settings-advanced-security.html)
 - [Using serverless to load test Amazon API Gateway with authorization](https://aws.amazon.com/blogs/compute/using-serverless-to-load-test-amazon-api-gateway-with-authorization/)
