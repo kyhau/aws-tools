@@ -24,6 +24,7 @@ Jump to
 - [Bottlerocket vs. Fargate](#bottlerocket-vs-fargate)
 - [Using Bottlerocket with or without a container orchestrator?](#using-bottlerocket-with-or-without-a-container-orchestrator)
 - ["No pod metric collected" error when using Bottlerocket for EKS](#no-pod-metric-collected-error-when-using-bottlerocket-for-eks)
+- [Crowdstrike support](#crowdstrike-support)
 
 
 ---
@@ -275,3 +276,8 @@ See also [Enable automatic updates](https://github.com/bottlerocket-os/bottleroc
 ## "No pod metric collected" error when using Bottlerocket for EKS
 
 Bottlerocket is a Linux-based open source operating system that is purpose-built by AWS for running containers. Bottlerocket uses a different containerd path on the host, so you need to change the volumes to its location. If you don't, you see an error in the logs that includes W! No pod metric collected. See the following example: ([Source](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html))
+
+---
+### Crowdstrike support
+
+Bottlerocket is now supported starting from Falco 0.34, see [release notes](https://github.com/falcosecurity/falco/releases/tag/0.34.0), [Ref-2](https://github.com/falcosecurity/libs/issues/706#issuecomment-1424154111), and also current [supported drivers](https://download.falco.org/driver/site/index.html?lib=4.0.0%2Bdriver&target=bottlerocket&arch=all&kind=all).
