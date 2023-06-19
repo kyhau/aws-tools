@@ -11,6 +11,7 @@
 - [Instance Metadata Service (IMDS)](./Security/aws_metadata/)
 - [GuardDuty](./GuardDuty/)
 - [Security Hub](./SecurityHub/)
+- [Verified Permissions](./VerifiedPermissions/)
 
 ---
 ## Useful Libs and Tools
