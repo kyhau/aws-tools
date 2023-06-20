@@ -10,7 +10,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 SOURCE = "https://raw.githubusercontent.com/rupertbg/aws-public-account-ids/master/accounts.json"
 
 
-@click.command(help="Get AWS public account IDs")
+@click.command(help="Get public AWS account IDs")
 @click.option("--account", "-a", help="Account ID to search")
 @click.option("--keyword", "-k", help="Keyword to search")
 def main(account, keyword):

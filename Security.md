@@ -11,6 +11,7 @@
 - [Instance Metadata Service (IMDS)](./Security/aws_metadata/)
 - [GuardDuty](./GuardDuty/)
 - [Security Hub](./SecurityHub/)
+- [Verified Permissions](./VerifiedPermissions/)
 
 ---
 ## Useful Libs and Tools
@@ -18,6 +19,7 @@
 - Amazon Security Bulletins - https://aws.amazon.com/security/security-bulletins/
 - Amazon Linux Security Center - https://alas.aws.amazon.com/announcements.html
 - Amazon Detective Multiaccount Scripts - [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts)
+- AWS IMDS Packet Analyzer - [aws/aws-imds-packet-analyzer](https://github.com/aws/aws-imds-packet-analyzer)
 - Amazon Security Lake Resources [aws-samples/amazon-security-lake](https://github.com/aws-samples/amazon-security-lake)
 - AWS Security Benchmark - [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark)
 - AWS Self-Service Security Assessment tool - [awslabs/aws-security-assessment-solution](https://github.com/awslabs/aws-security-assessment-solution)

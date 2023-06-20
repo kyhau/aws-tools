@@ -6,6 +6,8 @@ Jump to
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [Private API Gateways](#private-api-gateways)
 - [Public API Gateway and VPC Private DNS setting](#public-api-gateway-and-vpc-private-dns-setting)
+- [Previous Security Issues or Breaking Changes](#previous-security-issues-or-breaking-changes)
+
 
 ---
 ## Examples for demo
@@ -72,3 +74,13 @@ Connect to public APIs with private DNS disabled
    - The resource policy attached to your API doesn't deny access from the VPC.
 - When your Amazon VPC has permission to access your public APIs, use public DNS to connect to your public APIs.
 
+
+---
+## Previous Security Issues or Breaking Changes
+
+- [Removing header remapping from Amazon API Gateway, and notes about our work with security researchers](https://aws.amazon.com/blogs/security/removing-header-remapping-from-amazon-api-gateway-and-notes-about-our-work-with-security-researchers/)
+   > As of June 14, 2023, the header remapping feature is no longer available in API Gateway.
+
+   > Before we removed the feature, we contacted customers who were using the direct HTTP header remapping feature through email and the AWS Health Dashboard. If you haven’t been contacted, no action is required on your part.
+
+   - See also [Writeup: AWS API Gateway header smuggling and cache confusion](https://securityblog.omegapoint.se/en/writeup-apigw/)

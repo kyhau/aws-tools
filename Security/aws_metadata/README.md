@@ -1,7 +1,13 @@
-# AWS metadata
+# AWS metadata / IMDS
+
+Blog posts and useful tools
+- https://securitylabs.datadoghq.com/articles/misconfiguration-spotlight-imds/
+- AWS IMDS Packet Analyzer - [aws/aws-imds-packet-analyzer](https://github.com/aws/aws-imds-packet-analyzer)
+
+---
 
 AWS EC2 has a feature called the Instance Metadata Service ([official documentation](
-https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)). 
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)).
 This enables any EC2 instance to access a REST API running on 169.254.169.254, which returns data about the
 instance itself. Some examples include the instance name, the instance image (AMI) ID, and a bunch of other
 interesting things.
@@ -75,7 +81,7 @@ Example: see [test_ssrf.sh](test_ssrf.sh)
 ]
 ---
 Cannot access s3 anymore.
-But still can do - 
+But still can do -
 `curl -s http://ssrfdemo.getserverless.com.au/latest/meta-data/iam/security-credentials/ -H 'Host:169.254.169.254';echo`
 
 2. Set up WAF
