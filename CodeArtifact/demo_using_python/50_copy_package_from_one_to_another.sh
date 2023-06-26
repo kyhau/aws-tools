@@ -4,26 +4,25 @@
 
 source .env
 
-export REPO_1=${ACCOUNT_2_REPO_1}  # owner == account 2
-export REPO_2=${ACCOUNT_2_REPO_2}  # owner == account 2
-export REPO_3=${ACCOUNT_1_SHARED_REPO_1}  # owner == account 1
-
+###
 # Same domain owwner
+
 aws codeartifact copy-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
-  --source-repository ${REPO_1} \
-  --destination-repository ${REPO_2} \
+  --source-repository ${ACCOUNT_2_REPO_1} \
+  --destination-repository ${ACCOUNT_2_REPO_2} \
   --package boto3 --format pypi \
   --versions '["1.20.35"]' \
   --profile ${AWS_PROFILE_2}
 
+###
 # Cannot copy if have diff domain owner
 # Repos have Diff domain owners
 # This will fail - An error occurred (ResourceNotFoundException) when calling the CopyPackageVersions operation:
 # Repository not found. Repository 'team-2-dev' in domain '$DOMAIN' owned by account 'ACCOUNT_1_ID' does not exist.
 
 aws codeartifact copy-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --source-repository ${REPO_2} \
-  --destination-repository ${REPO_3} \
+  --source-repository ${ACCOUNT_2_REPO_2} \
+  --destination-repository ${ACCOUNT_1_SHARED_REPO_1} \
   --package boto3 --format pypi \
   --versions '["1.20.35"]' \
   --profile ${AWS_PROFILE_2}
