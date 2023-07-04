@@ -3,6 +3,7 @@
 Jump to
 - [Useful Links](#useful-links)
 - [Cognito hosted UI with API Gateway](#cognito-hosted-ui-with-api-gateway)
+- [Exploitation](#exploitation)
 
 ---
 ## Useful Links
@@ -22,3 +23,9 @@ Jump to
 - https://dev.to/awscommunity-asean/aws-cognito-hosted-ui-34ep
 - https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
 - https://stackoverflow.com/questions/71127723/how-to-use-cognito-id-token-as-authorization-header-for-api-gateway
+
+
+---
+## Exploitation
+
+- [Unintended Self-Signup in AWS Cognito](https://hackingthe.cloud/aws/exploitation/cognito_user_self_signup/)

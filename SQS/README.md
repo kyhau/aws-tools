@@ -12,6 +12,7 @@ Jump to
 ---
 ## Useful Articles and Blogs
 
+- [Implementing AWS Well-Architected best practices for Amazon SQS](https://aws.amazon.com/blogs/compute/implementing-aws-well-architected-best-practices-for-amazon-sqs-part-1/), AWS, 2023-06-27
 - [How to set up least privilege access to your encrypted Amazon SQS queue](https://aws.amazon.com/blogs/security/how-to-set-up-least-privilege-access-to-your-encrypted-amazon-sqs-queue/), AWS, 2023-03-03
     - Least-privilege key policy for SQS
     - Restrict message reception to a specific VPC endpoint (`DenyReceivingIfNotThroughVPCE`)
