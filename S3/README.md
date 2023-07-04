@@ -8,8 +8,11 @@ Jump to
     - [Uploading objects](#uploading-objects)
     - [Storing sensitive files](#storing-sensitive-files)
 
+
 ---
 ## Useful Libs and Tools
+
+- [awslabs/mountpoint-s3](https://github.com/awslabs/mountpoint-s3) - Mountpoint for Amazon S3 is a simple, high-throughput file client for mounting an Amazon S3 bucket as a local file system.
 
 
 ---
