@@ -1,10 +1,15 @@
 # MSK
 
 Topics
+- [MSK Serverless](#msk-serverless)
 - [Monitoring](#monitoring)
 - [Kafka Log Retention and Cleanup Policies](#kafka-log-retention-and-cleanup-policies)
 - [Mirror Maker 2](#mirror-maker-2)
 - [Other References](#other-references)
+
+---
+### MSK Serverless
+- Limitations and things to consider - [The Pro’s and Con’s of using AWS MSK Serverless](https://digio.com.au/learn/blog/the-pros-and-cons-of-using-aws-msk-serverless/), Sinnappu J., 2022-07-18
 
 ### Monitoring
 - [Monitoring an Amazon MSK Cluster (AWS Developer Guide)](https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html)
