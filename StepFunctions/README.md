@@ -22,6 +22,7 @@ Jump to
 ## Useful Articles and Blogs
 
 - [How to trigger a Lambda function at specific time with Step Function](https://stackoverflow.com/questions/48538170/how-to-trigger-a-lambda-function-at-specific-time-in-aws)
+- [SQS triggering Step Functions using EventBridge Pipes](https://stackoverflow.com/questions/53422296/aws-sqs-trigger-step-functions)
 - [Using JSONPath effectively in AWS Step Functions](https://aws.amazon.com/blogs/compute/using-jsonpath-effectively-in-aws-step-functions/)
 - [Latest Step Functions Overview](https://docs.aws.amazon.com/step-functions/latest/dg/how-step-functions-works.html)
 - Use Cases

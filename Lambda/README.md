@@ -66,6 +66,8 @@ Jump to
 ## Synchronous Invokes, Asynchronous Invokes, Poll-Based Invokes
 
 - [Understanding the Different Ways to Invoke Lambda Functions](https://aws.amazon.com/blogs/architecture/understanding-the-different-ways-to-invoke-lambda-functions/), AWS, 2019-07-02
+- [How to trigger a Lambda function at specific time in AWS](https://stackoverflow.com/questions/48538170/how-to-trigger-a-lambda-function-at-specific-time-in-aws)
+    - E.g. SQS (message with a `due-date`) -> EventBridge Pipes -> Step Function (WaitTillScheduled `due-date`) -> Lambda
 
 
 ---
