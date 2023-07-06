@@ -2,7 +2,9 @@
 
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
+- [Synchronous Invokes, Asynchronous Invokes, Poll-Based Invokes](#synchronous-invokes-asynchronous-invokes-poll-based-invokes)
 - [MLTA, Debugging, Error Handling](#mlta-debugging-error-handling)
+    - [Useful blog posts](#useful-blog-posts)
     - [How errors should be handled for Asynchronous Invocations](#how-error-should-be-handled-for-asynchronous-invocations)
 - [Code storage for uploaded Lambda functions (`CodeStorageExceededException`)](#code-storage-for-uploaded-lambda-functions-codestorageexceededexception)
 - [Lambda Scaling and Throughput](#lambda-scaling-and-throughput)
@@ -61,6 +63,13 @@ Jump to
 
 ---
 
+## Synchronous Invokes, Asynchronous Invokes, Poll-Based Invokes
+
+- [Understanding the Different Ways to Invoke Lambda Functions](https://aws.amazon.com/blogs/architecture/understanding-the-different-ways-to-invoke-lambda-functions/), AWS, 2019-07-02
+
+
+---
+
 ## MLTA, Debugging, Error Handling
 
 - Lambda Performance Insights
@@ -75,6 +84,10 @@ Jump to
 - CloudWatch
     - [How to get notified on specific Lambda function error patterns using CloudWatch](https://aws.amazon.com/blogs/mt/get-notified-specific-lambda-function-error-patterns-using-cloudwatch/), AWS, 2020-08-24
 
+### Useful blog posts
+
+- [Implementing AWS Lambda error handling patterns](https://aws.amazon.com/blogs/compute/implementing-aws-lambda-error-handling-patterns/), AWS, 2023-07-06
+- [Implementing error handling for AWS Lambda asynchronous invocations](https://aws.amazon.com/blogs/compute/implementing-error-handling-for-aws-lambda-asynchronous-invocations/), AWS, 2023-04-25
 
 ### How error should be handled for Asynchronous Invocations
 
@@ -86,9 +99,6 @@ Jump to
         - an SQS standard queue, or
         - EventBridge.
 2. [Dead-letter queues](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html#invocation-dlq)
-
-Useful blog posts
-- [Implementing error handling for AWS Lambda asynchronous invocations](https://aws.amazon.com/blogs/compute/implementing-error-handling-for-aws-lambda-asynchronous-invocations/), AWS, 2023-04-25
 
 
 ---
