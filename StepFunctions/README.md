@@ -1,12 +1,35 @@
 # Step Functions
 
-| AWS Step Functions Data Science SDK (Python) | [aws/aws-step-functions-data-science-sdk-python](https://github.com/aws/aws-step-functions-data-science-sdk-python) |
+Jump to
+- [Useful Libs and Tools](#useful-libs-and-tools)
+- [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Bucket size and Refill Rate per Second In Step Functions](#bucket-size-and-refill-rate-per-second-in-step-functions)
+- [API Gateway Integration](#api-gateway-integration)
 
 
-## Canary Deployment
+---
+## Useful Libs and Tools
 
-- [AWS Lambda Canary Deployments with API Gateway](https://blog.thundra.io/aws-lambda-canary-deployments-with-api-gateway)
+- [aws/aws-step-functions-data-science-sdk-python](https://github.com/aws/aws-step-functions-data-science-sdk-python) - AWS Step Functions Data Science SDK (Python)
+- CDK resources
+    - https://github.com/cdk-patterns/serverless/tree/master/the-state-machine
+    - https://github.com/cdk-patterns/serverless/tree/master/the-saga-stepfunction
+    - https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-lambda-step-function
+- Triggering a State Machine from SQS using EventBridge Pipes - [example](https://github.com/aws-samples/aws-stepfunctions-examples/blob/main/sam/demo-trigger-stepfunctions-from-sqs/template.yaml)
 
+
+---
+## Useful Articles and Blogs
+
+- [How to trigger a Lambda function at specific time with Step Function](https://stackoverflow.com/questions/48538170/how-to-trigger-a-lambda-function-at-specific-time-in-aws)
+- [Using JSONPath effectively in AWS Step Functions](https://aws.amazon.com/blogs/compute/using-jsonpath-effectively-in-aws-step-functions/)
+- [Latest Step Functions Overview](https://docs.aws.amazon.com/step-functions/latest/dg/how-step-functions-works.html)
+- Use Cases
+    - https://docs.aws.amazon.com/step-functions/latest/dg/create-sample-projects.html
+    - https://aws.amazon.com/blogs/compute/implementing-serverless-manual-approval-steps-in-aws-step-functions-and-amazon-api-gateway/
+
+
+---
 ## Bucket size and Refill Rate per Second In Step Functions
 
 > Some Step Functions API actions are throttled using a token bucket scheme to maintain service bandwidth.
@@ -53,15 +76,3 @@ Notes
           "token": "$input.json('$.executionArn').split(':')[7].replace('"', "")"
         }
         ```
-
-## CDK resources
-- https://github.com/cdk-patterns/serverless/tree/master/the-state-machine
-- https://github.com/cdk-patterns/serverless/tree/master/the-saga-stepfunction
-- https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-lambda-step-function
-
-## Useful links
-- Using JSONPath effectively in AWS Step Functions https://aws.amazon.com/blogs/compute/using-jsonpath-effectively-in-aws-step-functions/
-- [Latest SFN Overview](https://docs.aws.amazon.com/step-functions/latest/dg/how-step-functions-works.html)
-- Use Cases
-    - https://docs.aws.amazon.com/step-functions/latest/dg/create-sample-projects.html
-    - https://aws.amazon.com/blogs/compute/implementing-serverless-manual-approval-steps-in-aws-step-functions-and-amazon-api-gateway/
