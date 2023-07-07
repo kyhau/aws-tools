@@ -1,11 +1,19 @@
 #!/bin/bash
-set -e
+set +e
 # Ref: https://aws.amazon.com/blogs/devops/integrating-aws-codeartifact-package-mgmt-flow/
 
 source .env
 
-ACCOUNT_1_EXTERNAL_PYPI="pypi"
-ACCOUNT_1_EXTERNAL_NPMJS="npmjs"
+declare -a REPOS=(
+  "maven-commonsware"
+  "maven-googleandroid"
+  "maven-gradleplugins"
+  "maven-central"
+  "maven-clojars"
+  "npmjs"
+  "nuget-org"
+  "pypi"
+)
 
 function create_external() {
   # You can only add one external connection to a CodeArtifact repository.
@@ -21,16 +29,19 @@ function create_external() {
     --repository ${NEW_REPO} --external-connection public:${EXTERNAL_REPO} --profile ${AWS_PROFILE_1}
 }
 
-# create_external ${ACCOUNT_1_EXTERNAL_PYPI}
-create_external ${ACCOUNT_1_EXTERNAL_NPMJS}
+for repo_name in "${REPOS[@]}" ; do
+  create_external ${repo_name}
+done
 
 
-# public:npmjs - for the npm public repository.
-# public:pypi - for the Python Package Index.
-# public:maven-central - for Maven Central.
-# public:maven-googleandroid - for the Google Android repository.
-# public:maven-gradleplugins - for the Gradle plugins repository.
-# public:maven-commonsware - for the CommonsWare Android repository.
+# public:maven-commonsware - CommonsWare Android - Java
+# public:maven-googleandroid - Google Android - Java
+# public:maven-gradleplugins - Gradle plugins - Java
+# public:maven-central - Maven Central - Java
+# public:maven-clojars - Clojars Android - Java
+# public:npmjs - npmjs - JavaScript
+# public:nuget-org - NuGet - .NET
+# public:pypi - PyPI - Python
 
 # CodeArtifact enables you to set external repository connections and replicate them within CodeArtifact.
 # An external connection reduces the downstream dependency on the remote external repository.
