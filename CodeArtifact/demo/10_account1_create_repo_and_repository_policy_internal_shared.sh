@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -e
 
 source .env
 
@@ -17,6 +17,7 @@ cat > policy.json << EOF
         {
             "Sid": "ReadAccess",
             "Action": [
+                "codeartifact:AssociateWithDownstreamRepository",
                 "codeartifact:DescribePackageVersion",
                 "codeartifact:DescribeRepository",
                 "codeartifact:GetPackageVersionReadme",
