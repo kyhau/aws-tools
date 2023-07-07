@@ -3,30 +3,43 @@ set -e
 
 source .env
 
-REPO=${ACCOUNT_2_EXTERNAL_REPO}
+AWS_PROFILE=${AWS_PROFILE_3}
+REPO=${ACCOUNT_3_TEAM_3_REPO}
 
 aws codeartifact create-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${REPO} --description "Upstream external repos" --profile ${AWS_PROFILE_2}
+  --repository ${REPO} --description "Team repository" --profile ${AWS_PROFILE}
 
-# cd dist
-# pip wheel click
-# pip wheel fire
-# cd ..
 
-# pip install -i https://pypi.org/simple twine
+cat > policy.json << EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ReadAccess",
+            "Action": [
+                "codeartifact:DescribePackageVersion",
+                "codeartifact:DescribeRepository",
+                "codeartifact:GetPackageVersionReadme",
+                "codeartifact:GetRepositoryEndpoint",
+                "codeartifact:ListPackages",
+                "codeartifact:ListPackageVersions",
+                "codeartifact:ListPackageVersionAssets",
+                "codeartifact:ListPackageVersionDependencies",
+                "codeartifact:ReadFromRepository"
+            ],
+            "Effect": "Allow",
+            "Resource": "*",
+            "Principal": {
+                "AWS": [
+                  "arn:aws:iam::${ACCOUNT_3_ID}:root"
+                ]
+            }
+        }
+    ]
+}
+EOF
 
-aws codeartifact login --tool twine --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
-   --repository ${REPO} --profile ${AWS_PROFILE_2}
+aws codeartifact put-repository-permissions-policy --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
+  --repository ${REPO} --policy-document file://policy.json --profile ${AWS_PROFILE}
 
-cat ~/.pypirc
-
-twine upload --repository codeartifact dist/click-8.1.3-py3-none-any.whl
-twine upload --repository codeartifact dist/fire-0.5.0-py2.py3-none-any.whl
-
-aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
-  --repository ${REPO} --format pypi --package click --profile ${AWS_PROFILE_2}
-
-aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_2_ID} \
-  --repository ${REPO} --format pypi --package fire --profile ${AWS_PROFILE_2}
-
-rm ~/.pypirc
+rm policy.json

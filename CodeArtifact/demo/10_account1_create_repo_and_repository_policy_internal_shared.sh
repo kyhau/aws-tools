@@ -3,12 +3,12 @@ set -e
 
 source .env
 
+AWS_PROFILE=${AWS_PROFILE_1}
+REPO=${ACCOUNT_1_SHARED_REPO_1}
+
 aws codeartifact create-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_1} --description "Shared repository" --profile ${AWS_PROFILE_1}
+  --repository ${REPO} --description "Shared repository" --profile ${AWS_PROFILE}
 
-
-# Create a cross account domain policy for account 1
-# copy-package-versions requires codeartifact:ReadFromRepository
 
 cat > policy.json << EOF
 {
@@ -41,6 +41,6 @@ cat > policy.json << EOF
 EOF
 
 aws codeartifact put-repository-permissions-policy --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_1} --policy-document file://policy.json --profile ${AWS_PROFILE_1}
+  --repository ${REPO} --policy-document file://policy.json --profile ${AWS_PROFILE}
 
 rm policy.json
