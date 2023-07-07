@@ -1,21 +1,24 @@
 #!/bin/bash
+#set -e
 
-source .config
+source .env
 
+AWS_PROFILE=${AWS_PROFILE_1}
+REPO=${ACCOUNT_1_SHARED_REPO_1}
 
 aws codeartifact create-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_2} --description "My new repository" --profile ${AWS_PROFILE_1}
-
-#aws codeartifact update-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-# --repository ${ACCOUNT_1_SHARED_REPO_2} --upstreams repositoryName=pypi-store --profile ${AWS_PROFILE_1}
+  --repository ${REPO} --description "Shared repository" --profile ${AWS_PROFILE}
 
 
-cat > readonly_repository_policy.json << EOF
+cat > policy.json << EOF
 {
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "ReadAccess",
             "Action": [
+                "codeartifact:AssociateWithDownstreamRepository",
+                "codeartifact:CopyPackageVersions",
                 "codeartifact:DescribePackageVersion",
                 "codeartifact:DescribeRepository",
                 "codeartifact:GetPackageVersionReadme",
@@ -27,16 +30,19 @@ cat > readonly_repository_policy.json << EOF
                 "codeartifact:ReadFromRepository"
             ],
             "Effect": "Allow",
+            "Resource": "*",
             "Principal": {
-                "AWS": "arn:aws:iam::${ACCOUNT_2_ID}:root"
-            },
-            "Resource": "*"
+                "AWS": [
+                  "arn:aws:iam::${ACCOUNT_2_ID}:root",
+                  "arn:aws:iam::${ACCOUNT_3_ID}:root"
+                ]
+            }
         }
     ]
 }
 EOF
 
 aws codeartifact put-repository-permissions-policy --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_2} --policy-document file://readonly_repository_policy.json --profile ${AWS_PROFILE_1}
+  --repository ${REPO} --policy-document file://policy.json --profile ${AWS_PROFILE}
 
-rm readonly_repository_policy.json
+rm policy.json

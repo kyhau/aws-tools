@@ -1,23 +1,53 @@
 #!/bin/bash
+set +e
 # Ref: https://aws.amazon.com/blogs/devops/integrating-aws-codeartifact-package-mgmt-flow/
-source .config
+
+source .env
+
+declare -a REPOS=(
+  "maven-central"
+  "maven-clojars"
+  "maven-commonsware"
+  "maven-googleandroid"
+  "maven-gradleplugins"
+  "npmjs"
+  "nuget-org"
+  "pypi"
+)
+
+function create_external() {
+  # You can only add one external connection to a CodeArtifact repository.
+  # https://docs.aws.amazon.com/codeartifact/latest/ug/repos-upstream.html
+
+  EXTERNAL_REPO=${1}
+  NEW_REPO="external-${1}"
+
+  aws codeartifact create-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
+    --repository ${NEW_REPO} --description "External connection ${EXTERNAL_REPO}" --profile ${AWS_PROFILE_1}
+
+  aws codeartifact associate-external-connection --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
+    --repository ${NEW_REPO} --external-connection public:${EXTERNAL_REPO} --profile ${AWS_PROFILE_1}
+}
+
+for repo_name in "${REPOS[@]}" ; do
+  create_external ${repo_name}
+done
+
+
+# public:maven-commonsware - CommonsWare Android - Java
+# public:maven-googleandroid - Google Android - Java
+# public:maven-gradleplugins - Gradle plugins - Java
+# public:maven-central - Maven Central - Java
+# public:maven-clojars - Clojars Android - Java
+# public:npmjs - npmjs - JavaScript
+# public:nuget-org - NuGet - .NET
+# public:pypi - PyPI - Python
 
 # CodeArtifact enables you to set external repository connections and replicate them within CodeArtifact.
 # An external connection reduces the downstream dependency on the remote external repository.
 # When you request a package from the CodeArtifact repository that’s not already present in the repository,
 # the package can be fetched from the external connection.
 # This makes it possible to consume open-source dependencies used by your application.
-
-aws codeartifact associate-external-connection --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_1} --external-connection public:pypi
-
-
-# public:npmjs - for the npm public repository.
-# public:pypi - for the Python Package Index.
-# public:maven-central - for Maven Central.
-# public:maven-googleandroid - for the Google Android repository.
-# public:maven-gradleplugins - for the Gradle plugins repository.
-# public:maven-commonsware - for the CommonsWare Android repository.
 
 # Using an external connection reduces interruption in your development process for package external dependencies,
 # an example is if a package is removed from a public repository, you will still have a copy of the package stored
