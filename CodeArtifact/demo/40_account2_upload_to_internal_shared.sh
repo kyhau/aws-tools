@@ -19,6 +19,6 @@ cat ~/.pypirc
 twine upload --repository codeartifact ${PKG}
 
 aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${REPO} --format pypi --package dummyapp2 --profile ${AWS_PROFILE}
+  --repository ${REPO} --format pypi --package dummyapp1 --profile ${AWS_PROFILE}
 
 rm ~/.pypirc

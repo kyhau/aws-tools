@@ -18,6 +18,7 @@ cat > policy.json << EOF
             "Sid": "ReadAccess",
             "Action": [
                 "codeartifact:AssociateWithDownstreamRepository",
+                "codeartifact:CopyPackageVersions",
                 "codeartifact:DescribePackageVersion",
                 "codeartifact:DescribeRepository",
                 "codeartifact:GetPackageVersionReadme",
