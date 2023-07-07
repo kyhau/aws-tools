@@ -5,11 +5,11 @@ set +e
 source .env
 
 declare -a REPOS=(
+  "maven-central"
+  "maven-clojars"
   "maven-commonsware"
   "maven-googleandroid"
   "maven-gradleplugins"
-  "maven-central"
-  "maven-clojars"
   "npmjs"
   "nuget-org"
   "pypi"
