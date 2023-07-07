@@ -3,24 +3,22 @@ set -e
 
 source .env
 
-# Download a wheel
-# mkdir dist
-# cd dist
-# pip wheel boto3==1.20.35
-# pip wheel cdk-monitoring-constructs==4.0.9
-# cd ..
+# Package a dummy wheel: see dummy-python-apps/package.sh
 
 # pip install -i https://pypi.org/simple twine
 
+PKG=dummy-python-apps/dist/dummyapp2-1.0.0-py2.py3-none-any.whl
+REPO=${ACCOUNT_2_TEAM_2_REPO}
+AWS_PROFILE=${AWS_PROFILE_2}
+
 aws codeartifact login --tool twine --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-   --repository ${ACCOUNT_1_SHARED_REPO_1} --profile ${AWS_PROFILE_1}
+   --repository ${REPO} --profile ${AWS_PROFILE}
 
 cat ~/.pypirc
 
-# twine upload --repository codeartifact dist/boto3-1.20.35-py3-none-any.whl
-twine upload --repository codeartifact dist/cdk_monitoring_constructs-4.0.9-py3-none-any.whl
+twine upload --repository codeartifact ${PKG}
 
 aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_SHARED_REPO_1} --format pypi --package cdk-monitoring-constructs --profile ${AWS_PROFILE_1}
+  --repository ${REPO} --format pypi --package dummyapp2 --profile ${AWS_PROFILE}
 
 rm ~/.pypirc
