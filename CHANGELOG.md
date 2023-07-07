@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-07-07
+
+### Changed
+
+   * Updated scripts in CodeArtifact/demo/ for CodeArtifact demo
+
 ## 2023-05-16
 
 ### Added
