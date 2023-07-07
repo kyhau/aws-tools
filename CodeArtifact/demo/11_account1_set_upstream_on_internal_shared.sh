@@ -8,9 +8,14 @@ source .env
 # and keep the existing ones, you must include the existing upstream repositories in the call.
 
 aws codeartifact update-repository --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${ACCOUNT_1_TEAM_1_REPO} \
+  --repository ${ACCOUNT_1_SHARED_REPO_1} \
   --upstreams \
-    repositoryName=${ACCOUNT_1_SHARED_REPO_1} \
+    repositoryName=external-maven-central \
+    repositoryName=external-maven-clojars \
+    repositoryName=external-maven-commonsware \
+    repositoryName=external-maven-googleandroid \
+    repositoryName=external-maven-gradleplugins \
     repositoryName=external-npmjs \
+    repositoryName=external-nuget-org \
     repositoryName=external-pypi \
   --profile ${AWS_PROFILE_1}
