@@ -7,9 +7,9 @@ source .env
 
 # pip install -i https://pypi.org/simple twine
 
-PKG=dummy-python-apps/dist/dummyapp1-1.0.0-py2.py3-none-any.whl
-REPO=${ACCOUNT_1_SHARED_REPO_1}
-AWS_PROFILE=${AWS_PROFILE_1}
+PKG=dummy-python-apps/dist/dummyapp3-1.0.0-py2.py3-none-any.whl
+REPO=${ACCOUNT_3_TEAM_3_REPO}
+AWS_PROFILE=${AWS_PROFILE_3}
 
 aws codeartifact login --tool twine --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
    --repository ${REPO} --profile ${AWS_PROFILE}
@@ -19,6 +19,6 @@ cat ~/.pypirc
 twine upload --repository codeartifact ${PKG}
 
 aws codeartifact list-package-versions --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${REPO} --format pypi --package dummyapp2 --profile ${AWS_PROFILE}
+  --repository ${REPO} --format pypi --package dummyapp3 --profile ${AWS_PROFILE}
 
 rm ~/.pypirc
