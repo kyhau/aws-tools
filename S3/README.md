@@ -21,7 +21,7 @@ Jump to
 
 ### S3 Access Control
 
-- [IAM Policies and Bucket Policies and ACLs! Oh, My! (Controlling Access to S3 Resources)]([Title](https://aws.amazon.com/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/)), AWS, 2023-07-07
+- [IAM Policies and Bucket Policies and ACLs! Oh, My! (Controlling Access to S3 Resources)](https://aws.amazon.com/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/), AWS, 2023-07-07
 
 
 ### VPC Enpoints
