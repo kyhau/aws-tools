@@ -12,7 +12,7 @@ __uri__ = "https://github.com/kyhau/aws-tools/"
 
 __requirements__ = [
     "boto3==1.26.165",
-    "click==8.1.3",
+    "click==8.1.4",
     "docker==6.1.3",
     "InquirerPy==0.3.4",
     "pyyaml==6.0",
