@@ -173,6 +173,10 @@ See this [blog post](https://aws.amazon.com/blogs/compute/understanding-aws-lamb
 - For **synchronous invocations**, Lambda returns a throttling error (`429`) to the caller, which must retry the request.
 - With **asynchronous** and **event source mapping** invokes, Lambda automatically retries the requests.
 
+See also
+- [Understanding AWS Lambda’s invoke throttling limits](https://aws.amazon.com/blogs/compute/understanding-aws-lambdas-invoke-throttle-limits/), AWS, 2023-07-07
+
+
 ### Operational metrics
 
 There are CloudWatch metrics available to monitor your account and function concurrency to ensure that your applications can scale as expected. Monitor function Invocations and Duration to understand throughput. Throttles show throttled invocations.
