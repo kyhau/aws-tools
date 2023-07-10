@@ -3,6 +3,7 @@
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+    - [S3 Access Control](#s3-access-control)
     - [VPC Enpoints](#vpc-enpoints)
     - [Static Websites](#static-websites)
     - [Uploading objects](#uploading-objects)
@@ -17,6 +18,11 @@ Jump to
 
 ---
 ## Useful Articles and Blogs
+
+### S3 Access Control
+
+- [IAM Policies and Bucket Policies and ACLs! Oh, My! (Controlling Access to S3 Resources)]([Title](https://aws.amazon.com/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/)), AWS, 2023-07-07
+
 
 ### VPC Enpoints
 - [Using interface endpoints to access Amazon S3 without a gateway endpoint or an internet gateway in the VPC](https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html#accessing-bucket-and-aps-from-interface-endpoints), AWS User Guide
