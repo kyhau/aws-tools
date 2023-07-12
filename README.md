@@ -56,7 +56,7 @@ pip3 install -r requirements-cli.txt
     - [Encryption](./Others/Encryption.md)
     - [Mutual Transport Layer Security (mutual TLS or mTLS) authentication](./Security.md)
     - [Networking](./Networking/)
-    - [Other useful tools](./Others/)
+    - [Other useful tools](./_Others/)
     - [Security](./Security.md)
     - [Serverless](./Serverless.md)
     - [Service Limits](./Others/ServiceLimits.md)
