@@ -20,6 +20,7 @@ Jump to
 
 ---
 ## Useful Articles and Blogs
+
 Performance / HA
 - [Achieving Zero-downtime deployments with Amazon CloudFront using blue/green continuous deployments](https://aws.amazon.com/blogs/networking-and-content-delivery/achieving-zero-downtime-deployments-with-amazon-cloudfront-using-blue-green-continuous-deployments/), AWS, 2023-05-30
 - [Improve Single-Page Application (SPA) Performance with a Same Domain policy using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-single-page-application-spa-performance-with-a-same-domain-policy-using-amazon-cloudfront/), AWS, 2023-05-09
@@ -35,6 +36,8 @@ Performance / HA
 - [Enhanced origin failover using Amazon CloudFront and AWS Lambda@Edge](https://aws.amazon.com/fr/blogs/media/enhanced-origin-failover-using-amazon-cloudfront-and-aws-lambdaedge/), AWS, 2020-10-14
 
 Other
+- [Set up end-to-end tracing with Amazon CloudFront using OpenTelemetry](https://aws.amazon.com/blogs/networking-and-content-delivery/set-up-end-to-end-tracing-with-amazon-cloudfront-using-opentelemetry/), AWS, 2023-07-14
+- [Using AWS WAF intelligent threat mitigations with cross-origin API access](https://aws.amazon.com/blogs/networking-and-content-delivery/using-aws-waf-intelligent-threat-mitigations-with-cross-origin-api-access/), AWS, 2023-07-13
 - [Amazon CloudFront introduces Origin Access Control (OAC)](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-cloudfront-introduces-origin-access-control-oac/), AWS, 2022-08-25
 - [Using Amazon S3 Origins and Custom Origins for Web Distributions](http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
 - [Granting Permission to an Amazon CloudFront Origin Identity](http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-6)

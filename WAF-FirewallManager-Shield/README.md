@@ -11,6 +11,10 @@ AWS WAF is a web application firewall that lets you monitor the HTTP and HTTPS r
 - Cognito user pool, or
 - App Runner service
 
+Useful blog posts
+- [Using AWS WAF intelligent threat mitigations with cross-origin API access](https://aws.amazon.com/blogs/networking-and-content-delivery/using-aws-waf-intelligent-threat-mitigations-with-cross-origin-api-access/), AWS, 2023-07-13
+
+
 Other links
 - AWS WAF Security Automations - [awslabs/aws-waf-security-automations](https://github.com/awslabs/aws-waf-security-automations)
 - https://docs.aws.amazon.com/fms/2018-01-01/APIReference/API_SecurityServicePolicyData.html
