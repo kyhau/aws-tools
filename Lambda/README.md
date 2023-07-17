@@ -53,6 +53,7 @@ Jump to
         - https://aws.amazon.com/blogs/compute/building-well-architected-serverless-applications-understanding-application-health-part-2/
     - [aws-lambda-powertools-typescript](https://github.com/awslabs/aws-lambda-powertools-typescript) - AWS Lambda Powertools for TypeScript
 - [aws-lambda-builders](https://github.com/aws/aws-lambda-builders) - Lambda Builders is a Python library to compile, build and package AWS Lambda functions for several runtimes & frameworks. Lambda Builders is the brains behind the `sam build`.
+- [aws-lambda-dotnet](https://github.com/aws/aws-lambda-dotnet) - Lambda Annotations Framework for .NET
 - [aws-lambda-developer-guide](https://github.com/awsdocs/aws-lambda-developer-guide) - AWS Lambda Developer Guide with examples
 - [authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) - Authorization Lambda@Edge (Node.js)
 - [alexcasalboni/aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning) - AWS Lambda Power Tuning is a state machine powered by AWS Step Functions that helps you optimize your Lambda functions for cost and/or performance in a data-driven way.
