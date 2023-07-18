@@ -1,6 +1,8 @@
 # MSK
 
 Topics
+- [MSK - Things to consider](#msk---things-to-consider)
+- [MSK Connect](#msk-connect)
 - [MSK Serverless](#msk-serverless)
 - [Monitoring](#monitoring)
 - [Kafka Log Retention and Cleanup Policies](#kafka-log-retention-and-cleanup-policies)
@@ -8,8 +10,22 @@ Topics
 - [Other References](#other-references)
 
 ---
+
+### MSK - Things to consider
+
+- Lack of .NET, node and python support for MSK IAM auth
+- IAM role and Kafka ACL mapping is challenging, especially cross account access
+- Cross account Lambda using a MSK as event source (currently not supported)
+- Auto storage scaling can be a trap - team may run a perf test without changing topic retention, once storage got scaled up, can only recreate the cluster, and it's a challenge to update all endpoint references/integrations (custom domain name not supported)
+
+### MSK Connect
+- Currently mTLS is not supported
+
 ### MSK Serverless
 - Limitations and things to consider - [The Pro’s and Con’s of using AWS MSK Serverless](https://digio.com.au/learn/blog/the-pros-and-cons-of-using-aws-msk-serverless/), Sinnappu J., 2022-07-18
+    - MSK Serverless supports only IAM for authentication and authorization.
+    - MSK Serverless (and Provisioned) AWS_MSK_IAM’ supports Java (or any other JVM language) via aws-msk-iam-auth module. No GoLang and Python libraries available to connect to MSK serverless using the 'AWS_MSK_IAM' mechanism.
+    - MSK Serverless cluster has a maximum write throughput, read throughput, and number of partitions allowed - (not for very large workloads and high intensity events based use cases)
 
 ### Monitoring
 - [Monitoring an Amazon MSK Cluster (AWS Developer Guide)](https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html)
