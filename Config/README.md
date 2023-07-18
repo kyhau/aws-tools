@@ -12,10 +12,12 @@ Jump to
 - [awslabs/aws-config-resource-schema](https://github.com/awslabs/aws-config-resource-schema) - AWS Config Resource Schema
 - [awslabs/aws-config-rdk](https://github.com/awslabs/aws-config-rdk) - AWS Config Rules Development Kit (RDK) CLI
 - [awslabs/aws-config-rdklib](https://github.com/awslabs/aws-config-rdklib) - AWS Config Rules Development Kit (RDK) Library (Python)
-
+- [aws-samples/aws-cfn-for-optimizing-aws-config-for-aws-security-hub](https://github.com/aws-samples/aws-cfn-for-optimizing-aws-config-for-aws-security-hub) - AWS CloudFormation for optimizing AWS Config for AWS Security Hub
 
 ---
 ## Useful Articles and Blogs
+
+- [Optimize AWS Config for AWS Security Hub to effectively manage your cloud security posture](https://aws.amazon.com/blogs/security/optimize-aws-config-for-aws-security-hub-to-effectively-manage-your-cloud-security-posture/), AWS, 2023-07-17
 
 
 ---
