@@ -21,13 +21,14 @@ Jump to
 ---
 ## Useful Articles and Blogs
 
-- [How to trigger a Lambda function at specific time with Step Function](https://stackoverflow.com/questions/48538170/how-to-trigger-a-lambda-function-at-specific-time-in-aws)
-- [SQS triggering Step Functions using EventBridge Pipes](https://stackoverflow.com/questions/53422296/aws-sqs-trigger-step-functions)
-- [Using JSONPath effectively in AWS Step Functions](https://aws.amazon.com/blogs/compute/using-jsonpath-effectively-in-aws-step-functions/)
+- [Using JSONPath effectively in AWS Step Functions](https://aws.amazon.com/blogs/compute/using-jsonpath-effectively-in-aws-step-functions/), AWS, 2021-10-14
 - [Latest Step Functions Overview](https://docs.aws.amazon.com/step-functions/latest/dg/how-step-functions-works.html)
+- [Sample projects for Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/create-sample-projects.html), AWS
 - Use Cases
-    - https://docs.aws.amazon.com/step-functions/latest/dg/create-sample-projects.html
-    - https://aws.amazon.com/blogs/compute/implementing-serverless-manual-approval-steps-in-aws-step-functions-and-amazon-api-gateway/
+    - [Implementing patterns that exit early out of a parallel state in AWS Step Functions](https://aws.amazon.com/blogs/compute/implementing-patterns-that-exit-early-out-of-a-parallel-state-in-aws-step-functions/), AWS, 2023-07-20
+    - [How to trigger a Lambda function at specific time with Step Function](https://stackoverflow.com/questions/48538170/how-to-trigger-a-lambda-function-at-specific-time-in-aws)
+    - [SQS triggering Step Functions using EventBridge Pipes](https://stackoverflow.com/questions/53422296/aws-sqs-trigger-step-functions)
+    - [Implementing Serverless Manual Approval Steps in AWS Step Functions and Amazon API Gateway](https://aws.amazon.com/blogs/compute/implementing-serverless-manual-approval-steps-in-aws-step-functions-and-amazon-api-gateway/), AWS, 2017-02-15
 
 
 ---
