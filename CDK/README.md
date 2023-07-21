@@ -28,7 +28,8 @@ Jump to
     - [awslabs/aws-solutions-constructs](https://github.com/awslabs/aws-solutions-constructs) - [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/api-reference.html)
     - [cdk-pipelines-github](https://constructs.dev/packages/cdk-pipelines-github) - A construct library for continuous delivery of CDK applications, deployed via GitHub Workflows
 - Test
-    - [Testing CDK Applications in Any Language](https://aws.amazon.com/blogs/developer/testing-cdk-applications-in-any-language/), AWS, 9 NOV 2021
+    - [How to write and execute integration tests for AWS CDK applications](https://aws.amazon.com/blogs/devops/how-to-write-and-execute-integration-tests-for-aws-cdk-applications/), AWS, 2023-07-23
+    - [Testing CDK Applications in Any Language](https://aws.amazon.com/blogs/developer/testing-cdk-applications-in-any-language/), AWS, 2021-11-09
     - [How to use the AWS SAM CLI with the AWS CDK to test a Lambda function locally?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk-getting-started.html)
 - [aws/jsii](https://github.com/aws/jsii) - AWS JSII allows code in any language to naturally interact with JavaScript classes
 - [jsii-docgen](https://github.com/cdklabs/jsii-docgen) - Generates markdown reference documentation for jsii modules
