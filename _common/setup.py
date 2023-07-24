@@ -15,7 +15,7 @@ __requirements__ = [
     "click==8.1.5",
     "docker==6.1.3",
     "InquirerPy==0.3.4",
-    "pyyaml==6.0",
+    "pyyaml==6.0.1",
     "toml==0.10.2",
 ]
 
