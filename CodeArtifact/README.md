@@ -1,7 +1,15 @@
 # CodeArtifact notes
 
+- [Useful Libs and Tools](#useful-libs-and-tools)
 - [Examples](#examples)
 - [Recommendation for cross account setup](#recommendation-for-cross-account-setup)
+
+
+---
+## Useful Libs and Tools
+
+- [aws/codeartifact-origin-control-toolkit](https://github.com/aws/codeartifact-origin-control-toolkit) - AWS CodeArtifact Package Origin Control toolkit
+
 
 ---
 ## Examples
