@@ -5,8 +5,8 @@ Parameters:
   DomainName:
     Description: A string that specifies the name of the requested domain.
     Type: String
-  OtherAccountId:
-    Description: Other AWS account ID for accessing the CodeArtifact domain
+  OrgId:
+    Description: Organization ID
     Type: String
 
 Resources:
@@ -21,20 +21,17 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Action:
-              - codeartifact:DescribePackageVersion
-              - codeartifact:DescribeRepository
-              - codeartifact:GetPackageVersionReadme
-              - codeartifact:GetRepositoryEndpoint
-              - codeartifact:ListPackageVersionAssets
-              - codeartifact:ListPackageVersionDependencies
-              - codeartifact:ListPackageVersions
-              - codeartifact:ListPackages
-              - codeartifact:ReadFromRepository
-            Effect: Allow
-            Principal:
-              AWS: !Sub arn:${AWS::Partition}:iam::${OtherAccountId}:root
+              - codeartifact:CreateRepository
+              - codeartifact:DescribeDomain
+              - codeartifact:GetAuthorizationToken
+              - codeartifact:GetDomainPermissionsPolicy
+              - codeartifact:ListRepositoriesInDomain
+            Principal: "*"
             Resource: "*"
-            Sid: Contributor domain access
+            Condition:
+              StringEquals:
+                aws:PrincipalOrgId:
+                  - !Ref OrgId
 
 Outputs:
   CodeArtifactDomain:
