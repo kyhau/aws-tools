@@ -26,19 +26,23 @@ See also [AWS Graviton Fast Start](https://aws.amazon.com/ec2/graviton/fast-star
 ## Instances Powered by Arm-based AWS Graviton Processors - **Sydney**
 Source [AWS Graviton](https://aws.amazon.com/ec2/graviton/) and [availability and pricing](https://aws.amazon.com/ec2/pricing/on-demand/) (last checked on 2022-12-22)
 
-| | Instance types | Powered by | SYD/MEL? | Built for
-|--|--|--|--|--|
-| General Purpose | M7g | AWS Graviton3 | No | General purpose workloads with balanced compute, memory, and networking|
-| General Purpose | M6g, M6gd | AWS Graviton2 | Yes | General purpose workloads with balanced compute, memory, and networking|
-| General Purpose | T4g | AWS Graviton2 | Yes | Burstable general purpose workloads|
-| Compute Optimized | C7g, C7gn | AWS Graviton3 | No | Compute-intensive workloads|
-| Compute Optimized | C6g, C6gd, C6gn | AWS Graviton2 | Yes | Compute and network-intensive workloads, such as HPC, video encoding, gaming, and CPU-based ML inference.|
-| Memory Optimized | R7g | AWS Graviton3 | No | Memory-intensive workloads such as open-source databases (MySQL, MariaDB, and PostgreSQL), or in-memory caches (Redis, KeyDB, Memcached).|
-| Memory Optimized | R6g, R6gd | AWS Graviton2 | Yes | Memory-intensive workloads such as open-source databases (MySQL, MariaDB, and PostgreSQL), or in-memory caches (Redis, KeyDB, Memcached).|
-| Memory Optimized | X2gd | AWS Graviton2 | No | Lowest cost per GiB of memory in Amazon EC2|
-| Storage Optimized | Im4gn | AWS Graviton2 | No | Storage-intensive workloads for databases|
-| Storage Optimized | Is4gen | AWS Graviton2 | No | Lowest cost per TB of SSD storage in Amazon EC2|
-| Accelerated Computing | G5g | AWS Graviton2 | No | Android game streaming |
+| | Instance types | Powered by | SYD | MEL | Built for
+|--|--|--|--|--|--|
+| General Purpose | M7g | AWS Graviton3 | Yes | No | General purpose workloads with balanced compute, memory, and networking|
+| General Purpose | M7gd | AWS Graviton3 | No | No | General purpose workloads with balanced compute, memory, and networking|
+| General Purpose | M6g, M6gd | AWS Graviton2 | Yes | No | General purpose workloads with balanced compute, memory, and networking|
+| General Purpose | T4g | AWS Graviton2 | Yes | No | Burstable general purpose workloads|
+| Compute Optimized | C7g | AWS Graviton3 | Yes | No | Compute-intensive workloads|
+| Compute Optimized | C7gd | AWS Graviton3 | No | No | Compute-intensive workloads|
+| Compute Optimized | C7gn | AWS Graviton3E | No | No | Compute-intensive workloads|
+| Compute Optimized | C6g, C6gd, C6gn | AWS Graviton2 | Yes | No | Compute and network-intensive workloads, such as HPC, video encoding, gaming, and CPU-based ML inference.|
+| Memory Optimized | R7g | AWS Graviton3 | Yes | No | Memory-intensive workloads such as open-source databases (MySQL, MariaDB, and PostgreSQL), or in-memory caches (Redis, KeyDB, Memcached).|
+| Memory Optimized | R7gd | AWS Graviton3 | No | No | Memory-intensive workloads such as open-source databases (MySQL, MariaDB, and PostgreSQL), or in-memory caches (Redis, KeyDB, Memcached).|
+| Memory Optimized | R6g, R6gd | AWS Graviton2 | Yes | No | Memory-intensive workloads such as open-source databases (MySQL, MariaDB, and PostgreSQL), or in-memory caches (Redis, KeyDB, Memcached).|
+| Memory Optimized | X2gd | AWS Graviton2 | No | No | Lowest cost per GiB of memory in Amazon EC2|
+| Storage Optimized | Im4gn | AWS Graviton2 | No | No | Storage-intensive workloads for databases|
+| Storage Optimized | Is4gen | AWS Graviton2 | No | No | Lowest cost per TB of SSD storage in Amazon EC2|
+| Accelerated Computing | G5g | AWS Graviton2 | No | No | Android game streaming |
 
 
 ---
