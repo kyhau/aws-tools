@@ -39,7 +39,7 @@ alias aws-config-list-all-resource-types='. ${REPO_HOME}/Config/list_all_aws_con
 alias aws-config-query='python3 ${REPO_HOME}/Config/query_configservice.py'
 alias aws-config-query-aggregate='python3 ${REPO_HOME}/Config/query_configservice_aggregate.py'
 
-alias aws-database-status-check='python3 ${REPO_HOME}/Others/list_databases_status.py'
+alias aws-database-status-check='python3 ${REPO_HOME}/_Others/list_databases_status.py'
 
 alias aws-ddb-delete-table-item='python3 ${REPO_HOME}/DynamoDB/delete_table_items.py'
 alias aws-ddb-enable-contributor-insights='aws dynamodb update-contributor-insights --contributor-insights-action ENABLE --table-name '
@@ -59,6 +59,8 @@ alias aws-ecr-list-used-images-having-critical-or-high-severity-findings='python
 alias aws-ecr-get-login='aws ecr get-login --no-include-email'
 
 alias aws-ecs-account-setting-fargateVCPULimit='aws ecs list-account-settings --effective-settings --name fargateVCPULimit'
+
+alias aws-fault-tolerance-analyser='python3 ${REPO_HOME}/../fault-tolerance-analyser/src/account_analyser.py'
 
 alias aws-guardduty-findings='python3 ${REPO_HOME}/GuardDuty/list_findings.py'
 
@@ -97,7 +99,7 @@ alias aws-rds-describe-db-engine-versions-aurora-mysql='aws rds describe-db-engi
 alias aws-rds-describe-db-engine-versions-aurora-postgresql='aws rds describe-db-engine-versions --engine aurora-postgresql --query "DBEngineVersions[].EngineVersion"'
 
 alias aws-resource-list-with-config='python3 ${REPO_HOME}/Config/list_resources_with_configservice.py'
-alias aws-resource-list-with-resourcegroupstaggingapi='python3 ${REPO_HOME}/Others/list_resources_with_resourcegroupstaggingapi.py'
+alias aws-resource-list-with-resourcegroupstaggingapi='python3 ${REPO_HOME}/_Others/list_resources_with_resourcegroupstaggingapi.py'
 
 alias aws-r53-hostedzones='python3 ${REPO_HOME}/Route53/list_hosted_zones.py'
 alias aws-r53-resolver-endpoints-and-ips='python3 ${REPO_HOME}/Route53/list_resolver_endpoints_and_ips.py'
@@ -125,7 +127,7 @@ alias aws-ssm-start-session-rdp='aws ssm start-session --document-name AWS-Start
 
 alias aws-subnet-ip-usage='python3 ${REPO_HOME}/VPC/available_ip_address_count.py'
 
-alias aws-tag-list='python3 ${REPO_HOME}/Others/list_tags.py'
+alias aws-tag-list='python3 ${REPO_HOME}/_Others/list_tags.py'
 
 alias aws-trustedadvisor-list-result='python3 ${REPO_HOME}/TrustedAdvisor/trusted_advisor_check_result.py'
 
@@ -186,6 +188,8 @@ alias update-aws-eks-aws-iam-authenticator='. ${REPO_HOME}/EKS/install_eks_aws_i
 alias update-aws-eks-node-viewer='go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest'
 alias update-aws-eks-kubectl='. ${REPO_HOME}/EKS/install_eks_kubectl.sh'
 
+alias update-aws-fault-tolerance-analyser='. ${REPO_HOME}/_Others/fault-tolerance-analyser/install-fault-tolerance-analyser.sh'
+
 alias update-aws-sam-cli='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli.sh'
 alias update-aws-sam-cli-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli-beta-cdk.sh'
 
@@ -194,6 +198,6 @@ alias update-aws-ssh-over-ssm='. ${REPO_HOME}/SSM/install_ssh_over_ssm.sh'
 
 alias update-awscii-cli='sudo npm i -g @mhlabs/awscii-cli@latest'
 
-alias update-git-secrets='. ${REPO_HOME}/Others/git-secrets/install-git-secrets.sh'
+alias update-git-secrets='. ${REPO_HOME}/_Others/git-secrets/install-git-secrets.sh'
 
 alias update-sam2aws='. ${REPO_HOME}/saml2aws/install-saml2aws.sh'
