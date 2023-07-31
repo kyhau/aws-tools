@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-07-31
+
+### Added
+
+   * Added _Others/fault-tolerance-analyser/install-fault-tolerance-analyser.sh
+
 ## 2023-07-07
 
 ### Changed
