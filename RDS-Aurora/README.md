@@ -3,10 +3,14 @@
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Aurora](#aurora)
+- [Aurora MySQL](#aurora-mysql)
+- [Aurora PostgreSQL](#aurora-postgresql)
 - [Aurora Serverless](#aurora-serverless)
 - [RDS Proxy](#rds-proxy)
 - [Traps](#traps)
 
+See also [kyhau/aws-notebook/Databases](https://github.com/kyhau/aws-notebook/blob/main/Databases.md).
 
 ---
 ## Useful Libs and Tools
@@ -22,6 +26,17 @@ Jump to
     2. Then, publish logs to CloudWatch Logs (see [Publishing MySQL logs to CloudWatch Logs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.MySQL.html#USER_LogAccess.MySQL.Auditlog))
     3. Then, create [CloudWatch Logs Subscription Filters](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html) with Lambda for processing the log group entries.
 
+
+---
+## Aurora
+
+## Aurora MySQL
+
+- [Local write forwarding with Amazon Aurora](https://aws.amazon.com/blogs/database/local-write-forwarding-with-amazon-aurora/), AWS, 2023-07-31
+    - can now issue transactions containing both reads and writes on Aurora read replicas and the writes will be automatically forwarded to the single writer instance for execution.
+    - makes it simple to scale read workloads which require "read after write" consistency, without the need to maintain complex application logic that separates reads from writes
+
+## Aurora PostgreSQL
 
 ---
 ## Aurora Serverless
