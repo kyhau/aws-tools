@@ -16,4 +16,6 @@ git pull
 
 cd ${ori_dir}
 
+echo "TODO: cd $INSTALL_DIR/fault-tolerance-analyser"
 echo "TODO: pip install -r requirements.txt"
+echo "TODO: python3 src/account_analyser.py"
