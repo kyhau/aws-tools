@@ -19,4 +19,6 @@
     - This method simplifies deployments while benefiting from the scale, availability, and reliability of AWS infrastructure and services.
 
 ### NLB
+
+- [Enhance observability for Network Load Balancers using Amazon CloudWatch Internet Monitor](https://aws.amazon.com/blogs/mt/enhance-observability-for-network-load-balancers-using-amazon-cloudwatch-internet-monitor/), AWS, 2023-07-27
 - [Scaling NLB target groups by connections](https://aws.amazon.com/blogs/networking-and-content-delivery/scaling-nlb-target-groups-by-connections/), AWS, 2023-06-05
