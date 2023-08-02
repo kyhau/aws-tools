@@ -41,6 +41,6 @@ Jump to
 ---
 ## Useful Articles and Blog Posts
 
-- [Bootstrapping multiple AWS accounts for AWS CDK using CloudFormation StackSets](https://aws.amazon.com/blogs/mt/bootstrapping-multiple-aws-accounts-for-aws-cdk-using-cloudformation-stacksets/), AWS, 04 OCT 2022
-- [Manage application security and compliance with the AWS Cloud Development Kit and cdk-nag](https://aws.amazon.com/blogs/devops/manage-application-security-and-compliance-with-the-aws-cloud-development-kit-and-cdk-nag/), AWS, 25 MAY 2022
-- [Testing CDK Applications in Any Language](https://aws.amazon.com/blogs/developer/testing-cdk-applications-in-any-language/), AWS, 9 NOV 2021
+- [Bootstrapping multiple AWS accounts for AWS CDK using CloudFormation StackSets](https://aws.amazon.com/blogs/mt/bootstrapping-multiple-aws-accounts-for-aws-cdk-using-cloudformation-stacksets/), AWS, 2022-10-04
+- [Manage application security and compliance with the AWS Cloud Development Kit and cdk-nag](https://aws.amazon.com/blogs/devops/manage-application-security-and-compliance-with-the-aws-cloud-development-kit-and-cdk-nag/), AWS, 2022-05-25
+- [Testing CDK Applications in Any Language](https://aws.amazon.com/blogs/developer/testing-cdk-applications-in-any-language/), AWS, 2021-11-09
