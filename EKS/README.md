@@ -78,6 +78,8 @@ Jump to
 - Testing
     - [aws-k8s-tester](https://github.com/aws/aws-k8s-tester) - is a set of utilities and libraries for "testing" Kubernetes on AWS.
     - AWS FIS (Fault Injection Simulator) with [ChaosMesh and Litmus support](https://aws.amazon.com/about-aws/whats-new/2022/07/aws-fault-injection-simulator-supports-chaosmesh-litmus-experiments/) for stress testing EKS
+- Upgrade
+    - [eksupgrade](https://github.com/aws-samples/eks-cluster-upgrade) - Amazon EKS Upgrade Utility
 
 ---
 ## Kubernetes tools (non-AWS)
