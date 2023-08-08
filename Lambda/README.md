@@ -16,6 +16,7 @@ Jump to
 - [Lambda Performance Optimisation](#lambda-performance-optimisation)
 - [Lambda Cost Optimisaton](#lambda-cost-optimisation)
 - [Lambda Function URLs](#lambda-function-urls)
+- [Lambda Response Streaming](#lambda-response-streaming)
 - [Lambda Container Images](#lambda-container-images)
 - [Lambda Layers](#lambda-layers)
 - [Lambda Extensions](#lambda-extensions)
@@ -247,6 +248,14 @@ Useful blog posts
     - To make the API available on a public HTTP(S) endpoint, generally 2 approaches
         1. along with Amazon API Gateway
         2. use Lambda function URLs
+
+
+---
+
+## Lambda Response Streaming
+
+- [Using response streaming with AWS Lambda Web Adapter to optimize performance](https://aws.amazon.com/blogs/compute/using-response-streaming-with-aws-lambda-web-adapter-to-optimize-performance/), AWS, 2023-08-07
+- [Introducing AWS Lambda response streaming](https://aws.amazon.com/blogs/compute/introducing-aws-lambda-response-streaming/), AWS, 2023-04-07
 
 
 ---
