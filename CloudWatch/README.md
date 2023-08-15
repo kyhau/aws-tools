@@ -7,6 +7,7 @@ Jump to
 - [CloudWatch Alarm](#cloudwatch-alarm)
     - [What alerts should you have for serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/)
     - [Some known issues](#some-known-issues)
+- [CloudWatch Synthetics](#cloudwatch-synthetics)
 
 
 ---
@@ -60,3 +61,12 @@ Source -> Filtering (optional) --> Enrichment (optional) --> Target
 
     - > CloudWatch being a push based service, the data is pushed from the source service- ELB. Some delay in metrics is expected, which is inherent for any monitoring systems- as they depend on several variables such as delay with the service publishing the metric, propagation delays and ingestion delay within CloudWatch to name a few. I do understand that a consistent 3 or 4 minute delay for ALB metrics is on the higher side. Upon further investigation, **I found out that the ALB metric delay is due to an Ingestion delay time of 3 minutes and this delay cannot be reduced at this stage**.
     Furthermore, please kindly note that the CloudWatch OPS and internal service team are still working on this issue, however, the ETA (Estimated Time of Availability) is still unknown. I sincerely apologize for any inconvenience this has caused on your side."
+
+---
+## CloudWatch Synthetics
+
+- [How to validate authentication with self-signed certificates in Amazon CloudWatch Synthetics](https://aws.amazon.com/blogs/mt/how-to-validate-authentication-with-self-signed-certificates-in-amazon-cloudwatch-synthetics/), AWS, 2023-08-13
+- [Create fine-grained CloudWatch canary schedules with cron expressions](https://aws.amazon.com/blogs/mt/create-fine-grained-cloudwatch-canary-schedules-with-cron-expressions/), AWS, 2021-08-24
+- [Delete Amazon CloudWatch Synthetics dependent resources when you delete a CloudFormation stack](https://aws.amazon.com/blogs/mt/delete-amazon-cloudwatch-synthetics-dependent-resources-when-you-delete-a-cloudformation-stack/), AWS, 2021-05-07
+- [Multi-step API monitoring using Amazon CloudWatch Synthetics](https://aws.amazon.com/blogs/mt/multi-step-api-monitoring-using-amazon-cloudwatch-synthetics/), AWS, 2021-03-31
+- [Running a canary on a VPC](https://github.com/awsdocs/amazon-cloudwatch-user-guide/blob/master/doc_source/CloudWatch_Synthetics_Canaries_VPC.md)
