@@ -2,10 +2,22 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     directory: "/"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
     schedule:
       interval: weekly
+      time: "08:00"
+      timezone: Australia/Melbourne
   - package-ecosystem: pip
     directory: "/_common"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 3
+      time: "09:00"
+      timezone: Australia/Melbourne
+    open-pull-requests-limit: 1
