@@ -244,6 +244,7 @@ Recommendation:
     - `lambda:UpdateFunctionUrlConfig`
 
 Useful blog posts
+- [Protecting an AWS Lambda function URL with Amazon CloudFront and Lambda@Edge](https://aws.amazon.com/blogs/compute/protecting-an-aws-lambda-function-url-with-amazon-cloudfront-and-lambdaedge/), AWS, 2023-08-23
 - [Building a Serverless ASP.NET Core Web API with AWS Lambda using Function URLs](https://coderjony.com/blogs/building-a-serverless-aspnet-core-web-api-with-aws-lambda-using-function-urls), 2022-10-02
     - To make the API available on a public HTTP(S) endpoint, generally 2 approaches
         1. along with Amazon API Gateway
