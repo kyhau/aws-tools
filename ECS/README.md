@@ -2,9 +2,10 @@
 
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+- [Fargate](#fargate)
+    - [Mapping Fargate cpu to EC2 instance type](#mapping-fargate-cpu-to-ec2-instance-type)
 - [Building Container images in containers](#building-container-images-in-containers)
 - [ECS - ENI trunking](#ecs---eni-trunking)
-- [Fargate](#fargate)
 
 ---
 ## Useful Libs and Tools
@@ -77,6 +78,21 @@
         ```
 
 ---
+## Fargate
+
+- Fargate does not give same cpu capacity for each task.
+    - Just be aware on Fargate you can get `c` or `m` series instances under the hood.
+If doing fine grained perf testing dump out `/proc/cpuinfo`` on the task to see what CPU you really have on Fargate.
+
+### Mapping Fargate cpu to EC2 instance type
+
+For Fargate cpu size e.g., 16384
+- Considering 1024 units are 1vCPU
+- 16384/1024 = 16 vCPU
+- which matches c7g.4xlarge
+
+
+---
 ## Building Container images in containers
 
 - For self-hosted GitHub runners, possilbe options:
@@ -104,9 +120,3 @@ ECS supports launching container instances with increased ENI density using supp
     - The container instance will have the primary network interface\, and
     - ECS creates and attaches a "trunk" network interface to the container instance,
     - So this configuration allows you to launch `10` tasks on the container instance instead of the current `2` tasks.
-
-
----
-## Fargate
-
-- Fargate does not give same cpu capacity for each task.
