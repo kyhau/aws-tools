@@ -16,6 +16,7 @@ awslogs                   # https://github.com/jorgebastida/awslogs
 
 cfn-flip                  # https://github.com/awslabs/aws-cfn-template-flip
 cfn-lint                  # require aws-sam-translator, https://github.com/aws-cloudformation/cfn-lint
+cfn-policy-validator      # https://github.com/awslabs/aws-cloudformation-iam-policy-validator
 #cloudformation-cli       # https://github.com/aws-cloudformation/cloudformation-cli
 #cloudformation-cli-python-plugin  # https://github.com/aws-cloudformation/cloudformation-cli-python-plugin
 yamllint                  # https://github.com/adrienverge/yamllint
