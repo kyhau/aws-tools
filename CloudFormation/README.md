@@ -22,6 +22,8 @@
 
 - `cfn_nag`: looks for patterns in CloudFormation templates that may indicate insecure infrastructure. [stelligent/cfn_nag](https://github.com/stelligent/cfn_nag)
 
+- `cfn-policy-validator`: A command line tool that takes a CloudFormation template, parses the IAM policies attached to IAM roles, users, groups, and resources then runs them through IAM Access Analyzer validation checks. [aws-cloudformation-iam-policy-validator](https://github.com/awslabs/aws-cloudformation-iam-policy-validator)
+
 - `cfn-skeleton`: consumes the published CloudFormation specification and generates skeleton CloudFormation templates with mandatory and optional parameters of chosen resource types pre-filled with placeholder values. [cfn-skeleton](https://github.com/awslabs/aws-cloudformation-template-builder)
 
 - `rain`: a CLI tool for working with CloudFormation templates and stacks. [aws-cloudformation/rain](https://github.com/aws-cloudformation/rain)
