@@ -8,3 +8,6 @@ Where [at-rest encryption](https://docs.aws.amazon.com/AmazonElastiCache/latest/
 See also
 - Data tiering - https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/data-tiering.html
 - Why does swapping occur in ElastiCache? https://aws.amazon.com/premiumsupport/knowledge-center/elasticache-swap-activity/
+
+## Blog posts
+- [Let’s Architect! Leveraging in-memory databases](https://aws.amazon.com/blogs/architecture/lets-architect-leveraging-in-memory-databases/), AWS, 2023-09-13
