@@ -20,6 +20,8 @@ Jump to
 
 - For CDK8s, see [EKS/README.md](../EKS/README.md)
 - [aws-cdk](https://github.com/aws/aws-cdk) - AWS CDK
+- [cdk-validator-cfnguard](https://github.com/cdklabs/cdk-validator-cfnguard) - Locally validate CDK app using AWS Control Tower proactive controls or AWS CloudFormation Guard rules before deploying the AWS infrastructure.
+    - Example [Python](https://github.com/aws-samples/aws-cdk-examples/blob/master/python/cdk-validator-cfnguard/app.py)
 - [cdk-nag](https://github.com/cdklabs/cdk-nag) - Manage application security and compliance
 - [cdk-import](https://github.com/cdklabs/cdk-import) - Generates CDK L1 constructs for public CloudFormation Registry types and modules
 - [cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin) - [AWS CDK Assume Role Credential Plugin](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/)
