@@ -271,6 +271,20 @@ Useful blog posts
 
 ## Lambda Layers
 
+- [Centralizing management of AWS Lambda layers across multiple AWS Accounts](https://aws.amazon.com/blogs/compute/centralizing-management-of-aws-lambda-layers-across-multiple-aws-accounts/)
+, AWS, 2023-09-19
+    - [aws-samples/lambda-layer-management](https://github.com/aws-samples/lambda-layer-management)
+    - With AWS Config, EventBridge Scheduler, SSM Automation, StackSets.
+    - On demand query example:
+    ```
+    aws configservice select-aggregate-resource-config \
+        --expression "SELECT accountId, awsRegion, configuration.functionName, configuration.version WHERE resourceType = 'AWS::Lambda::Function' AND configuration.layers.arn = 'YOUR_LAYER_ARN'" \
+        --configuration-aggregator-name 'YOUR_AGGREGATOR_NAME' \
+        --query "Results" \
+        --output json | \
+        jq -r '.[] | fromjson | [.accountId, .awsRegion, .configuration.functionName, .configuration.version] | @csv' > output.csv
+    ```
+
 
 ---
 
