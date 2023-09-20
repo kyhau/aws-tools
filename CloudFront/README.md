@@ -63,6 +63,7 @@ Other
 
 ### Lambda@Edge
 
+- [Building a central Amazon CloudWatch Dashboard to monitor Lambda@Edge logs and metrics](https://aws.amazon.com/blogs/mt/building-a-central-amazon-cloudwatch-dashboard-to-monitor-lambdaedge-logs-and-metrics/), AWS, 2023-09-20
 - [Tag-based invalidation in Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/tag-based-invalidation-in-amazon-cloudfront/), AWS, 2023-03-28
     - with Lambda@Edge, Amazon DynamoDB, AWS Lambda, and AWS Step Functions
 - [Reduce latency for end-users with multi-region APIs with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/reduce-latency-for-end-users-with-multi-region-apis-with-cloudfront/), AWS, 2023-01-31
