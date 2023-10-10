@@ -28,4 +28,5 @@ Jump to
 ---
 ## Exploitation
 
-- [Unintended Self-Signup in AWS Cognito](https://hackingthe.cloud/aws/exploitation/cognito_user_self_signup/)
+- [Attacking AWS Cognito with Pacu](https://rhinosecuritylabs.com/aws/attacking-aws-cognito-with-pacu-p1/), 2023-10-10
+- [Unintended Self-Signup in AWS Cognito](https://hackingthe.cloud/aws/exploitation/cognito_user_self_signup/), 2023-06-20
