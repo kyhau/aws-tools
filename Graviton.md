@@ -33,7 +33,7 @@ Source [AWS Graviton](https://aws.amazon.com/ec2/graviton/) and [availability an
 | General Purpose | M6g, M6gd | AWS Graviton2 | Yes | No | General purpose workloads with balanced compute, memory, and networking|
 | General Purpose | T4g | AWS Graviton2 | Yes | No | Burstable general purpose workloads|
 | Compute Optimized | C7g | AWS Graviton3 | Yes | No | Compute-intensive workloads|
-| Compute Optimized | C7gd | AWS Graviton3 | No | No | Compute-intensive workloads|
+| Compute Optimized | C7gd | AWS Graviton3 | Yes | No | Compute-intensive workloads|
 | Compute Optimized | C7gn | AWS Graviton3E | No | No | Compute-intensive workloads|
 | Compute Optimized | C6g, C6gd, C6gn | AWS Graviton2 | Yes | No | Compute and network-intensive workloads, such as HPC, video encoding, gaming, and CPU-based ML inference.|
 | Memory Optimized | R7g | AWS Graviton3 | Yes | No | Memory-intensive workloads such as open-source databases (MySQL, MariaDB, and PostgreSQL), or in-memory caches (Redis, KeyDB, Memcached).|
