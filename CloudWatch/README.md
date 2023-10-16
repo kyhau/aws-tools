@@ -2,7 +2,6 @@
 
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
-- [EventBridge Pipes](#eventbridge-pipes)
 - [CloudWatch Agent](#cloudwatch-agent)
 - [CloudWatch Alarm](#cloudwatch-alarm)
     - [What alerts should you have for serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/)
@@ -14,20 +13,6 @@ Jump to
 ## Useful Libs and Tools
 
 - [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python)
-
----
-## EventBridge Pipes
-
-```
-Source -> Filtering (optional) --> Enrichment (optional) --> Target
-```
-
-- [Decoupling event publishing with Amazon EventBridge Pipes](https://aws.amazon.com/blogs/compute/decoupling-event-publishing-with-amazon-eventbridge-pipes/), AWS, 2023-07-11
-- [Implementing architectural patterns with Amazon EventBridge Pipes](https://aws.amazon.com/blogs/compute/implementing-architectural-patterns-with-amazon-eventbridge-pipes/), AWS, 2023-02-09
-- [Create Point-to-Point Integrations Between Event Producers and Consumers with Amazon EventBridge Pipes](https://aws.amazon.com/blogs/aws/new-create-point-to-point-integrations-between-event-producers-and-consumers-with-amazon-eventbridge-pipes/), AWS, 2022-12-01
-- Patterns / Examples
-    - [aws-samples/amazon-eventbridge-pipes-architectural-patterns](https://github.com/aws-samples/amazon-eventbridge-pipes-architectural-patterns)
-    - [demo-trigger-stepfunctions-from-sqs](https://github.com/aws-samples/aws-stepfunctions-examples/blob/main/sam/demo-trigger-stepfunctions-from-sqs/template.yaml)
 
 
 ---
