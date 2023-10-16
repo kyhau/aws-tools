@@ -37,6 +37,7 @@
 ---
 ## Useful Articles and Blogs
 
+- [Following attackers’ (Cloud)trail in AWS: Methodology and findings in the wild](https://securitylabs.datadoghq.com/articles/following-attackers-trail-in-aws-methodology-findings-in-the-wild/), Datadog, 2023-10-11
 - SSM Parameter Store SecureString vs. Secrets Manager - [Handling Secrets with AWS](https://www.lastweekinaws.com/blog/handling-secrets-with-aws/), 2022
 - AWS Exposable Resources - [SummitRoute/aws_exposable_resources](https://github.com/SummitRoute/aws_exposable_resources) - this repo maintains a list of all AWS resources that can be publicly exposed.
 - AWS Security Documentation by Category - [docs.aws.amazon.com/security](https://docs.aws.amazon.com/security/)
