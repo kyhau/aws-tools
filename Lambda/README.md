@@ -59,6 +59,7 @@ Jump to
 - [aws-lambda-dotnet](https://github.com/aws/aws-lambda-dotnet) - Lambda Annotations Framework for .NET
 - [aws-lambda-developer-guide](https://github.com/awsdocs/aws-lambda-developer-guide) - AWS Lambda Developer Guide with examples
 - [authorization-lambda-at-edge](https://github.com/aws-samples/authorization-lambda-at-edge) - Authorization Lambda@Edge (Node.js)
+- [cargo-lambda](https://github.com/cargo-lambda/cargo-lambda) - Cargo Lambda provides tools and workflows to help you get started building Rust functions for AWS Lambda from scratch.
 - [lambci/docker-lambda](https://github.com/lambci/docker-lambda) - A sandboxed local environment that replicates the live AWS Lambda environment
 - Using SAM CLI with the CDK to test a Lambda function locally
     - https://docs.aws.amazon.com/cdk/latest/guide/sam.html
