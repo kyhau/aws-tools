@@ -14,3 +14,5 @@ Note: AZs are separated about 50km.
 
 ---
 ## Useful Articles and Blogs
+
+- [How to download your AWS Resilience Hub assessment results](https://aws.amazon.com/blogs/mt/how-to-download-your-aws-resilience-hub-assessment-results/), AWS, 2023-10-25
