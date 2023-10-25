@@ -2,7 +2,7 @@
 
 Jump to
 - [AWS services that benefits from AWS Graviton](#aws-services-that-benefits-from-aws-graviton)
-- [Instances Powered by Arm-based AWS Graviton Processors - **Sydney**](#instances-powered-by-arm-based-aws-graviton-processors---sydney)
+- [Instances Powered by Arm-based AWS Graviton Processors - **Sydney** and **Melbourne**](#instances-powered-by-arm-based-aws-graviton-processors---sydney-and-melbourne)
 - [Resources for getting started with AWS Graviton](#resources-for-getting-started-with-aws-graviton)
 
 
@@ -23,7 +23,7 @@ See also [AWS Graviton Fast Start](https://aws.amazon.com/ec2/graviton/fast-star
 
 
 ---
-## Instances Powered by Arm-based AWS Graviton Processors - **Sydney**
+## Instances Powered by Arm-based AWS Graviton Processors - **Sydney** and **Melbourne**
 Source [AWS Graviton](https://aws.amazon.com/ec2/graviton/) and [availability and pricing](https://aws.amazon.com/ec2/pricing/on-demand/) (last checked on 2022-12-22)
 
 | | Instance types | Powered by | SYD | MEL | Built for
