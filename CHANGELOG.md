@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-10-25
+
+### Changed
+
+   * Updated AWS-Public/aws-public-ip-address-ranges.py to support checking if a given IP is within AWS public IP ranges.
+
 ## 2023-07-31
 
 ### Added
