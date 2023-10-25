@@ -3,6 +3,8 @@
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+    - [CloudTrail Events vs. Server Access Logs](#cloudtrail-events-vs-server-access-logs)
+    - [S3 Incident Response](#s3-incident-response)
     - [S3 Access Control](#s3-access-control)
     - [VPC Enpoints](#vpc-enpoints)
     - [Static Websites](#static-websites)
@@ -18,6 +20,41 @@ Jump to
 
 ---
 ## Useful Articles and Blogs
+
+### CloudTrail Events vs. Server Access Logs
+
+- CloudTrail Events
+    - Logs Delay
+        - Data events: 5 minutes
+        - Management events: 15 minutes
+    - Log Coverage
+        - Bucket operations: covered by default
+        - Object operations: if data events are enabled
+    - Cost
+        - Management events: Free
+        - Data events: Pay according to number of API calls
+    - Log Format
+        - JSON
+- Server Access Log
+    - Logs Delay
+        - A few hours
+    - Log Coverage
+        - The completeness of server loggins is not guaranteed
+    - Cost
+        - Free (only pay for 3 storage of logs)
+    - Log Format
+        - Non-standard, requires normalisation
+    - Lifecycle deletion actions are not caught by CloudTrail data event logs, only Server Access Logs.
+
+
+### S3 Incident Response
+
+- [The Rise of S3 Ransomware: How to Identify and Combat It](https://thehackernews.com/2023/10/the-rise-of-s3-ransomware-how-to.html), The Hacker News, 2023-10-25
+- Related SQL queries from https://github.com/axon-git/threat-hunting
+- Playbook and workshop from AWS
+    - https://github.com/aws-samples/aws-customer-playbook-framework/blob/main/docs/Ransom_Response_S3.md
+    - https://catalog.workshops.aws/aws-cirt-ransomware-simulation-and-detection/en-US
+
 
 ### S3 Access Control
 
