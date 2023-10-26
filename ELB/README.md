@@ -11,6 +11,24 @@
 ---
 ## Useful Articles and Blogs
 
+- [Elastic Load Balancer: Maximizing Benefits and Keeping Costs Low](https://aws.amazon.com/blogs/networking-and-content-delivery/elb-maximizing-benefits-and-keeping-costs-low/), AWS, 2023-10-25
+    - Optimize your client connections
+        - Connection Pooling
+        - Connection retry strategies such as Exponential backoff and injecting jitter
+        - Connection idle timeout feature
+        - TLS 1.3 for ELB
+        - TLS session re-use for certain use cases
+    - Optimize inbound and outbound traffic
+        - compress the payload
+        - combining requests
+        - Serializing the data you are transferring with an efficient protocol is critical
+        - obtain data that could be accessed directly from the authoritative data provider, instead of via ELB
+        - Block/Filter/Cache requests at the edge to avoid charges associated with illegitimate or incorrectly formatted requests
+    - Cross-Zone Load Balancing
+    - Good housekeeping
+        - Consolidate ELBs
+        - set up metrics that track your underlying service behavior, e.g. identifying malfunctioning clients
+        - remove unused ELBs
 - [Automating HTTP/S Redirects and certificate management at scale](https://aws.amazon.com/blogs/networking-and-content-delivery/automating-http-s-redirects-and-certificate-management-at-scale/), AWS, 2023-03-21
     - How to build a scalable and cost-effective solution to handle HTTP/S redirects at scale for **multiple domains** by using
         - ALB to perform rule-based redirects,
