@@ -291,6 +291,7 @@ Useful blog posts
 
 ## Lambda Extensions
 
+- [Enhancing runtime security and governance with the AWS Lambda Runtime API proxy extension](https://aws.amazon.com/blogs/compute/enhancing-runtime-security-and-governance-with-the-aws-lambda-runtime-api-proxy-extension/), AWS, 2023-10-27
 - Running a web server in Lambda with Lambda extension - [Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter) - [blog post](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/).
 
 
