@@ -23,7 +23,8 @@
 
 - Scaling
     - [Scaling containers on AWS in 2022](https://www.vladionescu.me/posts/scaling-containers-on-aws-in-2022/)
-- Access
+- Access Control and Security
+    - [Security considerations for running containers on Amazon ECS](https://aws.amazon.com/blogs/security/security-considerations-for-running-containers-on-amazon-ecs/), AWS, 2023-11-01
     - [Using Amazon ECS Exec to access your containers on AWS Fargate and Amazon EC2](https://aws.amazon.com/blogs/containers/new-using-amazon-ecs-exec-access-your-containers-fargate-ec2/)
 - Fargate
     - Fargate 1.3 had two ENIs and some fun routing. Fargate 1.4 AWS put it back to single ENI (and if you put it in the VPC I think it wants endpoints).
