@@ -63,6 +63,7 @@ alias aws-fault-tolerance-analyser='python3 ${REPO_HOME}/../fault-tolerance-anal
 alias aws-guardduty-findings='python3 ${REPO_HOME}/GuardDuty/list_findings.py'
 
 alias aws-iam-account-authorization-details='python3 ${REPO_HOME}/IAM/account_authorization_details.py'
+alias aws-iam-account-id-from-access-key-id='python3 ${REPO_HOME}/IAM/account_id_from_access_key.py'
 alias aws-iam-list-aws-managed-policies-to-files='python3 ${REPO_HOME}/IAM/list_aws_managaed_policies_to_files.sh'
 alias aws-iam-list-users='python3 ${REPO_HOME}/IAM/list_iam_users.py'
 alias aws-iam-lookup-identities='python3 ${REPO_HOME}/Security/lookup_iam_identities.py'
