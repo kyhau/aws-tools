@@ -16,6 +16,16 @@
 ---
 ## Useful Articles and Blogs
 
+- AWS User Federation
+    - Key notes
+        - So this federated session is associated to an IAM User, with Access Key and permission `sts:GetFederationToken` to start.
+        - Then using the federated session to log into console even if the IAM User has no password.
+        - And if the IAM User has permissions, e.g., `AttachUserPolicy` or `PutUpdatePolicy`, the federated session allows to escalate privileges from console (which is not possible when using CLI/API)
+        - And federated session are only revoked when the base user's policies/permissions are detached, or an explicit deny-all IAM policy is applied.
+        - And federated sessions derived from the root user cannot be contained except through an SCP.
+    - Protection: Create an SCP preventing the use of   `sts:GetFederationToken` for all IAM users.
+    - [How Adversaries Can Persist with AWS User Federation](https://www.crowdstrike.com/blog/how-adversaries-persist-with-aws-user-federation/), CrowdStrike, 2023-01-30
+    - [Survive Access Key Deletion with sts:GetFederationToken](https://hackingthe.cloud/aws/post_exploitation/survive_access_key_deletion_with_sts_getfederationtoken/), Nick Frichette, 2023-09
 - AWS console does not support switch roles transitively (double role switching).
     > When you switch roles in the AWS Management Console, the console always uses your original credentials to authorize the switch. This applies whether you sign in as an IAM user, as a SAML-federated role, or as a web-identity federated role. For example, if you switch to RoleA, it uses your original user or federated role credentials to determine if you are allowed to assume RoleA. If you then try to switch to RoleB while you are using RoleA, your original user or federated role credentials are used to authorize your attempt. The credentials for RoleA are not used for this action.
     - See https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_permissions-to-switch.html
