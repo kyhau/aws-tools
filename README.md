@@ -1,9 +1,10 @@
 # aws-tools
 
-[![githubactions](https://github.com/kyhau/aws-tools/workflows/Build-Test/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper.yaml)
-[![githubactions](https://github.com/kyhau/aws-tools/workflows/Lint/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml)
+[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper.yaml)
+[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml)
 [![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
-[![CodeQL](https://github.com/kyhau/aws-tools/workflows/CodeQL/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml)
+[![SecretsScan](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml)
 
 This repository includes some tools and sample code I created for building with AWS.
 
@@ -13,10 +14,11 @@ All notable changes to this project will be documented in [CHANGELOG](./CHANGELO
 ## Built with
 - Python, Shell, PowerShell, JavaScript, TypeScript, Go, Docker
 - [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [AWS SAM](https://aws.amazon.com/serverless/sam/)
-- [cfn-lint](https://github.com/aws-cloudformation/cfn-lint) is used to validate CloudFormation templates in this repository.
+- [cfn-lint](https://github.com/aws-cloudformation/cfn-lint) is used for to validating CloudFormation templates.
 - [CodeQL](https://codeql.github.com) is [enabled](.github/workflows/codeql-analysis.yml) in this repository.
-- [Dependabot version updates](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) in this repository.
-- [Snyk](https://github.com/snyk/actions) is enabled in the GitHub Actions [workflow](.github/workflows/build-test-common-helper.yaml).
+- [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) for auto dependency updates.
+- [Snyk](https://github.com/snyk/actions) is enabled in this GitHub Actions [workflow](.github/workflows/build-test-common-helper.yaml) for vulnerability scanning and auto pull-request.
+- [Gitleaks](https://github.com/gitleaks/gitleaks) and [TruffleHog](https://github.com/trufflesecurity/trufflehog) are enabled in this GitHub Actions [workflow](.github/workflows/secrets-scan.yml) for secrets scanning.
 
 ---
 ## AWS login
