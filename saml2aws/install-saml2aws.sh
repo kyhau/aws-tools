@@ -26,7 +26,7 @@ if [ "${VERSION}" != "${CURR_VERSION}" ]; then
   mkdir -p ${HOME}/.local/bin
   mv ${WORK_DIR}/saml2aws ${HOME}/.local/bin/
 
-  rm -rf ${WORK_DIR}
+  rm -rf ${WORK_DIR} /tmp/${FILE_NAME}
 
   echo "INFO: saml2aws installed: $(saml2aws --version 2>&1)"
 
