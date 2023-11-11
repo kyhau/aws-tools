@@ -1,30 +1,32 @@
 #!/bin/bash
 set -e
 
-VERSION=$(curl --silent "https://api.github.com/repos/Versent/saml2aws/releases/latest" --insecure -s | grep -Po '"tag_name": "\K.*?(?=")')
-VERSION="${VERSION:1}"
-ZIP_FILE="https://github.com/Versent/saml2aws/releases/download/v${VERSION}/saml2aws_${VERSION}_linux_amd64.tar.gz"
+VERSION=$(curl -s "https://api.github.com/repos/Versent/saml2aws/releases/latest" --insecure | grep -Po '"tag_name": "\K.*?(?=")' | sed 's/^v//')
+echo "INFO: saml2aws latest: ${VERSION}"
 
-echo "Downloading saml2aws_${VERSION}_linux_amd64.tar.gz to home directory..."
-pushd ~
-[ -f ${ZIP_FILE} ] || wget ${ZIP_FILE} --no-check-certificate
-tar xfz saml2aws_${VERSION}_linux_amd64.tar.gz
-rm saml2aws_${VERSION}_linux_amd64.tar.*
+CURR_VERSION=
+if [ -x "$(command -v saml2aws)" ]; then
+  CURR_VERSION=$(saml2aws --version 2>&1)
+  echo "INFO: saml2aws installed: ${CURR_VERSION}"
+else
+  echo "INFO: saml2aws not installed"
+fi
 
-echo "Coping binary to .local/bin and create a symlink for bookmarking the version..."
-mkdir -p ~/.local/bin
-rm ~/.local/bin/saml2aws || true
-rm ~/.local/bin/saml2aws-v* || true
+if [ "${VERSION}" != "${CURR_VERSION}" ]; then
+  ZIP_FILE="https://github.com/Versent/saml2aws/releases/download/v${VERSION}/saml2aws_${VERSION}_linux_amd64.tar.gz"
 
-mv saml2aws ~/.local/bin/
-pushd ~/.local/bin
-ln -s saml2aws saml2aws-v${VERSION}
-popd
+  echo "INFO: Downloading saml2aws"
+  cd /tmp
+  [ -f ${ZIP_FILE} ] || wget ${ZIP_FILE} -q --no-check-certificate
+  tar xfz saml2aws_${VERSION}_linux_amd64.tar.gz
+  rm saml2aws_${VERSION}_linux_amd64.tar.*
+  cd - 1> /dev/null
 
-popd
+  echo "INFO: Installing to ${HOME}/.local/bin/"
+  mkdir -p ${HOME}/.local/bin
+  mv /tmp/saml2aws ${HOME}/.local/bin/
 
-echo "Checking version..."
-saml2aws --version
+  echo "INFO: saml2aws installed: $(saml2aws --version 2>&1)"
 
-# Configure saml2aws
-echo "Next TODO: saml2aws configure"
+  echo "INFO TODO: saml2aws configure"
+fi
