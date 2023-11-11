@@ -17,8 +17,8 @@ All notable changes to this project will be documented in [CHANGELOG](./CHANGELO
 - [cfn-lint](https://github.com/aws-cloudformation/cfn-lint) is used for to validating CloudFormation templates.
 - [CodeQL](https://codeql.github.com) is [enabled](.github/workflows/codeql-analysis.yml) in this repository.
 - [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) for auto dependency updates.
+- [Gitleaks](https://github.com/gitleaks/gitleaks) and [TruffleHog](https://github.com/trufflesecurity/trufflehog) are enabled in this GitHub Actions [workflow](.github/workflows/secrets-scan.yml) for detecting and preventing hardcoded secrets.
 - [Snyk](https://github.com/snyk/actions) is enabled in this GitHub Actions [workflow](.github/workflows/build-test-common-helper.yaml) for vulnerability scanning and auto pull-request.
-- [Gitleaks](https://github.com/gitleaks/gitleaks) and [TruffleHog](https://github.com/trufflesecurity/trufflehog) are enabled in this GitHub Actions [workflow](.github/workflows/secrets-scan.yml) for secrets scanning.
 
 ---
 ## AWS login
