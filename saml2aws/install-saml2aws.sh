@@ -13,18 +13,20 @@ else
 fi
 
 if [ "${VERSION}" != "${CURR_VERSION}" ]; then
-  ZIP_FILE="https://github.com/Versent/saml2aws/releases/download/v${VERSION}/saml2aws_${VERSION}_linux_amd64.tar.gz"
-
   echo "INFO: Downloading saml2aws"
-  cd /tmp
-  [ -f ${ZIP_FILE} ] || wget ${ZIP_FILE} -q --no-check-certificate
-  tar xfz saml2aws_${VERSION}_linux_amd64.tar.gz
-  rm saml2aws_${VERSION}_linux_amd64.tar.*
-  cd - 1> /dev/null
+  FILE_NAME=saml2aws_${VERSION}_linux_amd64.tar.gz
+  FILE_URL="https://github.com/Versent/saml2aws/releases/download/v${VERSION}/${FILE_NAME}"
+  WORK_DIR=/tmp/tmp_workdir
+
+  wget ${FILE_URL} -O /tmp/${FILE_NAME} --no-check-certificate -q
+  mkdir -p ${WORK_DIR}
+  tar xfz /tmp/${FILE_NAME} -C ${WORK_DIR}
 
   echo "INFO: Installing to ${HOME}/.local/bin/"
   mkdir -p ${HOME}/.local/bin
-  mv /tmp/saml2aws ${HOME}/.local/bin/
+  mv ${WORK_DIR}/saml2aws ${HOME}/.local/bin/
+
+  rm -rf ${WORK_DIR}
 
   echo "INFO: saml2aws installed: $(saml2aws --version 2>&1)"
 
