@@ -1,5 +1,5 @@
-from boto3.session import Session
 import click
+from boto3.session import Session
 
 
 @click.command()
@@ -12,7 +12,7 @@ def main(profile, name_contains):
     paginator = session.client("cloudformation").get_paginator("describe_stacks")
     for page in paginator.paginate():
         for stack in page["Stacks"]:
-            if name_contains is None or name_contains in stack["StackName"]:
+            if name_contains is None or name_contains.lower() in stack["StackName"].lower():
                 result.append((stack["StackName"], stack["CreationTime"]))
 
     # Sort by creation time in reverse order
