@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-11-22
+
+### Changed
+
+   * Updated CloudFormation/list_stacks.py to default the stack name search case insensitive.
+
 ## 2023-11-11
 
 ### Added
