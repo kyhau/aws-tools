@@ -1,5 +1,5 @@
 # This file is used for running tox, flake8 and building the wheel
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
-logilab-common~=1.11
+logilab-common~=2.0
 pypandoc==1.12
 tox~=4.11
