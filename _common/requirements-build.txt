@@ -2,4 +2,4 @@
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 logilab-common~=2.0
 pypandoc==1.12
-tox~=4.11
+tox~=4.12
