@@ -15,6 +15,7 @@ __requirements__ = [
     "click==8.1.7",
     "docker==7.0.0",
     "InquirerPy==0.3.4",
+    "prompt-toolkit>=3.0.13",  # required by InquirerPy, pinned by Snyk to avoid a vulnerability
     "pyyaml==6.0.1",
     "toml==0.10.2",
 ]
