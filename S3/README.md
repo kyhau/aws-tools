@@ -3,6 +3,7 @@
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+    - [Data Perimeter at scale](#data-perimeter-at-scale)
     - [CloudTrail Events vs. Server Access Logs](#cloudtrail-events-vs-server-access-logs)
     - [S3 Incident Response](#s3-incident-response)
     - [S3 Access Control](#s3-access-control)
@@ -20,6 +21,13 @@ Jump to
 
 ---
 ## Useful Articles and Blogs
+
+### Data Perimeter at scale
+
+- [Blog Post Series](https://aws.amazon.com/identity/data-perimeters-blog-post-series/): Establishing a Data Perimeter on AWS - (with nice diagrams and practical use cases)
+- [Data perimeters on AWS](https://aws.amazon.com/identity/data-perimeters-on-aws/) - with nice summary
+- [Examples](https://github.com/aws-samples/data-perimeter-policy-examples) on GitHub
+
 
 ### CloudTrail Events vs. Server Access Logs
 
