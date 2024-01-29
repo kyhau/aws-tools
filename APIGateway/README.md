@@ -5,6 +5,7 @@ Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [Private API Gateways](#private-api-gateways)
+- [MTLS](#mtls)
 - [Public API Gateway and VPC Private DNS setting](#public-api-gateway-and-vpc-private-dns-setting)
 - [Previous Security Issues or Breaking Changes](#previous-security-issues-or-breaking-changes)
 
@@ -75,6 +76,13 @@ Connect to public APIs with private DNS disabled
    - Security groups for your VPC allow outbound traffic to your public API.
    - The resource policy attached to your API doesn't deny access from the VPC.
 - When your Amazon VPC has permission to access your public APIs, use public DNS to connect to your public APIs.
+
+
+---
+## MTLS
+
+- Regional API Gateway endpoints have native support for mTLS but private API Gateway endpoints do not support mTLS, so you must terminate mTLS before API Gateway. ([Source](https://aws.amazon.com/blogs/compute/consuming-private-amazon-api-gateway-apis-using-mutual-tls/))
+- Private API Gateway mTLS verification using an ALB (see [Source](https://aws.amazon.com/blogs/compute/consuming-private-amazon-api-gateway-apis-using-mutual-tls/))
 
 
 ---
