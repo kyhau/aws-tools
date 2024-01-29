@@ -22,6 +22,7 @@ Jump to
 ---
 ## Useful Articles and Blogs
 
+- [Consuming private Amazon API Gateway APIs using mutual TLS](https://aws.amazon.com/blogs/compute/consuming-private-amazon-api-gateway-apis-using-mutual-tls/), AWS, 2024-01-23
 - [Protect APIs with Amazon API Gateway and perimeter protection services](https://aws.amazon.com/blogs/security/protect-apis-with-amazon-api-gateway-and-perimeter-protection-services/), AWS, 2023-07-19
 - [Reduce risk by implementing HttpOnly cookie authentication in Amazon API Gateway](https://aws.amazon.com/blogs/security/reduce-risk-by-implementing-httponly-cookie-authentication-in-amazon-api-gateway/), AWS, 2023-01-30
 - [Managing multi-tenant APIs using Amazon API Gateway](https://aws.amazon.com/blogs/compute/managing-multi-tenant-apis-using-amazon-api-gateway/), AWS, 2022-06-22
