@@ -1,8 +1,8 @@
-
-## Chaos Engineering
+## AWS FIS and Chaos Engineering
 
 Jump to
 - [Tools and libs](#tools-and-libs)
+- [Blog posts](#blog-posts)
 
 ---
 ## Tools and libs
@@ -18,3 +18,9 @@ Jump to
 - [aws-samples/aws-anz-devlabs-ecs-fis](https://github.com/aws-samples/aws-anz-devlabs-ecs-fis) - Chaos Enginnering experiments for applications running on Amazon ECS using AWS Fault Injection Simulator
 
 - [aws-samples/chaos-engineering-with-aws-fault-injection-simulator](https://github.com/aws-samples/chaos-engineering-with-aws-fault-injection-simulator) - In this workshop, you will get a hands-on introduction to Chaos Engineering by assuming the role of newest site reliability engineer. As an SRE, you’ll be responsible for keeping microservices architecture up and running during busiest “two days” of the year.
+
+---
+## Blog posts
+
+- [Behavior Driven Chaos with AWS Fault Injection Simulator](https://aws.amazon.com/blogs/architecture/behavior-driven-chaos-with-aws-fault-injection-simulator/), AWS, 2024-01-29
+    - includes a nice example using [behave](https://github.com/behave/behave) and [Locust](https://locust.io/) to define a behaviour-driven FIS experience
