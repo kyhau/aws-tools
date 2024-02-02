@@ -20,6 +20,7 @@
 - Amazon Linux Security Center - https://alas.aws.amazon.com/announcements.html
 - Amazon Detective Multiaccount Scripts - [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts)
 - AWS IMDS Packet Analyzer - [aws/aws-imds-packet-analyzer](https://github.com/aws/aws-imds-packet-analyzer)
+- AWS Policy Generator - [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
 - Amazon Security Lake Resources [aws-samples/amazon-security-lake](https://github.com/aws-samples/amazon-security-lake)
 - AWS Security Benchmark - [awslabs/aws-security-benchmark](https://github.com/awslabs/aws-security-benchmark)
 - AWS Self-Service Security Assessment tool - [awslabs/aws-security-assessment-solution](https://github.com/awslabs/aws-security-assessment-solution)
