@@ -8,6 +8,9 @@ Jump to
 ---
 ## Useful Libs and Tools
 
+- [awslabs/amazon-sqs-java-extended-client-lib](https://github.com/awslabs/amazon-sqs-java-extended-client-lib) - useful for storing and retrieving messages with a message payload size greater than the current SQS limit of 256 KB, up to a maximum of 2 GB.
+- [awslabs/amazon-sqs-python-extended-client-lib/](https://github.com/awslabs/amazon-sqs-python-extended-client-lib/) - useful for storing and retrieving messages with a message payload size greater than the current SQS limit of 256 KB, up to a maximum of 2 GB.
+
 
 ---
 ## Useful Articles and Blogs
