@@ -38,6 +38,7 @@ Jump to
     - [AWS Lambda Runtime API specification](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html)
     - [aws-lambda-extensions](https://github.com/aws-samples/aws-lambda-extensions/) - AWS Lambda Extensions sample projects
 - Lambda Container Images
+    - [serverless-java-container](https://github.com/aws/serverless-java-container/) - Serverless Java container
     - [gallery.ecr.aws/lambda](https://gallery.ecr.aws/lambda?page=1) - AWS Lambda base images
     - [awslambdaric](https://github.com/aws/aws-lambda-python-runtime-interface-client) - AWS Lambda Python Runtime Interface Client (RIC)
     - [aws-lambda-runtime-interface-emulator](https://github.com/aws/aws-lambda-runtime-interface-emulator/)  -  AWS Lambda Runtime Interface Emulator (RIE)
