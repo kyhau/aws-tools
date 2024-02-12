@@ -222,6 +222,9 @@ Autoscaling EKS on Fargate
 
 ---
 ## EKS access control
+
+- IRSA vs. Pod Identity
+    - [New attack vectors in EKS](https://www.wiz.io/blog/new-attack-vectors-emerge-via-recent-eks-access-entries-and-pod-identity-features), Wiz, 2024-02-10
 - [How do I provide access to other IAM users and roles after cluster creation in Amazon EKS?](https://aws.amazon.com/premiumsupport/knowledge-center/amazon-eks-cluster-access/)
     -  Important: Keep the following in mind:
         - Avoid syntax errors (such as typos) when you update the `aws-auth` ConfigMap. These errors can affect the permissions of all IAM users and roles updated within the ConfigMap of the Amazon EKS cluster.
