@@ -42,6 +42,7 @@
 - [EC2 Privilege Escalation Through User Data](https://hackingthe.cloud/aws/exploitation/local_ec2_priv_esc_through_user_data/), Nick F., 2024-01-21
 - [Following attackers’ (Cloud)trail in AWS: Methodology and findings in the wild](https://securitylabs.datadoghq.com/articles/following-attackers-trail-in-aws-methodology-findings-in-the-wild/), Datadog, 2023-10-11
 - SSM Parameter Store SecureString vs. Secrets Manager - [Handling Secrets with AWS](https://www.lastweekinaws.com/blog/handling-secrets-with-aws/), 2022
+    - **Note: Parameter Store now supports cross-account sharing (via AWS RAM) - [NEW-2024-02](https://aws.amazon.com/about-aws/whats-new/2024/02/aws-systems-manager-parameter-store-cross-account-sharing/)
 - AWS Exposable Resources - [SummitRoute/aws_exposable_resources](https://github.com/SummitRoute/aws_exposable_resources) - this repo maintains a list of all AWS resources that can be publicly exposed.
 - AWS Security Documentation by Category - [docs.aws.amazon.com/security](https://docs.aws.amazon.com/security/)
 - AWS Security Reference Architecture (AWS SRA) - [docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/architecture.html)
