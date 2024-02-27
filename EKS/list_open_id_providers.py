@@ -36,7 +36,6 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 class Helper(AwsApiHelper):
     def process_account(self, session, account_id, aws_region, service, kwargs):
-        results = []
 
         for region in session.get_available_regions(service) if aws_region == "all" else [aws_region]:
             try:
