@@ -83,6 +83,8 @@
 
 - [Understanding CloudFormation !Sub Syntax](https://www.fischco.org/technica/2017/cloud-formation-sub/)
 
+- [How do I use the Fn::Sub function in AWS CloudFormation with Fn::FindInMap, Fn::ImportValue, or other supported functions?](https://repost.aws/knowledge-center/cloudformation-fn-sub-function)
+
 - Passing value to UserData to set EC2 env variable https://stackoverflow.com/questions/54858072/aws-cloudformation-userdata-ec2-environment-variable
     ```
     UserData:
