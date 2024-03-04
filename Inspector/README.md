@@ -10,7 +10,7 @@ General approach
 Inspector 2
 
 - Inspector 2 only scan things changed modified within 30 days.
-- Inspector 2 supports ECR. 
+- Inspector 2 supports ECR.
     - When you turn on Inspector 2, ECR scan will be disabled (cannot be enabled at the same time).
 - Inspector 2 can be enabled across your organization with a single click. Once enabled, Inspector automatically discovers all of your workloads and continually scans them for software vulnerabilities and unintended network exposure. No need to schedule scaning windows.
 - Inspector 2 now uses SSM agent for EC2 vulnerability scanning. No need to install additional inspector agent.
@@ -18,6 +18,7 @@ Inspector 2
 
 See also
 
+- [Enhance container software supply chain visibility through SBOM export with Amazon Inspector and QuickSight](https://aws.amazon.com/blogs/security/enhance-container-software-supply-chain-visibility-through-sbom-export-with-amazon-inspector-and-quicksight/), AWS, 2024-02-28
 - [Inspector - Supported operating systems and programming languages](https://docs.aws.amazon.com/inspector/latest/user/supported.html)
 - [Setting Up Automatic Assessment Runs Through a Lambda Function](
   https://docs.aws.amazon.com/inspector/latest/userguide/inspector_assessments.html#assessment_runs-schedule)
