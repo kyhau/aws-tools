@@ -39,6 +39,7 @@ yamllint                  # https://github.com/adrienverge/yamllint
 # Useful tools
 
 #demoshell                # https://github.com/dhellmann/demoshell
+deptry                    # https://github.com/fpgmaas/deptry
 httpie                    # https://github.com/httpie/httpie
 #pipdeptree               # https://github.com/naiquevin/pipdeptree
 #pydot                    # use tegether with cfn-lint to generate DOT file, require graphviz
