@@ -20,6 +20,7 @@ Jump to
 - [Lambda Container Images](#lambda-container-images)
 - [Lambda Layers](#lambda-layers)
 - [Lambda Extensions](#lambda-extensions)
+- [Design Patterns](#design-patterns)
 - [Gotchas](#gotchas)
     - [Lambda Python Runtimes - Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2](#lambda-python-runtimes---python-3637-are-amazon-linux-1-and-python-3839-are-amazon-linux-2)
     - [AWS CLI not allowing valid JSON in payload parameter with lambda invoke](#aws-cli-not-allowing-valid-json-in-payload-parameter-with-lambda-invoke)
@@ -297,6 +298,14 @@ Useful blog posts
 
 
 ---
+
+## Design Patterns
+
+- [Comparing design approaches for building serverless microservices](https://aws.amazon.com/blogs/compute/comparing-design-approaches-for-building-serverless-microservices/), AWS, 2024-03-04
+
+
+---
+
 ## Gotchas
 
 ### Lambda Python Runtimes - Python 3.6/3.7 are Amazon Linux 1 and Python 3.8/3.9 are Amazon Linux 2
