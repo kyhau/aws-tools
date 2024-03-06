@@ -11,6 +11,7 @@ Jump to
     - [Static Websites](#static-websites)
     - [Uploading objects](#uploading-objects)
     - [Storing sensitive files](#storing-sensitive-files)
+    - [Getting "The bucket does not allow ACLs" Error](#getting-the-bucket-does-not-allow-acls-error)
 
 
 ---
@@ -86,3 +87,11 @@ Jump to
 ### Storing sensitive files
 - [What is the most secure option for storing highly sensitive / private files in S3?](https://stackoverflow.com/questions/70238041/what-is-the-most-secure-option-for-storing-highly-sensitive-private-files-in-s)
     - SSE/CSE options and their use cases
+
+### Getting "The bucket does not allow ACLs" Error
+- https://aws.amazon.com/about-aws/whats-new/2022/12/amazon-s3-automatically-enable-block-public-access-disable-access-control-lists-buckets-april-2023/
+- https://stackoverflow.com/questions/76097031/aws-s3-bucket-cannot-have-acls-set-with-objectownerships-bucketownerenforced-s
+- https://stackoverflow.com/questions/71080354/getting-the-bucket-does-not-allow-acls-error
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/ensure-object-ownership.html
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html#cfn-s3-bucket-accesscontrol
+    - "S3 buckets are created with ACLs disabled by default. Therefore, unless you explicitly set the AWS::S3::OwnershipControls property to enable ACLs, your resource will fail to deploy with any value other than Private. Use cases requiring ACLs are uncommon."
