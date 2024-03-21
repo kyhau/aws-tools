@@ -61,11 +61,16 @@
 
 ### General
 
-- In order to support doing TLS handshake for mTLS, you need a L4 load balancer like AWS NLB, not ALB.
 - Public AWS ACM does not allow you to export private key which means your client won’t be able to present the client certificate to validate. You might need to use things like [Private Certificate Authority - AWS Certificate Manager - Amazon Web Services (AWS) 7](https://aws.amazon.com/certificate-manager/private-certificate-authority/) or some other CA to generate client certificate for you. See [this Stack Overflow post - How do I get client certificate from ACM?](https://stackoverflow.com/questions/64606582/how-do-i-get-client-certificate-from-acm).
+
+### How to configure mTLS authentication for Amazon ALB
+
+- [Introducing mTLS for Application Load Balancer](https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-mtls-for-application-load-balancer/), AWS, 2024-03-21
+    - Comparison of ALB’s mTLS modes with Network Load Balancer (NLB)
 
 ### How to configure mTLS authentication for applications running on Amazon EKS
 
+- Update (2023-11-27) - ALB now supports mTLS
 - NLB → NGINX → Application service and pod
 - [Configure mutual TLS authentication for applications running on Amazon EKS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/configure-mutual-tls-authentication-for-applications-running-on-amazon-eks.html)
 
