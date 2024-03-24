@@ -35,6 +35,8 @@
         - AWS Global Accelerator to get static IP addresses, and
         - AWS Lambda to host redirect logic on serverless infrastructure.
     - This method simplifies deployments while benefiting from the scale, availability, and reliability of AWS infrastructure and services.
+- [Using static IP addresses for Application Load Balancers (NLB->ALB)](https://aws.amazon.com/blogs/networking-and-content-delivery/using-static-ip-addresses-for-application-load-balancers/), 2018-04-20
+
 
 ### NLB
 

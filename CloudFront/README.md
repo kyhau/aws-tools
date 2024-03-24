@@ -6,6 +6,7 @@ Jump to
 - [CloudFront Functions and Lambda@Edge](#cloudfront-functions-and-lambdaedge)
 - [OAC vs. OAI](#oac-vs-oai)
 - [S3 Website endpoint vs. S3 REST API endpoint](#s3-website-endpoint-vs-s3-rest-api-endpoint)
+- [How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront](#how-to-limit-the-access-to-your-rest-regional-api-gateway-endpoint-exclusively-to-cloudfront)
 - [Provision CloudFront with templates in this directory](#steps-to-provision-cloudfront)
 - [My QuickStart CloudFormation templates](./cfn/)
 
@@ -111,6 +112,27 @@ When using OAC, a typical request and response workflow will be:
         2. Therefore, **Origin Protocol Policy**, in this case, **cannot be set to HTTPS Only**.
 
 3. See also https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteEndpoints.html#WebsiteRestEndpointDiff.
+
+
+---
+## How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront
+
+## How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront
+
+See also
+- [Securing Amazon API Gateway with secure ciphers using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/securing-amazon-api-gateway-with-secure-ciphers-using-amazon-cloudfront/), AWS, 2023-08-14
+- [Protect APIs with Amazon API Gateway and perimeter protection services](https://aws.amazon.com/blogs/security/protect-apis-with-amazon-api-gateway-and-perimeter-protection-services/), AWS, 2023-07-19
+
+
+To take advantage of the perimeter protection layer built with CloudFront, AWS WAF, and Shield, and to help avoid exposing API Gateway endpoints directly, you can use the following approaches to restrict API access through CloudFront only.
+
+1. CloudFront can insert the X-API-Key header before it forwards the request to API Gateway, and API Gateway validates the API key when receiving the requests. For more information, see [Protecting your API using Amazon API Gateway and AWS WAF — Part 2](https://aws.amazon.com/blogs/compute/protecting-your-api-using-amazon-api-gateway-and-aws-waf-part-2/).
+    - Support REST API endpoints only
+2. CloudFront can insert a custom header (not X-API-Key) with a known secret that is shared with API Gateway. An AWS Lambda custom request authorizer that is configured in API Gateway validates the secret. For more information, see [Restricting access on HTTP API Gateway Endpoint with Lambda Authorizer](https://aws.amazon.com/blogs/networking-and-content-delivery/restricting-access-http-api-gateway-lambda-authorizer/).
+    - has an additional cost due to the use of the Lambda authorizer.
+3. CloudFront can sign the request with AWS Signature Version 4 by using Lambda@Edge before it sends the request to API Gateway. Configured AWS Identity and Access Management (IAM) authorization in API Gateway validates the signature and verifies the identity of the requester.
+    - an additional Lambda@Edge cost in this approach
+    - support all REST, HTTP, and WebSocket endpoints
 
 
 ---
