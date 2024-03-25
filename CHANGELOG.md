@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2024-03-26
+
+### Changed
+
+   * Updated get_latest_ami.py to support eks k8s v1.29 and AL2023
+
 ## 2023-11-22
 
 ### Changed

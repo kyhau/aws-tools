@@ -58,6 +58,7 @@ def get_ecs_meta_dict(topic=TOPIC_A):
 
 def get_eks_meta_dict(topic=TOPIC_A):
     K8S_VERSIONS = [
+        "1.29",
         "1.28",
         "1.27",
         "1.26",
@@ -79,6 +80,8 @@ def get_eks_meta_dict(topic=TOPIC_A):
             ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2/recommended"] = "Amazon EKS-optimized Amazon Linux 2 (x86_64) AMI"
             ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-arm64/recommended"] = "Amazon EKS-optimized Amazon Linux 2 (arm64) AMI"
             ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-gpu/recommended"] = "Amazon EKS-optimized Amazon Linux 2 (GPU) AMI"
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/arm64/standard/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) (arm64) AMI"
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/x86_64/standard/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) (x86_64) AMI"
     elif topic == TOPIC_B:
         # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id-bottlerocket.html
         for k8s_version in K8S_VERSIONS:
