@@ -1,6 +1,6 @@
 # aws-tools
 
-[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper.yaml)
+[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper.yaml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper.yaml)
 [![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml)
 [![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
 [![CodeQL](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml)
