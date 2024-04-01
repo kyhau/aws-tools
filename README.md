@@ -31,7 +31,7 @@ All notable changes to this project will be documented in [CHANGELOG](./CHANGELO
 Most of the Python scripts support processing multiple AWS accounts (via AWS profiles in ~/.aws/credentials) and AWS regions using `AwsApiHelper` in the common [helper.aws.AwsApiHelper](./_common/helper/aws.py) module.
 
 
-Support Python 3.9, 3.10, 3.11, 3.12
+Support Python 3.9, 3.10, 3.11
 ```
 pip3 install -r requirements.txt
 ```
