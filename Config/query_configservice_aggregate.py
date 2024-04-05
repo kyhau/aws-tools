@@ -19,7 +19,7 @@ DEFAULT_SQLFILE_ROOT = join(dirname(__file__).split(".")[0], "sql_files", "aggre
 
 
 def select_sql_file(sql_files_dir=DEFAULT_SQLFILE_ROOT):
-    files = glob.glob(f"{DEFAULT_SQLFILE_ROOT}/*")
+    files = glob.glob(f"{sql_files_dir}/*")
     return prompt_single_selection("SqlFile", options=files)
 
 
