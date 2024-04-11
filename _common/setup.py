@@ -7,11 +7,11 @@ __author__ = "Kay Hau"
 __email__ = "virtualda@gmail.com"
 __title__ = "helper"
 __version__ = "0.1.0.dev0"
-__summary__ = "This package includes some simple scripts for setting up local development environment."
+__summary__ = "This package includes some common functions for local development"
 __uri__ = "https://github.com/kyhau/aws-tools/"
 
 __requirements__ = [
-    "boto3==1.34.74",
+    "boto3==1.34.82",
     "click==8.1.7",
     "docker==7.0.0",
     "InquirerPy==0.3.4",
@@ -28,17 +28,6 @@ __entry_points__ = {
     ]
 }
 
-__long_description__ = ""
-try:
-    # Reformat description as PyPi use ReStructuredText rather than Markdown
-    import pypandoc
-    __long_description__ = pypandoc.convert_file(os.path.join(base_dir, "README.md"), "rst")
-except (ImportError, IOError, OSError) as e:
-    print("long_description conversion failure, fallback to using raw contents")
-    import io
-    with io.open(os.path.join(base_dir, "README.md"), encoding="utf-8") as f:
-        __long_description__ = f.read()
-
 CLASSIFIERS = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -53,11 +42,11 @@ setup(
     author_email=__email__,
     classifiers=CLASSIFIERS,
     # data_files parameter is only required for files outside the packages, used in conjunction with the MANIFEST.in
-    data_files=[("", ["ReleaseNotes.md"]),],
+    data_files=[],
     description=__summary__,
     entry_points=__entry_points__,
     install_requires=__requirements__,
-    long_description=__long_description__,
+    long_description=__summary__,
     name=__title__,
     # For data inside packages can use the automatic inclusion
     #   include_package_data = True,
