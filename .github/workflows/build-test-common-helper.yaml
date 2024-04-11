@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.8@master
+        uses: snyk/actions/python-3.10@master
         continue-on-error: true  # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, "3.10", 3.11]
+        python-version: [3.9, "3.10", 3.11, 3.12]
     steps:
       - name: Checkout sources
         uses: actions/checkout@master
@@ -50,7 +50,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip virtualenv setuptools tox
+          python -m pip install --upgrade pip
           pip install -r _common/requirements-build.txt
 
       - name: Set tox setting
