@@ -1,7 +1,7 @@
 # Install CLI tools
 
 pip
-awscli
+# awscli                  # install awscli v2 instead
 awscurl                   # https://github.com/okigan/awscurl
 awslogs                   # https://github.com/jorgebastida/awslogs
 #aws-shell                # https://github.com/awslabs/aws-shell (not actively maintained)
