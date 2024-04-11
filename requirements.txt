@@ -4,7 +4,7 @@
 ################################################################################
 # AWS related packages
 
-boto3~=1.18
+boto3~=1.34
 #amazon.ion               # https://github.com/amzn/ion-python
 #aws-embedded-metrics     # https://github.com/awslabs/aws-embedded-metrics-python
 #aws-encryption-sdk       # https://github.com/aws/aws-encryption-sdk-python
@@ -41,8 +41,8 @@ boto3~=1.18
 ################################################################################
 # Non aws related packages
 
-click~=8.0                # https://github.com/pallets/click
-fire~=0.4                 # https://github.com/google/python-fire
+click~=8.1                # https://github.com/pallets/click
+fire~=0.6                 # https://github.com/google/python-fire
 #apispec~=5.1             # A pluggable API specification generator, support OpenAPI Specification (f.k.a. Swagger specification).
 #black
 #dataclasses-json~=0.5    # provides a simple API for encoding and decoding dataclasses to and from JSON
