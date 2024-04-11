@@ -23,6 +23,13 @@ Jump to
 ## Useful Articles and Blogs
 
 Performance / HA
+- [Using latency-based routing with Amazon CloudFront for a multi-Region active-active architecture](https://aws.amazon.com/blogs/networking-and-content-delivery/latency-based-routing-leveraging-amazon-cloudfront-for-a-multi-region-active-active-architecture/), AWS, 2024-04-11
+    1. CloudFront + Route 53
+        - In order for the traffic to be encrypted in transit in a multi-Region setup, matching SSL/TLS certificates must be available in each Region where you deploy your application.
+            - CloudFront - certificate must be issued in ACM in the US East (N. Virginia)
+            - Backend regional services - certificates must be in each Region where AWS services use them to encrypt the traffic in transit
+    2. Global Accelerator (See [this blog post](https://aws.amazon.com/blogs/networking-and-content-delivery/deploying-multi-region-applications-in-aws-using-aws-global-accelerator/))
+        - Good fit for use cases that require static anycast IP addresses or instant AWS Regional failover, but it doesn’t support content caching or edge processing.
 - [Accelerate and protect your websites using Amazon CloudFront and AWS WAF](https://aws.amazon.com/blogs/networking-and-content-delivery/accelerate-and-protect-your-websites-using-amazon-cloudfront-and-aws-waf/), AWS, 2023-09-12
 - [Achieving Zero-downtime deployments with Amazon CloudFront using blue/green continuous deployments](https://aws.amazon.com/blogs/networking-and-content-delivery/achieving-zero-downtime-deployments-with-amazon-cloudfront-using-blue-green-continuous-deployments/), AWS, 2023-05-30
 - [Improve Single-Page Application (SPA) Performance with a Same Domain policy using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/improve-single-page-application-spa-performance-with-a-same-domain-policy-using-amazon-cloudfront/), AWS, 2023-05-09
