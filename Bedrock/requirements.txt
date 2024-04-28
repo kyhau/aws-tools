@@ -1,4 +1,4 @@
-boto3==1.34.88
+boto3==1.34.93
 langchain==0.1.16
 langchain-community==0.0.34
 streamlit==1.33.0
