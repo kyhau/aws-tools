@@ -12,7 +12,6 @@ updates:
       timezone: Australia/Melbourne
 
   - package-ecosystem: pip
-    directory: "/"
     directories:
       - "/"
       - "/_common"
