@@ -6,12 +6,12 @@ Jump to
 - [CloudFront Functions and Lambda@Edge](#cloudfront-functions-and-lambdaedge)
 - [OAC vs. OAI](#oac-vs-oai)
 - [S3 Website endpoint vs. S3 REST API endpoint](#s3-website-endpoint-vs-s3-rest-api-endpoint)
+- [Secure Lambda function URLs using CloudFront OAC](#secure-lambda-function-urls-using-cloudfront-oac)
 - [How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront](#how-to-limit-the-access-to-your-rest-regional-api-gateway-endpoint-exclusively-to-cloudfront)
 - [Provision CloudFront with templates in this directory](#steps-to-provision-cloudfront)
-- [My QuickStart CloudFormation templates](./cfn/)
+    - [My QuickStart CloudFormation templates](./cfn/)
 
 
----
 ## Useful Libs and Tools
 
 - [amazon-cloudfront-dynamic-content-timings](https://github.com/aws-samples/amazon-cloudfront-dynamic-content-timings) - A python script for CloudFront timings measurement.
@@ -19,7 +19,6 @@ Jump to
 - [amazon-cloudfront-multi-function-packager](https://github.com/aws-samples/amazon-cloudfront-multi-function-packager) - Amazon CloudFront Multi-function packager tool - This tool allows you to package multiple Edge Functions - Lambda@Edge or CloudFront Functions into a single function with minimal code changes.
 
 
----
 ## Useful Articles and Blogs
 
 Performance / HA
@@ -54,7 +53,6 @@ Other
 - https://stackoverflow.com/questions/20632828/aws-cloud-formation-script-to-create-s3-bucket-and-distribution
 
 
----
 ## CloudFront Functions and Lambda@Edge
 
 - Differences between CloudFront Functions and Lambda@Edge here:
@@ -102,7 +100,6 @@ When using OAC, a typical request and response workflow will be:
 3. S3 origins authenticate, authorize, or deny the requests. When configuring OAC, you can choose among three signing behaviors – “Do not sign requests”, “Sign requests”, and sign requests but “Do not override authorization header”. For details, see ([Source](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-cloudfront-introduces-origin-access-control-oac/)).
 
 
----
 ## S3 Website endpoint vs. S3 REST API endpoint
 
 1. If you use an **S3 bucket as the origin**, CloudFront uses the **REST API** interface of S3 to communicate with the origin.
@@ -121,8 +118,11 @@ When using OAC, a typical request and response workflow will be:
 3. See also https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteEndpoints.html#WebsiteRestEndpointDiff.
 
 
----
-## How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront
+## Secure Lambda function URLs using CloudFront OAC
+
+See also
+- [Secure your Lambda function URLs using Amazon CloudFront origin access control](https://aws.amazon.com/blogs/networking-and-content-delivery/secure-your-lambda-function-urls-using-amazon-cloudfront-origin-access-control/), AWS, 2024-04-30
+
 
 ## How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront
 
@@ -142,7 +142,6 @@ To take advantage of the perimeter protection layer built with CloudFront, AWS W
     - support all REST, HTTP, and WebSocket endpoints
 
 
----
 ## Steps to provision CloudFront
 
 If using custom domain/CNAME, do also (1), (2) and (4); if not, only (3).
