@@ -12,6 +12,7 @@ AWS WAF is a web application firewall that lets you monitor the HTTP and HTTPS r
 - App Runner service
 
 Useful blog posts
+- [How to enforce a security baseline for an AWS WAF ACL across your organization using AWS Firewall Manager](https://aws.amazon.com/blogs/security/how-to-enforce-a-security-baseline-for-an-aws-waf-acl-across-your-organization-using-aws-firewall-manager/), AWS, 2024-05-09
 - [Cost-effective ways for securing your web applications using AWS WAF](https://aws.amazon.com/blogs/networking-and-content-delivery/cost-effective-ways-for-securing-your-web-applications-using-aws-waf/), AWS, 2023-09-13
 - [Accelerate and protect your websites using Amazon CloudFront and AWS WAF](https://aws.amazon.com/blogs/networking-and-content-delivery/accelerate-and-protect-your-websites-using-amazon-cloudfront-and-aws-waf/), AWS, 2023-09-12
 - [Discover the benefits of AWS WAF advanced rate-based rules](https://aws.amazon.com/blogs/security/discover-the-benefits-of-aws-waf-advanced-rate-based-rules/), AWS, 2023-09-01
