@@ -1,6 +1,10 @@
 # Firewall Manager, WAF, Shield
 
----
+Jump to
+- [Firewall Manager, WAF](#firewall-manager-waf)
+- [Shield](#shield)
+
+
 ## Firewall Manager, WAF
 
 AWS WAF is a web application firewall that lets you monitor the HTTP and HTTPS requests that are forwarded to
@@ -10,6 +14,11 @@ AWS WAF is a web application firewall that lets you monitor the HTTP and HTTPS r
 - AppSync GraphQL API,
 - Cognito user pool, or
 - App Runner service
+
+Complex custom AWS WAF JSON rules examples
+- https://repost.aws/knowledge-center/waf-create-complex-custom-rules
+- NotStatement
+   - https://stackoverflow.com/questions/59673364/aws-waf-create-an-acl-and-rule-to-allow-access-to-only-one-country-to-access-the
 
 Useful blog posts
 - [How to enforce a security baseline for an AWS WAF ACL across your organization using AWS Firewall Manager](https://aws.amazon.com/blogs/security/how-to-enforce-a-security-baseline-for-an-aws-waf-acl-across-your-organization-using-aws-firewall-manager/), AWS, 2024-05-09
@@ -26,7 +35,7 @@ Other links
 - https://d1.awsstatic.com/whitepapers/guidelines-implementing-aws-waf.pdf
 - https://blog.serverworks.co.jp/wafcharm/awsmanagedrulesknownbadInputsruleset-log4jrce
 
----
+
 ## Shield
 - AWS Shield Engagement Lambda - https://s3.amazonaws.com/aws-shield-lambda/ShieldEngagementLambda.pdf
 - AWS Shield Advanced can protect the following resources:
