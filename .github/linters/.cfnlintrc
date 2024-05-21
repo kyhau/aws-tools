@@ -4,6 +4,8 @@ ignore_checks:
   # E1019: Parameter stageVariables.sfnArn for Fn::Sub not found at ...
   - E3045
   # E3045 A bucket with AccessControl set should also have OwnershipControl configured
+  - W3045
+  # W3045 Consider using AWS::S3::BucketPolicy instead of AccessControl
 templates:
   - ./**/cfn/*.yaml
 ignore_templates:
