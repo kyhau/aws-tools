@@ -57,7 +57,7 @@ def find_attacks(attack_id, resource_arn, cidrs):
             print(json.dumps(attack, indent=2, default=str))
 
 
-@click.command(help="Find IP in known IP ranges by attack id or resource arn")
+@click.command(help="Check if IP of an attack (of specific attack id or resource arn) is within known IP ranges")
 @click.option("--attack-id", "-i", help="Attack ID")
 @click.option("--resource-arn", "-r", help="Resource ARN")
 def main(attack_id, resource_arn):
