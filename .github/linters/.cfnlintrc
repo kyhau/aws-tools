@@ -2,7 +2,7 @@
 ignore_checks:
   - E1019
   # E1019: Parameter stageVariables.sfnArn for Fn::Sub not found at ...
-  - E3034
+  - E3045
   # E3045 A bucket with AccessControl set should also have OwnershipControl configured
 templates:
   - ./**/cfn/*.yaml
