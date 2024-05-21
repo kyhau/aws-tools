@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
@@ -38,10 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, "3.10", 3.11, 3.12]
+        python-version: [3.12, 3.11, "3.10"]
     steps:
       - name: Checkout sources
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -56,22 +56,17 @@ jobs:
       - name: Set tox setting
         id: ToxSetting
         run: |
-          if [[ "${{ matrix.python-version }}" == "3.12" ]]
-          then
-            echo "toxenv=py312" >> $GITHUB_OUTPUT
-          elif [[ "${{ matrix.python-version }}" == "3.11" ]]
-          then
-            echo "toxenv=py311" >> $GITHUB_OUTPUT
-          elif [[ "${{ matrix.python-version }}" == "3.10" ]]
-          then
+          if [[ "${{ matrix.python-version }}" == "3.10" ]]; then
             echo "toxenv=py310" >> $GITHUB_OUTPUT
+          elif [[ "${{ matrix.python-version }}" == "3.11" ]]; then
+            echo "toxenv=py311" >> $GITHUB_OUTPUT
           else
-            echo "toxenv=py39" >> $GITHUB_OUTPUT
+            echo "toxenv=py312" >> $GITHUB_OUTPUT
           fi
 
       - name: Test with tox
+        working-directory: _common
         run: |
-          cd _common
           tox -r -e ${{ steps.ToxSetting.outputs.toxenv }}
 
       - name: Upload coverage reports to Codecov
