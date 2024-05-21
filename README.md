@@ -51,7 +51,8 @@ pip3 install -r requirements-cli.txt
 ## My notes
 - My notes of each service is in its folder respectively.
 - Some specific topics (no folder)
-    - [App Mesh](./AppMesh.md)    - [Closing Account](./Others/ClosingAccount.md)
+    - [App Mesh](./AppMesh.md)
+    - [Closing Account](./Others/ClosingAccount.md)
     - [ECS vs. EKS](./ECS-vs-EKS.md)
     - [Encryption](./Others/Encryption.md)
     - [Mutual Transport Layer Security (mutual TLS or mTLS) authentication](./Security.md)
