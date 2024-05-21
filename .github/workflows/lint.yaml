@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Run yamllint
         run: yamllint -c ./.github/linters/.yaml-lint.yaml -f parsable --format standard .github/
 
       - name: Install cfn-lint
-        run: pip install cfn-lint==0.78.2
+        run: pip install -r requirements-ci.txt
 
       - name: Run cfn-lint
         run: cfn-lint --config-file .github/linters/.cfnlintrc
