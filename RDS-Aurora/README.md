@@ -1,11 +1,9 @@
 # RDS / Aurora
 
 Jump to
-- [Useful Libs and Tools](#useful-libs-and-tools)
-- [Useful Articles and Blogs](#useful-articles-and-blogs)
-- [Aurora](#aurora)
-- [Aurora MySQL](#aurora-mysql)
-- [Aurora PostgreSQL](#aurora-postgresql)
+- [Rotate RDS database credentials automatically](#rotate-rds-database-credentials-automatically)
+- [PostgreSQL](#postgresql)
+- [MySQL](#mysql)
 - [Aurora Serverless](#aurora-serverless)
 - [RDS Proxy](#rds-proxy)
 - [Traps](#traps)
@@ -13,32 +11,42 @@ Jump to
 See also [kyhau/aws-notebook/Databases](https://github.com/kyhau/aws-notebook/blob/main/Databases.md).
 
 ---
-## Useful Libs and Tools
+
+## Rotate RDS database credentials automatically
+
+(1)  A typical AWS documented approach - using an appropriate retry strategy
+mentioned in
+- [AWS Blog](https://aws.amazon.com/blogs/security/how-to-implement-single-user-secret-rotation-using-amazon-rds-admin-credentials/) - How to implement single-user secret rotation using Amazon RDS admin credentials, AWS, 2024-05-21
+- [AWS Blog](https://aws.amazon.com/blogs/security/rotate-amazon-rds-database-credentials-automatically-with-aws-secrets-manager/) - Rotate Amazon RDS database credentials automatically with AWS Secrets Manager, AWS, 2018-04-05
+- [AWS prescriptive guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/rotate-database-credentials-without-restarting-containers.html) - Rotate database credentials without restarting containers
+
+> When the secret rotates, open database connections are not dropped. While rotation is happening, there is a short period of time between when the password in the database changes and when the secret is updated. During this time, there is a low risk of the database denying calls that use the rotated credentials. You can mitigate this risk with an appropriate retry strategy. After rotation, new connections use the new credentials.
+
+
+(2) Alternatively, here is another approach - blue/green strategy
+
+This approach ensures that it never rotates the password of the user currently being used by the container, minimizing disruptions to the system’s functionality.
+
+See https://sitereliabilityengineering.in/seamless-rds-secret-rotation-and-ecs-task-update-no-code-change-dea851210a7d
+
+
+## PostgreSQL
 
 - [Mpartman](https://github.com/awslabs/mpartman) - Modern partition manager for PostgreSQL (Mpartman)
 
 
----
-## Useful Articles and Blogs
+## MySQL
 
 - For RDS MySQL insert/delete event -> Lambda processing events
     1. Enable query logging with custom parameter group (for MySQL it should be the Audit Log, see [MySQL database log files](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.MySQL.html#USER_LogAccess.MySQL.Auditlog))
     2. Then, publish logs to CloudWatch Logs (see [Publishing MySQL logs to CloudWatch Logs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.MySQL.html#USER_LogAccess.MySQL.Auditlog))
     3. Then, create [CloudWatch Logs Subscription Filters](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html) with Lambda for processing the log group entries.
 
-
----
-## Aurora
-
-## Aurora MySQL
-
 - [Local write forwarding with Amazon Aurora](https://aws.amazon.com/blogs/database/local-write-forwarding-with-amazon-aurora/), AWS, 2023-07-31
     - can now issue transactions containing both reads and writes on Aurora read replicas and the writes will be automatically forwarded to the single writer instance for execution.
     - makes it simple to scale read workloads which require "read after write" consistency, without the need to maintain complex application logic that separates reads from writes
 
-## Aurora PostgreSQL
 
----
 ## Aurora Serverless
 
 1. Performance / throughput
@@ -47,12 +55,11 @@ See also [kyhau/aws-notebook/Databases](https://github.com/kyhau/aws-notebook/bl
     See https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.how-it-works.html
 
 
----
 ## RDS Proxy
 - https://github.com/aws-samples/serverless-rds-proxy-demo
 
 
----
+
 ## Traps
 
 1. Ref: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html
