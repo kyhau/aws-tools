@@ -7,7 +7,7 @@ Jump to
 
 ## Firewall Manager, WAF
 
-AWS WAF is a web application firewall that lets you monitor the HTTP and HTTPS requests that are forwarded to
+AWS WAF supports monitoring HTTP and HTTPS requests that are forwarded to
 - CloudFront distribution,
 - API Gateway REST API,
 - ALB,
@@ -19,6 +19,20 @@ Complex custom AWS WAF JSON rules examples
 - https://repost.aws/knowledge-center/waf-create-complex-custom-rules
 - NotStatement
    - https://stackoverflow.com/questions/59673364/aws-waf-create-an-acl-and-rule-to-allow-access-to-only-one-country-to-access-the
+
+MTLA
+- [How to use Amazon Athena queries to analyze AWS WAF logs and provide the visibility needed for threat detection](https://aws.amazon.com/blogs/networking-and-content-delivery/how-to-use-amazon-athena-queries-to-analyze-aws-waf-logs-and-provide-the-visibility-needed-for-threat-detection/), AWS, 2024-05-22
+   - AWS WAF dashboards
+   - AWS WAF logging
+   - Examples of threat detection analysis using AWS WAF logs and Athena
+      - Example 1: Top talkers by different criteria
+      - Example 2: Get counts of various bot traffic for a given set of days
+      - Example 3: Get counts of labels per IP address
+      - Example 4: Top talker with additional details
+      - Example 5: Website scraping and attacks
+      - Example 6: AWS WAF tokens analysis (activity by IP and token misuse)
+      - Example 7: Session tracking – Lifecycle of a client request (client session activity by token)
+   - Tips to make Athena queries faster
 
 Useful blog posts
 - [How to enforce a security baseline for an AWS WAF ACL across your organization using AWS Firewall Manager](https://aws.amazon.com/blogs/security/how-to-enforce-a-security-baseline-for-an-aws-waf-acl-across-your-organization-using-aws-firewall-manager/), AWS, 2024-05-09
