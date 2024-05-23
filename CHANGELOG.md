@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2024-05-23
+
+### Added
+
+   * Added Health/health_org_helper.py, that exports affected resources of an AWS Health event for accounts in an organization.
+
 ## 2024-03-26
 
 ### Changed
