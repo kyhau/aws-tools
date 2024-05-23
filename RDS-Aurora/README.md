@@ -1,16 +1,22 @@
 # RDS / Aurora
 
 Jump to
+- [kyhau/aws-notebook/Databases](https://github.com/kyhau/aws-notebook/blob/main/Databases.md)
+- [Useful Libs and Tools](#useful-libs-and-tools)
 - [Rotate RDS database credentials automatically](#rotate-rds-database-credentials-automatically)
-- [PostgreSQL](#postgresql)
 - [MySQL](#mysql)
 - [Aurora Serverless](#aurora-serverless)
 - [RDS Proxy](#rds-proxy)
 - [Traps](#traps)
 
-See also [kyhau/aws-notebook/Databases](https://github.com/kyhau/aws-notebook/blob/main/Databases.md).
-
 ---
+
+## Useful Libs and Tools
+
+- [aws/aws-advanced-python-wrapper](https://github.com/aws/aws-advanced-python-wrapper) - AWS Advanced Python Driver
+    - wraps the open-source Psycopg and the MySQL Connector/Python drivers
+    - provides support for faster switchover and failover times, and authentication with AWS Secrets Manager or AWS Identity and Access Management (IAM)
+- [awslabs/mpartman](https://github.com/awslabs/mpartman) - Modern partition manager for PostgreSQL (Mpartman)
 
 ## Rotate RDS database credentials automatically
 
@@ -28,11 +34,6 @@ mentioned in
 This approach ensures that it never rotates the password of the user currently being used by the container, minimizing disruptions to the system’s functionality.
 
 See https://sitereliabilityengineering.in/seamless-rds-secret-rotation-and-ecs-task-update-no-code-change-dea851210a7d
-
-
-## PostgreSQL
-
-- [Mpartman](https://github.com/awslabs/mpartman) - Modern partition manager for PostgreSQL (Mpartman)
 
 
 ## MySQL
