@@ -1,16 +1,20 @@
 # EventBridge
 
 Jump to
+- [Useful Tools](#useful-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
 - [EventBridge Pipes](#eventbridge-pipes)
 
-
 ---
+
+## Useful Tools
+- [aws/event-ruler](https://github.com/aws/event-ruler) - a Java library that allows matching Rules to Events. An event is a list of fields, which may be given as name/value pairs or as a JSON object
+
+
 ## Useful Articles and Blogs
 - [Filtering events in Amazon EventBridge with wildcard pattern matching](https://aws.amazon.com/blogs/compute/filtering-events-in-amazon-eventbridge-with-wildcard-pattern-matching/), AWS, 2023-10-12
 
 
----
 ## EventBridge Pipes
 
 ```
