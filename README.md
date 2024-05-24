@@ -6,11 +6,20 @@
 [![CodeQL](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml)
 [![SecretsScan](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml)
 
-This repository includes some tools and sample code I created for building with AWS.
-
+This repository includes some tools and sample code I created for building with AWS.<br>
 All notable changes to this project will be documented in [CHANGELOG](./CHANGELOG.md).
 
+Jump to:
+- [Built with](#built-with)
+- [To run the scripts](#to-run-the-scripts)
+    - [AWS Login with saml2aws-multi](#aws-login)
+    - [For running Python scripts](#for-running-python-scripts)
+    - [For running CLI tools and shell scripts](#for-running-cli-tools-and-shell-scripts)
+- [My notes](#my-notes)
+- [Quick links for news, blogs and resources](#quick-links-for-news-blogs-and-resources)
+
 ---
+
 ## Built with
 - Python, Shell, PowerShell, JavaScript, TypeScript, Go, Docker
 - [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [AWS SAM](https://aws.amazon.com/serverless/sam/)
@@ -18,37 +27,36 @@ All notable changes to this project will be documented in [CHANGELOG](./CHANGELO
 - [CodeQL](https://codeql.github.com) is [enabled](.github/workflows/codeql-analysis.yml) in this repository.
 - [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) for auto dependency updates.
 - [Gitleaks](https://github.com/gitleaks/gitleaks) and [TruffleHog](https://github.com/trufflesecurity/trufflehog) are enabled in this GitHub Actions [workflow](.github/workflows/secrets-scan.yml) for detecting and preventing hardcoded secrets.
-- [Snyk](https://github.com/snyk/actions) is enabled in this GitHub Actions [workflow](.github/workflows/build-test-common-helper.yaml) for vulnerability scanning and auto pull-request.
+- [Snyk](https://github.com/snyk/actions) is enabled in this GitHub Actions [workflow](.github/workflows/build-test-common-helper.yaml) for vulnerability scanning and auto pull-request
 
----
-## AWS login
+## To run the scripts
 
-[saml2aws-multi](https://github.com/kyhau/saml2aws-multi) is my version of AWS login tool providing an easy-to-use command line interface to support login and retrieve AWS temporary credentials for multiple roles of different accounts with [saml2aws](https://github.com/Versent/saml2aws).
+### AWS login
 
----
-## For running Python scripts
+- [saml2aws-multi](https://github.com/kyhau/saml2aws-multi) is my version of AWS login tool providing an easy-to-use command line interface to support login and retrieve AWS temporary credentials for multiple roles of different accounts with [saml2aws](https://github.com/Versent/saml2aws).
 
-Most of the Python scripts support processing multiple AWS accounts (via AWS profiles in ~/.aws/credentials) and AWS regions using `AwsApiHelper` in the common [helper.aws.AwsApiHelper](./_common/helper/aws.py) module.
+### For running Python scripts
 
+- Most of the Python scripts support processing multiple AWS accounts (via AWS profiles in `~/.aws/credentials`) and AWS regions using `AwsApiHelper` in the common [helper.aws.AwsApiHelper](./_common/helper/aws.py) module.
+- Tested with Python 3.10, 3.11, 3.12
+- To start, install dependencies by running:
+    ```
+    pip3 install -r requirements.txt
+    ```
+- Set aliases (optional):
+    ```
+    source .aliases
+    ```
 
-Support Python 3.10, 3.11, 3.12
-```
-pip3 install -r requirements.txt
-```
-Set aliases (Optional)
+### For running CLI tools and shell scripts
 
-```
-source .aliases
-```
+- To start, install dependencies by running:
+    ```
+    pip3 install -r requirements-cli.txt
+    ```
 
-## For running CLI tools and shell scripts
-
-```
-pip3 install -r requirements-cli.txt
-```
-
----
 ## My notes
+
 - My notes of each service is in its folder respectively.
 - Some specific topics (no folder)
     - [App Mesh](./AppMesh.md)
@@ -63,7 +71,7 @@ pip3 install -r requirements-cli.txt
     - [Service Limits](./Others/ServiceLimits.md)
     - [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
 
----
+
 ## Quick links for news, blogs and resources
 
 - [What's New with AWS?](https://aws.amazon.com/new/?nc2=h_ql_exm&whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&wn-featured-announcements.sort-by=item.additionalFields.numericSort&wn-featured-announcements.sort-order=asc) | feed https://aws.amazon.com/blogs/aws/feed/
