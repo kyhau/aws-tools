@@ -58,6 +58,7 @@ def get_ecs_meta_dict(topic=TOPIC_A):
 
 def get_eks_meta_dict(topic=TOPIC_A):
     K8S_VERSIONS = [
+        "1.30",
         "1.29",
         "1.28",
         "1.27",
