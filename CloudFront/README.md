@@ -18,6 +18,7 @@ Jump to
 - [amazon-cloudfront-dynamic-content-timings](https://github.com/aws-samples/amazon-cloudfront-dynamic-content-timings) - A python script for CloudFront timings measurement.
 - [amazon-cloudfront-functions-testing-tool](https://github.com/aws-samples/amazon-cloudfront-functions-testing-tool) - Amazon CloudFront Functions Test based on production traffic
 - [amazon-cloudfront-multi-function-packager](https://github.com/aws-samples/amazon-cloudfront-multi-function-packager) - Amazon CloudFront Multi-function packager tool - This tool allows you to package multiple Edge Functions - Lambda@Edge or CloudFront Functions into a single function with minimal code changes.
+- [cloudfront-hosting-toolkit](https://github.com/awslabs/cloudfront-hosting-toolkit) - CloudFront Hosting Toolkit, an open source command line tool to help developers deploy fast and secure frontends in the cloud.
 
 
 ## Protection and Security

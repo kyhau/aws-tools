@@ -181,6 +181,8 @@ alias update-aws-cfn-guard='. ${REPO_HOME}/CloudFormation/install-cfn-guard.sh'
 
 alias update-aws-cli-v2='. ${REPO_HOME}/AWSCLI/install-awscli-v2.sh'
 
+alias update-aws-cloudfront-hosting-toolkit='npm install -g @aws/cloudfront-hosting-toolkit'
+
 alias update-aws-copilot-cli='. ${REPO_HOME}/copilot-cli/install-copilot-cli.sh'
 
 alias update-aws-ecs-cli='. ${REPO_HOME}/ECS/install_ecs_cli.sh'
