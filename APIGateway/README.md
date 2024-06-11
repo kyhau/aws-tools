@@ -31,6 +31,7 @@ Jump to
 ---
 ## Authentication and Authorisation
 
+- [API Gateway customers can easily secure APIs using Amazon Verified Permissions](https://aws.amazon.com/about-aws/whats-new/2024/06/amazon-api-gateway-apis-amazon-verified-permissions/), AWS, 2024-06
 - [Reduce risk by implementing HttpOnly cookie authentication in Amazon API Gateway](https://aws.amazon.com/blogs/security/reduce-risk-by-implementing-httponly-cookie-authentication-in-amazon-api-gateway/), AWS, 2023-01-30
     - store access tokens and authenticate with HttpOnly cookies in your own workloads when using APIGW as the client-facing endpoint.
     - store OAuth2 access tokens in the browser cookie store, and verify user authentication through APIGW
