@@ -55,23 +55,6 @@ Jump to:
     pip3 install -r requirements-cli.txt
     ```
 
-## My notes
-
-- My notes of each service is in its folder respectively.
-- Some specific topics (no folder)
-    - [App Mesh](./AppMesh.md)
-    - [Closing Account](./Others/ClosingAccount.md)
-    - [ECS vs. EKS](./ECS-vs-EKS.md)
-    - [Encryption](./Others/Encryption.md)
-    - [Mutual Transport Layer Security (mutual TLS or mTLS) authentication](./Security.md)
-    - [Networking](./Networking/)
-    - [Other useful tools](./_Others/)
-    - [Security](./Security.md)
-    - [Serverless](./Serverless.md)
-    - [Service Limits](./Others/ServiceLimits.md)
-    - [Visualisation](https://github.com/kyhau/aws-resource-visualisation/)
-
-
 ## Quick links for news, blogs and resources
 
 - [What's New with AWS?](https://aws.amazon.com/new/?nc2=h_ql_exm&whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&wn-featured-announcements.sort-by=item.additionalFields.numericSort&wn-featured-announcements.sort-order=asc) | feed https://aws.amazon.com/blogs/aws/feed/
@@ -87,9 +70,8 @@ Jump to:
 - [AWS Architecture Center](https://aws.amazon.com/architecture/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all&awsf.tech-category=*all&awsf.industries=*all&awsf.business-category=*all)
 - [AWS Solutions Library](https://aws.amazon.com/solutions/)
 - [Amazon Builder's Library](https://aws.amazon.com/builders-library)
-- [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) and [AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html)
 - [Serverless Land](https://serverlessland.com/)
-- [AWS Application Composer](https://aws.amazon.com/application-composer/) (Preview)
+- [AWS Application Composer](https://aws.amazon.com/application-composer/)
 
 ### Other AWS related tools
 
