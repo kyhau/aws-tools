@@ -8,6 +8,7 @@ Jump to
 
 ## Useful Libs and Tools
 
+- [awslabs/cid-framework](https://github.com/awslabs/cid-framework) - Cloud Intelligence Dashboards
 - [awslabs/sustainability-scanner](https://github.com/awslabs/sustainability-scanner) - a Python tool, validates AWS CloudFormation templates against AWS Well-Architected Sustainability Pillar best practices.
 
 
