@@ -2,6 +2,7 @@
 
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
+- [Best Practices Guides](#best-practices-guides)
 - [Synchronous Invokes, Asynchronous Invokes, Poll-Based Invokes](#synchronous-invokes-asynchronous-invokes-poll-based-invokes)
 - [MLTA, Debugging, Error Handling](#mlta-debugging-error-handling)
     - [Useful blog posts](#useful-blog-posts)
@@ -66,6 +67,13 @@ Jump to
 - Using SAM CLI with the CDK to test a Lambda function locally
     - https://docs.aws.amazon.com/cdk/latest/guide/sam.html
     - Example: https://github.com/kyhau/slack-command-app-cdk
+
+---
+
+## Best Practices Guides
+
+- [Security Overview of AWS Lambda: An In-Depth Look at AWS Lambda Security](https://d1.awsstatic.com/whitepapers/Overview-AWS-Lambda-Security.pdf), AWS, JAN 2021
+
 
 ---
 

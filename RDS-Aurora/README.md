@@ -3,6 +3,7 @@
 Jump to
 - [kyhau/aws-notebook/Databases](https://github.com/kyhau/aws-notebook/blob/main/Databases.md)
 - [Useful Libs and Tools](#useful-libs-and-tools)
+- [Best Practices Guides](#best-practices-guides)
 - [Rotate RDS database credentials automatically](#rotate-rds-database-credentials-automatically)
 - [MySQL](#mysql)
 - [Aurora Serverless](#aurora-serverless)
@@ -17,6 +18,12 @@ Jump to
     - wraps the open-source Psycopg and the MySQL Connector/Python drivers
     - provides support for faster switchover and failover times, and authentication with AWS Secrets Manager or AWS Identity and Access Management (IAM)
 - [awslabs/mpartman](https://github.com/awslabs/mpartman) - Modern partition manager for PostgreSQL (Mpartman)
+
+
+## Best Practices Guides
+
+- [Best practices for working with Amazon Aurora Serverless](https://aws.amazon.com/blogs/database/best-practices-for-working-with-amazon-aurora-serverless/), AWS, 27 NOV 2020
+
 
 ## Rotate RDS database credentials automatically
 

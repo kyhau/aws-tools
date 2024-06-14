@@ -3,6 +3,7 @@
 Jump to
 - [AWS EKS, AWS Controllers for Kubernetes and related tools and libs](#aws-eks-aws-controllers-for-kubernetes-and-related-tools-and-libs)
 - [Kubernetes tools (non-AWS)](#kubernetes-tools-non-aws)
+- [Best Practices Guides](#best-practices-guides)
 - [QuickStart](#quick-start)
 - [Networking](#networking)
 - [AWS Secrets Manager and Kubernetes Secrets](#aws-secrets-manager-and-kubernetes-secrets)
@@ -85,6 +86,12 @@ Jump to
 ## Kubernetes tools (non-AWS)
 
 - [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/main/useful-tools/kubernetes)
+
+
+---
+## Best Practices Guides
+
+- [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/), AWS
 
 
 ---

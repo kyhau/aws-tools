@@ -3,7 +3,7 @@
 
 REPO_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-alias aws-acm-list-certificates='python3 ${REPO_HOME}/ACM/list_certificates.py'
+alias aws-acm-list-certificates='python3 ${REPO_HOME}/ACM-PCA/list_certificates.py'
 
 alias aws-ami-find-by-amiid='aws ec2 describe-images --image-id '
 alias aws-ami-latest='python3 ${REPO_HOME}/AMI/get_latest_amis.py'
