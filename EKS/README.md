@@ -230,6 +230,7 @@ Autoscaling EKS on Fargate
 ---
 ## EKS access control
 
+- [eks-pod-identity-agent](https://github.com/aws/eks-pod-identity-agent) - Amazon EKS Pod Identity agent
 - IRSA vs. Pod Identity
     - [New attack vectors in EKS](https://www.wiz.io/blog/new-attack-vectors-emerge-via-recent-eks-access-entries-and-pod-identity-features), Wiz, 2024-02-10
 - [How do I provide access to other IAM users and roles after cluster creation in Amazon EKS?](https://aws.amazon.com/premiumsupport/knowledge-center/amazon-eks-cluster-access/)
