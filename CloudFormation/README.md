@@ -19,6 +19,7 @@
 - `cfn-guard`: provides developers a general purpose domain-specific language (DSL) to express policy-as-code and then validate their JSON- and YAML-formatted data against that code. [aws-cloudformation/cloudformation-guard](https://github.com/aws-cloudformation/cloudformation-guard)
 
 - `cfn-lint`: validates CloudFormation yaml/json templates against the CloudFormation spec and additional checks. [aws-cloudformation/cfn-python-lint](https://github.com/aws-cloudformation/cfn-python-lint)
+  - Blog post - [CloudFormation Linter (cfn-lint) v1](https://aws.amazon.com/blogs/devops/aws-cloudformation-linter-v1/), AWS, 2024-06-19
 
 - `cfn_nag`: looks for patterns in CloudFormation templates that may indicate insecure infrastructure. [stelligent/cfn_nag](https://github.com/stelligent/cfn_nag)
 
