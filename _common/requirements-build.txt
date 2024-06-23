@@ -1,5 +1,5 @@
 # This file is used for running tox, flake8 and building the wheel
 logilab-common~=2.0
 pypandoc==1.13
-setuptools~=70.0
+setuptools~=70.1
 tox~=4.15
