@@ -13,8 +13,7 @@ updates:
 
   - package-ecosystem: pip
     directories:
-      - "/"
-      - "/_common"
+      - "**/*"
     groups:
       all-dependencies:
         patterns:
