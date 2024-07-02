@@ -13,14 +13,14 @@ Jump to
     - [Storing sensitive files](#storing-sensitive-files)
     - [Getting "The bucket does not allow ACLs" Error](#getting-the-bucket-does-not-allow-acls-error)
 
-
 ---
+
 ## Useful Libs and Tools
 
+- [aws/boto3-s3-access-grants-plugin](https://github.com/aws/boto3-s3-access-grants-plugin) - AWS S3 Access Grants Plugin provides the functionality to enable S3 customers to configure S3 ACCESS GRANTS as a permission layer on top of the S3 Clients.
 - [awslabs/mountpoint-s3](https://github.com/awslabs/mountpoint-s3) - Mountpoint for Amazon S3 is a simple, high-throughput file client for mounting an Amazon S3 bucket as a local file system.
 
 
----
 ## Useful Articles and Blogs
 
 ### Data Perimeter at scale
