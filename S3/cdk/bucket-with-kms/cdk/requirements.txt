@@ -2,3 +2,4 @@ aws-cdk.core~=1.204
 aws-cdk.aws-iam~=1.204
 aws-cdk.aws-s3~=1.204
 aws_cdk.aws-kms~=1.204
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
