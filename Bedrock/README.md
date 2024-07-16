@@ -4,6 +4,7 @@ Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Agents for Amazon Bedrock](#agents-for-amazon-bedrock)
 - [Knowledge Base](#knowledge-base)
+- [Chunking](#chunking)
 - [Guardrails](#guardrails)
 
 ## Useful Libs and Tools
@@ -41,7 +42,14 @@ Knowledge Bases for Amazon Bedrock is a fully managed Retrieval-Augmented Genera
 
 - Knowledge Bases now supports observability, offering log delivery choice through CloudWatch, S3 buckets, and Firehose streams. This capability provides enhanced visibility and timely insights into the execution of knowledge ingestion steps.
 
+# Chunking
 
+- How content chunking and parsing works for Amazon Bedrock knowledge bases ([link](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking-parsing.html))
+    - Standard chunking
+    - Hierarchical chunking
+    - Semantic chunking
+    - Advanced parsing options
+    - Custom transformation
 
 ## Guardrails
 
