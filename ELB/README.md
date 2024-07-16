@@ -2,13 +2,14 @@
 
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
-
+    - [NLB](#nlb)
+    - [GWLB](#gwlb)
 
 ---
+
 ## Useful Libs and Tools
 
 
----
 ## Useful Articles and Blogs
 
 - [Elastic Load Balancer: Maximizing Benefits and Keeping Costs Low](https://aws.amazon.com/blogs/networking-and-content-delivery/elb-maximizing-benefits-and-keeping-costs-low/), AWS, 2023-10-25
@@ -40,8 +41,10 @@
 
 ### NLB
 
+- [Preserving client IP address with Proxy protocol v2 and Network Load Balancer](https://aws.amazon.com/blogs/networking-and-content-delivery/preserving-client-ip-address-with-proxy-protocol-v2-and-network-load-balancer/), AWS, 2024-07-16
 - [Enhance observability for Network Load Balancers using Amazon CloudWatch Internet Monitor](https://aws.amazon.com/blogs/mt/enhance-observability-for-network-load-balancers-using-amazon-cloudwatch-internet-monitor/), AWS, 2023-07-27
 - [Scaling NLB target groups by connections](https://aws.amazon.com/blogs/networking-and-content-delivery/scaling-nlb-target-groups-by-connections/), AWS, 2023-06-05
+
 
 ### GWLB
 
