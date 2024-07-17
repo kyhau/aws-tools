@@ -6,6 +6,7 @@ Jump to
 - [Knowledge Base](#knowledge-base)
 - [Chunking](#chunking)
 - [Guardrails](#guardrails)
+- [Security and Access Control](#security-and-access-control)
 
 ## Useful Libs and Tools
 
@@ -54,3 +55,8 @@ Knowledge Bases for Amazon Bedrock is a fully managed Retrieval-Augmented Genera
 ## Guardrails
 
 - [Guardrails for Amazon Bedrock can now detect hallucinations and safeguard apps built using custom or third-party FMs](https://aws.amazon.com/blogs/aws/guardrails-for-amazon-bedrock-can-now-detect-hallucinations-and-safeguard-apps-built-using-custom-or-third-party-fms/), AWS, 2024-07
+
+
+## Security and Access Control
+
+- [Private network for data movement in generative AI](https://aws.amazon.com/blogs/networking-and-content-delivery/private-network-for-data-movement-in-generative-ai/), AWS, 2024-07-16
