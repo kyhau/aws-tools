@@ -29,5 +29,5 @@ def get_secret(secret_id: str, version_stage: str=None) -> str:
 
 
 def lambda_handler(event, context):
-    print(f"Retrieved value: {get_secret(secret_id=SECRET_NAME)}")
+    # print(f"Testing - Retrieved value: {get_secret(secret_id=SECRET_NAME)}")
     return get_lambda_response(200, json.dumps("Hello from Lambda!"))
