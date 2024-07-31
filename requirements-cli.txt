@@ -46,6 +46,6 @@ pip-audit                 # https://github.com/pypa/pip-audit
 #pre-commit               # https://pre-commit.com/
 #pydot                    # use tegether with cfn-lint to generate DOT file, require graphviz
 #yq                       # YAML/XML processor - jq wrapper for YAML/XML documents, https://github.com/kislyuk/yq
-setuptools>=65.5.1        # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=70.0.0        # not directly required, pinned by Snyk to avoid a vulnerability
 sympy>=1.12               # not directly required, pinned by Snyk to avoid a vulnerability
 requests>=2.32.0          # not directly required, pinned by Snyk to avoid a vulnerability
