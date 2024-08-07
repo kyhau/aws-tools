@@ -6,6 +6,7 @@ Jump to
 - [Knowledge Base](#knowledge-base)
 - [Chunking](#chunking)
 - [Guardrails](#guardrails)
+- [Observability](#observability)
 - [Security and Access Control](#security-and-access-control)
 
 ## Useful Libs and Tools
@@ -56,7 +57,15 @@ Knowledge Bases for Amazon Bedrock is a fully managed Retrieval-Augmented Genera
 
 - [Guardrails for Amazon Bedrock can now detect hallucinations and safeguard apps built using custom or third-party FMs](https://aws.amazon.com/blogs/aws/guardrails-for-amazon-bedrock-can-now-detect-hallucinations-and-safeguard-apps-built-using-custom-or-third-party-fms/), AWS, 2024-07
 
+## Observability
+
+- AppSignals - [Improve Amazon Bedrock Observability with Amazon CloudWatch AppSignals](https://aws.amazon.com/blogs/mt/improve-amazon-bedrock-observability-with-amazon-cloudwatch-appsignals/), AWS, 2024-08-07
+- Bedrock usage and cost
+    - [Cloud Intelligence Dashboards (CUDOS Framework)](https://github.com/aws-samples/aws-cudos-framework-deployment?tab=readme-ov-file)
 
 ## Security and Access Control
 
+- [Network perimeter security protections for generative AI](https://aws.amazon.com/blogs/security/network-perimeter-security-protections-for-generative-ai/), AWS, 2024-08-07
 - [Private network for data movement in generative AI](https://aws.amazon.com/blogs/networking-and-content-delivery/private-network-for-data-movement-in-generative-ai/), AWS, 2024-07-16
+    1. Secure RAG through vector data stores
+    2. Secure RAG through Knowledge Bases for Amazon Bedrock
