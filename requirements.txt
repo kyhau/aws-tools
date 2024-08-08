@@ -57,3 +57,4 @@ fire~=0.6                 # https://github.com/google/python-fire
 
 #confluent_kafka        # https://docs.confluent.io/current/clients/python.html
 #kafka-python
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
