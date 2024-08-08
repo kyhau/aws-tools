@@ -11,8 +11,9 @@ Jump to
 
 - [sagemaker-python-sdk](https://github.com/aws/sagemaker-python-sdk) - AWS SageMaker SDK (Python)
 - [sagemaker-studio-image-build-cli](https://github.com/aws-samples/sagemaker-studio-image-build-cli)
+- [sagemaker-studio-auto-shutdown-extension](https://github.com/aws-samples/sagemaker-studio-auto-shutdown-extension)
 - [amazon-sagemaker-examples](https://github.com/aws/amazon-sagemaker-examples)
-
+- [deequ](https://github.com/awslabs/deequ)
 
 ## SageMaker Studio
 
@@ -47,7 +48,8 @@ Jump to
     - Production endpoint testing strategies
     - Model Cards -  when they want to publish their model in public
 - Monitoring
-
+    - Unit test for data - [deequ](https://github.com/awslabs/deequ)
+    - Schema for Violations (constraint_violations.json file) - ([link](https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor-interpreting-violations.html))
 
 ## Neuron
 - AWS Neuron samples https://awsdocs-neuron.readthedocs-hosted.com/en/latest/general/quick-start/github-samples.html
