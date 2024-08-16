@@ -2,6 +2,7 @@
 
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
+    - [ALB](#alb)
     - [NLB](#nlb)
     - [GWLB](#gwlb)
 
@@ -30,6 +31,10 @@
         - Consolidate ELBs
         - set up metrics that track your underlying service behavior, e.g. identifying malfunctioning clients
         - remove unused ELBs
+
+### ALB
+
+- [Security best practices when using ALB authentication](https://aws.amazon.com/blogs/networking-and-content-delivery/security-best-practices-when-using-alb-authentication/), AWS, 2024-08-15
 - [Automating HTTP/S Redirects and certificate management at scale](https://aws.amazon.com/blogs/networking-and-content-delivery/automating-http-s-redirects-and-certificate-management-at-scale/), AWS, 2023-03-21
     - How to build a scalable and cost-effective solution to handle HTTP/S redirects at scale for **multiple domains** by using
         - ALB to perform rule-based redirects,
