@@ -3,7 +3,6 @@
 Jump to
 - [AWS EKS, AWS Controllers for Kubernetes and related tools and libs](#aws-eks-aws-controllers-for-kubernetes-and-related-tools-and-libs)
 - [Kubernetes tools (non-AWS)](#kubernetes-tools-non-aws)
-- [Best Practices Guides](#best-practices-guides)
 - [QuickStart](#quick-start)
 - [Networking](#networking)
 - [AWS Secrets Manager and Kubernetes Secrets](#aws-secrets-manager-and-kubernetes-secrets)
@@ -88,13 +87,12 @@ Jump to
 - [kyhau/workspace/useful-tools/kubernetes](https://github.com/kyhau/workspace/tree/main/useful-tools/kubernetes)
 
 
----
 ## Best Practices Guides
 
+- [Making sense of secrets management on Amazon EKS for regulated institutions](https://aws.amazon.com/blogs/security/making-sense-of-secrets-management-on-amazon-eks-for-regulated-institutions/), AWS, 2024-08-19
 - [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/), AWS
 
 
----
 ## Quick Start
 
 - EKS Kubernetes [versions and release calendar](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-release-calendar)
@@ -114,7 +112,6 @@ Jump to
 - EKS Workshop https://www.eksworkshop.com
 
 
----
 ## Networking
 
 ### Max number of pods per EC2 instance
@@ -129,7 +126,6 @@ Jump to
 - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
 
 
----
 ## AWS Secrets Manager and Kubernetes Secrets
 
 - [External Secrets provider - AWS Secrets Manager](https://external-secrets.io/provider-aws-secrets-manager/)
@@ -137,7 +133,6 @@ Jump to
 - [kubernetes-external-secrets](https://github.com/external-secrets/kubernetes-external-secrets) (Deprecated) but README is useful (AWS Secrets Manager, dataFrom)
 
 
----
 ## Node-based autoscaling
 Adding or removing nodes as needed
 - [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
@@ -155,7 +150,7 @@ Adding or removing nodes as needed
 - Scheduling enforcement: Cluster autoscaler doesn’t bind pods to the nodes it creates. Instead, it relies on the kube-scheduler to make the same scheduling decision after the node has come online. A node that Karpenter launches has its pods bound immediately. The kubelet doesn’t have to wait for the scheduler or for the node to become ready. It can start preparing the container runtime immediately, including pre-pulling the image. This can shave seconds off of node startup latency.
 - [Workload Consolidation for Karpenter](https://aws.amazon.com/about-aws/whats-new/2022/08/workload-consolidation-karpenter/): Workload consolidation for Karpenter automatically looks for opportunities to reschedule these workloads onto a set of more cost-efficient EC2 instances, whether they are already in the cluster or need to be launched.
 
----
+
 ## Pod-based autoscaling
 
 1. [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) – add or remove more pods to the deployment as needed
@@ -165,7 +160,7 @@ Autoscaling EKS on Fargate
 1. [Autoscaling EKS on Fargate with custom metrics](https://aws.amazon.com/blogs/containers/autoscaling-eks-on-fargate-with-custom-metrics/) with HorizontalPodAutoscaler
    - Examples of configuring autoscaling based on HTTP traffic, CPU and/or memory usage, App Mesh traffic
 
----
+
 ## EKS Montoring, Logging, Alerting
 
 - [Logging for Amazon EKS](https://docs.aws.amazon.com/prescriptive-guidance/latest/implementing-logging-monitoring-cloudwatch/kubernetes-eks-logging.html)
@@ -184,7 +179,6 @@ Autoscaling EKS on Fargate
     - [Kubernetes Alerting | Best Practices in 2022](https://www.containiq.com/post/kubernetes-alerting-best-practices)
 
 
----
 ## EKS cluster endpoint
 
 [EKS cluster endpoint access control](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
@@ -227,7 +221,7 @@ Autoscaling EKS on Fargate
     - [DNS Resolution for EKS Clusters Using Private Endpoints](https://aws.amazon.com/about-aws/whats-new/2019/12/dns-resolution-for-eks-clusters-using-private-endpoints/)
     - [Understanding Amazon EKS Cluster Private Endpoint Access](https://faun.pub/understanding-amazon-eks-cluster-private-endpoint-access-76ca52bf978a)
 
----
+
 ## EKS access control
 
 - [eks-pod-identity-agent](https://github.com/aws/eks-pod-identity-agent) - Amazon EKS Pod Identity agent
@@ -243,15 +237,16 @@ Autoscaling EKS on Fargate
     - https://github.com/aws-samples/eks-rbac-sso
 
 
----
+
 ## EKS security
 
+- [Making sense of secrets management on Amazon EKS for regulated institutions](https://aws.amazon.com/blogs/security/making-sense-of-secrets-management-on-amazon-eks-for-regulated-institutions/), AWS, 2024-08-19
+- [Amazon EKS Best Practices Guide for Security](https://aws.github.io/aws-eks-best-practices/), AWS
 - [Configure mutual TLS authentication for applications running on Amazon EKS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/configure-mutual-tls-authentication-for-applications-running-on-amazon-eks.html) with NLB
 - [Amazon Detective Supports Kubernetes Workloads on Amazon EKS for Security Investigations](https://aws.amazon.com/blogs/aws/amazon-detective-supports-kubernetes-workloads-on-amazon-eks-for-security-investigations/)
 - [Amazon GuardDuty protects Amazon Elastic Kubernetes Service clusters](https://aws.amazon.com/about-aws/whats-new/2022/01/amazon-guardduty-elastic-kubernetes-service-clusters/)
 
 
----
 ## EKS IAM OIDC Provider
 
 1. `iam:*OpenIDConnectProvider*` permissions are not required when creating an EKS cluster with `CreateCluster`, which creates an **OpenID Connect provider URL** (OpenID Connect issuer URL) for the cluster (e.g. https://oidc.eks.ap-southeast-2.amazonaws.com/id/ABCABC111222333444ABCABC11122233).
@@ -272,7 +267,6 @@ You need to run `ekctl utils associate-iam-oidc-provider`,
     - CloudTrail does NOT show the events as well (e.g. `CreateOpenIDConnectProvider`)
 
 
----
 ## EKS with Fargate
 
 There are some potential drawbacks to using Fargate with EKS, both operational and for workload security. ([Source](https://www.stackrox.io/blog/securing-eks-cluster-add-ons-dashboard-fargate-ec2-components-and-more/))
@@ -286,7 +280,6 @@ There are some potential drawbacks to using Fargate with EKS, both operational a
 See also [AWS Fargate considerations](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html#fargate-considerations).
 
 
----
 ## Stress test
 
 - AWS FIS (Fault Injection Simulator)
@@ -294,7 +287,6 @@ See also [AWS Fargate considerations](https://docs.aws.amazon.com/eks/latest/use
      > E.g. run a stress test on a pod’s CPU using ChaosMesh or Litmus faults while terminating a randomly selected percentage of cluster nodes using FIS fault actions.
 
 
----
 ## CDK EKS+K8s Examples
 
 - [aws-samples/amazon-eks-using-cdk-typescript](https://github.com/aws-samples/amazon-eks-using-cdk-typescript) - A sample project that deploys an EKS Cluster following a set of best practices with options to install additional addons. Easy deployment of the EBS CSI Driver, EFS CSI Driver, FluentBit Centralized Logging using Cloudwatch, Cluster Autoscaler, ALB Ingress Controller, Secrets CSI Driver and Network Policy Engine.
@@ -306,7 +298,6 @@ See also [AWS Fargate considerations](https://docs.aws.amazon.com/eks/latest/use
 - [aws-samples/cdk-eks-karpenter](https://github.com/aws-samples/cdk-eks-karpenter) - This construct configures the necessary dependencies and installs Karpenter on an EKS cluster managed by AWS CDK.
 
 
----
 ## cdk / cdk8s Gotchas
 
 - [aws-cdk-lib.aws_eks.Cluster](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.Cluster.html) supports specifying only one Security Group (but CloudFormation/Console support list of Security Groups).
