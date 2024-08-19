@@ -4,7 +4,7 @@
 ################################################################################
 # AWS related packages
 
-boto3~=1.34
+boto3~=1.35
 #amazon.ion               # https://github.com/amzn/ion-python
 #aws-embedded-metrics     # https://github.com/awslabs/aws-embedded-metrics-python
 #aws-encryption-sdk       # https://github.com/aws/aws-encryption-sdk-python
