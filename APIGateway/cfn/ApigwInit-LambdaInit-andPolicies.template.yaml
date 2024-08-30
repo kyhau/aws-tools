@@ -213,7 +213,7 @@ Resources:
           - Effect: Allow
             Action:
               - iam:Passrole
-            Resource: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}/:role/${LambdaExecuteRoleName}
+            Resource: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${LambdaExecuteRoleName}
           - Effect: Allow
             Action:
               - lambda:InvokeFunction

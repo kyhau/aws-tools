@@ -27,9 +27,6 @@ Parameters:
     Description: The file name of the error document (e.g. error.html).
     Type: String
     Default: index.html
-  IAMCertificateId:
-    Description: Custom SSL certificate to use with CloudFront distribution.
-    Type: String
   IndexDoc:
     Description: The file name of the index document (e.g. index.html).
     Type: String
@@ -75,10 +72,6 @@ Conditions:
   IsProduction: !Equals
     - prod
     - !Ref 'StageName'
-  UseCustomSSLCertificate: !Not
-    - !Equals
-      - !Ref 'IAMCertificateId'
-      - ''
 Resources:
   RootBucket:
     Type: AWS::S3::Bucket
@@ -259,19 +252,7 @@ Resources:
         HttpVersion: http2
         PriceClass: !Ref 'CloudFrontPriceClass'
         ViewerCertificate:
-          CloudFrontDefaultCertificate: !Ref 'AWS::NoValue'
-          IamCertificateId: !If
-            - UseCustomSSLCertificate
-            - !Ref 'IAMCertificateId'
-            - !Ref 'AWS::NoValue'
-          MinimumProtocolVersion: !If
-            - UseCustomSSLCertificate
-            - TLSv1
-            - !Ref 'AWS::NoValue'
-          SslSupportMethod: !If
-            - UseCustomSSLCertificate
-            - sni-only
-            - !Ref 'AWS::NoValue'
+          CloudFrontDefaultCertificate: true
 Outputs:
   CloudFrontDistributionID:
     Value: !Ref 'CloudFront'

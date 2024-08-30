@@ -33,7 +33,6 @@ Resources:
                 "custom_operation": "${LambdaParameter}"
             }
   PermissionForEventsToInvokeLambda:
-    DependsOn: ScheduledEventsRule
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref LambdaFunctionName

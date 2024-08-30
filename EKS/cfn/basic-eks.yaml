@@ -49,10 +49,13 @@ Resources:
           IpProtocol: -1
         - CidrIpv6: ::/0
           IpProtocol: -1
-      SecurityGroupIngress:
-        - IpProtocol: -1
-          FromPort: '0'
-          ToPort: '65535'
+
+  ControlPlaneSGIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref ControlPlaneSG
+      SourceSecurityGroupId: !Ref ControlPlaneSG
+      IpProtocol: -1
 
   EKSNodeRole:
     Type: AWS::IAM::Role
