@@ -1,4 +1,4 @@
-boto3==1.35.5
-langchain==0.2.14
-langchain-community==0.2.12
-streamlit==1.37.1
+boto3==1.35.10
+langchain==0.2.15
+langchain-community==0.2.15
+streamlit==1.38.0
