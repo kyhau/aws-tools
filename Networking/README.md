@@ -14,6 +14,7 @@ Jump to
 | :--- | :--- |
 | AWS CIDR Finder | [aws-samples/aws-cidr-finder](https://github.com/aws-samples/aws-cidr-finder) |
 | AWS IP Ranges | [aws-samples/awsipranges](https://github.com/aws-samples/awsipranges) |
+| Networking Costs Calculator | [aws-samples/networking-costs-calculator](https://github.com/aws-samples/networking-costs-calculator) |
 | AWS Network Firewall CFN templates | [aws-samples/aws-networkfirewall-cfn-templates](https://github.com/aws-samples/aws-networkfirewall-cfn-templates) |
 | Non Routable Secondary CIDR Patterns | [aws-samples/non-routable-secondary-vpc-cidr-patterns](https://github.com/aws-samples/non-routable-secondary-vpc-cidr-patterns) |
 | [Serverless Transit Network Orchestrator](https://aws.amazon.com/solutions/serverless-transit-network-orchestrator/) | [awslabs/serverless-transit-network-orchestrator](https://github.com/awslabs/serverless-transit-network-orchestrator) |
