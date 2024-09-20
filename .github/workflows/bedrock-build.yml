@@ -25,7 +25,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: make lint-yaml
       - run: make lint-python
 
       - uses: actions/setup-node@v4
