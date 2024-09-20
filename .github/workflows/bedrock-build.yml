@@ -14,7 +14,7 @@ concurrency:
 defaults:
   run:
     shell: bash
-    working-directory: Bedrock/cdk
+    working-directory: Bedrock/cdk/guardrail
 
 jobs:
   bedrock-guardrail:
