@@ -1,6 +1,6 @@
 # aws-tools
 
-[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper.yaml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/build-test-common-helper.yaml)
+[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/common-helper-build.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/common-helper-build.yml)
 [![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml)
 [![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
 [![CodeQL](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml)
@@ -27,7 +27,7 @@ Jump to:
 - [CodeQL](https://codeql.github.com) is [enabled](.github/workflows/codeql-analysis.yml) in this repository.
 - [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) for auto dependency updates.
 - [Gitleaks](https://github.com/gitleaks/gitleaks) and [TruffleHog](https://github.com/trufflesecurity/trufflehog) are enabled in this GitHub Actions [workflow](.github/workflows/secrets-scan.yml) for detecting and preventing hardcoded secrets.
-- [Snyk](https://github.com/snyk/actions) is enabled in this GitHub Actions [workflow](.github/workflows/build-test-common-helper.yaml) for vulnerability scanning and auto pull-request
+- [Snyk](https://github.com/snyk/actions) is enabled in this GitHub Actions [workflow](.github/workflows/common-helper-build.yml) for vulnerability scanning and auto pull-request
 
 ## To run the scripts
 

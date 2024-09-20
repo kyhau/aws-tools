@@ -1,11 +1,12 @@
-name: Common Helper - build-and-test
+name: Common Helper - Build
 
 on:
   push:
     paths:
-      - .github/workflows/build-test-common-helper.yaml
-      - '**.py'
-      - '**/requirements*.txt'
+      - .github/workflows/common-helper-build.yml
+      - _common/**.py
+      - _common/requirements*.txt
+      - _common/tox.ini
 
 defaults:
   run:
