@@ -21,7 +21,7 @@ jobs:
     name: Test Bedrock Guardrail IaC
     runs-on: ubuntu-latest
     env:
-      ENV_STAGE: ${{ inputs.environment }}
+      ENV_STAGE: dev
     steps:
       - uses: actions/checkout@v4
 
