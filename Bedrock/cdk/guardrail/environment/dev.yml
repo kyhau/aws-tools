@@ -1,0 +1,81 @@
+AppName: Test
+Account: "123456789012"
+Region: ap-southeast-2
+BedrockGuardrail:
+  # The message to return when the guardrail blocks a prompt
+  blocked_input_messaging: "This prompt is blocked by Guardrail."
+  # The message to return when the guardrail blocks a model response
+  blocked_outputs_messaging: "This model response is blocked by Guardrail."
+  content_policy_config:
+    # Adjust filter strengths to block input prompts or model responses containing harmful content.
+    # https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-content-filters.html
+    # Allowed values: NONE | LOW | MEDIUM | HIGH
+    SEXUAL:
+      input_strength: HIGH
+      output_strength: HIGH
+    VIOLENCE:
+      input_strength: HIGH
+      output_strength: HIGH
+    HATE:
+      input_strength: MEDIUM
+      output_strength: HIGH
+    INSULTS:
+      input_strength: LOW
+      output_strength: HIGH
+    MISCONDUCT:
+      input_strength: LOW
+      output_strength: HIGH
+    PROMPT_ATTACK:
+      input_strength: HIGH
+      output_strength: NONE  # Must be NONE for response
+  contextual_grounding_policy_config:
+    # Use contextual grounding check to filter hallucinations in responses
+    # https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html
+    # Threshold: between 0 and 0.99. 1 is invalid as that will block all content.
+    GROUNDING:
+      threshold: 0.8
+    RELEVANCE:
+      threshold: 0.7
+  sensitive_information_policy_config:
+    # Block or mask sensitive information such as PII or custom regex in user inputs and model responses
+    # Types supported - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-bedrock-guardrail-piientityconfig.html
+    # Actions Allowed values: BLOCK | ANONYMIZE
+    pii_entities_config:
+      # Only a subset of PII entities are shown here
+      ADDRESS: BLOCK
+      DRIVER_ID: BLOCK
+      EMAIL: ANONYMIZE
+      PASSWORD: BLOCK
+      PHONE: ANONYMIZE
+      LICENSE_PLATE: BLOCK
+      VEHICLE_IDENTIFICATION_NUMBER: ANONYMIZE
+      CREDIT_DEBIT_CARD_CVV: BLOCK
+      CREDIT_DEBIT_CARD_EXPIRY: BLOCK
+      CREDIT_DEBIT_CARD_NUMBER: BLOCK
+      INTERNATIONAL_BANK_ACCOUNT_NUMBER: BLOCK
+      PIN: BLOCK
+      SWIFT_CODE: BLOCK
+      AWS_ACCESS_KEY: BLOCK
+      AWS_SECRET_KEY: BLOCK
+    regexes_config: []
+    # - name: xx
+    #   description: xx
+    #   action: BLOCK | ANONYMIZE
+    #   pattern: "xx"
+  topic_policy_config: []
+  # Block denied topics to remove harmful content
+  # https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-topic-policy.html
+  # Example
+  # - name: Investment Advice
+  #   definition: Investment advice is inquiries, guidance, or recommendations about the management or allocation of funds or assets with the goal of generating returns or achieving specific financial objectives
+  #   examples:
+  #     - Is investing in the stocks better than bonds?
+  #     - Should I invest in gold?
+  word_policy_config:
+    # Configure filters to block undesirable words, phrases, and profanity. Such words can include offensive terms, competitor names etc.
+    # https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-word-filters.html
+    managed_word_lists_config: PROFANITY
+    words_config: []  # list of words to be blocked
+Tags:
+  CostCentre: TODO
+  Project: TODO

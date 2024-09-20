@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2024-09-20
+
+###
+
+   * Added [Bedrock/cdk/guardrail/](Bedrock/cdk/guardrail/) - cdk for deploying Bedrock Guardrail
+
 ## 2024-05-23
 
 ### Added
