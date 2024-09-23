@@ -27,7 +27,7 @@ system_prompts = [
 
 def converse_api(messages: list):
     try:
-        bedrock_client = boto3.client(service_name="bedrock-runtime")
+        bedrock_client = boto3.client("bedrock-runtime")
 
         print(f"Input prompt: {messages}")
         # Inference parameters to use.
