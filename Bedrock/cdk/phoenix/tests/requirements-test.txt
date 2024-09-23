@@ -1,0 +1,5 @@
+boto3
+# arize-phoenix  # Phoenix server
+arize-phoenix-otel
+openinference-instrumentation-bedrock
+opentelemetry-exporter-otlp
