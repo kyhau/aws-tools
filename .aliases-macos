@@ -168,35 +168,33 @@ alias sam-local-start-lambda='sam local start-lambda'
 alias update-aws-amplify-cli='npm install -g @aws-amplify/cli'
 
 alias update-aws-cdk='. ${REPO_HOME}/CDK/install-cdk-v2.sh'
-alias update-aws-cdk-assume-role-credential-plugin='sudo npm install -g cdk-assume-role-credential-plugin@latest'
-alias update-aws-cdk-import='. ${REPO_HOME}/CDK/install-cdk-import.sh'
-alias update-aws-cdk8s-cli='. ${REPO_HOME}/CDK/install-cdk8s-cli.sh'
+alias update-aws-cdk-assume-role-credential-plugin='npm install -g cdk-assume-role-credential-plugin@latest'
+# alias update-aws-cdk-import='. ${REPO_HOME}/CDK/install-cdk-import.sh'
+# alias update-aws-cdk8s-cli='. ${REPO_HOME}/CDK/install-cdk8s-cli.sh'
 
-alias update-aws-cfn-guard='. ${REPO_HOME}/CloudFormation/install-cfn-guard.sh'
-
-alias update-aws-cli-v2='. ${REPO_HOME}/AWSCLI/install-awscli-v2.sh'
+# alias update-aws-cfn-guard='. ${REPO_HOME}/CloudFormation/install-cfn-guard.sh'
 
 alias update-aws-cloudfront-hosting-toolkit='npm install -g @aws/cloudfront-hosting-toolkit'
 
-alias update-aws-copilot-cli='. ${REPO_HOME}/copilot-cli/install-copilot-cli.sh'
+# alias update-aws-copilot-cli='. ${REPO_HOME}/copilot-cli/install-copilot-cli.sh'
 
-alias update-aws-ecs-cli='. ${REPO_HOME}/ECS/install_ecs_cli.sh'
+# alias update-aws-ecs-cli='. ${REPO_HOME}/ECS/install_ecs_cli.sh'
 
-alias update-aws-eksctl='. ${REPO_HOME}/EKS/install_eksctl.sh'
-alias update-aws-eks-aws-iam-authenticator='. ${REPO_HOME}/EKS/install_eks_aws_iam_authenticator.sh'
+# alias update-aws-eksctl='. ${REPO_HOME}/EKS/install_eksctl.sh'
+# alias update-aws-eks-aws-iam-authenticator='. ${REPO_HOME}/EKS/install_eks_aws_iam_authenticator.sh'
 alias update-aws-eks-node-viewer='go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest'
-alias update-aws-eks-kubectl='. ${REPO_HOME}/EKS/install_eks_kubectl.sh'
+# alias update-aws-eks-kubectl='. ${REPO_HOME}/EKS/install_eks_kubectl.sh'
 
-alias update-aws-fault-tolerance-analyser='. ${REPO_HOME}/_Others/fault-tolerance-analyser/install-fault-tolerance-analyser.sh'
+# alias update-aws-fault-tolerance-analyser='. ${REPO_HOME}/_Others/fault-tolerance-analyser/install-fault-tolerance-analyser.sh'
 
-alias update-aws-sam-cli='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli.sh'
-alias update-aws-sam-cli-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli-beta-cdk.sh'
+# alias update-aws-sam-cli='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli.sh'
+# alias update-aws-sam-cli-beta-cdk='. ${REPO_HOME}/SAM-and-ServerlessApplicationRepository/install-sam-cli-beta-cdk.sh'
 
-alias update-aws-session-manager-plugin='. ${REPO_HOME}/SSM/install_aws_session_manager_plugin_ubuntu.sh'
-alias update-aws-ssh-over-ssm='. ${REPO_HOME}/SSM/install_ssh_over_ssm.sh'
+# alias update-aws-session-manager-plugin='. ${REPO_HOME}/SSM/install_aws_session_manager_plugin_ubuntu.sh'
+# alias update-aws-ssh-over-ssm='. ${REPO_HOME}/SSM/install_ssh_over_ssm.sh'
 
-alias update-awscii-cli='sudo npm i -g @mhlabs/awscii-cli@latest'
+# alias update-awscii-cli='npm i -g @mhlabs/awscii-cli@latest'
 
-alias update-git-secrets='. ${REPO_HOME}/_Others/git-secrets/install-git-secrets.sh'
+# alias update-git-secrets='. ${REPO_HOME}/_Others/git-secrets/install-git-secrets.sh'
 
-alias update-sam2aws='. ${REPO_HOME}/saml2aws/install-saml2aws.sh'
+# alias update-sam2aws='. ${REPO_HOME}/saml2aws/install-saml2aws.sh'
