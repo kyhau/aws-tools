@@ -9,16 +9,19 @@ install-cdk:
 	python3 -m pip install -U pip
 	pip3 install -r requirements.txt
 
-synth-phoenix:
+synth:
 	cdk synth $(APP_NAME)-Phoenix -c env=$(ENV_STAGE)
 
-diff-phoenix:
+synth-local:
+	CDK_LOCAL_SYNC=true cdk synth $(APP_NAME)-Phoenix -c env=$(ENV_STAGE)
+
+diff:
 	cdk diff $(APP_NAME)-Phoenix -c env=$(ENV_STAGE)
 
-deploy-phoenix:
-	cdk deploy $(APP_NAME)-Phoenix -c env=$(ENV_STAGE) $(APP_NAME) --require-approval never
+deploy:
+	cdk deploy $(APP_NAME)-Phoenix -c env=$(ENV_STAGE) --require-approval never
 
-destroy-phoenix:
+destroy:
 	cdk destroy $(APP_NAME)-Phoenix -f -c env=$(ENV_STAGE)
 
 test-cdk:
@@ -41,4 +44,4 @@ lint-yaml:
 	yamllint -c .github/linters/.yaml-lint.yml -f parsable .
 
 clean:
-	rm -rf cdk.out __pycache__
+	rm -rf cdk.out lib/__pycache__

@@ -11,8 +11,8 @@ from aws_cdk import aws_elasticloadbalancingv2 as elbv2
 from aws_cdk import aws_iam as iam
 from aws_cdk import aws_route53 as r53
 from aws_cdk import aws_route53_targets as r53_targets
-from base_infra import BaseInfra
 from constructs import Construct
+from lib.base_infra import BaseInfra
 
 
 class AlbFargate(Stack):

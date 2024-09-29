@@ -2,8 +2,8 @@
 from os.path import dirname, join, realpath
 
 import yaml
-from aws_cdk import App, Environment, Tags
-from phoenix import AlbFargate
+from aws_cdk import App, CliCredentialsStackSynthesizer, Environment, Tags
+from lib.phoenix import AlbFargate
 
 ENV_DIR = join(dirname(realpath(__file__)), "environment")
 
@@ -25,6 +25,8 @@ def main():
         config=config,
         image=config["Phoenix"]["image"],
         env=Environment(account=config["Account"], region=config["Region"]),
+        synthesizer=CliCredentialsStackSynthesizer(),
+        termination_protection=(ENV_NAME == "prd"),
     )
     # stack.alb_sg.add_ingress_rule(
     #     peer=another_stack.task_security_group,

@@ -2,16 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-
 ## 2024-09-23
 
 ### Added
-   * Added [Bedrock/cdk/phoenix/](Bedrock/cdk/phoenix/) - cdk for deploying Arize Phoenix.
+   * Added [Bedrock/cdk/phoenix/](Bedrock/cdk/phoenix/) cdk and workflow for deploying Arize Phoenix.
 
 ## 2024-09-20
 
 ### Added
-   * Added [Bedrock/cdk/guardrail/](Bedrock/cdk/guardrail/) - cdk for deploying Bedrock Guardrail.
+   * Added [Bedrock/cdk/guardrail/](Bedrock/cdk/guardrail/) cdk and workflow for deploying Bedrock Guardrail.
 
 ## 2024-05-23
 
