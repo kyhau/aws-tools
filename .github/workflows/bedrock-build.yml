@@ -19,6 +19,9 @@ jobs:
   bedrock-guardrail:
     name: Test Bedrock Guardrail IaC
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Bedrock/cdk/guardrail
     env:
       ENV_STAGE: dev
     steps:
@@ -36,12 +39,14 @@ jobs:
           echo "INFO: npm version: $(npm --version)"
           echo "INFO: python3 version: $(python3 --version)"
       - name: Run cdk synth
-        working-directory: Bedrock/cdk/guardrail
         run: make synth-guardrail
 
   bedrock-phoenix:
     name: Test Bedrock Phoenix IaC
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Bedrock/cdk/phoenix
     env:
       ENV_STAGE: dev
     steps:
@@ -59,5 +64,4 @@ jobs:
           echo "INFO: npm version: $(npm --version)"
           echo "INFO: python3 version: $(python3 --version)"
       - name: Run cdk synth
-        working-directory: Bedrock/cdk/phoenix
         run: make synth-local
