@@ -19,6 +19,9 @@ jobs:
   redis:
     name: Test Redis IaC
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ElastiCache-Redis/cdk/cache
     env:
       ENV_STAGE: dev
     steps:
@@ -41,5 +44,4 @@ jobs:
           echo "INFO: python3 version: $(python3 --version)"
 
       - name: Run cdk synth
-        working-directory: ElastiCache-Redis/cdk/cache
         run: make synth-local
