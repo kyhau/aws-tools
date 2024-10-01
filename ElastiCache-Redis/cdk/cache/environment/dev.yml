@@ -1,0 +1,18 @@
+AppName: Test
+Account: "123456789012"
+Region: ap-southeast-2
+Redis:
+  alarms:
+    memory_usage_error: 60
+    memory_usage_warning: 80
+  instance_type: cache.t3.medium
+  multi_az_enabled: "false"
+  num_node_groups: 1
+  parameter_store:
+    clustered: "false"
+    database: 0
+    ssl: "false"
+  replicas_per_node_group: 0
+Tags:
+  CostCentre: TODO
+  Project: TODO

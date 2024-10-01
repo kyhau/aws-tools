@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## 2024-10-02
+
+### Added
+   * Added [ElastiCache-Redis/cdk/cache/](ElastiCache-Redis/cdk/cache/) cdk and workflow for deploying Redis.
+
 ## 2024-09-23
 
 ### Added

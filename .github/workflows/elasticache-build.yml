@@ -1,0 +1,47 @@
+name: ElastiCache - Build
+run-name: Test IaC @ ${{ github.ref_name }}
+
+on:
+  push:
+    paths:
+      - .github/workflows/elasticache-build.yml
+      - ElastiCache-Redis/cdk/**
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  redis:
+    name: Test Redis IaC
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ElastiCache-Redis/cdk/cache
+    env:
+      ENV_STAGE: dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: make lint-python
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up aws-cdk
+        run: make install-cdk
+
+      - name: Print deployment environment
+        run: |
+          echo "INFO: cdk version: $(cdk --version)"
+          echo "INFO: node version: $(node --version)"
+          echo "INFO: npm version: $(npm --version)"
+          echo "INFO: python3 version: $(python3 --version)"
+
+      - name: Run cdk synth
+        run: make synth-local
