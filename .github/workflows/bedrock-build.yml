@@ -39,7 +39,7 @@ jobs:
           echo "INFO: npm version: $(npm --version)"
           echo "INFO: python3 version: $(python3 --version)"
       - name: Run cdk synth
-        run: make synth-guardrail
+        run: make synth
 
   bedrock-phoenix:
     name: Test Bedrock Phoenix IaC
