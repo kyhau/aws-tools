@@ -1,5 +1,3 @@
-import os
-
 from aws_cdk import CfnOutput, SecretValue, Stack
 from aws_cdk import aws_iam as iam
 from aws_cdk import aws_secretsmanager as sm
@@ -87,9 +85,9 @@ class SecretsStack(Stack):
         return sm.Secret(
             self,
             id=sm_secret_name.replace("/", "-").lower(),
-            description=f"Secrets for app {app_name}",
+            description=description,
             encryption_key=key_alias,
-            secret_name=secret_name,
+            secret_name=sm_secret_name,
             secret_object_value={
                 secret["Name"]: SecretValue.unsafe_plain_text(secret["Value"]) for secret in secrets
             },
