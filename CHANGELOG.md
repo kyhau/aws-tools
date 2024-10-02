@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 ## 2024-10-02
 
 ### Added
+   * Added [SecretsManager/cdk/secrets/](SecretsManager/cdk/secrets/) cdk and workflow for deploying Secrets Manager secrets.
+
+## 2024-10-02
+
+### Added
    * Added [ElastiCache-Redis/cdk/cache/](ElastiCache-Redis/cdk/cache/) cdk and workflow for deploying Redis.
 
 ## 2024-09-23
