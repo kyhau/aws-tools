@@ -9,16 +9,16 @@ install-cdk:
 	python3 -m pip install -U pip
 	pip3 install -r requirements.txt
 
-synth-guardrail:
+synth:
 	cdk synth $(APP_NAME)-BedrockGuardrail -c env=$(ENV_STAGE)
 
-diff-guardrail:
+diff:
 	cdk diff $(APP_NAME)-BedrockGuardrail -c env=$(ENV_STAGE)
 
-deploy-guardrail:
+deploy:
 	cdk deploy $(APP_NAME)-BedrockGuardrail -c env=$(ENV_STAGE) $(APP_NAME) --require-approval never
 
-destroy-guardrail:
+destroy:
 	cdk destroy $(APP_NAME)-BedrockGuardrail -f -c env=$(ENV_STAGE)
 
 test-cdk:

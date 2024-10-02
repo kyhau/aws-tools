@@ -28,33 +28,32 @@ BedrockGuardrail:
     PROMPT_ATTACK:
       input_strength: HIGH
       output_strength: NONE  # Must be NONE for response
-  contextual_grounding_policy_config:
+  contextual_grounding_policy_config: {}
     # Use contextual grounding check to filter hallucinations in responses
     # https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html
     # Threshold: between 0 and 0.99. 1 is invalid as that will block all content.
-    GROUNDING:
-      threshold: 0.8
-    RELEVANCE:
-      threshold: 0.7
+    # GROUNDING:
+    #   threshold: 0.8
+    # RELEVANCE:
+    #   threshold: 0.7
   sensitive_information_policy_config:
     # Block or mask sensitive information such as PII or custom regex in user inputs and model responses
     # Types supported - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-bedrock-guardrail-piientityconfig.html
     # Actions Allowed values: BLOCK | ANONYMIZE
     pii_entities_config:
       # Only a subset of PII entities are shown here
-      ADDRESS: BLOCK
-      DRIVER_ID: BLOCK
+      DRIVER_ID: ANONYMIZE
       EMAIL: ANONYMIZE
       PASSWORD: BLOCK
       PHONE: ANONYMIZE
-      LICENSE_PLATE: BLOCK
+      LICENSE_PLATE: ANONYMIZE
       VEHICLE_IDENTIFICATION_NUMBER: ANONYMIZE
       CREDIT_DEBIT_CARD_CVV: BLOCK
       CREDIT_DEBIT_CARD_EXPIRY: BLOCK
       CREDIT_DEBIT_CARD_NUMBER: BLOCK
       INTERNATIONAL_BANK_ACCOUNT_NUMBER: BLOCK
       PIN: BLOCK
-      SWIFT_CODE: BLOCK
+      SWIFT_CODE: ANONYMIZE
       AWS_ACCESS_KEY: BLOCK
       AWS_SECRET_KEY: BLOCK
     regexes_config: []

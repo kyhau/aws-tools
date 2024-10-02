@@ -79,16 +79,18 @@ class BedrockGuardrailStack(Stack):
         """
         Use contextual grounding check to filter hallucinations in responses
         """
-        filters_config = [
-            CfnGuardrail.ContextualGroundingFilterConfigProperty(
-                threshold=v["threshold"],
-                type=k,
-            )
-            for k, v in self.config["BedrockGuardrail"][
-                "contextual_grounding_policy_config"
-            ].items()
-        ]
-        return CfnGuardrail.ContextualGroundingPolicyConfigProperty(filters_config=filters_config)
+        if self.config["BedrockGuardrail"].get("contextual_grounding_policy_config"):
+            filters_config = [
+                CfnGuardrail.ContextualGroundingFilterConfigProperty(
+                    threshold=v["threshold"],
+                    type=k,
+                )
+                for k, v in self.config["BedrockGuardrail"][
+                    "contextual_grounding_policy_config"
+                ].items()
+            ]
+            return CfnGuardrail.ContextualGroundingPolicyConfigProperty(filters_config=filters_config)
+        return None
 
     def create_sensitive_information_policy_config(
         self,
