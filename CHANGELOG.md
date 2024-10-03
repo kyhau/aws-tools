@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2024-10-03
+
+### Added
+  * Added [DynamoDB/export_ddb_to_s3.py](DynamoDB/export_ddb_to_s3.py), which exports a DynamoDB table to S3 bucket, then downloads the exported data from S3, unzips the files, and merges the data into a single JSON file, then upload back to S3.
+
 ## 2024-10-02
 
 ### Added
