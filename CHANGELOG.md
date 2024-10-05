@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ## 2024-10-05
 
 ### Added
-   * [CodeArtifact/cdk/central_resources/](CodeArtifact/cdk/central_resources/) cdk and workflow for deploying a central_resources for hosting CodeArtifact external connections and a shared CodeArtifact repository,
+   * Added [CodeArtifact/cdk/central_resources/](CodeArtifact/cdk/central_resources/) cdk and workflow for deploying a central_resources for hosting CodeArtifact external connections and a shared CodeArtifact repository,
    * Added `black` configurations in [pyproject.toml](./pyproject.toml).
    * Added `flake8` configurations in [setup.cfg](./setup.cfg).
 
