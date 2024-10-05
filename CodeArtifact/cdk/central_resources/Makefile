@@ -30,6 +30,7 @@ format-python:
 	black **.py */**.py
 
 lint-python:
+	pip3 install flake8
 	flake8 **.py */**.py
 
 lint-yaml:
