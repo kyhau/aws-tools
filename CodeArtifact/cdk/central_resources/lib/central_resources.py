@@ -1,34 +1,12 @@
-from aws_cdk import (
-    CfnOutput,
-    Stack,
-    aws_iam,
-    aws_kms,
-)
-from aws_cdk.aws_codeartifact import (
-    CfnDomain,
-    CfnRepository,
-)
-from constructs import (
-    Construct,
-)
-from lib.kms import (
-    create_kms_key_and_alias,
-)
+from aws_cdk import CfnOutput, Stack, aws_iam, aws_kms
+from aws_cdk.aws_codeartifact import CfnDomain, CfnRepository
+from constructs import Construct
+from lib.kms import create_kms_key_and_alias
 
 
 class CodeArtifactCentralResources(Stack):
-    def __init__(
-        self,
-        scope: Construct,
-        id: str,
-        config: dict,
-        **kwargs,
-    ) -> None:
-        super().__init__(
-            scope,
-            id,
-            **kwargs,
-        )
+    def __init__(self, scope: Construct, id: str, config: dict, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
 
         key_admin_arns = [
             aws_iam.Role.from_role_arn(
@@ -77,21 +55,9 @@ class CodeArtifactCentralResources(Stack):
             write_statement,
         )
 
-        CfnOutput(
-            self,
-            "CodeArtifactDomainName",
-            value=domain.domain_name,
-        )
-        CfnOutput(
-            self,
-            "CodeArtifactDomainOwner",
-            value=self.account,
-        )
-        CfnOutput(
-            self,
-            "InternalSharedRepoName",
-            value=internal_shared_repo.repository_name,
-        )
+        CfnOutput(self, "CodeArtifactDomainName", value=domain.domain_name)
+        CfnOutput(self, "CodeArtifactDomainOwner", value=self.account)
+        CfnOutput(self, "InternalSharedRepoName", value=internal_shared_repo.repository_name)
 
     def create_domain_with_domain_policy(
         self,
