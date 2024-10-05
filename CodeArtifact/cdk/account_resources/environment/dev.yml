@@ -1,0 +1,15 @@
+AWS_ACCOUNT: "333333333333"
+AWS_REGION: ap-southeast-2
+AWS_ORG_ID: o-12324567890
+DOMAIN_NAME: todo-dev
+DOMAIN_OWNER: "111111111111"
+REPO_NAME: todo-default
+UPSTREAMS:
+  - internal-shared
+REPO_FULL_ACCESS_ARNS_LIKE:
+  - arn:aws:iam::333333333333:role/deploy-role
+REPO_WRITE_ACCESS_ARNS_LIKE:
+  - arn:aws:iam::333333333333:role/codeartifact-repo-write
+TAGS:
+  CostCentre: TODO
+  Project: TODO

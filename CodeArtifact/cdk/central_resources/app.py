@@ -1,28 +1,12 @@
 #!/usr/bin/env python3
-from os.path import (
-    dirname,
-    join,
-    realpath,
-)
+from os.path import dirname, join, realpath
 
 import yaml
-from aws_cdk import (
-    App,
-    CliCredentialsStackSynthesizer,
-    Environment,
-    Tags,
-)
-from cdklabs.cdk_validator_cfnguard import (
-    CfnGuardValidator,
-)
-from lib.central_resources import (
-    CodeArtifactCentralResources,
-)
+from aws_cdk import App, CliCredentialsStackSynthesizer, Environment, Tags
+from cdklabs.cdk_validator_cfnguard import CfnGuardValidator
+from lib.central_resources import CodeArtifactCentralResources
 
-ENV_DIR = join(
-    dirname(realpath(__file__)),
-    "environment",
-)
+ENV_DIR = join(dirname(realpath(__file__)), "environment")
 
 
 def main():
@@ -44,13 +28,7 @@ def main():
 
     ENV_NAME = app.node.try_get_context("env") or "dev"
 
-    with open(
-        join(
-            ENV_DIR,
-            f"{ENV_NAME}.yaml",
-        ),
-        "r",
-    ) as stream:
+    with open(join(ENV_DIR, f"{ENV_NAME}.yml"), "r") as stream:
         yaml_data = yaml.safe_load(stream)
         config = yaml_data if yaml_data is not None else {}
 
@@ -70,18 +48,9 @@ def main():
     for key, value in config["TAGS"].items():
         Tags.of(stack).add(key, value)
 
-    Tags.of(stack).add(
-        "Description",
-        "CodeArtifact central resources",
-    )
-    Tags.of(stack).add(
-        "Environment",
-        ENV_NAME,
-    )
-    Tags.of(stack).add(
-        "Name",
-        stack.stack_name,
-    )
+    Tags.of(stack).add("Description", "CodeArtifact central resources")
+    Tags.of(stack).add("Environment", ENV_NAME)
+    Tags.of(stack).add("Name", stack.stack_name)
 
     app.synth()
 
