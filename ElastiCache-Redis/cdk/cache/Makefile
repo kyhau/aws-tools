@@ -31,11 +31,11 @@ test-cdk:
 pre-commit: format-python lint-python lint-yaml
 
 format-python:
-	black --line-length=100 **.py */**.py
+	black **.py */**.py
 
 lint-python:
 	pip3 install flake8
-	flake8 --ignore E501,F541,W503,W605 **.py */**.py
+	flake8 **.py */**.py
 
 lint-yaml:
 	yamllint -c .github/linters/.yaml-lint.yml -f parsable .
