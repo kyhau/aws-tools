@@ -1,0 +1,4 @@
+aws-cdk-lib==2.158.0
+cdklabs.cdk-validator-cfnguard==0.0.58
+constructs==10.3.0
+pyyaml==6.0.1

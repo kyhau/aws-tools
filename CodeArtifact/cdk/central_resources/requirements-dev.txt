@@ -1,0 +1,6 @@
+-r requirements.txt
+black~=23.7
+boto3~=1.28
+cdk-nag~=2.27
+flake8~=6.0
+pytest~=7.4

@@ -3,10 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2024-10-05
+
+### Added
+   * Added [CodeArtifact/cdk/central_resources/](CodeArtifact/cdk/central_resources/) cdk and workflow for deploying a central_resources for hosting CodeArtifact external connections and a shared CodeArtifact repository.
+   * Added `black` configurations in [pyproject.toml](./pyproject.toml).
+   * Added `flake8` configurations in [setup.cfg](./setup.cfg).
+
 ## 2024-10-03
 
 ### Added
-  * Added [DynamoDB/export_ddb_to_s3.py](DynamoDB/export_ddb_to_s3.py), which exports a DynamoDB table to S3 bucket, then downloads the exported data from S3, unzips the files, and merges the data into a single JSON file, then upload back to S3.
+   * Added [DynamoDB/export_ddb_to_s3.py](DynamoDB/export_ddb_to_s3.py), which exports a DynamoDB table to S3 bucket, then downloads the exported data from S3, unzips the files, and merges the data into a single JSON file, then upload back to S3.
 
 ## 2024-10-02
 
