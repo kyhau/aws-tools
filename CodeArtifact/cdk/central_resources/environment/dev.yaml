@@ -1,0 +1,25 @@
+AppName: CodeArtifactCentralResources
+AWS_ACCOUNT: "111111111111"
+AWS_ORG_ID: o-12324567890
+AWS_REGION: ap-southeast-2
+DOMAIN_NAME: todo-dev
+EXTERNAL_CONNECTIONS:
+  - crates-io
+  - maven-central
+  - maven-clojars
+  - maven-commonsware
+  - maven-googleandroid
+  - maven-gradleplugins
+  - npmjs
+  - nuget-org
+  - pypi
+  - ruby-gems-org
+INTERNAL_SHARED_REPO: internal-shared-dev
+KEY_ADMIN_ARNS:
+  - arn:aws:iam::111111111111:role/key-admin
+  - arn:aws:iam::111111111111:role/deploy-role
+WRITE_ROLE_ARNS_LIKE:
+  - arn:aws:iam::222222222222:role/*/deploy-role
+TAGS:
+  CostCentre: TODO
+  Project: TODO
