@@ -7,7 +7,7 @@
 [![SecretsScan](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml)
 
 This repository includes some tools and sample code I created for building with AWS.<br>
-All notable changes to this project will be documented in [CHANGELOG](./CHANGELOG.md).
+All notable changes to this project are documented in [CHANGELOG](./CHANGELOG.md).
 
 Jump to:
 - [Built with](#built-with)
@@ -22,12 +22,13 @@ Jump to:
 
 ## Built with
 - Python, Shell, PowerShell, JavaScript, TypeScript, Go, Docker
-- [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [AWS SAM](https://aws.amazon.com/serverless/sam/)
+- [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [AWS SAM](https://aws.amazon.com/serverless/sam/), AWS CloudFormation are used for IaC.
 - [cfn-lint](https://github.com/aws-cloudformation/cfn-lint) is used for to validating CloudFormation templates.
+- [black](https://github.com/psf/black) is used for Python code formatter. [flake8](https://github.com/PyCQA/flake8) is used for Python linting checks.
 - [CodeQL](https://codeql.github.com) is [enabled](.github/workflows/codeql-analysis.yml) in this repository.
 - [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) for auto dependency updates.
 - [Gitleaks](https://github.com/gitleaks/gitleaks) and [TruffleHog](https://github.com/trufflesecurity/trufflehog) are enabled in this GitHub Actions [workflow](.github/workflows/secrets-scan.yml) for detecting and preventing hardcoded secrets.
-- [Snyk](https://github.com/snyk/actions) is enabled in this GitHub Actions [workflow](.github/workflows/common-helper-build.yml) for vulnerability scanning and auto pull-request
+- [Snyk](https://github.com/snyk/actions) is enabled in [this](.github/workflows/common-helper-build.yml) GitHub Actions workflow for vulnerability scanning and auto pull-request
 
 ## To run the scripts
 
@@ -38,7 +39,7 @@ Jump to:
 ### For running Python scripts
 
 - Most of the Python scripts support processing multiple AWS accounts (via AWS profiles in `~/.aws/credentials`) and AWS regions using `AwsApiHelper` in the common [helper.aws.AwsApiHelper](./_common/helper/aws.py) module.
-- Tested with Python 3.10, 3.11, 3.12
+- Automated tests being run with Python 3.10, 3.11, 3.12
 - To start, install dependencies by running:
     ```
     pip3 install -r requirements.txt
