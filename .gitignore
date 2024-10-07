@@ -1,3 +1,20 @@
+# Other files
+*.bkp
+*whoami*.json
+*whoami*.log
+*ips_used.csv
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# AWS
+*cdk.out/
+*cdk.context.json
+*.aws-sam/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -20,19 +37,3 @@ coverage*.xml
 *.cover
 .pytest_cache/
 junit*.xml
-
-# Environments
-.env
-.venv
-env/
-venv/
-
-# AWS
-*cdk.out/
-*cdk.context.json
-*.aws-sam/
-
-# Other files
-*whoami*.json
-*whoami*.log
-*ips_used.csv

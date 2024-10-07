@@ -2,7 +2,7 @@ AppName: CodeArtifactCentralResources
 AWS_ACCOUNT: "111111111111"
 AWS_ORG_ID: o-12324567890
 AWS_REGION: ap-southeast-2
-DOMAIN_NAME: todo-dev
+DOMAIN_NAME: my-company
 EXTERNAL_CONNECTIONS:
   - crates-io
   - maven-central
