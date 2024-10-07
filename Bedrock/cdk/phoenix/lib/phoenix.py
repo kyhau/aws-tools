@@ -126,6 +126,10 @@ class AlbFargate(Stack):
             enable_ecs_managed_tags=True,
             propagate_tags=ecs.PropagatedTagSource.TASK_DEFINITION,
         )
+        scaling = fargate_service.auto_scale_task_count(min_capacity=1, max_capacity=4)
+        scaling.scale_on_cpu_utilization("CpuScaling", target_utilization_percent=80)
+        scaling.scale_on_memory_utilization("MemoryScaling", target_utilization_percent=80)
+
         return fargate_service
 
     def create_alb(self) -> tuple:
