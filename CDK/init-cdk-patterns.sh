@@ -19,4 +19,3 @@ pip install -r requirements.txt
 npx cdk synth
 # requires you to be using cloud9 or have ran aws configure to setup your local credentials
 npx cdk deploy
-

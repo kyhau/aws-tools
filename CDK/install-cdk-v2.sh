@@ -2,6 +2,9 @@
 # https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html
 set -e
 
+_SUDO=
+[[ "$(uname)" = "Darwin" ]] || _SUDO=sudo  # If it is not macOS, _SUDO will be set to sudo
+
 # Prerequisites
 # - Node.js (>= 10.3.0)
 #npm cache clear --force
@@ -24,7 +27,7 @@ echo "INFO: npm version: $(npm --version)"
 
 echo "INFO: Installing CDK"
 #sudo npm install -g aws-cdk@next
-sudo npm install -g aws-cdk
+$_SUDO npm install -g aws-cdk
 echo "INFO: cdk version: $(cdk --version)"
 
 # Updating Your Language (Python) Dependencies

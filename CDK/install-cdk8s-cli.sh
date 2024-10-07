@@ -2,6 +2,9 @@
 # https://github.com/cdk8s-team/cdk8s-cli
 set -e
 
+_SUDO=
+[[ "$(uname)" = "Darwin" ]] || _SUDO=sudo  # If it is not macOS, _SUDO will be set to sudo
+
 if [ -x "$(command -v cdk8s)" ]; then
   echo "INFO: cdk8s version: $(cdk8s --version)"
 else
@@ -19,7 +22,7 @@ echo "INFO: npm version: $(npm --version)"
 #sudo npm uninstall -g cdk8s-cli
 
 echo "INFO: Installing cdk8s-cli"
-sudo npm i -g cdk8s-cli
+$_SUDO npm i -g cdk8s-cli
 echo "INFO: cdk8s version: $(cdk8s --version)"
 
 # Updating Your Language (Python) Dependencies
