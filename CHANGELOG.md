@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2024-10-10
+
+### Added
+   * Added [Bedrock/cdk/agent-aoss/](Bedrock/cdk/agent-aoss/) cdk and workflow for deploying a Gen AI service with [Amazon Bedrock Agent](https://aws.amazon.com/bedrock/agents/), [Amazon Bedrock Knowledge Base](https://aws.amazon.com/bedrock/knowledge-bases/), [Amazon OpenSearch Serverless (AOSS)](https://aws.amazon.com/opensearch-service/features/serverless/), and [Amazon S3](https://aws.amazon.com/s3/)
+
 ## 2024-10-05
 
 ### Added

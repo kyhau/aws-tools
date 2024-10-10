@@ -1,0 +1,14 @@
+AppName: TestApp
+Account: "111111111111"
+Region: ap-southeast-2
+ApiStageName: poc
+Bedrock:
+  AgentModelId: anthropic.claude-3-sonnet-20240229-v1:0
+  AgentAlias: v1
+  EmbeddingsModelId: cohere.embed-english-v3
+  EmbeddingsVectorSize: 1024
+  ImageModelId: amazon.titan-image-generator-v2:0  # optional for non-agent
+  TextChatModelId: anthropic.claude-3-sonnet-20240229-v1:0  # optional for non-agent
+Tags:
+  CostCentre: TODO
+  Project: TODO
