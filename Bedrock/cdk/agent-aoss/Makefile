@@ -7,6 +7,7 @@ APP_NAME=$(shell grep -m 1 AppName environment/$(ENV_STAGE).yml | cut -c 10-)
 install-cdk:
 	npm install -g aws-cdk
 	python3 -m pip install -U pip
+	pip3 install -r cdk/requirements.txt
 
 synth:
 	cd cdk && cdk synth -c env=$(ENV_STAGE) --all
