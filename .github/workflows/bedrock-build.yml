@@ -16,6 +16,31 @@ defaults:
     shell: bash
 
 jobs:
+  bedrock-agent-aoss:
+    name: Test Bedrock Agent and AOSS IaC
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Bedrock/cdk/agent-aoss
+    env:
+      ENV_STAGE: dev
+    steps:
+      - uses: actions/checkout@v4
+      - run: make lint-python
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Set up aws-cdk
+        run: make install-cdk
+      - name: Print deployment environment
+        run: |
+          echo "INFO: cdk version: $(cdk --version)"
+          echo "INFO: node version: $(node --version)"
+          echo "INFO: npm version: $(npm --version)"
+          echo "INFO: python3 version: $(python3 --version)"
+      - name: Run cdk synth
+        run: make synth
+
   bedrock-guardrail:
     name: Test Bedrock Guardrail IaC
     runs-on: ubuntu-latest
