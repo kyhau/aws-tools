@@ -10,3 +10,11 @@
 - [Using CUDOS Dashboard visualizations for AWS Marketplace spend visibility and optimization](https://aws.amazon.com/blogs/awsmarketplace/using-cudos-dashboard-visualizations-aws-marketplace-spend-visibility-optimization/), AWS, 2022-12-14
 - [A Detailed Overview of the Cost Intelligence Dashboard](https://aws.amazon.com/blogs/aws-cloud-financial-management/a-detailed-overview-of-the-cost-intelligence-dashboard/), AWS, 2021-12-03
 - https://wellarchitectedlabs.com/cloud-intelligence-dashboards/
+
+## CFN
+- Cost Anomaly Detection
+    - Region: us-east-1
+- Budgets
+    - Region: us-east-1
+- Cost Alerts
+    - Region: us-east-1

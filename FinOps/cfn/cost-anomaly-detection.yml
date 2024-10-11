@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Anomaly Monitors and Subscriptions of Cost Anomaly Detection
+
+Parameters:
+  EmailAddress:
+    Description: The email address to send alerts to
+    Type: String
+  SnsTopicArn:
+    Description: The ARN of the SNS topic to send alerts to
+    Type: String
+
+Resources:
+
+  ############################################################
+  # Service Monitor
+  # Only one Service Monitor can be created in an account, and there ia already an existing one.
+
+  AnomalyServiceMonitor:
+    Type: AWS::CE::AnomalyMonitor
+    Properties:
+      MonitorName: Anomaly-Service-Monitor
+      MonitorType: DIMENSIONAL
+      MonitorDimension: SERVICE
+
+  AnomalyServiceMonitorEmailSubscription:
+    Type: AWS::CE::AnomalySubscription
+    Properties:
+      SubscriptionName: Anomaly-Service-Monitor-Email
+      Frequency: DAILY  # DAILY or WEEKLY for Email subscriptions
+      Threshold: 1000
+      MonitorArnList:
+        - !Ref AnomalyServiceMonitor
+      Subscribers:
+        - Address: !Ref EmailAddress
+          Type: EMAIL
+
+  AnomalyServiceMonitorSNSSubscription:
+    Type: AWS::CE::AnomalySubscription
+    Properties:
+      SubscriptionName: Anomaly-Service-Monitor-SNS
+      Frequency: IMMEDIATE  # IMMEDIATE for SNS subscriptions
+      Threshold: 1000
+      MonitorArnList:
+        - !Ref AnomalyServiceMonitor
+      Subscribers:
+        - Address: !Ref SnsTopicArn
+          Type: SNS
+
+  ############################################################
+  # Anomaly monitor with linked account
+  # (For Testing)
+  TestAWSLinkedAccountMonitor:
+    Type: AWS::CE::AnomalyMonitor
+    Properties:
+      MonitorName: Test-AWS-LinkedAccountMonitor
+      MonitorType: CUSTOM
+      MonitorSpecification: '
+        {
+          "Dimensions" : {
+            "Key" : "LINKED_ACCOUNT",
+            "Values" : [ "111111111111" ]
+          }
+        }'
+
+  TestAWSLinkedAccountMonitorEmailSubscription:
+    Type: AWS::CE::AnomalySubscription
+    Properties:
+      SubscriptionName: Test-AWS-LinkedAccountMonitor-Email
+      Frequency: DAILY  # DAILY or WEEKLY for Email subscriptions
+      Threshold: 50
+      MonitorArnList:
+        - !Ref TestAWSLinkedAccountMonitor
+      Subscribers:
+        - Address: !Ref EmailAddress
+          Type: EMAIL
+
+  TestAWSLinkedAccountMonitorSNSSubscription:
+    Type: AWS::CE::AnomalySubscription
+    Properties:
+      SubscriptionName: Test-AWS-LinkedAccountMonitor-SNS
+      Frequency: IMMEDIATE  # IMMEDIATE for SNS subscriptions
+      Threshold: 50
+      MonitorArnList:
+        - !Ref TestAWSLinkedAccountMonitor
+      Subscribers:
+        - Address: !Ref SnsTopicArn
+          Type: SNS

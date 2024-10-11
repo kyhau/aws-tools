@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2024-10-11
+
+### Added
+   * Added [FinOps/cfn/budgets.yml](FinOps/cfn/budgets.yml) - CloudFormation template for creating AWS Budgets.
+   * Added [FinOps/cfn/chatbot-sns.yml](FinOps/cfn/chatbot-sns.yml) - CloudFormation template for creating AWS Chatbot with SNS.
+   * Added [FinOps/cfn/cost-anomaly-detection.yml](FinOps/cfn/cost-anomaly-detection.yml) - CloudFormation template for creating Cost Anomaly Detection alerts.
+
 ## 2024-10-10
 
 ### Added

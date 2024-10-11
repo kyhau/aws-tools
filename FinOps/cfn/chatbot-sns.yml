@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS Chatbots and SNS topics for Cost alerts
+
+Parameters:
+  SlackChannelName:
+    Description: Slack Channel Name
+    Type: String
+  SlackChannelId:
+    Description: The ID of the Slack channel to send alerts to
+    Type: String
+  SlackWorkspaceId:
+    Description: The ID of the Slack workspace authorized with AWS Chatbot
+    Type: String
+
+Resources:
+  ############################################################
+  # SNS Topics and Policies
+
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: !Sub Cost Alerts ${SlackChannelName}
+      TopicName: !Sub CostAlerts-${SlackChannelName}
+
+  SNSTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: !Sub Budgets-${SlackChannelName}
+            Effect: Allow
+            Action:
+              - SNS:Publish
+            Principal:
+              Service:
+                budgets.amazonaws.com
+            Resource:
+              - !Ref SNSTopic
+          - Sid: !Sub CostAnomalyDetection-${SlackChannelName}
+            Effect: Allow
+            Action:
+              - SNS:Publish
+            Principal:
+              Service:
+                costalerts.amazonaws.com
+            Resource:
+              - !Ref SNSTopic
+      Topics:
+        - !Ref SNSTopic
+
+  ############################################################
+  # Chatbot
+
+  ChatbotRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - chatbot.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: ChatbotRolePolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudwatch:Describe*
+                  - cloudwatch:Get*
+                  - cloudwatch:List*
+                Resource: '*'
+
+  GuardrailPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Chatbot Guardrail Policies
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - cloudwatch:Describe*
+              - cloudwatch:Get*
+              - cloudwatch:List*
+            Resource: '*'
+
+  SlackChatbot:
+    Type: AWS::Chatbot::SlackChannelConfiguration
+    Properties:
+      ConfigurationName: !Sub ${SlackChannelName}-Alerts
+      GuardrailPolicies:
+        - !Ref GuardrailPolicy
+      IamRoleArn: !GetAtt ChatbotRole.Arn
+      LoggingLevel: INFO
+      SlackChannelId: !Ref SlackChannelId
+      SlackWorkspaceId: !Ref SlackWorkspaceId
+      SnsTopicArns:
+        - !Ref SNSTopic
+
+Outputs:
+  SlackSNSTopicARN:
+    Description: Slack SNS Topic ARN
+    Value: !Ref SNSTopic

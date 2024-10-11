@@ -1,0 +1,195 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Budgets example
+Resources:
+
+  AWSConfig:
+    Type: AWS::Budgets::Budget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: '10000.0'
+          Unit: USD
+        BudgetName: AWS-Config
+        BudgetType: COST
+        CostFilters:
+          Service:
+            - AWS Config
+        CostTypes:
+          IncludeCredit: false
+          IncludeDiscount: false
+          IncludeOtherSubscription: true
+          IncludeRecurring: true
+          IncludeRefund: false
+          IncludeSubscription: true
+          IncludeSupport: false
+          IncludeTax: false
+          IncludeUpfront: true
+          UseAmortized: true
+          UseBlended: false
+        TimePeriod:
+          End: '2087-06-15T10:00:00+10:00'
+          Start: '2023-05-01T10:00:00+10:00'
+        TimeUnit: MONTHLY
+
+  AWSCloudwatch:
+    Type: AWS::Budgets::Budget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: '10000.0'
+          Unit: USD
+        BudgetName: AWS-Cloudwatch
+        BudgetType: COST
+        CostFilters:
+          LinkedAccount:
+            - '111111111111'
+            - '222222222222'
+          Service:
+            - AmazonCloudWatch
+            - CloudWatch Events
+        CostTypes:
+          IncludeCredit: false
+          IncludeDiscount: false
+          IncludeOtherSubscription: true
+          IncludeRecurring: true
+          IncludeRefund: false
+          IncludeSubscription: true
+          IncludeSupport: true
+          IncludeTax: false
+          IncludeUpfront: true
+          UseAmortized: true
+          UseBlended: false
+        TimePeriod:
+          End: '2087-06-15T10:00:00+10:00'
+          Start: '2022-02-01T11:00:00+10:00'
+        TimeUnit: MONTHLY
+
+  AWSGuardDuty:
+    Type: AWS::Budgets::Budget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: '1000.0'
+          Unit: USD
+        BudgetName: AWS-GuardDuty
+        BudgetType: COST
+        CostFilters:
+          Service:
+            - Amazon GuardDuty
+        CostTypes:
+          IncludeCredit: false
+          IncludeDiscount: false
+          IncludeOtherSubscription: true
+          IncludeRecurring: true
+          IncludeRefund: false
+          IncludeSubscription: true
+          IncludeSupport: true
+          IncludeTax: false
+          IncludeUpfront: true
+          UseAmortized: false
+          UseBlended: false
+        TimePeriod:
+          End: '2087-06-15T10:00:00+10:00'
+          Start: '2023-01-01T11:00:00+10:00'
+        TimeUnit: MONTHLY
+
+  AWSInspector:
+    Type: AWS::Budgets::Budget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: '1000.0'
+          Unit: USD
+        BudgetName: AWS-Inspector
+        BudgetType: COST
+        CostFilters:
+          Service:
+            - Amazon Inspector
+        CostTypes:
+          IncludeCredit: false
+          IncludeDiscount: false
+          IncludeOtherSubscription: true
+          IncludeRecurring: true
+          IncludeRefund: false
+          IncludeSubscription: true
+          IncludeSupport: true
+          IncludeTax: false
+          IncludeUpfront: true
+          UseAmortized: false
+          UseBlended: false
+        TimePeriod:
+          End: '2087-06-15T10:00:00+10:00'
+          Start: '2022-08-01T10:00:00+10:00'
+        TimeUnit: MONTHLY
+
+  AWSSecurityHub:
+    Type: AWS::Budgets::Budget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: '1000.0'
+          Unit: USD
+        BudgetName: AWS-SecurityHub
+        BudgetType: COST
+        CostFilters:
+          Service:
+            - AWS Security Hub
+        CostTypes:
+          IncludeCredit: false
+          IncludeDiscount: false
+          IncludeOtherSubscription: true
+          IncludeRecurring: true
+          IncludeRefund: false
+          IncludeSubscription: true
+          IncludeSupport: true
+          IncludeTax: false
+          IncludeUpfront: true
+          UseAmortized: false
+          UseBlended: false
+        TimePeriod:
+          End: '2087-06-15T10:00:00+10:00'
+          Start: '2022-08-01T10:00:00+10:00'
+        TimeUnit: MONTHLY
+
+  AWSSecurityLogs:
+    Type: AWS::Budgets::Budget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: '1000.0'
+          Unit: USD
+        BudgetName: AWS-SecurityLogs
+        BudgetType: COST
+        CostFilters:
+          LinkedAccount:
+            - '111111111111'
+          Service:
+            - Amazon Simple Storage Service
+        CostTypes:
+          IncludeCredit: false
+          IncludeDiscount: false
+          IncludeOtherSubscription: true
+          IncludeRecurring: true
+          IncludeRefund: false
+          IncludeSubscription: true
+          IncludeSupport: true
+          IncludeTax: false
+          IncludeUpfront: true
+          UseAmortized: false
+          UseBlended: false
+        TimePeriod:
+          End: '2087-06-15T10:00:00+10:00'
+          Start: '2022-08-01T10:00:00+10:00'
+        TimeUnit: MONTHLY
