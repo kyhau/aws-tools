@@ -77,13 +77,15 @@ def get_eks_meta_dict(topic=TOPIC_A):
 
     ami_variants = {}
     if topic == TOPIC_A:
-        # https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html
+        # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id.html
         for k8s_version in K8S_VERSIONS:
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/arm64/standard/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) (arm64) AMI"
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/x86_64/standard/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) (x86_64) AMI"
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/x86_64/neuron/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) AWS Neuron (x86_64) AMI"
+            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/x86_64/nvidia/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) NVIDIA (x86_64) AMI"
             ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2/recommended"] = "Amazon EKS-optimized Amazon Linux 2 (x86_64) AMI"
             ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-arm64/recommended"] = "Amazon EKS-optimized Amazon Linux 2 (arm64) AMI"
             ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2-gpu/recommended"] = "Amazon EKS-optimized Amazon Linux 2 (GPU) AMI"
-            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/arm64/standard/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) (arm64) AMI"
-            ami_variants[f"/aws/service/eks/optimized-ami/{k8s_version}/amazon-linux-2023/x86_64/standard/recommended"] = "Amazon EKS-optimized Amazon Linux 2023 (AL2023) (x86_64) AMI"
     elif topic == TOPIC_B:
         # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id-bottlerocket.html
         for k8s_version in K8S_VERSIONS:
@@ -92,8 +94,11 @@ def get_eks_meta_dict(topic=TOPIC_A):
             ami_variants[f"/aws/service/bottlerocket/aws-k8s-{k8s_version}-nvidia/arm64/latest"] = "Amazon EKS-optimized Bottlerocket (arm64 NVIDIA) AMI"
             ami_variants[f"/aws/service/bottlerocket/aws-k8s-{k8s_version}-nvidia/x86_64/latest"] = "Amazon EKS-optimized Bottlerocket (x86_64 NVIDIA) AMI"
     elif topic == TOPIC_W:
-        # https://docs.aws.amazon.com/eks/latest/userguide/eks-ami-versions-windows.html
+        # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-windows-ami-id.html
         for k8s_version in K8S_VERSIONS:
+            if float(k8s_version) > float(1.23):
+                ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Core AMI"
+                ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Full AMI"
             ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2019-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2019 Core AMI"
             ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2019 Full AMI"
 
