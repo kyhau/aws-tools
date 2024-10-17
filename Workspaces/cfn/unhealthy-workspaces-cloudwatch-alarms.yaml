@@ -63,7 +63,7 @@ Resources:
     Properties:
       FunctionName: UnhealthyWorkSpacesAlert
       Handler: index.lambda_handler
-      Runtime: python3.8
+      Runtime: python3.12
       MemorySize: 1024
       Timeout: 900
       Code:

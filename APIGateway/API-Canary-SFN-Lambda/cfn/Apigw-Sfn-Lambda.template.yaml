@@ -79,7 +79,7 @@ Resources:
       Handler: index.lambda_handler
       MemorySize: 1024
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: python3.8
+      Runtime: python3.12
       Timeout: 900
       TracingConfig:
         Mode: !Ref FunctionTracingConfigMode
@@ -156,7 +156,7 @@ Resources:
       Handler: index.lambda_handler
       MemorySize: 1024
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: python3.8
+      Runtime: python3.12
       Timeout: 900
       TracingConfig:
         Mode: !Ref FunctionTracingConfigMode
