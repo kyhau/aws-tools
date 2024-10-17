@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2024-10-17
+
+### Added
+   * Added [OpenSearch/cdk/opensearchservice/](OpenSearch/cdk/opensearchservice/) - CDK and workflow for creating OpenSearch Service.
 
 ## 2024-10-11
 

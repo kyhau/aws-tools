@@ -1,0 +1,26 @@
+AppName: Test
+Account: "123456789012"
+Region: ap-southeast-2
+Kms:
+  key_admin_arns:
+    - arn:aws:iam::123456789012:role/key-admin
+    - arn:aws:iam::123456789012:role/deploy-role
+  key_user_arns:
+    - arn:aws:iam::123456789012:role/developer-*
+OpenSearch:
+  domain_admin_uname: opensearch
+  domain_data_node_instance_type: m6g.large.search
+  domain_data_node_instance_count: 3
+  domain_instance_volume_size: 100
+  domain_az_count: 3
+  ## Maximum Master Instance count supported by service is 5, so either have 3 or 5 dedicated node for master
+  domain_master_node_instance_type: m6g.large.search
+  domain_master_node_instance_count: 3
+  ## To enable UW, please make master node count as 3 or 5, and UW node count as minimum 2
+  ## Also change data node to be non T2/T3 as UW does not support T2/T3 as data nodes
+  domain_uw_node_instance_type: ultrawarm1.medium.search
+  domain_uw_node_instance_count: 0
+
+Tags:
+  CostCentre: TODO
+  Project: TODO
