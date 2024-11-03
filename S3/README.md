@@ -76,6 +76,7 @@ Jump to
     - S3 gateway endpoint and interface endpoint
 
 ### Static Websites
+- [S3 static website hosting with AWS Amplify Hosting](https://aws.amazon.com/blogs/aws/simplify-and-enhance-amazon-s3-static-website-hosting-with-aws-amplify/), AWS, 2024-10-30
 - [Hosting Internal HTTPS Static Websites with ALB, S3, and PrivateLink](https://aws.amazon.com/blogs/networking-and-content-delivery/hosting-internal-https-static-websites-with-alb-s3-and-privatelink/), AWS, 2022-12-30
     - ALB, S3 Interface Endpoint, S3
 
