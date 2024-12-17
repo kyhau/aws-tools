@@ -8,6 +8,8 @@
 - [Options for granular control on TLS cipher suites](#options-for-granular-control-on-tls-cipher-suites)
 - [Firewall Manager, WAF, Shield](./WAF-FirewallManager-Shield/README.md)
 - [IAM](./IAM/)
+- [RCP](./Organizations/)
+- [SCP](./Organizations/)
 - [Instance Metadata Service (IMDS)](./Security/aws_metadata/)
 - [GuardDuty](./GuardDuty/)
 - [Security Hub](./SecurityHub/)
