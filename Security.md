@@ -41,6 +41,7 @@
 ---
 ## Useful Articles and Blogs
 
+- [From Detection to Enforcement: Migrating from IMDSv1 to IMDSv2](https://securitylabs.datadoghq.com/articles/from_detection_to_enforcement_migrating_from_imdsv1_to_imdsv2/), DataDog, 2024-12-17
 - [Enhance your AWS cloud infrastructure security with AWS Managed Services (AMS)](https://aws.amazon.com/blogs/mt/enhance-your-aws-cloud-infrastructure-security-with-aws-managed-services-ams/), AWS, 2024-02-16 - a short and nice summary
 - [EC2 Privilege Escalation Through User Data](https://hackingthe.cloud/aws/exploitation/local_ec2_priv_esc_through_user_data/), Nick F., 2024-01-21
 - [Following attackers’ (Cloud)trail in AWS: Methodology and findings in the wild](https://securitylabs.datadoghq.com/articles/following-attackers-trail-in-aws-methodology-findings-in-the-wild/), Datadog, 2023-10-11
