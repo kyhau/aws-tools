@@ -7,7 +7,9 @@
 - [Assume Role in Go v2](#assume-role-go-v2)
 - [OIDC](#oidc)
 
+
 ---
+
 ## Useful Libs and Tools
 
 - AWS IAM Policy Simulator - [IAM Policy Simulator Console](https://policysim.aws.amazon.com/)
@@ -16,13 +18,49 @@
 - [aws.permissions.cloud](https://aws.permissions.cloud/) - uses a variety of information gathered within the IAM Dataset and exposes that information in a clean, easy-to-read format.
 
 
----
-## Useful Libs and Tools
-- [Refining Permissions Using Service Last Accessed Data](
-  https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor.html)
+## Useful Articles and Blogs
+- [The many ways to obtain credentials in AWS](https://www.wiz.io/blog/the-many-ways-to-obtain-credentials-in-aws), Wiz, 2024-12-21
+- [Refining Permissions Using Service Last Accessed Data](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor.html)
 
 
----
+### Different ways to obtain AWS credentials
+
+1. From AWS SDK credential providers
+    1. IAM user access Key
+    2. Environment variables such as `AWS_SECRET_ACCESS_KEY`
+    3. From local file such as `~/.aws/credentials`
+    4. From IMDS
+        - EC2
+            - `IMDS v1: http://169.254.169.254/latest/meta-data/iam/security-credentials/`
+            - `IMDS v2 (IPv6): [fd00:ec2::254]`
+        - ECS/EKS
+            - Environment variables: `AWS_CONTAINER_CREDENTIALS_FULL_URI`, `AWS_CONTAINER_AUTHORIZATION_TOKEN` (e.g. CloudShell and IoT Greengrass 2.0)
+        - EKS Pod Identities
+            - `IP address 169.254.170.23 (or [fd00:ec2::23] for IPv6)`
+            - Variable `AWS_CONTAINER_AUTHORIZATION_TOKEN_FILE` (by default set to `/var/run/secrets/pods.eks.amazonaws.com/serviceaccount/eks-pod-identity-token`) which sets an HTTP header `Authorization` to the value of that file.
+        - IRSA (IAM Roles for Service Accounts)
+            - Environment variables `AWS_WEB_IDENTITY_TOKEN_FILE` and `AWS_ROLE_ARN` set, which are used to make an anonymous call to `sts:AssumeRoleWithWebIdentity`.
+            - By default the token file will be at `/var/run/secrets/eks.amazonaws.com/serviceaccount/token`.
+2. Default Host Management Configuration - SSM (AWS Systems Manager), SSM Agent
+    1. Default Host Management Configuration (DHMC)
+        - Default IAM role named `AWSSystemsManagerDefaultEC2InstanceManagementRole`
+        - Use `http://169.254.169.254/latest/meta-data/identity-credentials/ec2/security-credentials/ec2-instance`
+            - The additional steps involved in getting the creds involve generating a key pair, which is stored in `/var/lib/amazon/ssm/Vault/Store/EC2RegistrationKey`. The key pair within that file can then be used without the need to access the metadata service (ie. access to that file is sufficient for obtaining credentials as if the EC2 was requesting them).
+            - The SSM agent will then store these credentials in `/var/lib/amazon/ssm/credentials` or `/root/.aws/credentials`.
+3. Systems Manager hybrid activation (SSM Agent)
+    - for managing compute resources within an on-prem environment or other non-AWS resources.  This same technique is also used by ECS Anywhere and is part of IoT Greengrass.
+    - The agent is activated using an activation code and activation id, and then creates the files `/var/lib/amazon/ssm/Vault/Store/RegistrationKey` and `/var/lib/amazon/ssm/Vault/Store/InstanceFingerprint` which are then used to obtain credentials.
+4. Cognito
+    -  API `GetCredentialsForIdentity` which is passed an identity ID, which is just a region and GUID value, and will return AWS session credentials.
+5. Datasync
+    - Within `/usr/local/aws-storage-gateway/var/` it will use the files `cert.pem` and `keypair.pem` to authenticate to AWS, and the datasync agent will then use those to potentially sync an S3 bucket and a local directory.
+6. IoT
+    - The API `iot:AssumeRoleWithCertificate`
+7. IAM Roles Anywhere
+
+References: [Ref-1](https://www.wiz.io/blog/the-many-ways-to-obtain-credentials-in-aws)
+
+
 ### AWS User Federation
 - Key notes
     - So this federated session is associated to an IAM User, with Access Key and permission `sts:GetFederationToken` to start.
