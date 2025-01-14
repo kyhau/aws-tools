@@ -3,6 +3,7 @@
 Jump to
 - [Useful Links](#useful-links)
 - [Cognito hosted UI with API Gateway](#cognito-hosted-ui-with-api-gateway)
+- [Cognito machine-to-machine authorization](#cognito-machine-to-machine-authorization)
 - [Exploitation](#exploitation)
 
 ---
@@ -16,7 +17,7 @@ Jump to
 - [Understanding Amazon Cognito Authentication Part 2: Developer Authenticated Identities](https://aws.amazon.com/blogs/mobile/understanding-amazon-cognito-authentication-part-2-developer-authenticated-identities/)
 - [Understanding Amazon Cognito Authentication Part 3: Roles and Policies](https://aws.amazon.com/blogs/mobile/understanding-amazon-cognito-authentication-part-3-roles-and-policies/)
 
----
+
 ## Cognito hosted UI with API Gateway
 
 - https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-cognito-user-pool-authorizer/
@@ -26,7 +27,11 @@ Jump to
 - https://stackoverflow.com/questions/71127723/how-to-use-cognito-id-token-as-authorization-header-for-api-gateway
 
 
----
+## Cognito machine-to-machine authorization
+
+- [How to monitor, optimize, and secure Amazon Cognito machine-to-machine authorization](https://aws.amazon.com/blogs/security/how-to-monitor-optimize-and-secure-amazon-cognito-machine-to-machine-authorization/), AWS, 2025-01-13
+
+
 ## Exploitation
 
 - [Attacking AWS Cognito with Pacu](https://rhinosecuritylabs.com/aws/attacking-aws-cognito-with-pacu-p1/), 2023-10-10
