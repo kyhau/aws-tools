@@ -21,7 +21,9 @@
 ## RCP (Resource Control Policy)
 
 - [aws-samples/resource-control-policy-examples](https://github.com/aws-samples/resource-control-policy-examples)
-- https://github.com/aws-samples/data-perimeter-policy-examples/blob/main/resource_control_policies/identity_perimeter_rcp.json
+- [aws-samples/data-perimeter-policy-examples](https://github.com/aws-samples/data-perimeter-policy-examples/blob/main/resource_control_policies/identity_perimeter_rcp.json)
+- [Preventing unintended encryption of Amazon S3 objects](https://aws.amazon.com/blogs/security/preventing-unintended-encryption-of-amazon-s3-objects/), AWS, 2025-01-15
+    - If your applications don’t use SSE-C as an encryption method, you can block the use of SSE-C with a resource policy applied to an S3 bucket, or by a resource control policy (RCP) applied to an organization in AWS Organizations.
 
 ## SCP (Service control policy)
 

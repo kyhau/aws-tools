@@ -12,6 +12,7 @@ Jump to
     - [Uploading objects](#uploading-objects)
     - [Storing sensitive files](#storing-sensitive-files)
     - [Getting "The bucket does not allow ACLs" Error](#getting-the-bucket-does-not-allow-acls-error)
+- [Bucket policies](#bucket-policies)
 
 ---
 
@@ -96,3 +97,30 @@ Jump to
 - https://docs.aws.amazon.com/AmazonS3/latest/userguide/ensure-object-ownership.html
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html#cfn-s3-bucket-accesscontrol
     - "S3 buckets are created with ACLs disabled by default. Therefore, unless you explicitly set the AWS::S3::OwnershipControls property to enable ACLs, your resource will fail to deploy with any value other than Private. Use cases requiring ACLs are uncommon."
+
+## Bucket policies
+
+### Block the use of SSE-C encryption
+
+If your applications don’t use SSE-C as an encryption method, you can block the use of SSE-C with a resource policy applied to an S3 bucket, or by a resource control policy (RCP) applied to an organization in AWS Organizations.
+   - [Preventing unintended encryption of Amazon S3 objects](https://aws.amazon.com/blogs/security/preventing-unintended-encryption-of-amazon-s3-objects/), AWS, 2025-01-15
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "RestrictSSECObjectUploads",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::<your-bucket-name>/*",
+            "Condition": {
+                "Null": {
+                    "s3:x-amz-server-side-encryption-customer-algorithm": "false"
+                }
+            }
+        }
+    ]
+ }
+```
