@@ -13,6 +13,7 @@
 
 ## Useful Articles and Blogs
 
+- [Using Load Balancer Capacity Unit Reservation to prepare for sharp increases in traffic](https://aws.amazon.com/blogs/networking-and-content-delivery/using-load-balancer-capacity-unit-reservation-to-prepare-for-sharp-increases-in-traffic/), AWS, 2025-01-28
 - [Elastic Load Balancer: Maximizing Benefits and Keeping Costs Low](https://aws.amazon.com/blogs/networking-and-content-delivery/elb-maximizing-benefits-and-keeping-costs-low/), AWS, 2023-10-25
     - Optimize your client connections
         - Connection Pooling
