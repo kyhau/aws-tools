@@ -65,6 +65,7 @@ Knowledge Bases for Amazon Bedrock is a fully managed Retrieval-Augmented Genera
 
 ## Security and Access Control
 
+- [Implementing least privilege access for Amazon Bedrock](https://aws.amazon.com/blogs/security/implementing-least-privilege-access-for-amazon-bedrock/), AWS, 2025-02-11
 - [Implement effective data authorization mechanisms to secure your data used in generative AI applications – part 2](https://aws.amazon.com/blogs/security/implement-effective-data-authorization-mechanisms-to-secure-your-data-used-in-generative-ai-applications-part-2/), AWS, 2025-02-03
 - [Network perimeter security protections for generative AI](https://aws.amazon.com/blogs/security/network-perimeter-security-protections-for-generative-ai/), AWS, 2024-08-07
 - [Private network for data movement in generative AI](https://aws.amazon.com/blogs/networking-and-content-delivery/private-network-for-data-movement-in-generative-ai/), AWS, 2024-07-16
