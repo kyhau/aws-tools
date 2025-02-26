@@ -6,17 +6,18 @@ Jump to
 - [CloudWatch Alarm](#cloudwatch-alarm)
     - [What alerts should you have for serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/)
     - [Some known issues](#some-known-issues)
+- [CloudWatch Application Signals](#cloudwatch-application-signals)
 - [CloudWatch Synthetics](#cloudwatch-synthetics)
 
 
 ---
-## Useful Libs and Tools
+### Useful Libs and Tools
 
 - [awslabs/aws-embedded-metrics-python](https://github.com/awslabs/aws-embedded-metrics-python)
 
 
 ---
-## CloudWatch Agent
+### CloudWatch Agent
 
 - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent-New-Instances-CloudFormation.html
     - append_dimensions, AutoScalingGroupName
@@ -34,9 +35,9 @@ Jump to
 
 
 ---
-## CloudWatch Alarm
+### CloudWatch Alarm
 
-### Some known issues
+#### Some known issues
 
 1. Delay in ASG Cloudwatch Alarm issue
 
@@ -47,8 +48,16 @@ Jump to
     - > CloudWatch being a push based service, the data is pushed from the source service- ELB. Some delay in metrics is expected, which is inherent for any monitoring systems- as they depend on several variables such as delay with the service publishing the metric, propagation delays and ingestion delay within CloudWatch to name a few. I do understand that a consistent 3 or 4 minute delay for ALB metrics is on the higher side. Upon further investigation, **I found out that the ALB metric delay is due to an Ingestion delay time of 3 minutes and this delay cannot be reduced at this stage**.
     Furthermore, please kindly note that the CloudWatch OPS and internal service team are still working on this issue, however, the ETA (Estimated Time of Availability) is still unknown. I sincerely apologize for any inconvenience this has caused on your side."
 
+
 ---
-## CloudWatch Synthetics
+### CloudWatch Application Signals
+
+- [Application Signals supported systems](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-supportmatrix.html)
+- [Use a custom setup to enable Application Signals on Amazon ECS](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-Enable-ECS.html)
+
+
+---
+### CloudWatch Synthetics
 
 - [How to validate authentication with self-signed certificates in Amazon CloudWatch Synthetics](https://aws.amazon.com/blogs/mt/how-to-validate-authentication-with-self-signed-certificates-in-amazon-cloudwatch-synthetics/), AWS, 2023-08-13
 - [Create fine-grained CloudWatch canary schedules with cron expressions](https://aws.amazon.com/blogs/mt/create-fine-grained-cloudwatch-canary-schedules-with-cron-expressions/), AWS, 2021-08-24
