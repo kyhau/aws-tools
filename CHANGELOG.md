@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2025-03-01
+
+### Added
+   * Added [RDS-Aurora/connect_to_aurora_postgres.py](RDS-Aurora/connect_to_aurora_postgres.py) - A Python script to quickly test connection to Aurora PostgreSQL.
+
 ## 2024-10-17
 
 ### Added
