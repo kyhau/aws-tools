@@ -1,13 +1,15 @@
 # AIML
 
 Jump to
-- [Bedrock](./Bedrock/README.md)
-- [SageMaker](./SageMaker/)
+- [Bedrock](../Bedrock/README.md)
+- [SageMaker](../SageMaker/)
 - [Security - Generative AI](#security---generative-ai)
 
 ---
+
 ## Useful Libs and Tools
-- AutoML Toolkit for Deep Learning - [awslabs/autogluon](https://github.com/awslabs/autogluon)
+- [aws-samples/anthropic-on-aws](https://github.com/aws-samples/anthropic-on-aws)
+- [awslabs/autogluon](https://github.com/awslabs/autogluon) - AutoML Toolkit for Deep Learning
 
 Non-AWS
 - Observability
