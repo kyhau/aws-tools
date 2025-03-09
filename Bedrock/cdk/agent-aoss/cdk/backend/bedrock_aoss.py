@@ -4,18 +4,54 @@ from pathlib import Path
 
 from aws_cdk import CfnOutput, CustomResource, Duration, RemovalPolicy
 from aws_cdk import aws_bedrock as bedrock_
+from aws_cdk import aws_ec2 as ec2_
 from aws_cdk import aws_ecr_assets
 from aws_cdk import aws_iam as iam_
 from aws_cdk import aws_lambda as lambda_
 from aws_cdk import aws_opensearchserverless as aoss_
 from aws_cdk import aws_s3 as s3_
 from aws_cdk import aws_s3_notifications as s3n_
+from aws_cdk import aws_ssm as ssm_
 from aws_cdk import custom_resources
 from aws_cdk.aws_logs import RetentionDays
 from constructs import Construct
 
 LAMBDA_COLLECTIONS = (Path(__file__).parents[2] / "app" / "lambda" / "collections").as_posix()
 LAMBDA_KB_SYNC = (Path(__file__).parents[2] / "app" / "lambda" / "kb_sync").as_posix()
+
+
+def get_aoss_vpce_id(scope: Construct) -> str:
+    return ssm_.StringParameter.value_for_string_parameter(
+        scope, "/account/vpce-aoss/aossVpcEndpointId"
+    )
+
+
+def get_aoss_vpce_sg_immutable(scope: Construct, id: str) -> ec2_.ISecurityGroup:
+    aoss_vpce_sg_id = ssm_.StringParameter.value_for_string_parameter(
+        scope, "/account/vpce-aoss/aossVpcEndpointSGId"
+    )
+    return ec2_.SecurityGroup.from_security_group_id(scope, id, aoss_vpce_sg_id, mutable=False)
+
+
+def get_vpc(scope: Construct, id: str = "myVpc") -> ec2_.IVpc:
+    vpc_id = ssm_.StringParameter.value_for_string_parameter(
+        scope, "/account/vpc/vpcId",
+    )
+    return ec2_.Vpc.from_lookup(scope, id, is_default=False, vpc_id=vpc_id)
+
+
+def get_subnets(scope: Construct, id: str = "mySubnets") -> ec2_.SubnetSelection:
+    app_subnet_ids_params = [f"/account/vpc/appSubnetId{i}" for i in range(3)]
+    return ec2_.SubnetSelection(
+        subnets=[
+            ec2_.Subnet.from_subnet_id(
+                scope,
+                f"{id}AppSubnet{i}",
+                ssm_.StringParameter.value_from_lookup(scope, subnet_id_param),
+            )
+            for i, subnet_id_param in enumerate(app_subnet_ids_params)
+        ]
+    )
 
 
 class AgentWithAOSSKB(Construct):
@@ -28,9 +64,9 @@ class AgentWithAOSSKB(Construct):
         scope: Construct,
         id: str,
         agent_instructions: str = "You are a comedian tasked with telling bad jokes regardless of user input",
-        agent_model_id: str = "anthropic.claude-3-haiku-20240307-v1:0",
+        agent_model_id: str = "anthropic.claude-3-5-sonnet-20241022-v2:0",
         agent_alias_name: str = "v1",
-        embeddings_model_id: str = "cohere.embed-multilingual-v3",
+        embeddings_model_id: str = "cohere.embed-english-v3",
         embeddings_vector_size: int = 1024,
         lambda_architecture: lambda_.Architecture | None = None,
         lambda_platform: aws_ecr_assets.Platform | None = None,
@@ -50,10 +86,6 @@ class AgentWithAOSSKB(Construct):
                     lambda_architecture = lambda_.Architecture.X86_64
                     lambda_platform = aws_ecr_assets.Platform.LINUX_AMD64
 
-        base_lambda_policy = iam_.ManagedPolicy.from_aws_managed_policy_name(
-            managed_policy_name="service-role/AWSLambdaBasicExecutionRole"
-        )
-
         # Create S3 bucket that will be used for our storage needs
         bucket = self.create_bucket_storage()
 
@@ -64,7 +96,6 @@ class AgentWithAOSSKB(Construct):
         index_creator, index_lambda_role = self.create_index_collector_function_and_role(
             lambda_architecture,
             lambda_platform,
-            base_lambda_policy,
             collection,
             embeddings_vector_size,
         )
@@ -87,7 +118,6 @@ class AgentWithAOSSKB(Construct):
         self.create_kb_sync_lambda(
             lambda_architecture,
             lambda_platform,
-            base_lambda_policy,
             bucket,
             data_source,
             knowledge_base,
@@ -145,8 +175,8 @@ class AgentWithAOSSKB(Construct):
     def create_opensearch_serverless_collection(self) -> aoss_.CfnCollection:
         collection = aoss_.CfnCollection(
             scope=self,
-            id="AgentAOOSCollection",
-            name=f"{self.id.lower()}-agent-collection",
+            id="AgentCollection",
+            name=f"{self.id.lower()}-collection",
             description=f"{self.id} Embeddings Store",
             standby_replicas="DISABLED",
             type="VECTORSEARCH",
@@ -169,6 +199,8 @@ class AgentWithAOSSKB(Construct):
         )
         collection.add_dependency(encryption_policy)
 
+        aoss_vpce_id = get_aoss_vpce_id(self)
+
         network_policy_document = json.dumps(
             [
                 {
@@ -185,6 +217,7 @@ class AgentWithAOSSKB(Construct):
                     # See also https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-network.html#serverless-network-cli
                     "AllowFromPublic": False,
                     "SourceServices": ["bedrock.amazonaws.com"],
+                    "SourceVPCEs": [aoss_vpce_id],
                 }
             ],
             separators=(",", ":"),
@@ -252,7 +285,6 @@ class AgentWithAOSSKB(Construct):
         self,
         lambda_architecture: lambda_.Architecture,
         lambda_platform: aws_ecr_assets.Platform,
-        base_lambda_policy: iam_.ManagedPolicy,
         collection: aoss_.CfnCollection,
         embeddings_vector_size: int,
     ) -> tuple[CustomResource, iam_.Role]:
@@ -262,7 +294,14 @@ class AgentWithAOSSKB(Construct):
             scope=self,
             id=f"{function_name}-ExecutionRole",
             assumed_by=iam_.ServicePrincipal("lambda.amazonaws.com"),
-            managed_policies=[base_lambda_policy],
+            managed_policies=[
+                iam_.ManagedPolicy.from_aws_managed_policy_name(name) for name in [
+                    "service-role/AWSLambdaBasicExecutionRole",
+                    "service-role/AWSLambdaVPCAccessExecutionRole",
+                    "AWSXrayWriteOnlyAccess",
+                    "CloudWatchLambdaApplicationSignalsExecutionRolePolicy",
+                ]
+            ],
             role_name=f"{self.id}-{function_name}-ExecutionRole",
         )
 
@@ -276,6 +315,10 @@ class AgentWithAOSSKB(Construct):
             )
         )
 
+        acc_vpc = get_vpc(self, id="accVpc")
+        acc_subnets = get_subnets(self, id="acc")
+        aoss_vpce_sg = get_aoss_vpce_sg_immutable(self)
+
         # Lambda CustomResource for creating the index in the Collection
         image = lambda_.DockerImageCode.from_image_asset(
             LAMBDA_COLLECTIONS, platform=lambda_platform
@@ -285,10 +328,17 @@ class AgentWithAOSSKB(Construct):
             id=function_name,
             architecture=lambda_architecture,
             code=image,
+            environment={
+                "AWS_LAMBDA_EXEC_WRAPPER": "/opt/otel-instrument",  # for OpenTelemetry
+            },
             function_name=f"{self.id}-{function_name}",
             role=index_lambda_role,
             log_retention=self.log_retention_in_days,
             timeout=Duration.seconds(60),
+            tracing=lambda_.Tracing.ACTIVE,
+            vpc=acc_vpc,
+            vpc_subnets=acc_subnets,
+            security_groups=[aoss_vpce_sg],
         )
 
         res_provider = custom_resources.Provider(
@@ -402,7 +452,6 @@ class AgentWithAOSSKB(Construct):
         self,
         lambda_architecture: lambda_.Architecture,
         lambda_platform: aws_ecr_assets.Platform,
-        base_lambda_policy: iam_.ManagedPolicy,
         bucket: s3_.Bucket,
         data_source: bedrock_.CfnDataSource,
         knowledge_base: bedrock_.CfnKnowledgeBase,
@@ -417,7 +466,13 @@ class AgentWithAOSSKB(Construct):
             scope=self,
             id=f"{function_name}-ExecutionRole",
             assumed_by=iam_.ServicePrincipal("lambda.amazonaws.com"),
-            managed_policies=[base_lambda_policy],
+            managed_policies=[
+                iam_.ManagedPolicy.from_aws_managed_policy_name(name) for name in [
+                    "service-role/AWSLambdaBasicExecutionRole",
+                    "AWSXrayWriteOnlyAccess",
+                    "CloudWatchLambdaApplicationSignalsExecutionRolePolicy",
+                ]
+            ],
             role_name=f"{self.id}-{function_name}-ExecutionRole",
         )
 
@@ -431,11 +486,13 @@ class AgentWithAOSSKB(Construct):
             environment={
                 "KNOWLEDGE_BASE_ID": knowledge_base.attr_knowledge_base_id,
                 "DATA_SOURCE_ID": data_source.attr_data_source_id,
+                "AWS_LAMBDA_EXEC_WRAPPER": "/opt/otel-instrument",  # for OpenTelemetry
             },
             function_name=f"{self.id}-{function_name}",
             role=kb_lambda_role,
             log_retention=self.log_retention_in_days,
             timeout=Duration.minutes(15),
+            tracing=lambda_.Tracing.ACTIVE,
         )
 
         kb_lambda_role.add_to_policy(
