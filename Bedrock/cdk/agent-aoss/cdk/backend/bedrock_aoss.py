@@ -315,9 +315,10 @@ class AgentWithAOSSKB(Construct):
             )
         )
 
-        acc_vpc = get_vpc(self, id="accVpc")
-        acc_subnets = get_subnets(self, id="acc")
-        aoss_vpce_sg = get_aoss_vpce_sg_immutable(self)
+        # TODO uncomment the following
+        # acc_vpc = get_vpc(self, id="accVpc")
+        # acc_subnets = get_subnets(self, id="acc")
+        # aoss_vpce_sg = get_aoss_vpce_sg_immutable(self)
 
         # Lambda CustomResource for creating the index in the Collection
         image = lambda_.DockerImageCode.from_image_asset(
@@ -336,9 +337,10 @@ class AgentWithAOSSKB(Construct):
             log_retention=self.log_retention_in_days,
             timeout=Duration.seconds(60),
             tracing=lambda_.Tracing.ACTIVE,
-            vpc=acc_vpc,
-            vpc_subnets=acc_subnets,
-            security_groups=[aoss_vpce_sg],
+            # TODO uncomment the following
+            # vpc=acc_vpc,
+            # vpc_subnets=acc_subnets,
+            # security_groups=[aoss_vpce_sg],
         )
 
         res_provider = custom_resources.Provider(
