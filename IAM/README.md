@@ -90,6 +90,7 @@ References: [Ref-1](https://www.wiz.io/blog/the-many-ways-to-obtain-credentials-
 ---
 ### OIDC
 
+- [Identity-provider controls for shared OIDC providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc_secure-by-default.html)
 - OpenIDConnectProvider
     1. `iam:*OpenIDConnectProvider*` permissions are not required when creating an EKS cluster `CreateCluster`, which creates an OpenID Connect provider (issuer) URL for the cluster (e.g. https://oidc.eks.ap-southeast-2.amazonaws.com/id/xxx). And in CloudTrail, there are no `*OpenIDConnectProvider*` events.
     2.  After (1), the cluster has an OpenID Connect issuer URL associated with it. To use IAM roles for service accounts, an IAM OIDC provider must exist for your cluster. See [here](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html).
