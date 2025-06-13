@@ -19,6 +19,7 @@
 ---
 ## Useful Libs and Tools
 
+- Threat Technique Catalog for AWS - https://aws-samples.github.io/threat-technique-catalog-for-aws/
 - Amazon Security Bulletins - https://aws.amazon.com/security/security-bulletins/
 - Amazon Linux Security Center - https://alas.aws.amazon.com/announcements.html
 - Amazon Detective Multiaccount Scripts - [aws-samples/amazon-detective-multiaccount-scripts](https://github.com/aws-samples/amazon-detective-multiaccount-scripts)
