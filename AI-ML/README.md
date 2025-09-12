@@ -1,9 +1,11 @@
 # AIML
 
 Jump to
+- [Useful Libs and Tools](#useful-libs-and-tools)
 - [Bedrock](../Bedrock/README.md)
 - [SageMaker](../SageMaker/)
-- [Security - Generative AI](#security---generative-ai)
+- [GenAI - Patterns](#genai---patterns)
+- [GenAI - Security](#genai---security)
 
 ---
 
@@ -18,6 +20,12 @@ Non-AWS
 - LLM Evaluation Framework
     - [confident-ai/deepeval](https://github.com/confident-ai/deepeval) | [blog post](https://www.confident-ai.com/blog/how-to-build-an-llm-evaluation-framework-from-scratch)
 
-## Security - Generative AI
+
+## GenAI - Patterns
+- [Serverless generative AI architectural patterns – Part 1](https://aws.amazon.com/blogs/compute/serverless-generative-ai-architectural-patterns/), AWS, 2025-09-04
+- [Serverless generative AI architectural patterns – Part 2](https://aws.amazon.com/blogs/compute/part-2-serverless-generative-ai-architectural-patterns/), AWS, 2025-09-04
+
+
+## GenAI - Security
 - [Announcing AWS Security Reference Architecture Code Examples for Generative AI](https://aws.amazon.com/blogs/security/announcing-aws-security-reference-architecture-code-examples-for-generative-ai/), AWS, 2025-04-17
 - [Securing generative AI: Applying relevant security controls](https://aws.amazon.com/blogs/security/securing-generative-ai-applying-relevant-security-controls/), AWS, 2024-03-19
