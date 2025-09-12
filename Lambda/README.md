@@ -88,6 +88,7 @@ Jump to
 
 ## MLTA, Debugging, Error Handling
 
+- [Monitoring network traffic in AWS Lambda functions](https://aws.amazon.com/blogs/compute/monitoring-network-traffic-in-aws-lambda-functions/), AWS, 2025-05-05
 - Lambda Performance Insights
 - Lambda Powertools (Python, Java, TypeScript, .NET) - used as lib or as a layer
     - Distributed tracing

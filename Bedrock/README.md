@@ -3,6 +3,7 @@
 Jump to
 - [Useful Libs and Tools](#useful-libs-and-tools)
 - [Agents for Amazon Bedrock](#agents-for-amazon-bedrock)
+- [API Keys for Bedrock](#api-keys-for-bedrock)
 - [Knowledge Base](#knowledge-base)
 - [Chunking](#chunking)
 - [Guardrails](#guardrails)
@@ -26,6 +27,11 @@ Jump to
 - [Agents for Amazon Bedrock now retain memory (Preview)](https://aws.amazon.com/about-aws/whats-new/2024/07/agents-amazon-bedrock-retain-memory-preview/), AWS, 2024-07
 - [Agents for Amazon Bedrock now support code interpretation (Preview)](https://aws.amazon.com/about-aws/whats-new/2024/07/agents-amazon-bedrock-code-interpretation-preview/), AWS, 2024-07
 
+## API Keys for Bedrock
+
+- [API Keys for Bedrock: A Brief Security Overview](https://medium.com/@adan.alvarez/api-keys-for-bedrock-a-brief-security-overview-2133ed9a2b3f), Adan Alvarez, 2025-07-14
+
+
 ## Knowledge Base
 
 Knowledge Bases for Amazon Bedrock is a fully managed Retrieval-Augmented Generation (RAG) capability that allows you to connect foundation models (FMs) to internal company data sources to deliver relevant and accurate responses.
@@ -44,7 +50,7 @@ Knowledge Bases for Amazon Bedrock is a fully managed Retrieval-Augmented Genera
 
 - Knowledge Bases now supports observability, offering log delivery choice through CloudWatch, S3 buckets, and Firehose streams. This capability provides enhanced visibility and timely insights into the execution of knowledge ingestion steps.
 
-# Chunking
+## Chunking
 
 - How content chunking and parsing works for Amazon Bedrock knowledge bases ([link](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking-parsing.html))
     - Standard chunking

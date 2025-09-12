@@ -10,6 +10,7 @@ Jump to
     - [VPC Enpoints](#vpc-enpoints)
     - [Static Websites](#static-websites)
     - [Uploading objects](#uploading-objects)
+    - [Securing pre-signed URLs](#securing-pre-signed-urls)
     - [Storing sensitive files](#storing-sensitive-files)
     - [Getting "The bucket does not allow ACLs" Error](#getting-the-bucket-does-not-allow-acls-error)
 - [Bucket policies](#bucket-policies)
@@ -84,6 +85,10 @@ Jump to
 
 ### Uploading objects
 - [Patterns for building an API to upload files to Amazon S3](https://aws.amazon.com/blogs/compute/patterns-for-building-an-api-to-upload-files-to-amazon-s3/), AWS, 2023-05-03
+
+
+### Securing pre-signed URLs
+- [Securing Amazon S3 pre-signed URLs for serverless applications](https://aws.amazon.com/blogs/compute/securing-amazon-s3-presigned-urls-for-serverless-applications/), AWS, 2025-05-14
 
 
 ### Storing sensitive files

@@ -8,6 +8,8 @@ Jump to
     - [Secure Lambda function URLs using CloudFront OAC](#secure-lambda-function-urls-using-cloudfront-oac)
     - [How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront](#how-to-limit-the-access-to-your-rest-regional-api-gateway-endpoint-exclusively-to-cloudfront)
 - [Performance and HA](#performance-and-ha)
+ - [How to access private API Gateway endpoints through custom CloudFront distribution using VPC Origins](#how-to-access-private-api-gateway-endpoints-through-custom-cloudfront-distribution-using-vpc-origins)
+ - [Performance and HA](#performance-and-ha)
 - [CloudFront Functions and Lambda@Edge](#cloudfront-functions-and-lambdaedge)
 - [Provision CloudFront with templates in this directory](#steps-to-provision-cloudfront)
     - [My QuickStart CloudFormation templates](./cfn/)
@@ -67,6 +69,12 @@ When using OAC, a typical request and response workflow will be:
 
 See also
 - [Secure your Lambda function URLs using Amazon CloudFront origin access control](https://aws.amazon.com/blogs/networking-and-content-delivery/secure-your-lambda-function-urls-using-amazon-cloudfront-origin-access-control/), AWS, 2024-04-30
+
+
+## How to access private API Gateway endpoints through custom CloudFront distribution using VPC Origins
+
+- [Accessing private Amazon API Gateway endpoints through custom Amazon CloudFront distribution using VPC Origins](https://aws.amazon.com/blogs/compute/accessing-private-amazon-api-gateway-endpoints-through-custom-amazon-cloudfront-distribution-using-vpc-origins/), AWS, 2025-09-09
+
 
 
 ### How to limit the access to your REST Regional API Gateway endpoint exclusively to CloudFront
