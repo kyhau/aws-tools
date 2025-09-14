@@ -41,10 +41,10 @@ function removeOldFile() {
 
 function getQuotasForAccount() {
     SERVICES_FILE="$ALL_AWS_SERVICES_FILE-$1-$2.txt"
-    aws service-quotas list-services --profile $1 --region $2 --query Services[*].ServiceCode --output text | tr '\t' '\n' > $SERVICES_FILE
+    aws service-quotas list-services --profile "$1" --region "$2" --query Services[*].ServiceCode --output text | tr '\t' '\n' > "$SERVICES_FILE"
     if [ $? -ne 0 ]; then
         echo "running command failed: aws service-quotas list-services --region $2 --query Services[*].ServiceCode --output text"
-        rm $SERVICES_FILE
+        rm "$SERVICES_FILE"
         exit
     fi
 
@@ -55,18 +55,18 @@ function getQuotasForAccount() {
 
     removeOldFile $QUOTAS_FILE
     if [ ! -f $QUOTAS_FILE ]; then
-        for service in `cat $SERVICES_FILE`; do
+        for service in $(cat "$SERVICES_FILE"); do
             echo "Get Quotas for profile $1 region $2 service: $service"
-            aws service-quotas list-service-quotas --profile $1 --service-code $service --region $2 --output text >> $QUOTAS_FILE
+            aws service-quotas list-service-quotas --profile "$1" --service-code "$service" --region "$2" --output text >> "$QUOTAS_FILE"
             if [ $? -ne 0 ]; then
                 echo "running command failed: aws service-quotas list-service-quotas --service-code $service --region $1 --output text"
-                rm $QUOTAS_FILE
+                rm "$QUOTAS_FILE"
                 exit
             fi
         done
 
         # remove unwanted lines and choose the columns we are interested in
-        grep -E '^(QUOTAS)' $QUOTAS_FILE | cut -d : -f 6- | sort > $FINAL_QUOTAS_FILE
+        grep -E '^(QUOTAS)' "$QUOTAS_FILE" | cut -d : -f 6- | sort > "$FINAL_QUOTAS_FILE"
     else
         echo "Use cached data for region $FINAL_QUOTAS_FILE"
     fi
@@ -113,4 +113,4 @@ getQuotasForAccount $3 $4
 
 # Find the differences
 echo "========== FINAL DIFFERENCES OUTPUT ========="
-diff -yb --suppress-common-lines -W 450 $OUTPUT_DIRECTORY/final-quotas-$1-$2.txt $OUTPUT_DIRECTORY/final-quotas-$3-$4.txt | tee $OUTPUT_DIRECTORY/quota-differences-$1-$2-$3-$4.txt
+diff -yb --suppress-common-lines -W 450 "$OUTPUT_DIRECTORY/final-quotas-$1-$2.txt" "$OUTPUT_DIRECTORY/final-quotas-$3-$4.txt" | tee "$OUTPUT_DIRECTORY/quota-differences-$1-$2-$3-$4.txt"

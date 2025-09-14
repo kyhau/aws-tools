@@ -45,7 +45,7 @@ def get_json_data_from_file(input_file):
     if input_file.lower().endswith(".yaml"):
         with open(input_file, "rb") as fp:
             yaml_data = fp.read()
-            return io.BytesIO(json.dumps(yaml.load(yaml_data)).encode())
+            return io.BytesIO(json.dumps(yaml.safe_load(yaml_data)).encode())
     else:
         with open(input_file, "r") as f:
             return json.load(f)

@@ -41,6 +41,6 @@ cat > policy.json << EOF
 EOF
 
 aws codeartifact put-repository-permissions-policy --domain ${DOMAIN} --domain-owner ${ACCOUNT_1_ID} \
-  --repository ${REPO} --policy-document file://policy.json --profile ${AWS_PROFILE}
+  --repository "${REPO}" --policy-document file://policy.json --profile "${AWS_PROFILE}"
 
 rm policy.json

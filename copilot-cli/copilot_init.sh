@@ -5,6 +5,11 @@ set -e
 
 # git clone git@github.com:aws-samples/aws-copilot-sample-service.git demo-app
 
+if [ ! -d "demo-app" ]; then
+  echo "Error: demo-app directory does not exist. Please clone the repository first."
+  exit 1
+fi
+
 pushd demo-app
 
 copilot init --app demo --svc api --svc-type 'Load Balanced Web Service' --dockerfile './Dockerfile' --deploy

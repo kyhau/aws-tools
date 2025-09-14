@@ -9,7 +9,7 @@ if [[ -d "${SRC_HOME}/bash-my-aws" ]]; then
   echo "$SRC_HOME already exists"
 else
   echo "Cloning bash-my-aws to $SRC_HOME"
-  git clone https://github.com/bash-my-universe/bash-my-aws.git
+  git clone https://github.com/bash-my-universe/bash-my-aws.git || { echo "Failed to clone bash-my-aws repository"; exit 1; } || { echo "Failed to clone repository"; exit 1; } || { echo "Error: Failed to clone bash-my-aws repository"; exit 1; } || { echo "Failed to clone repository"; exit 1; } || { echo "Error: Failed to clone bash-my-aws repository"; exit 1; }
 fi
 
 # The setup scripts of bash-my-aws assume the default location is ~/.bash-my-aws.

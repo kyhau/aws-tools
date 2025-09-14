@@ -190,6 +190,9 @@ Resources:
           KeyType: HASH
         - AttributeName: activityDate
           KeyType: RANGE
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1

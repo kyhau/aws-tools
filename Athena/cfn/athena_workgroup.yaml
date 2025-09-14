@@ -5,7 +5,7 @@ Parameters:
   OutputLocation:
     Description: The location in S3 where your query results are stored, e.g. s3://path/to/query/bucket/.
     Type: String
-    Default: s3://sample-athena-output-12345789012/
+    Default: !Sub 's3://athena-output-${AWS::AccountId}-${AWS::Region}/'
   WorkgroupName:
     Description: The Athena workgroup name.
     Type: String

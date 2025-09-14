@@ -2,7 +2,7 @@
 
 # Required iam:CreatePolicyVersion
 
-POLICY_ARN="arn:aws:iam::012345678987:policy/ec2_ip_policy"
+POLICY_ARN="${POLICY_ARN:-${1:-arn:aws:iam::012345678987:policy/ec2_ip_policy}}"
 
 cat > newpolicyversion.json << EOL
 {

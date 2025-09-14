@@ -12,6 +12,7 @@ import datetime
 import io
 import json
 import logging
+import os
 from time import mktime
 import yaml
 
@@ -129,7 +130,8 @@ def get_stages(ctx, api_id):
     for page in apig_client.get_paginator("get_stages").paginate(ApiId=api_id).result_key_iters():
         for item in page:
             logging.debug(item)
-            with open(f"{api_id}-{item['StageName']}-{item['DeploymentId']}.json", "w") as outfile:
+            safe_filename = f"{os.path.basename(api_id)}-{os.path.basename(item['StageName'])}-{os.path.basename(item['DeploymentId'])}.json"
+            with open(safe_filename, "w") as outfile:
                 json.dump(item, outfile, cls=DefaultEncoder, sort_keys=True, indent=2)
 
 

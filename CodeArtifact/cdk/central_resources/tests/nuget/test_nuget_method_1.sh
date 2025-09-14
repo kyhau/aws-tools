@@ -24,7 +24,7 @@ dotnet codeartifact-creds install
 repositoryEndpoint=$(aws codeartifact get-repository-endpoint --domain ${DOMAIN_NAME} --domain-owner ${DOMAIN_OWNER} \
   --repository ${TARGET_REPO_NAME} --region ${AWS_REGION} --format nuget | jq -r ".repositoryEndpoint")
 
-dotnet nuget add source ${repositoryEndpoint}v3/index.json --name ${DOMAIN_NAME}/${TARGET_REPO_NAME}
+dotnet nuget add source "${repositoryEndpoint}v3/index.json" --name "${DOMAIN_NAME}/${TARGET_REPO_NAME}"
 
 echo "######################################################################"
 echo "CheckPt: Package a dummy nupkg"

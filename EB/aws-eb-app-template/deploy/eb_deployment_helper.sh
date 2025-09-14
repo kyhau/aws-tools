@@ -112,8 +112,8 @@ if [[ "$DO_DOCKER_BUILD" = true ]] ; then
   cd ${APP_DIR}
 
   echo "CHECK_POINT: Build image ${DEV_TAG}"
-  docker build -t ${DEV_TAG} \
-    --build-arg PIP_INDEX_URL=${PIP_INDEX_URL} \
+  docker build -t "${DEV_TAG}" \
+    --build-arg PIP_INDEX_URL="${PIP_INDEX_URL}" \
     -f Dockerfile.base .
 
   echo "CHECK_POINT: Start the image tests using a container"
@@ -126,7 +126,7 @@ if [[ "$DO_DOCKER_BUILD" = true ]] ; then
 
   echo "CHECK_POINT: Docker image test passed."
 
-  docker tag ${DEV_TAG} ${VERSION_TAG}
+  docker tag "${DEV_TAG}" "${VERSION_TAG}"
 
   if [[ "$DO_DOCKER_PUSH" = true ]] ; then
     echo "CHECK_POINT: Push image ${VERSION_TAG}"
@@ -134,7 +134,7 @@ if [[ "$DO_DOCKER_BUILD" = true ]] ; then
   fi
 
   # Cleanup dev image once we're done
-  docker rmi ${DEV_TAG}
+  docker rmi "${DEV_TAG}"
 fi
 
 ####################################################################################################
@@ -148,7 +148,7 @@ if [[ "$DO_EB_CONFIG_UPDATE" = true ]] ; then
   cd ${APP_DIR}
 
   eb use ${EB_ENV_NAME}
-  eb config --region $EB_REGION --cfg ${EB_ENV_NAME}
+  eb config --region "$EB_REGION" --cfg "${EB_ENV_NAME}"
 
   deactivate    # env_eb_update
 fi
@@ -164,16 +164,16 @@ if [[ "$DO_EB_DEPLOY" = true ]] ; then
   cd ${APP_DIR}
 
   echo "CHECK_POINT: Pull image if it does not exist locally"
-  [[ ! -z $(docker images -q ${VERSION_TAG}) ]] || docker pull ${VERSION_TAG}
+  [[ ! -z $(docker images -q "${VERSION_TAG}") ]] || docker pull "${VERSION_TAG}"
 
   if [[ ${VERSION_TAG} != ${STAGE_TAG} ]]; then
     # Use a "stage" tag instead of a version tag
 
     echo "CHECK_POINT: Tag image ${VERSION_TAG} with ${STAGE_TAG}"
-    docker tag ${VERSION_TAG} ${STAGE_TAG}
+    docker tag "${VERSION_TAG}" "${STAGE_TAG}"
 
     echo "CHECK_POINT: Push image ${STAGE_TAG}"
-    docker push ${STAGE_TAG} || echo "Failure: ${STAGE_TAG} push failed."
+    docker push "${STAGE_TAG}" || echo "Failure: ${STAGE_TAG} push failed."
   fi
 
   export SAMPLE_SERVICE_STAGE_TAG=${STAGE_TAG}
@@ -182,13 +182,13 @@ if [[ "$DO_EB_DEPLOY" = true ]] ; then
   echo "CHECK_POINT: Create Dockerrun.aws.json with ${SAMPLE_SERVICE_STAGE_TAG}"
   cat Dockerrun.aws.json.template | envsubst > Dockerrun.aws.json
 
-  time eb deploy --region $EB_REGION $EB_ENV_NAME
+  time eb deploy --region "$EB_REGION" "$EB_ENV_NAME"
 
   # Cleanup local images
   if [[ ${VERSION_TAG} != ${STAGE_TAG} ]]; then
-    docker rmi ${VERSION_TAG} ${STAGE_TAG}
+    docker rmi "${VERSION_TAG}" "${STAGE_TAG}"
   else
-    docker rmi ${VERSION_TAG}
+    docker rmi "${VERSION_TAG}"
   fi
 
   deactivate    # env_eb_update

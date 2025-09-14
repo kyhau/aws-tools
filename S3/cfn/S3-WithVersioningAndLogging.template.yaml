@@ -32,7 +32,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref BucketName
-      AccessControl: BucketOwnerFullControl
+      ObjectLockEnabled: true
       BucketEncryption: !If
         - SSEEnabled
         - ServerSideEncryptionConfiguration:
@@ -60,6 +60,23 @@ Resources:
         Status: !Ref EnableVersioning
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Statement:
+          - Sid: DenyInsecureConnections
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !Sub '${S3Bucket}/*'
+              - !Ref S3Bucket
+            Condition:
+              Bool:
+                'aws:SecureTransport': 'false'
 
 Outputs:
   BucketArn:

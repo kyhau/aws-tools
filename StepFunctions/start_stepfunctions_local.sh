@@ -8,7 +8,7 @@ DOWNLOAD_URL="https://s3.amazonaws.com/stepfunctionslocal/StepFunctionsLocal.tar
 
 if [ ! -d "${DEFAULT_LOCAL_PKG_ROOT}" ]; then
   echo "INFO: Downloading ${DOWNLOAD_FILE}"
-  mkdir -p ${DEFAULT_LOCAL_PKG_ROOT}
+  mkdir -p "${DEFAULT_LOCAL_PKG_ROOT}"
 
   cd ${DEFAULT_LOCAL_PKG_ROOT}
   wget ${DOWNLOAD_URL}
@@ -18,9 +18,8 @@ if [ ! -d "${DEFAULT_LOCAL_PKG_ROOT}" ]; then
 fi
 
 echo "INFO: Checking version"
-echo "StepFunctionsLocal.jar version: $(java -jar StepFunctionsLocal.jar -v)"
-
 cd ${DEFAULT_LOCAL_PKG_ROOT}
+echo "StepFunctionsLocal.jar version: $(java -jar StepFunctionsLocal.jar -v)"
 nohup java -jar StepFunctionsLocal.jar &
 cd -
 

@@ -4,8 +4,9 @@ sudo apt install graphviz
 pip install cfn-lint pydot
 pip install click
 """
-from os import makedirs, rename, system
+from os import makedirs, rename
 from os.path import basename, join
+import subprocess
 
 import click
 
@@ -20,8 +21,8 @@ def run(template, output_dir):
 
     print(f"Building DOT graph from the CloudFormation template {template}...")
 
-    ret = system(f"cfn-lint {template} -g")
-    if ret != 0:
+    result = subprocess.run(["cfn-lint", template, "-g"], capture_output=True)
+    if result.returncode != 0:
        raise Exception("Failed to call cfn-lint")
 
     default_dot_file = f"{template}.dot"

@@ -33,6 +33,10 @@ Resources:
     Properties:
       BucketName: !Ref AppBucketName
       AccessControl: PublicRead
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
       WebsiteConfiguration:
         IndexDocument: !Ref IndexDoc
         ErrorDocument: !Ref ErrorDoc

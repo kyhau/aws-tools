@@ -59,7 +59,6 @@
     },
     "ApigProdInvokeUserAccessKey": {
       "Type": "AWS::IAM::AccessKey",
-      "DependsOn": ["ApigProdInvokeUser"],
       "Properties": {"UserName": {"Ref": "ApigProdInvokeUser"}}
     },
 

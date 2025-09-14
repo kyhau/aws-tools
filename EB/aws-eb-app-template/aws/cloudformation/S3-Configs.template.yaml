@@ -13,6 +13,18 @@ Parameters:
   BillingTag:
     Description: The value of the Billing tag to be added to the S3 bucket.
     Type: String
+  ReplicationDestinationBucket:
+    Description: The destination bucket ARN for cross-region replication.
+    Type: String
+  ReplicationRoleArn:
+    Description: The IAM role ARN for S3 replication.
+    Type: String
+  ReplicationDestinationBucket:
+    Description: The destination bucket ARN for cross-region replication.
+    Type: String
+  ReplicationRoleArn:
+    Description: The IAM role ARN for S3 replication.
+    Type: String
 Resources:
   S3Bucket:
     Type: 'AWS::S3::Bucket'
@@ -31,6 +43,24 @@ Resources:
             - /
       VersioningConfiguration:
         Status: Enabled
+      ReplicationConfiguration:
+        Role: !Ref ReplicationRoleArn
+        Rules:
+          - Id: ReplicateEverything
+            Status: Enabled
+            Prefix: ''
+            Destination:
+              Bucket: !Ref ReplicationDestinationBucket
+              StorageClass: STANDARD_IA
+      ReplicationConfiguration:
+        Role: !Ref ReplicationRoleArn
+        Rules:
+          - Id: ReplicateEverything
+            Status: Enabled
+            Prefix: ''
+            Destination:
+              Bucket: !Ref ReplicationDestinationBucket
+              StorageClass: STANDARD_IA
       Tags:
         - Key: Billing
           Value: !Ref 'BillingTag'

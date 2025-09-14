@@ -31,8 +31,10 @@ esac; shift; done
 
 [[ ! -z "$KEY_NAME" ]] || (echo "Error: KEY_NAME is not provided. Aborted." && exit 1)
 
-aws ec2 create-key-pair --key-name ${KEY_NAME} --query 'KeyMaterial' --output text --region $REGION --profile $PROFILE > ${KEY_NAME}.pem
-
-chmod 400 ${KEY_NAME}.pem
-
-print_line "Created ${KEY_NAME}.pem"
+if aws ec2 create-key-pair --key-name ${KEY_NAME} --query 'KeyMaterial' --output text --region $REGION --profile $PROFILE > ${KEY_NAME}.pem; then
+  chmod 400 ${KEY_NAME}.pem
+  print_line "Created ${KEY_NAME}.pem"
+else
+  echo "Error: Failed to create key pair ${KEY_NAME}"
+  exit 1
+fi

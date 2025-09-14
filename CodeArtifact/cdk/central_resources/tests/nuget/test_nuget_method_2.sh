@@ -26,6 +26,7 @@ echo "CheckPt: Package a dummy nupkg"
 
 export PKG_NAME="Dummy.CodeArtifact.Test$(date +%Y%m%d%H%M%S)"
 PKG=bin/Debug/${PKG_NAME}.1.0.0.nupkg
+[[ -f ./package_dummy_nupkg.sh ]] || { echo "Error: package_dummy_nupkg.sh not found"; exit 1; }
 ./package_dummy_nupkg.sh
 
 echo "######################################################################"
@@ -42,6 +43,7 @@ aws codeartifact list-package-versions --domain ${DOMAIN_NAME} --domain-owner ${
 echo "######################################################################"
 echo "CheckPt: Test install ${PKG_NAME}"
 
+[[ -f ./create_dummy_consumer_csproj.sh ]] || { echo "Error: create_dummy_consumer_csproj.sh not found"; exit 1; }
 ./create_dummy_consumer_csproj.sh
 
 dotnet add package ${PKG_NAME} --version "1.0.0"

@@ -8,10 +8,10 @@ echo "API URL: ${API_URL}"
 
 echo "Start execution"
 date
-eid=$(curl -X POST ${API_URL} | jq --raw-output '.token')
+eid=$(curl --fail -X POST "${API_URL}" | jq --raw-output '.token')
 echo
 
 echo "Check execution status: ${eid}"
 date
-curl -X GET ${API_URL}/?eid=${eid}
+curl --fail -X GET "${API_URL}/?eid=${eid}"
 echo

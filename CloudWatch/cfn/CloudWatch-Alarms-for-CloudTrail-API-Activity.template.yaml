@@ -41,6 +41,7 @@ Resources:
       MetricName: SecurityGroupEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -73,6 +74,7 @@ Resources:
       MetricName: NetworkAclEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -105,6 +107,7 @@ Resources:
       MetricName: GatewayEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -139,6 +142,7 @@ Resources:
       MetricName: VpcEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -169,6 +173,7 @@ Resources:
       MetricName: EC2InstanceEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -198,6 +203,7 @@ Resources:
       MetricName: EC2LargeInstanceEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -228,6 +234,7 @@ Resources:
       MetricName: CloudTrailEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -257,6 +264,7 @@ Resources:
       MetricName: ConsoleSignInFailureCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -285,6 +293,7 @@ Resources:
       MetricName: AuthorizationFailureCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum
@@ -311,6 +320,7 @@ Resources:
       MetricName: IAMPolicyEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      DatapointsToAlarm: 1
       EvaluationPeriods: 1
       Period: 300
       Statistic: Sum

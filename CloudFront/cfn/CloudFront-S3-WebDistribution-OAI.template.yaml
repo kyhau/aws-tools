@@ -17,6 +17,10 @@ Resources:
     Properties:
       BucketName: !Ref AppBucketName
       AccessControl: BucketOwnerFullControl
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -30,6 +34,10 @@ Resources:
     Properties:
       AccessControl: LogDeliveryWrite
       BucketName: !Ref LogsBucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
       LifecycleConfiguration:
         Rules:
           - Id: DeleteContentAfter1Day
