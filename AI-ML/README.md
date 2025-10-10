@@ -22,6 +22,7 @@ Non-AWS
 
 
 ## GenAI - Patterns
+- [Deploying AI models for inference with AWS Lambda using zip packaging](https://aws.amazon.com/blogs/compute/deploying-ai-models-for-inference-with-aws-lambda-using-zip-packaging/), AWS, 2025-10-02
 - [Serverless generative AI architectural patterns – Part 1](https://aws.amazon.com/blogs/compute/serverless-generative-ai-architectural-patterns/), AWS, 2025-09-04
 - [Serverless generative AI architectural patterns – Part 2](https://aws.amazon.com/blogs/compute/part-2-serverless-generative-ai-architectural-patterns/), AWS, 2025-09-04
 

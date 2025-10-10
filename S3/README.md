@@ -5,6 +5,7 @@ Jump to
 - [Useful Articles and Blogs](#useful-articles-and-blogs)
     - [Data Perimeter at scale](#data-perimeter-at-scale)
     - [CloudTrail Events vs. Server Access Logs](#cloudtrail-events-vs-server-access-logs)
+    - [S3 Table](#s3-table)
     - [S3 Incident Response](#s3-incident-response)
     - [S3 Access Control](#s3-access-control)
     - [VPC Enpoints](#vpc-enpoints)
@@ -56,6 +57,11 @@ Jump to
     - Log Format
         - Non-standard, requires normalisation
     - Lifecycle deletion actions are not caught by CloudTrail data event logs, only Server Access Logs.
+
+
+### S3 Table
+
+- [Should I use managed login or create a custom UI in Amazon Cognito?](https://aws.amazon.com/blogs/security/use-the-hosted-ui-or-create-a-custom-ui-in-amazon-cognito/), AWS, 2025-10-08
 
 
 ### S3 Incident Response
