@@ -11,5 +11,5 @@ Jump to
 
 ---
 ## Useful Articles and Blogs
-
+- [How to configure and verify ACM certificates with trust stores](https://aws.amazon.com/blogs/security/how-to-configure-and-verify-acm-certificates-with-trust-stores/), AWS, 2025-10-08
 - [How to use AWS Private Certificate Authority short-lived certificate mode](https://aws.amazon.com/blogs/security/how-to-use-aws-private-certificate-authority-short-lived-certificate-mode/), AWS, 2023-02-20
