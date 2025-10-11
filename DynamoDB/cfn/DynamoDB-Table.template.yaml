@@ -45,10 +45,10 @@ Parameters:
       - RANGE
     Default: HASH
   TableName:
-    Description: A name for the table. If you don't specify a name, AWS CloudFormation
-      generates a unique physical ID and uses that ID for the table name.
+    Description: A name for the table.
     Type: String
-    Default: ''
+    MinLength: 3
+    MaxLength: 255
 Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table

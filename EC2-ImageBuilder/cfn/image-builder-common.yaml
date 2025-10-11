@@ -17,8 +17,6 @@ Resources:
       AccessControl: LogDeliveryWrite
       VersioningConfiguration:
         Status: Enabled
-      VersioningConfiguration:
-        Status: Enabled
       LifecycleConfiguration:
         Rules:
           - Id: DeleteContentAfter14Days

@@ -147,7 +147,6 @@ Resources:
               - s3:PutObject
               - s3:GetObject
               - s3:DeleteObject
-              - S3:ListObjects
             Effect: Allow
             Resource: !Join
               - ''

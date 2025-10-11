@@ -18,11 +18,5 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v5
 
-      - name: Run yamllint
-        run: yamllint -c ./.github/linters/.yaml-lint.yaml -f parsable --format standard .github/
-
-      - name: Install cfn-lint
-        run: pip install -r requirements-ci.txt
-
-      - name: Run cfn-lint
-        run: cfn-lint --config-file .github/linters/.cfnlintrc
+      - name: Run lint
+        run: make lint

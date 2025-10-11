@@ -3,9 +3,8 @@ Description: Create Athena Workgroup
 
 Parameters:
   OutputLocation:
-    Description: The location in S3 where your query results are stored, e.g. s3://path/to/query/bucket/.
+    Description: The location in S3 where your query results are stored, e.g. s3://athena-output-123456789012-us-east-1/
     Type: String
-    Default: !Sub 's3://athena-output-${AWS::AccountId}-${AWS::Region}/'
   WorkgroupName:
     Description: The Athena workgroup name.
     Type: String
