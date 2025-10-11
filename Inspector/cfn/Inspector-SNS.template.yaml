@@ -39,7 +39,6 @@ Resources:
               - SNS:DeleteTopic
               - SNS:ListSubscriptionsByTopic
               - SNS:GetTopicAttributes
-              - SNS:Receive
               - SNS:AddPermission
               - SNS:Subscribe
             Resource: !Ref SnsTopic
@@ -52,7 +51,6 @@ Resources:
               AWS: !Ref InspectorRegionUserArn
             Action:
               - SNS:Publish
-              - SNS:Receive
               - SNS:Subscribe
             Resource: !Ref SnsTopic
   SnsSubscriptionEmail:
