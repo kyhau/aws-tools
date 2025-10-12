@@ -196,3 +196,22 @@ class TestPromptMultiSelection:
         result = prompt_multi_selection("test", options, pre_selected)
 
         assert result == pre_selected
+
+    def test_multi_selection_transformer_function(self, mocker):
+        """Test that transformer function formats results correctly."""
+        mocker.patch("helper.selector.Choice")
+        mock_inquirer = mocker.patch("helper.selector.inquirer")
+        mock_checkbox = mocker.Mock()
+        mock_checkbox.execute.return_value = ["A", "B"]
+        mock_inquirer.checkbox.return_value = mock_checkbox
+
+        prompt_multi_selection("test", ["A", "B", "C"], [])
+
+        # Get the transformer function that was passed
+        call_kwargs = mock_inquirer.checkbox.call_args[1]
+        transformer = call_kwargs.get("transformer")
+
+        # Test the transformer with different inputs
+        assert transformer(["a"]) == "1 test selected"
+        assert transformer(["a", "b"]) == "2 test selected"
+        assert transformer([]) == "0 test selected"

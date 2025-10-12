@@ -100,6 +100,67 @@ class TestAwsApiHelper:
         # Should not raise
         helper.post_process()
 
+    def test_process_account_generic_exception_handling(self, mocker):
+        """Test that generic exceptions in process_account are handled."""
+        helper = AwsApiHelper()
+        mock_session = mocker.Mock()
+        mock_session.get_available_regions.return_value = ["us-east-1"]
+
+        # Make process_request raise a generic exception
+        helper.process_request = mocker.Mock(side_effect=RuntimeError("Generic error"))
+
+        # Mock traceback.print_exc to verify it's called
+        mock_traceback = mocker.patch('traceback.print_exc')
+
+        result = helper.process_account(mock_session, "123456789012", "us-east-1", "ec2", {})
+
+        # Should handle exception and continue
+        assert result is None
+        mock_traceback.assert_called_once()
+
+    def test_process_account_returns_true_on_success(self, mocker):
+        """Test that process_account returns True when process_request succeeds."""
+        helper = AwsApiHelper()
+        mock_session = mocker.Mock()
+        mock_session.get_available_regions.return_value = ["us-east-1"]
+
+        # Make process_request return a truthy value
+        helper.process_request = mocker.Mock(return_value={"status": "success"})
+
+        result = helper.process_account(mock_session, "123456789012", "us-east-1", "ec2", {})
+
+        # Should return True
+        assert result is True
+
+    def test_process_account_all_regions(self, mocker):
+        """Test that process_account handles 'all' regions."""
+        helper = AwsApiHelper()
+        mock_session = mocker.Mock()
+        mock_session.get_available_regions.return_value = ["us-east-1", "us-west-2", "eu-west-1"]
+
+        helper.process_request = mocker.Mock(return_value=None)
+
+        # Use 'all' for region
+        helper.process_account(mock_session, "123456789012", "all", "ec2", {})
+
+        # Should call process_request for each region
+        assert helper.process_request.call_count == 3
+
+    def test_process_account_none_region(self, mocker):
+        """Test that process_account handles None region (all regions)."""
+        helper = AwsApiHelper()
+        mock_session = mocker.Mock()
+        mock_session.get_available_regions.return_value = ["us-east-1", "us-west-2"]
+
+        helper.process_request = mocker.Mock(return_value=None)
+
+        # Use None for region
+        helper.process_account(mock_session, "123456789012", None, "ec2", {})
+
+        # Should call process_request for each available region
+        assert helper.process_request.call_count == 2
+        mock_session.get_available_regions.assert_called_once_with("ec2")
+
 
 class TestMultiAccountHelper:
     """Test suite for MultiAccountHelper class."""

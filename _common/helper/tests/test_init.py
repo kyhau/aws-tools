@@ -103,3 +103,37 @@ class TestPrintAllConsoleScripts:
         """Test that function works with various package names."""
         result = print_all_console_scripts(package_name)
         assert isinstance(result, list)
+
+    def test_handles_dict_like_entry_points(self, mocker):
+        """Test fallback for dict-like entry_points (older Python)."""
+        # Mock entry_points to return dict-like object without select method
+        mock_eps = {
+            'console_scripts': [
+                mocker.Mock(name='helper', value='helper:main'),
+                mocker.Mock(name='other', value='other:main'),
+            ]
+        }
+        mocker.patch('helper.entry_points', return_value=mock_eps)
+
+        result = print_all_console_scripts("helper")
+
+        # Should use .get() fallback
+        assert isinstance(result, list)
+
+    def test_main_execution(self, mocker, capsys):
+        """Test that __main__ block executes print_all_console_scripts."""
+        # Import and execute the module as __main__
+        import importlib.util
+        import sys
+
+        spec = importlib.util.spec_from_file_location("__main__", "_common/helper/__init__.py")
+        module = importlib.util.module_from_spec(spec)
+
+        # Mock to avoid actual execution affecting tests
+        mock_print = mocker.patch('helper.print_all_console_scripts')
+
+        sys.modules['__main__'] = module
+        spec.loader.exec_module(module)
+
+        # Verify it was called
+        mock_print.assert_called()
