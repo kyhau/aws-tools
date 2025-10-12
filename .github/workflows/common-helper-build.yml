@@ -8,6 +8,10 @@ on:
       - _common/requirements*.txt
       - _common/tox.ini
 
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}
+
 defaults:
   run:
     shell: bash
