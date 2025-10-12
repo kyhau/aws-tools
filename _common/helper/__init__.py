@@ -1,5 +1,3 @@
-import logging
-import os
 from importlib.metadata import entry_points
 from os.path import basename, dirname
 

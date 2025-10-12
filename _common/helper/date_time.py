@@ -1,11 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 DT_FORMAT_YMDHMS = "%Y-%m-%d %H:%M:%S"
 
 
 def dt_local_to_utc(dt):
     """Convert local datetime to UTC."""
-    return datetime.utcfromtimestamp(datetime.timestamp(dt))
+    return datetime.fromtimestamp(datetime.timestamp(dt), tz=timezone.utc)
 
 
 def lookup_range_str_to_timestamp(start_time=None, end_time=None, lookup_hours=1, local_to_utc=False):
@@ -29,4 +29,3 @@ def lookup_range_str_to_timestamp(start_time=None, end_time=None, lookup_hours=1
         start_dt = dt_local_to_utc(start_dt)
 
     return start_dt, end_dt
-

@@ -1,7 +1,6 @@
 """Test cases for docker module."""
 import logging
 
-import pytest
 from click.testing import CliRunner
 from helper.docker import find_dangling_images, find_non_running_containers
 
@@ -213,4 +212,3 @@ class TestFindDanglingImages:
         assert result.exit_code == 0
         assert "ID" in caplog.text
         assert "Tags" in caplog.text
-

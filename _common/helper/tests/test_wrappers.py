@@ -9,8 +9,10 @@ def process(*args, **kwargs):
     assert kwargs.get("data") == [1, 2, 3]
     return 12345
 
+
 def test_init_wrapper_succeeded():
     assert process(data=[1, 2, 3]) == 12345
+
 
 def test_init_wrapper_failed():
     assert process(data=[1, 2]) == 1

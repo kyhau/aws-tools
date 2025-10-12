@@ -1,6 +1,5 @@
 """Test cases for logger module."""
 import logging
-import os
 from os.path import exists, join
 
 import pytest
@@ -72,7 +71,7 @@ class TestInitLogging:
     def test_creates_log_file_directory_if_not_exists(self, unittest_workspace):
         """Test that log file directory is created if it doesn't exist."""
         nested_log_file = join(unittest_workspace, "logs", "nested", "test.log")
-        logger = init_logging(name="test_nested", log_file=nested_log_file)
+        _ = init_logging(name="test_nested", log_file=nested_log_file)
 
         # Directory should be created
         assert exists(join(unittest_workspace, "logs", "nested"))
@@ -129,7 +128,7 @@ class TestInitLogging:
     def test_multiple_initializations_dont_duplicate_handlers(self):
         """Test that multiple initializations don't create duplicate handlers."""
         logger1 = init_logging(name="test_multi")
-        initial_handler_count = len(logger1.handlers)
+        _ = len(logger1.handlers)  # Note: handler count behavior may vary
 
         logger2 = init_logging(name="test_multi")
         # Note: This test verifies behavior; actual implementation may vary
@@ -137,7 +136,7 @@ class TestInitLogging:
 
     def test_default_format_contains_standard_fields(self):
         """Test that default format contains expected fields."""
-        default_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        _ = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"  # Expected format
         logger = init_logging(name="test_default_format")
 
         # Handler should have a formatter
@@ -180,9 +179,8 @@ class TestInitLogging:
 
         # Should have both StreamHandler and FileHandler
         stream_handlers = [h for h in logger.handlers if isinstance(h, logging.StreamHandler)
-                          and not isinstance(h, logging.FileHandler)]
+                           and not isinstance(h, logging.FileHandler)]
         file_handlers = [h for h in logger.handlers if isinstance(h, logging.FileHandler)]
 
         assert len(stream_handlers) >= 1
         assert len(file_handlers) >= 1
-

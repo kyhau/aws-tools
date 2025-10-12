@@ -167,4 +167,3 @@ class TestCheckResponse:
             "ResourceId": "resource-123"
         }
         assert check_response(response) is True
-

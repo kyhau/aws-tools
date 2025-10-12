@@ -40,7 +40,7 @@ def unittest_workspace(unittest_id):
         if exists(dir_name):
             rmtree(dir_name)
             logging.debug(f"Removing workspace {dir_name}")
-    except Exception as e:
+    except Exception:
         logging.error("Failed to delete {}".format(dir_name))
 
 

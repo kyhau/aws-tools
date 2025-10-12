@@ -14,7 +14,9 @@ def json_serial(obj):
     raise TypeError(f"Type {type(obj)} not serializable")
 
 
-dump_json = lambda x: json.dumps(x, default=json_serial, indent=2, sort_keys=True)
+def dump_json(x):
+    """Dump object to JSON string with custom serialization."""
+    return json.dumps(x, default=json_serial, indent=2, sort_keys=True)
 
 
 class DefaultEncoder(json.JSONEncoder):

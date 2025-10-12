@@ -103,4 +103,3 @@ class TestPrintAllConsoleScripts:
         """Test that function works with various package names."""
         result = print_all_console_scripts(package_name)
         assert isinstance(result, list)
-

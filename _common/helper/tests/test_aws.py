@@ -29,7 +29,6 @@ class TestAwsApiHelper:
         """Test that paginate yields items from paginated results."""
         mock_client = mocker.Mock()
         mock_paginator = mocker.Mock()
-        mock_page_iterator = mocker.Mock()
 
         # Set up the mock chain
         mock_client.get_paginator.return_value = mock_paginator
@@ -263,4 +262,3 @@ class TestGetTagValue:
 
         result = get_tag_value(tags, "name")
         assert result == "lowercase"
-
