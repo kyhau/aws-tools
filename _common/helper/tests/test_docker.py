@@ -26,8 +26,8 @@ class TestFindNonRunningContainers:
         mock_client = mocker.Mock()
         mock_client.containers.list.return_value = [mock_container1, mock_container2]
 
-        # Mock docker.from_env()
-        mocker.patch("helper.docker.client", mock_client)
+        # Mock get_client()
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         with caplog.at_level(logging.INFO):
             result = runner.invoke(find_non_running_containers)
@@ -43,7 +43,7 @@ class TestFindNonRunningContainers:
         mock_client = mocker.Mock()
         mock_client.containers.list.return_value = []
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         with caplog.at_level(logging.INFO):
             result = runner.invoke(find_non_running_containers)
@@ -63,7 +63,7 @@ class TestFindNonRunningContainers:
         mock_client = mocker.Mock()
         mock_client.containers.list.return_value = [mock_container]
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         with caplog.at_level(logging.INFO):
             result = runner.invoke(find_non_running_containers, ["--remove"])
@@ -85,7 +85,7 @@ class TestFindNonRunningContainers:
         mock_client = mocker.Mock()
         mock_client.containers.list.return_value = [mock_container]
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         result = runner.invoke(find_non_running_containers, ["--remove"])
 
@@ -105,7 +105,7 @@ class TestFindNonRunningContainers:
         mock_client = mocker.Mock()
         mock_client.containers.list.return_value = [mock_container]
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         result = runner.invoke(find_non_running_containers, ["-r"])
 
@@ -131,7 +131,7 @@ class TestFindDanglingImages:
         mock_client = mocker.Mock()
         mock_client.images.list.return_value = [mock_image1, mock_image2]
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         with caplog.at_level(logging.INFO):
             result = runner.invoke(find_dangling_images)
@@ -147,7 +147,7 @@ class TestFindDanglingImages:
         mock_client = mocker.Mock()
         mock_client.images.list.return_value = []
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         with caplog.at_level(logging.INFO):
             result = runner.invoke(find_dangling_images)
@@ -166,7 +166,7 @@ class TestFindDanglingImages:
         mock_client = mocker.Mock()
         mock_client.images.list.return_value = [mock_image]
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         with caplog.at_level(logging.INFO):
             result = runner.invoke(find_dangling_images, ["--remove"])
@@ -186,7 +186,7 @@ class TestFindDanglingImages:
         mock_client = mocker.Mock()
         mock_client.images.list.return_value = [mock_image]
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         result = runner.invoke(find_dangling_images, ["-r"])
 
@@ -204,7 +204,7 @@ class TestFindDanglingImages:
         mock_client = mocker.Mock()
         mock_client.images.list.return_value = [mock_image]
 
-        mocker.patch("helper.docker.client", mock_client)
+        mocker.patch("helper.docker.get_client", return_value=mock_client)
 
         with caplog.at_level(logging.INFO):
             result = runner.invoke(find_dangling_images)
