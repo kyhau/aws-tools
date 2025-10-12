@@ -73,9 +73,15 @@ jobs:
       - name: Upload coverage reports to Codecov
         if: matrix.python-version == '3.12'
         uses: codecov/codecov-action@v4
+        continue-on-error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: _common/coverage-py312.xml
-          fail_ci_if_error: true
+          files: ./coverage-py312.xml
+          fail_ci_if_error: false
           flags: python-${{ matrix.python-version }}
           name: codecov-python-${{ matrix.python-version }}
+          root_dir: _common
+          working-directory: _common
+          verbose: true
