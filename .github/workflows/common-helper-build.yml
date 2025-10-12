@@ -94,13 +94,11 @@ jobs:
 
       - name: Upload coverage reports to Codecov
         if: matrix.python-version == '3.12'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v3
         continue-on-error: true
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
           files: _common/coverage-py312.xml
           fail_ci_if_error: false
           flags: helper
           name: codecov-helper
           verbose: true
-          slug: kyhau/aws-tools
