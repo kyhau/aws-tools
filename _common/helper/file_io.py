@@ -13,8 +13,10 @@ from os.path import exists, join
 
 import yaml
 
-# Create directory if not exists
-create_dir = lambda d: makedirs(d, 0o755, exist_ok=True)
+
+def create_dir(d):
+    """Create directory if not exists."""
+    makedirs(d, 0o755, exist_ok=True)
 
 
 ################################################################################
