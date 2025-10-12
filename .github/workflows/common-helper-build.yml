@@ -36,7 +36,7 @@ jobs:
           args: --all-projects --severity-threshold=high --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: snyk.sarif
 
@@ -94,7 +94,7 @@ jobs:
 
       - name: Upload coverage reports to Codecov
         if: matrix.python-version == '3.12'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         continue-on-error: true
         with:
           files: _common/coverage-py312.xml
