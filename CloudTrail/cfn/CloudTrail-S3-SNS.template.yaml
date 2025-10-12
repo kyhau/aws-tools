@@ -15,7 +15,9 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref 'BucketName'
-      AccessControl: AuthenticatedRead
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerPreferred
       VersioningConfiguration:
         Status: Suspended
   S3BucketPolicy:
