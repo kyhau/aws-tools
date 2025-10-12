@@ -6,10 +6,11 @@
 
 ## Build
 
-```
+```bash
 # Create virtual env and install the required packages
+# Supports Python 3.10, 3.11, and 3.12
 
-virtualenv env -p python3.8
+virtualenv env -p python3.12
 . env/bin/activate
 pip install -r requirements.txt
 ```
@@ -23,6 +24,6 @@ tox -r
 
 ## Build Wheel
 
-```
-python setup.py bdist_wheel --universal
+```bash
+python setup.py bdist_wheel
 ```
