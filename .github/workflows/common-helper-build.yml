@@ -5,8 +5,10 @@ on:
     paths:
       - .github/workflows/common-helper-build.yml
       - _common/**.py
-      - _common/requirements*.txt
-      - _common/tox.ini
+      - _common/pyproject.toml
+      - _common/poetry.lock
+      - _common/.flake8
+      - _common/Makefile
 
 concurrency:
   cancel-in-progress: true
@@ -43,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.12, 3.11, "3.10"]
+        python-version: [3.12, 3.11]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -53,26 +55,42 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v4
+        with:
+          path: _common/.venv
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r _common/requirements-build.txt
+        working-directory: _common
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
 
-      - name: Set tox setting
-        id: ToxSetting
-        run: |
-          if [[ "${{ matrix.python-version }}" == "3.10" ]]; then
-            echo "toxenv=py310" >> $GITHUB_OUTPUT
-          elif [[ "${{ matrix.python-version }}" == "3.11" ]]; then
-            echo "toxenv=py311" >> $GITHUB_OUTPUT
-          else
-            echo "toxenv=py312" >> $GITHUB_OUTPUT
-          fi
+      - name: Install project
+        working-directory: _common
+        run: poetry install --no-interaction
 
-      - name: Test with tox
+      - name: Run tests and checks
         working-directory: _common
         run: |
-          tox -r -e ${{ steps.ToxSetting.outputs.toxenv }}
+          poetry run pip check
+          if [[ "${{ matrix.python-version }}" == "3.12" ]]; then
+            # Run with coverage for Python 3.12
+            poetry run pytest --cov=. --cov-report=xml:coverage-py312.xml --cov-report=term --cov-fail-under=80 --junit-xml=junit-py312.xml helper/tests
+            poetry run flake8 helper
+            poetry build
+          else
+            # Run tests without coverage for other versions
+            poetry run pytest --junit-xml=junit-py${{ matrix.python-version }}.xml helper/tests
+          fi
 
       - name: Upload coverage reports to Codecov
         if: matrix.python-version == '3.12'
