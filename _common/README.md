@@ -1,8 +1,9 @@
 # helper
 
-[![githubactions](https://github.com/kyhau/aws-tools/workflows/Build-Test/badge.svg)](https://github.com/kyhau/aws-tools/actions)
-[![travisci](https://travis-ci.org/kyhau/aws-tools.svg?branch=master)](https://travis-ci.org/kyhau/aws-tools)
-[![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
+[![githubactions](https://github.com/kyhau/aws-tools/workflows/Common%20Helper%20-%20Build/badge.svg)](https://github.com/kyhau/aws-tools/actions)
+[![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
+
+> **Note:** The codecov badge shows repository-wide coverage. The `helper` package maintains 80%+ coverage with comprehensive tests.
 
 A collection of common helper functions for AWS development and operations.
 
