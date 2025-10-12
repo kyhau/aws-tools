@@ -181,4 +181,3 @@ class TestDecimalEncoder:
         result = json.dumps(data, cls=DecimalEncoder)
         decoded = json.loads(result)
         assert decoded == data
-
