@@ -1,4 +1,6 @@
 """Test cases for docker module."""
+import logging
+
 import pytest
 from click.testing import CliRunner
 from helper.docker import find_dangling_images, find_non_running_containers
@@ -7,7 +9,7 @@ from helper.docker import find_dangling_images, find_non_running_containers
 class TestFindNonRunningContainers:
     """Test suite for find_non_running_containers function."""
 
-    def test_finds_and_lists_exited_containers(self, mocker):
+    def test_finds_and_lists_exited_containers(self, mocker, caplog):
         """Test that exited containers are found and listed."""
         runner = CliRunner()
 
@@ -28,13 +30,14 @@ class TestFindNonRunningContainers:
         # Mock docker.from_env()
         mocker.patch("helper.docker.client", mock_client)
 
-        result = runner.invoke(find_non_running_containers)
+        with caplog.at_level(logging.INFO):
+            result = runner.invoke(find_non_running_containers)
 
         assert result.exit_code == 0
-        assert "Found 2 non-running containers" in result.output
+        assert "Found 2 non-running containers" in caplog.text
         mock_client.containers.list.assert_called_once_with(filters={"status": "exited"})
 
-    def test_no_containers_found(self, mocker):
+    def test_no_containers_found(self, mocker, caplog):
         """Test when no exited containers exist."""
         runner = CliRunner()
 
@@ -43,12 +46,13 @@ class TestFindNonRunningContainers:
 
         mocker.patch("helper.docker.client", mock_client)
 
-        result = runner.invoke(find_non_running_containers)
+        with caplog.at_level(logging.INFO):
+            result = runner.invoke(find_non_running_containers)
 
         assert result.exit_code == 0
-        assert "Found 0 non-running containers" in result.output
+        assert "Found 0 non-running containers" in caplog.text
 
-    def test_removes_containers_with_flag(self, mocker):
+    def test_removes_containers_with_flag(self, mocker, caplog):
         """Test that containers are removed when --remove flag is used."""
         runner = CliRunner()
 
@@ -62,11 +66,12 @@ class TestFindNonRunningContainers:
 
         mocker.patch("helper.docker.client", mock_client)
 
-        result = runner.invoke(find_non_running_containers, ["--remove"])
+        with caplog.at_level(logging.INFO):
+            result = runner.invoke(find_non_running_containers, ["--remove"])
 
         assert result.exit_code == 0
         mock_container.remove.assert_called_once()
-        assert "Removed non-running images" in result.output
+        assert "Removed non-running images" in caplog.text
 
     def test_handles_removal_errors_gracefully(self, mocker):
         """Test that removal errors are caught and logged."""
@@ -112,7 +117,7 @@ class TestFindNonRunningContainers:
 class TestFindDanglingImages:
     """Test suite for find_dangling_images function."""
 
-    def test_finds_and_lists_dangling_images(self, mocker):
+    def test_finds_and_lists_dangling_images(self, mocker, caplog):
         """Test that dangling images are found and listed."""
         runner = CliRunner()
 
@@ -129,13 +134,14 @@ class TestFindDanglingImages:
 
         mocker.patch("helper.docker.client", mock_client)
 
-        result = runner.invoke(find_dangling_images)
+        with caplog.at_level(logging.INFO):
+            result = runner.invoke(find_dangling_images)
 
         assert result.exit_code == 0
-        assert "Found 2 dangling images" in result.output
+        assert "Found 2 dangling images" in caplog.text
         mock_client.images.list.assert_called_once_with(filters={"dangling": True})
 
-    def test_no_dangling_images(self, mocker):
+    def test_no_dangling_images(self, mocker, caplog):
         """Test when no dangling images exist."""
         runner = CliRunner()
 
@@ -144,12 +150,13 @@ class TestFindDanglingImages:
 
         mocker.patch("helper.docker.client", mock_client)
 
-        result = runner.invoke(find_dangling_images)
+        with caplog.at_level(logging.INFO):
+            result = runner.invoke(find_dangling_images)
 
         assert result.exit_code == 0
-        assert "Found 0 dangling images" in result.output
+        assert "Found 0 dangling images" in caplog.text
 
-    def test_removes_dangling_images_with_flag(self, mocker):
+    def test_removes_dangling_images_with_flag(self, mocker, caplog):
         """Test that dangling images are pruned when --remove flag is used."""
         runner = CliRunner()
 
@@ -162,11 +169,12 @@ class TestFindDanglingImages:
 
         mocker.patch("helper.docker.client", mock_client)
 
-        result = runner.invoke(find_dangling_images, ["--remove"])
+        with caplog.at_level(logging.INFO):
+            result = runner.invoke(find_dangling_images, ["--remove"])
 
         assert result.exit_code == 0
         mock_client.images.prune.assert_called_once_with(filters={"dangling": True})
-        assert "Removed dangling images" in result.output
+        assert "Removed dangling images" in caplog.text
 
     def test_short_flag_works_for_removal(self, mocker):
         """Test that -r short flag works for image removal."""
@@ -186,7 +194,7 @@ class TestFindDanglingImages:
         assert result.exit_code == 0
         mock_client.images.prune.assert_called_once_with(filters={"dangling": True})
 
-    def test_lists_image_details(self, mocker):
+    def test_lists_image_details(self, mocker, caplog):
         """Test that image IDs and tags are displayed."""
         runner = CliRunner()
 
@@ -199,9 +207,10 @@ class TestFindDanglingImages:
 
         mocker.patch("helper.docker.client", mock_client)
 
-        result = runner.invoke(find_dangling_images)
+        with caplog.at_level(logging.INFO):
+            result = runner.invoke(find_dangling_images)
 
         assert result.exit_code == 0
-        assert "ID" in result.output
-        assert "Tags" in result.output
+        assert "ID" in caplog.text
+        assert "Tags" in caplog.text
 
