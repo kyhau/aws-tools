@@ -5,7 +5,17 @@ import docker
 from helper.logger import init_logging
 
 init_logging()
-client = docker.from_env()
+
+# Lazy initialization to avoid failures when Docker isn't running
+_client = None
+
+
+def get_client():
+    """Get or create Docker client."""
+    global _client
+    if _client is None:
+        _client = docker.from_env()
+    return _client
 
 
 @click.command()
@@ -13,7 +23,7 @@ client = docker.from_env()
 def find_non_running_containers(remove):
     """Find non-running containers."""
 
-    containers = client.containers.list(filters={"status": "exited"})
+    containers = get_client().containers.list(filters={"status": "exited"})
     logging.info("Found %d non-running containers", len(containers))
     if len(containers) > 0:
         logging.info("ContainerId\tStatus\tImage")
@@ -35,7 +45,7 @@ def find_non_running_containers(remove):
 def find_dangling_images(remove):
     """Find dangling images."""
 
-    images = client.images.list(filters={"dangling": True})
+    images = get_client().images.list(filters={"dangling": True})
     logging.info("Found %d dangling images", len(images))
     if len(images) > 0:
         logging.info("ID\t\tTags")
@@ -43,5 +53,5 @@ def find_dangling_images(remove):
             logging.info(f"{i.id}\t{i.tags}")
 
         if remove:
-            client.images.prune(filters={"dangling": True})
+            get_client().images.prune(filters={"dangling": True})
             logging.info("Removed dangling images")
