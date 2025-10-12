@@ -16,7 +16,7 @@ def find_non_running_containers(remove):
     containers = client.containers.list(filters={"status": "exited"})
     logging.info("Found %d non-running containers", len(containers))
     if len(containers) > 0:
-        logging.info(f"ContainerId\tStatus\tImage")
+        logging.info("ContainerId\tStatus\tImage")
         for c in containers:
             logging.info(f"{c.short_id}\t{c.status}\t{c.image.tags}")
 
