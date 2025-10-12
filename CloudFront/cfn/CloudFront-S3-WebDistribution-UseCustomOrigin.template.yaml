@@ -80,7 +80,9 @@ Resources:
         - StageMap
         - !Ref 'StageName'
         - RootBucketName
-      AccessControl: PublicRead
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerPreferred
       WebsiteConfiguration:
         IndexDocument: !Ref 'IndexDoc'
         ErrorDocument: !Ref 'ErrorDoc'
