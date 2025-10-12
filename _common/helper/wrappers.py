@@ -10,8 +10,8 @@ def init_wrapper(func):
         logging.debug("At wrapper")
         logging.debug(kwargs)
 
-        #app_name = kwargs.get("app_name")
-        #config_file = kwargs.get("config_file")
+        # app_name = kwargs.get("app_name")
+        # config_file = kwargs.get("config_file")
 
         try:
             logging.debug("Start running actual function")

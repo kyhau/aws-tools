@@ -28,10 +28,10 @@ def get_ecs_meta_dict(topic=TOPIC_A):
             "/aws/service/ecs/optimized-ami/amazon-linux-2023/arm64/recommended": "Amazon ECS-Optimized Amazon Linux 2023 (arm64) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2023/gpu/recommended": "Amazon ECS-Optimized Amazon Linux 2023 (GPU) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2023/inf/recommended": "Amazon ECS-Optimized Amazon Linux 2023 (Neuron) AMI",
-            "/aws/service/ecs/optimized-ami/amazon-linux-2022/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (x86_64) AMI",
-            "/aws/service/ecs/optimized-ami/amazon-linux-2022/arm64/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (arm64) AMI",
-            "/aws/service/ecs/optimized-ami/amazon-linux-2022/gpu/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (GPU) AMI",
-            "/aws/service/ecs/optimized-ami/amazon-linux-2022/inf/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (Neuron) AMI",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2022/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (x86_64) AMI (deprecated - use AL2023)",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2022/arm64/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (arm64) AMI (deprecated - use AL2023)",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2022/gpu/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (GPU) AMI (deprecated - use AL2023)",
+            "/aws/service/ecs/optimized-ami/amazon-linux-2022/inf/recommended": "Amazon ECS-Optimized Amazon Linux 2022 (Neuron) AMI (deprecated - use AL2023)",
             "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended": "Amazon ECS-Optimized Amazon Linux 2 (x86_64) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2/arm64/recommended": "Amazon ECS-Optimized Amazon Linux 2 (arm64) AMI",
             "/aws/service/ecs/optimized-ami/amazon-linux-2/gpu/recommended": "Amazon ECS-Optimized Amazon Linux 2 (GPU) AMI",
@@ -49,6 +49,8 @@ def get_ecs_meta_dict(topic=TOPIC_A):
     if topic == TOPIC_W:
         # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-windows-ami-versions.html
         return {
+            "/aws/service/ami-windows-latest/Windows_Server-2025-English-Core-ECS_Optimized": "Amazon ECS-optimized Windows Server 2025 Core AMI",
+            "/aws/service/ami-windows-latest/Windows_Server-2025-English-Full-ECS_Optimized": "Amazon ECS-optimized Windows Server 2025 Full AMI",
             "/aws/service/ami-windows-latest/Windows_Server-2022-English-Core-ECS_Optimized": "Amazon ECS-optimized Windows Server 2022 Core AMI",
             "/aws/service/ami-windows-latest/Windows_Server-2022-English-Full-ECS_Optimized": "Amazon ECS-optimized Windows Server 2022 Full AMI",
             "/aws/service/ami-windows-latest/Windows_Server-2019-English-Core-ECS_Optimized": "Amazon ECS-optimized Windows Server 2019 Core AMI",
@@ -58,21 +60,22 @@ def get_ecs_meta_dict(topic=TOPIC_A):
 
 def get_eks_meta_dict(topic=TOPIC_A):
     K8S_VERSIONS = [
+        "1.32",  # Added - check if available
         "1.31",
         "1.30",
         "1.29",
         "1.28",
         "1.27",
-        "1.26",
-        "1.25",
-        "1.24",
-        "1.23",
-        "1.22",
-        "1.21",
-        "1.20",
-        "1.19",
-        "1.18",
-        "1.17",
+        "1.26",  # Approaching EOL
+        "1.25",  # Approaching EOL
+        "1.24",  # End of support
+        "1.23",  # End of support
+        "1.22",  # End of support
+        "1.21",  # End of support
+        "1.20",  # End of support
+        "1.19",  # End of support
+        "1.18",  # End of support
+        "1.17",  # End of support
     ]
 
     ami_variants = {}
@@ -96,7 +99,11 @@ def get_eks_meta_dict(topic=TOPIC_A):
     elif topic == TOPIC_W:
         # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-windows-ami-id.html
         for k8s_version in K8S_VERSIONS:
-            if float(k8s_version) > float(1.23):
+            if float(k8s_version) >= float(1.30):
+                # Windows Server 2025 support started with EKS 1.30+
+                ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2025-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2025 Core AMI"
+                ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2025-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2025 Full AMI"
+            elif float(k8s_version) > float(1.23):
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Core AMI"
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Full AMI"
             ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2019-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2019 Core AMI"

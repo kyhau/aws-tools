@@ -40,7 +40,7 @@ class TestPromptSingleSelection:
         mock_select.execute.return_value = "A"
         mock_inquirer.select.return_value = mock_select
 
-        result = prompt_single_selection("test", ["A", "B"], message="Custom message")
+        _ = prompt_single_selection("test", ["A", "B"], message="Custom message")
 
         mock_inquirer.select.assert_called_once_with(
             message="Custom message",
@@ -196,4 +196,3 @@ class TestPromptMultiSelection:
         result = prompt_multi_selection("test", options, pre_selected)
 
         assert result == pre_selected
-

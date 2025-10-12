@@ -14,10 +14,10 @@ def init_logging(
 
     E.g. format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     """
-    #logging.basicConfig(
-    #    level=log_level,
-    #    format=f"{log_time}%(levelname)-8s {package_name}: %(message)s",
-    #)
+    # logging.basicConfig(
+    #     level=log_level,
+    #     format=f"{log_time}%(levelname)-8s {package_name}: %(message)s",
+    # )
     logging.getLogger().setLevel(log_level)
     logging.getLogger("botocore").setLevel(logging.CRITICAL)
     logging.getLogger("boto3").setLevel(logging.CRITICAL)

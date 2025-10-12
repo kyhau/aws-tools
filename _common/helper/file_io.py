@@ -13,8 +13,10 @@ from os.path import exists, join
 
 import yaml
 
-# Create directory if not exists
-create_dir = lambda d: makedirs(d, 0o755, exist_ok=True)
+
+def create_dir(d):
+    """Create directory if not exists."""
+    makedirs(d, 0o755, exist_ok=True)
 
 
 ################################################################################
@@ -151,8 +153,8 @@ class IniFileHelper:
                 val = self.config.get(section, option)
                 if option in config_dict.keys() and config_dict[option].get("multilines") is True:
                     ret[option] = [
-                        n.strip() for n in re.split(";|, |\n", self.config.get(section, option)) \
-                        if n.strip() and not n.strip().startswith("#") # ignore commented line
+                        n.strip() for n in re.split(";|, |\n", self.config.get(section, option))
+                        if n.strip() and not n.strip().startswith("#")  # ignore commented line
                     ]
                 else:
                     ret[option] = val
