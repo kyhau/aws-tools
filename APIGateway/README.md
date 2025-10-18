@@ -10,6 +10,7 @@ Jump to
 - [AWS API Gateway vs. Application Load Balancer (ALB)](#aws-api-gateway-vs-application-load-balancer-alb)
 - [From API Gateway to private ALB](#from-api-gateway-to-private-alb)
 - [mTLS](#mtls)
+- [Deployment Patterns](#deployment-patterns)
 - [Managing multi-tenant APIs using Amazon API Gateway](https://aws.amazon.com/blogs/compute/managing-multi-tenant-apis-using-amazon-api-gateway/), AWS, 2022-06-22
 - [Architecting multiple microservices behind a single domain with API Gateway](https://aws.amazon.com/blogs/compute/architecting-multiple-microservices-behind-a-single-domain-with-amazon-api-gateway/), AWS, 2020-09-18
 - [API Gateway for multi account architecture](https://www.levvel.io/resource-library/aws-api-gateway-for-multi-account-architecture), levvel.io, 2019-10-02
@@ -57,6 +58,12 @@ To take advantage of the perimeter protection layer built with CloudFront, AWS W
 3. CloudFront can sign the request with AWS Signature Version 4 by using Lambda@Edge before it sends the request to API Gateway. Configured AWS Identity and Access Management (IAM) authorization in API Gateway validates the signature and verifies the identity of the requester.
     - an additional Lambda@Edge cost in this approach
     - support all REST, HTTP, and WebSocket endpoints
+
+
+---
+## Deployment Patterns
+
+- [Zero-downtime blue-green deployments with Amazon API Gateway](https://aws.amazon.com/blogs/compute/zero-downtime-blue-green-deployments-with-amazon-api-gateway/), AWS, 2025-10-16
 
 
 ---
