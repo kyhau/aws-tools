@@ -246,7 +246,7 @@ Test and coverage configuration is in `pyproject.toml`:
 
 ### Code Quality
 
-Linting configuration in `.flake8` file with max line length of 100.
+Linting configuration in `.flake8` file with max line length of 120.
 
 Code formatting uses [black](https://black.readthedocs.io/) with default settings.
 
