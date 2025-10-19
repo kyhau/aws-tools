@@ -5,6 +5,7 @@ on:
     paths:
       - .github/**
       - '**/cfn/*.yaml'
+      - '**/cfn/*.yml'
 
 defaults:
   run:
