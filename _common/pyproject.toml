@@ -44,12 +44,6 @@ packages = [{include = "helper"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-boto3 = "1.35.19"
-click = "8.1.7"
-docker = "7.1.0"
-InquirerPy = "0.3.4"
-prompt-toolkit = ">=3.0.13"
-pyyaml = "6.0.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "~8.4"
