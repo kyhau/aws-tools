@@ -1,10 +1,14 @@
 # aws-tools
 
-[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/common-helper-build.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/common-helper-build.yml)
-[![githubactions](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml)
-[![codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
+[![Common Helper Build](https://github.com/kyhau/aws-tools/actions/workflows/common-helper-build.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/common-helper-build.yml)
+[![Lint](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/lint.yaml)
+[![Codecov](https://codecov.io/gh/kyhau/aws-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/kyhau/aws-tools)
 [![CodeQL](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/codeql-analysis.yml)
-[![SecretsScan](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml)
+[![Secrets Scan](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml/badge.svg)](https://github.com/kyhau/aws-tools/actions/workflows/secrets-scan.yml)
+![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)
+![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/kyhau/aws-tools)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://en.wikipedia.org/wiki/MIT_License)
 
 This repository includes some tools and sample code I created for building with AWS.<br>
 All notable changes to this project are documented in [CHANGELOG](./CHANGELOG.md).
@@ -21,14 +25,33 @@ Jump to:
 ---
 
 ## Built with
-- Python, Shell, PowerShell, JavaScript, TypeScript, Go, Docker
-- [AWS CDK v2](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [AWS SAM](https://aws.amazon.com/serverless/sam/), AWS CloudFormation are used for IaC.
-- [cfn-lint](https://github.com/aws-cloudformation/cfn-lint) is used for to validating CloudFormation templates.
-- [black](https://github.com/psf/black) is used for Python code formatter. [flake8](https://github.com/PyCQA/flake8) is used for Python linting checks.
-- [CodeQL](https://codeql.github.com) is [enabled](.github/workflows/codeql-analysis.yml) in this repository.
-- [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is [enabled](.github/dependabot.yml) for auto dependency updates.
-- [Gitleaks](https://github.com/gitleaks/gitleaks) and [TruffleHog](https://github.com/trufflesecurity/trufflehog) are enabled in this GitHub Actions [workflow](.github/workflows/secrets-scan.yml) for detecting and preventing hardcoded secrets.
-- [Snyk](https://github.com/snyk/actions) is enabled in [this](.github/workflows/common-helper-build.yml) GitHub Actions workflow for vulnerability scanning and auto pull-request
+
+### 💻 Languages & Technologies
+- **Python** (3.10, 3.11, 3.12, 3.13) - Primary language for automation and tools
+- **Shell** (Bash) - System scripts and automation
+- **PowerShell** - Windows automation
+- **JavaScript/TypeScript** - AWS Lambda functions and CDK constructs
+- **Go** - High-performance CLI tools
+- **Docker** - Containerization
+
+### 🏗️ Infrastructure as Code
+- [**AWS CDK v2**](https://docs.aws.amazon.com/cdk/v2/guide/home.html) - Cloud Development Kit for infrastructure
+- [**AWS SAM**](https://aws.amazon.com/serverless/sam/) - Serverless Application Model
+- **AWS CloudFormation** - Infrastructure templates
+- [**cfn-lint**](https://github.com/aws-cloudformation/cfn-lint) - CloudFormation template validation
+
+### 🔧 Development Tools
+- [**Poetry**](https://python-poetry.org/) - Python dependency management ([_common](./_common))
+- [**pytest**](https://pytest.org/) - Testing framework with coverage reporting
+- [**black**](https://github.com/psf/black) - Python code formatter
+- [**flake8**](https://github.com/PyCQA/flake8) - Python linting
+- [**yamllint**](https://yamllint.readthedocs.io/) - YAML file linting
+
+### 🔐 Security & Code Quality
+- [**CodeQL**](https://codeql.github.com) - Automated security analysis ([workflow](.github/workflows/codeql-analysis.yml))
+- [**Gitleaks**](https://github.com/gitleaks/gitleaks) & [**TruffleHog**](https://github.com/trufflesecurity/trufflehog) - Secrets scanning ([workflow](.github/workflows/secrets-scan.yml))
+- [**Snyk**](https://github.com/snyk/actions) - Vulnerability scanning ([workflow](.github/workflows/common-helper-build.yml))
+- [**Dependabot**](https://docs.github.com/en/code-security/dependabot) - Automated dependency updates ([config](.github/dependabot.yml))
 
 ## To run the scripts
 
@@ -39,7 +62,7 @@ Jump to:
 ### For running Python scripts
 
 - Most of the Python scripts support processing multiple AWS accounts (via AWS profiles in `~/.aws/credentials`) and AWS regions using `AwsApiHelper` in the common [helper.aws.AwsApiHelper](./_common/helper/aws.py) module.
-- Automated tests being run with Python 3.10, 3.11, 3.12
+- Automated tests run with Python 3.10, 3.11, 3.12, 3.13
 - To start, install dependencies by running:
     ```
     pip3 install -r requirements.txt
