@@ -24,6 +24,7 @@ class DefaultEncoder(json.JSONEncoder):
     Encode for the json
     Usage example: json.dumps(data, cls=DefaultEncoder, indent=2, sort_keys=True)
     """
+
     def default(self, obj):
         if isinstance(obj, datetime):
             return int(mktime(obj.timetuple()))
@@ -32,6 +33,7 @@ class DefaultEncoder(json.JSONEncoder):
 
 class DecimalEncoder(json.JSONEncoder):
     """Helper class to convert a DynamoDB item to JSON."""
+
     def default(self, o):
         if isinstance(o, decimal.Decimal):
             if o % 1 > 0:

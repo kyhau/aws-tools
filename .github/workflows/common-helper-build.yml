@@ -1,53 +1,70 @@
 name: Common Helper - Build
 
+run-name: Common Helper @ ${{ github.ref_name }}
+
 on:
   push:
+    branches: [main, master]
     paths:
       - .github/workflows/common-helper-build.yml
-      - _common/**.py
-      - _common/pyproject.toml
-      - _common/poetry.lock
-      - _common/.flake8
+      - _common/helper/**
+      - _common/tests/**
       - _common/Makefile
+      - _common/poetry.lock
+      - _common/pyproject.toml
+  pull_request:
+    branches: [main, master]
+    paths:
+      - .github/workflows/common-helper-build.yml
+      - _common/helper/**
+      - _common/tests/**
+      - _common/Makefile
+      - _common/poetry.lock
+      - _common/pyproject.toml
+  workflow_dispatch:
 
 concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-  group: ${{ github.workflow }}
 
 defaults:
   run:
     shell: bash
+    working-directory: _common
 
 jobs:
-  security:
-    name: Run Snyk to check for vulnerabilities
-    if: ${{ github.ref == 'refs/heads/main' }}
+  lint:
+    name: Lint code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v5
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python@master
-        continue-on-error: true  # To make sure that SARIF upload gets called
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
-          args: --all-projects --severity-threshold=high --sarif-file-output=snyk.sarif
+          python-version: "3.13"
 
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v4
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
         with:
-          sarif_file: snyk.sarif
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-  build:
-    name: Build and test
+      - name: Lint Python
+        run: make lint-python
+
+  test:
+    needs: lint
+    name: Test Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.12, 3.11]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
     steps:
-      - name: Checkout
+      - name: Checkout sources
         uses: actions/checkout@v5
 
       - name: Set up Python ${{ matrix.python-version }}
@@ -67,38 +84,58 @@ jobs:
         uses: actions/cache@v4
         with:
           path: _common/.venv
-          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('_common/poetry.lock') }}
 
       - name: Install dependencies
-        working-directory: _common
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: make install-test
 
       - name: Install project
-        working-directory: _common
         run: poetry install --no-interaction
 
-      - name: Run tests and checks
-        working-directory: _common
-        run: |
-          poetry run pip check
-          if [[ "${{ matrix.python-version }}" == "3.12" ]]; then
-            # Run with coverage for Python 3.12
-            poetry run pytest --cov=. --cov-report=xml:coverage-py312.xml --cov-report=term --cov-fail-under=80 --junit-xml=junit-py312.xml helper/tests
-            poetry run flake8 helper
-            poetry build
-          else
-            # Run tests without coverage for other versions
-            poetry run pytest --junit-xml=junit-py${{ matrix.python-version }}.xml helper/tests
-          fi
+      - name: Run pip check
+        run: poetry run pip check
 
-      - name: Upload coverage reports to Codecov
-        if: matrix.python-version == '3.12'
+      - name: Run tests with coverage
+        if: matrix.python-version == '3.13'
+        run: make test-with-coverage
+
+      - name: Run tests without coverage
+        if: matrix.python-version != '3.13'
+        run: make test
+
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.13'
         uses: codecov/codecov-action@v5
-        continue-on-error: true
         with:
-          files: _common/coverage-py312.xml
-          fail_ci_if_error: false
+          files: _common/coverage.xml
           flags: helper
           name: codecov-helper
-          verbose: true
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  build:
+    needs: test
+    name: Build package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        run: make install-all
+
+      - name: Build package
+        run: make build

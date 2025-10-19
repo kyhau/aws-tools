@@ -1,4 +1,5 @@
 """Test cases for date_time module."""
+
 from datetime import datetime, timedelta
 
 import pytest
@@ -8,37 +9,43 @@ from helper.date_time import dt_local_to_utc, lookup_range_str_to_timestamp
 class TestLookupRangeStrToTimestamp:
     """Test suite for lookup_range_str_to_timestamp function."""
 
-    @pytest.mark.parametrize("start_time,end_time,expected_start,expected_end", [
-        (
-            "2021-02-12 08:00:00",
-            "2021-02-13 08:00:00",
-            datetime(2021, 2, 12, 8, 0),
-            datetime(2021, 2, 13, 8, 0)
-        ),
-        (
-            "2023-01-01 00:00:00",
-            "2023-01-01 23:59:59",
-            datetime(2023, 1, 1, 0, 0),
-            datetime(2023, 1, 1, 23, 59, 59)
-        ),
-        (
-            "2020-12-31 23:00:00",
-            "2021-01-01 01:00:00",
-            datetime(2020, 12, 31, 23, 0),
-            datetime(2021, 1, 1, 1, 0)
-        ),
-    ])
+    @pytest.mark.parametrize(
+        "start_time,end_time,expected_start,expected_end",
+        [
+            (
+                "2021-02-12 08:00:00",
+                "2021-02-13 08:00:00",
+                datetime(2021, 2, 12, 8, 0),
+                datetime(2021, 2, 13, 8, 0),
+            ),
+            (
+                "2023-01-01 00:00:00",
+                "2023-01-01 23:59:59",
+                datetime(2023, 1, 1, 0, 0),
+                datetime(2023, 1, 1, 23, 59, 59),
+            ),
+            (
+                "2020-12-31 23:00:00",
+                "2021-01-01 01:00:00",
+                datetime(2020, 12, 31, 23, 0),
+                datetime(2021, 1, 1, 1, 0),
+            ),
+        ],
+    )
     def test_with_both_times_provided(self, start_time, end_time, expected_start, expected_end):
         """Test with both start and end times provided."""
         start_dt, end_dt = lookup_range_str_to_timestamp(start_time, end_time)
         assert start_dt == expected_start
         assert end_dt == expected_end
 
-    @pytest.mark.parametrize("end_time,lookup_hours", [
-        ("2021-02-13 08:00:00", 1),
-        ("2021-02-13 08:00:00", 2),
-        ("2021-02-13 08:00:00", 24),
-    ])
+    @pytest.mark.parametrize(
+        "end_time,lookup_hours",
+        [
+            ("2021-02-13 08:00:00", 1),
+            ("2021-02-13 08:00:00", 2),
+            ("2021-02-13 08:00:00", 24),
+        ],
+    )
     def test_with_none_start_time(self, end_time, lookup_hours):
         """Test with start_time=None, should calculate based on lookup_hours."""
         start_dt, end_dt = lookup_range_str_to_timestamp(None, end_time, lookup_hours=lookup_hours)
@@ -68,22 +75,28 @@ class TestLookupRangeStrToTimestamp:
         assert isinstance(start_dt, datetime)
         assert isinstance(end_dt, datetime)
 
-    @pytest.mark.parametrize("start_time,end_time,error_message", [
-        ("2021-02-13 08:00:00", "2021-02-12 08:00:00", "start_dt .* > end_dt"),
-        ("2023-12-31 23:59:59", "2023-01-01 00:00:00", "start_dt .* > end_dt"),
-    ])
+    @pytest.mark.parametrize(
+        "start_time,end_time,error_message",
+        [
+            ("2021-02-13 08:00:00", "2021-02-12 08:00:00", "start_dt .* > end_dt"),
+            ("2023-12-31 23:59:59", "2023-01-01 00:00:00", "start_dt .* > end_dt"),
+        ],
+    )
     def test_invalid_time_range(self, start_time, end_time, error_message):
         """Test that exception is raised when start_time > end_time."""
         with pytest.raises(Exception, match=error_message):
             lookup_range_str_to_timestamp(start_time, end_time)
 
-    @pytest.mark.parametrize("start_time,end_time", [
-        ("2021-02-13 08:00", None),  # Missing seconds
-        ("2021/02/13 08:00:00", None),  # Wrong date separator
-        ("02-13-2021 08:00:00", None),  # Wrong date format
-        ("invalid", "2021-02-13 08:00:00"),  # Invalid format
-        ("2021-02-13 08:00:00", "not-a-date"),  # Invalid end time
-    ])
+    @pytest.mark.parametrize(
+        "start_time,end_time",
+        [
+            ("2021-02-13 08:00", None),  # Missing seconds
+            ("2021/02/13 08:00:00", None),  # Wrong date separator
+            ("02-13-2021 08:00:00", None),  # Wrong date format
+            ("invalid", "2021-02-13 08:00:00"),  # Invalid format
+            ("2021-02-13 08:00:00", "not-a-date"),  # Invalid end time
+        ],
+    )
     def test_invalid_datetime_format(self, start_time, end_time):
         """Test that ValueError is raised for invalid datetime formats."""
         with pytest.raises(ValueError):

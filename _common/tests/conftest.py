@@ -1,6 +1,7 @@
 """
 Define fixtures and prepare settings and environments
 """
+
 import getpass
 import logging
 import socket
@@ -19,8 +20,7 @@ init_logging(log_level=logging.DEBUG)
 
 @pytest.fixture(scope="session")
 def unittest_id():
-    """Return test-(username)-(hostname) as the id of the unit tests
-    """
+    """Return test-(username)-(hostname) as the id of the unit tests"""
     return f"test-{getpass.getuser()}-{socket.gethostname()}"
 
 
@@ -31,7 +31,9 @@ def unittest_workspace(unittest_id):
     :param unittest_id: id of the unit test
     :return: workspace path and name
     """
-    dir_name = join(tempfile.gettempdir(), f"{unittest_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}")
+    dir_name = join(
+        tempfile.gettempdir(), f"{unittest_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    )
     makedirs(dir_name, exist_ok=True)
 
     yield dir_name
@@ -77,7 +79,7 @@ def sample_json_data():
         "boolean": True,
         "null": None,
         "array": [1, 2, 3],
-        "object": {"nested": "value"}
+        "object": {"nested": "value"},
     }
 
 
@@ -164,11 +166,10 @@ def sample_sql_queries(unittest_workspace):
 @pytest.fixture
 def mock_client_error():
     """Factory fixture for creating ClientError instances."""
+
     def _make_error(error_code, message="Test error"):
-        return ClientError(
-            {"Error": {"Code": error_code, "Message": message}},
-            "test_operation"
-        )
+        return ClientError({"Error": {"Code": error_code, "Message": message}}, "test_operation")
+
     return _make_error
 
 
