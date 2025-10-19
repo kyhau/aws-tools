@@ -6,4 +6,3 @@ contact_links:
   - name: Security Vulnerability
     url: https://github.com/kyhau/aws-tools/security/advisories/new
     about: Report security vulnerabilities privately
-

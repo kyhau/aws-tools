@@ -4,7 +4,7 @@ install:
 	pip install -r requirements-ci.txt
 
 yamllint:
-	yamllint -c ./.github/linters/.yaml-lint.yaml -f parsable --format standard .github/
+	yamllint -c ./.github/linters/.yaml-lint.yml -f parsable --format standard .github/
 
 cfn-lint:
 	cfn-lint --config-file .github/linters/.cfnlintrc
