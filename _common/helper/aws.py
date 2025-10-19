@@ -5,10 +5,13 @@ from boto3.session import Session
 from botocore.exceptions import ClientError
 
 
-class AwsApiHelper():
+class AwsApiHelper:
     AUTH_ERRORS = [
-        "AccessDenied", "AccessDeniedException", "AuthFailure",
-        "UnauthorizedOperation", "UnrecognizedClientException"
+        "AccessDenied",
+        "AccessDeniedException",
+        "AuthFailure",
+        "UnauthorizedOperation",
+        "UnrecognizedClientException",
     ]
     CRED_ERRORS = ["ExpiredToken", "InvalidClientTokenId"]
 
@@ -20,14 +23,19 @@ class AwsApiHelper():
 
     @staticmethod
     def paginate(client, func_name, kwargs=None):
-        for page in client.get_paginator(func_name).paginate(**kwargs if kwargs else {}).result_key_iters():
+        for page in (
+            client.get_paginator(func_name).paginate(**kwargs if kwargs else {}).result_key_iters()
+        ):
             for item in page:
                 yield item
 
     def process_account(self, session, account_id, aws_region, service, kwargs):
         """Process the request at the specified region or all regions"""
-        regions = session.get_available_regions(service) \
-            if aws_region is None or aws_region.lower() == "all" else [aws_region]
+        regions = (
+            session.get_available_regions(service)
+            if aws_region is None or aws_region.lower() == "all"
+            else [aws_region]
+        )
         for region in regions:
             logging.debug(f"Checking {account_id} {region}")
             try:
@@ -37,6 +45,7 @@ class AwsApiHelper():
                 self.process_client_error(e, account_id, region)
             except Exception:
                 import traceback
+
                 traceback.print_exc()
 
     def process_client_error(self, e, account_id, region):
@@ -56,7 +65,7 @@ class AwsApiHelper():
     def start(self, profile, region, service, kwargs=None):
         start = time()
         try:
-            for (session, account_id, profile_name) in MultiAccountHelper().sessions(profile):
+            for session, account_id, profile_name in MultiAccountHelper().sessions(profile):
                 self.profile_name = profile_name
                 if self.process_account(session, account_id, region, service, kwargs) is not None:
                     break
@@ -65,7 +74,7 @@ class AwsApiHelper():
             logging.info(f"Total execution time: {time() - start}s")
 
 
-class MultiAccountHelper():
+class MultiAccountHelper:
     def __init__(self):
         self._accounts_processed = []
 
@@ -73,6 +82,7 @@ class MultiAccountHelper():
     def read_aws_profile_names():
         from configparser import ConfigParser
         from os.path import expanduser, join
+
         try:
             cp = ConfigParser()
             cp.read(join(expanduser("~"), ".aws", "credentials"))
@@ -97,6 +107,7 @@ class MultiAccountHelper():
 
 def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600):
     import boto3
+
     resp = boto3.client("sts").assume_role(
         RoleArn=role_arn,
         RoleSessionName=session_name,
@@ -105,7 +116,7 @@ def assume_role(role_arn, session_name="AssumeRoleSession1", duration_secs=3600)
     return Session(
         aws_access_key_id=resp["Credentials"]["AccessKeyId"],
         aws_secret_access_key=resp["Credentials"]["SecretAccessKey"],
-        aws_session_token=resp["Credentials"]["SessionToken"]
+        aws_session_token=resp["Credentials"]["SessionToken"],
     )
 
 

@@ -19,6 +19,7 @@ def init_wrapper(func):
 
         except Exception as e:
             import traceback
+
             traceback.print_stack()
             logging.error(e)
             return_code = 1

@@ -8,7 +8,9 @@ def dt_local_to_utc(dt):
     return datetime.fromtimestamp(datetime.timestamp(dt), tz=timezone.utc)
 
 
-def lookup_range_str_to_timestamp(start_time=None, end_time=None, lookup_hours=1, local_to_utc=False):
+def lookup_range_str_to_timestamp(
+    start_time=None, end_time=None, lookup_hours=1, local_to_utc=False
+):
     """
     start_time and end_time format "%Y-%m-%d %H:%M:%S" (e.g. 2020-04-01 04:00:00)
 

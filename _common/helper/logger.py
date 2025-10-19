@@ -7,7 +7,7 @@ def init_logging(
     name="default",
     log_level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    log_file=None
+    log_file=None,
 ):
     """
     Initialise basic logging to console (and file).

@@ -7,6 +7,7 @@ Functions for reading/writing files
 - text
 - ini
 """
+
 import json
 from os import makedirs, walk
 from os.path import exists, join
@@ -22,6 +23,7 @@ def create_dir(d):
 ################################################################################
 # CloudFormation template file
 
+
 def template_body(template_file):
     with open(template_file, "r") as cf_file:
         return cf_file.read()
@@ -29,6 +31,7 @@ def template_body(template_file):
 
 ################################################################################
 # json / yaml
+
 
 def get_json_data_from_file(filename):
     """Return json object from a json or yaml file"""
@@ -50,13 +53,13 @@ def write_json_file(output_file, data, sort_keys=True, indent=0):
 ################################################################################
 # csv
 
+
 def read_csv_file(filename):
     import csv
+
     with open(filename) as f:
         reader = csv.reader(f)
-        return [
-            list(map(str.strip, row)) for row in reader if row and not row[0].startswith("#")
-        ]
+        return [list(map(str.strip, row)) for row in reader if row and not row[0].startswith("#")]
 
 
 def write_csv_file(items, output_filename, delimiter=",", to_console=False):
@@ -72,6 +75,7 @@ def write_csv_file(items, output_filename, delimiter=",", to_console=False):
 
 ################################################################################
 # sql
+
 
 def get_sql_files(root_dir):
     sql_files = []
@@ -89,6 +93,7 @@ def read_sql_file(filename):
 ################################################################################
 # txt
 
+
 def read_file(filename):
     with open(filename, "r") as f:
         return f.read()
@@ -99,24 +104,23 @@ def readlines_txt_file(filename):
         with open(filename) as f:
             lns = f.readlines()
             return [
-                x.strip()
-                for x in lns
-                if x.strip() and not x.strip().startswith("#")
+                x.strip() for x in lns if x.strip() and not x.strip().startswith("#")
             ]  # ignore empty/commented line
 
 
 ################################################################################
 # ini file
 
+
 class IniFileHelper:
     def __init__(self):
         import configparser
+
         self.config = configparser.ConfigParser()
 
     @staticmethod
     def tokenize_multiline_values(settings, config_name, delimiter=":"):
-        """Retrieve environment variables to be set for a stage
-        """
+        """Retrieve environment variables to be set for a stage"""
         env_vars = {}
         for env_var in settings.get(config_name, []):
             v = env_var.split(delimiter)
@@ -129,15 +133,13 @@ class IniFileHelper:
             raise Exception(f"Configuration file not found: {ini_file}.")
 
     def get_configs_sections(self, ini_file):
-        """Return list of the sections in the .ini file
-        """
+        """Return list of the sections in the .ini file"""
         self.validate_file(ini_file)
         self.config.read(ini_file)
         return self.config.sections()
 
     def read_configs(self, ini_file, config_dict, section_list=None):
-        """Retrieve settings from the ini file. Also check if any mandatory setting is missing.
-        """
+        """Retrieve settings from the ini file. Also check if any mandatory setting is missing."""
         import re
 
         self.validate_file(ini_file)
@@ -153,7 +155,8 @@ class IniFileHelper:
                 val = self.config.get(section, option)
                 if option in config_dict.keys() and config_dict[option].get("multilines") is True:
                     ret[option] = [
-                        n.strip() for n in re.split(";|, |\n", self.config.get(section, option))
+                        n.strip()
+                        for n in re.split(";|, |\n", self.config.get(section, option))
                         if n.strip() and not n.strip().startswith("#")  # ignore commented line
                     ]
                 else:
@@ -175,22 +178,25 @@ class IniFileHelper:
         :param ini_file: file name of the .ini file
         :param app_name: __file__ of the caller file
         :param config_dict: default settings
-        :param allow_overriding_default: True if allowing other section to override the default section
+        :param allow_overriding_default: True if allowing other section to override
+            the default section
         :raise Exception: if file already exists
         """
         if exists(ini_file):
             raise Exception(f"{ini_file} already exists. Aborted")
 
-        lines = [
-            "[default]\n"
-        ]
-        lines.extend([
-            f"{k} = {v.get('default') if v.get('default') is not None else ''}\n"
-            for k, v in config_dict.items()
-        ])
+        lines = ["[default]\n"]
+        lines.extend(
+            [
+                f"{k} = {v.get('default') if v.get('default') is not None else ''}\n"
+                for k, v in config_dict.items()
+            ]
+        )
 
         if allow_overriding_default:
-            lines.append("\n# Add other section to override those in [default] (e.g. for staging)\n")
+            lines.append(
+                "\n# Add other section to override those in [default] (e.g. for staging)\n"
+            )
 
         with open(ini_file, "w") as f:
             f.writelines(lines)

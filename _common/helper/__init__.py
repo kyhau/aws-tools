@@ -16,17 +16,17 @@ def print_all_console_scripts(package_name=PACKAGE_NAME):
     eps = entry_points()
 
     # Handle both old dict-like and new SelectableGroups API
-    if hasattr(eps, 'select'):
+    if hasattr(eps, "select"):
         # Python 3.10+ with SelectableGroups
-        console_scripts = eps.select(group='console_scripts')
+        console_scripts = eps.select(group="console_scripts")
     else:
         # Fallback for older format (dict-like)
-        console_scripts = eps.get('console_scripts', [])
+        console_scripts = eps.get("console_scripts", [])
 
     # Filter and print entry points for this package
     matching_entrypoints = []
     for ep in console_scripts:
-        if ep.value.split(':')[0].startswith(package_name.lower()):
+        if ep.value.split(":")[0].startswith(package_name.lower()):
             print(ep.name)
             matching_entrypoints.append(ep)
 
