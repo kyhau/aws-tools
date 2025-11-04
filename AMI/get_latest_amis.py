@@ -20,11 +20,6 @@ TOPIC_B = "Bottlerocket"
 TOPIC_W = "Windows"
 
 
-def _compare_version(version1: str, version2: str) -> bool:
-    """Compare two version strings. Returns True if version1 >= version2."""
-    return float(version1) >= float(version2)
-
-
 def get_ecs_meta_dict(topic=TOPIC_A):
     if topic == TOPIC_A:
         # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/retrieve-ecs-optimized_AMI.html
@@ -107,11 +102,11 @@ def get_eks_meta_dict(topic=TOPIC_A):
     elif topic == TOPIC_W:
         # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-windows-ami-id.html
         for k8s_version in K8S_VERSIONS:
-            if _compare_version(k8s_version, "1.30"):
+            if float(k8s_version) >= float(1.30):
                 # Windows Server 2025 support started with EKS 1.30+
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2025-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2025 Core AMI"
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2025-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2025 Full AMI"
-            elif _compare_version(k8s_version, "1.24"):
+            elif float(k8s_version) > float(1.23):
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Core AMI"
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Full AMI"
             ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2019-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2019 Core AMI"
