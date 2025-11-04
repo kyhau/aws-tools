@@ -20,6 +20,11 @@ TOPIC_B = "Bottlerocket"
 TOPIC_W = "Windows"
 
 
+def _compare_version(version1: str, version2: str) -> bool:
+    """Compare two version strings. Returns True if version1 >= version2."""
+    return float(version1) >= float(version2)
+
+
 def get_ecs_meta_dict(topic=TOPIC_A):
     if topic == TOPIC_A:
         # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/retrieve-ecs-optimized_AMI.html
@@ -57,6 +62,7 @@ def get_ecs_meta_dict(topic=TOPIC_A):
             "/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-ECS_Optimized": "Amazon ECS-optimized Windows Server 2019 Full AMI",
             "/aws/service/ami-windows-latest/Windows_Server-2016-English-Full-ECS_Optimized": "Amazon ECS-optimized Windows Server 2016 Full AMI",
         }
+    raise ValueError(f"Invalid topic: {topic}. Must be one of {TOPIC_A}, {TOPIC_B}, or {TOPIC_W}")
 
 def get_eks_meta_dict(topic=TOPIC_A):
     K8S_VERSIONS = [
@@ -99,11 +105,11 @@ def get_eks_meta_dict(topic=TOPIC_A):
     elif topic == TOPIC_W:
         # https://docs.aws.amazon.com/eks/latest/userguide/retrieve-windows-ami-id.html
         for k8s_version in K8S_VERSIONS:
-            if float(k8s_version) >= float(1.30):
+            if _compare_version(k8s_version, "1.30"):
                 # Windows Server 2025 support started with EKS 1.30+
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2025-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2025 Core AMI"
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2025-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2025 Full AMI"
-            elif float(k8s_version) > float(1.23):
+            elif _compare_version(k8s_version, "1.24"):
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Core AMI"
                 ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2022-English-Full-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2022 Full AMI"
             ami_variants[f"/aws/service/ami-windows-latest/Windows_Server-2019-English-Core-EKS_Optimized-{k8s_version}"] = "Amazon EKS-optimized Windows Server 2019 Core AMI"
@@ -114,22 +120,21 @@ def get_eks_meta_dict(topic=TOPIC_A):
 
 def get_parameters_by_path(param_path, region, session):
     params = {}
-    for region in session.get_available_regions("ssm") if region == "all" else [region]:
+    for target_region in session.get_available_regions("ssm") if region == "all" else [region]:
         try:
-            client = session.client("ssm", region_name=region)
+            client = session.client("ssm", region_name=target_region)
             for page in client.get_paginator("get_parameters_by_path").paginate(Path=param_path):
                 for p in page["Parameters"]:
                     params[p["ARN"]] = p
-                    #print(f'{p["Value"]}, {p["Version"]}, {p["LastModifiedDate"]}, {p["ARN"]}')
         except Exception as e:
-            print(f"Skip region {region} due to error: {e}")
+            print(f"Skip region {target_region} due to error: {type(e).__name__}")
     return params
 
 
 def get_parameters(param_path, region, session):
-    for region in session.get_available_regions("ssm") if region == "all" else [region]:
+    for target_region in session.get_available_regions("ssm") if region == "all" else [region]:
         try:
-            client = session.client("ssm", region_name=region)
+            client = session.client("ssm", region_name=target_region)
             for item in client.get_parameters(Names=[param_path])["Parameters"]:
                 del item["Name"]
                 del item["Type"]
@@ -138,7 +143,7 @@ def get_parameters(param_path, region, session):
                     item.update(json.loads(v))
                 print(json.dumps(item, default=str, indent=2, sort_keys=True))
         except Exception as e:
-            print(f"Skip region {region} due to error: {e}")
+            print(f"Skip region {target_region} due to error: {type(e).__name__}")
 
 
 def get_amis_from_get_parameters_by_path(param_path, region, session):
@@ -155,7 +160,7 @@ def get_amis_from_get_parameters(ami_dict, region, session):
         get_parameters(param_path=f"{name}/image_id", region=region, session=session)
 
 
-@click.group(help="List the lastest AWS managed AMIs")
+@click.group(help="List the latest AWS managed AMIs")
 @click.option("--profile", "-p", default="default", show_default=True, help="AWS profile name")
 @click.option("--region", "-r", default="ap-southeast-2", show_default=True, help="AWS region, or 'all' for all regions")
 @click.pass_context
