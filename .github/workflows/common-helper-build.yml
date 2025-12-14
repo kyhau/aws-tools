@@ -81,7 +81,7 @@ jobs:
 
       - name: Load cached venv
         id: cached-poetry-dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: _common/.venv
           key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('_common/poetry.lock') }}
