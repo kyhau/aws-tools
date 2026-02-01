@@ -61,16 +61,17 @@ def get_ecs_meta_dict(topic=TOPIC_A):
 
 def get_eks_meta_dict(topic=TOPIC_A):
     K8S_VERSIONS = [
+        "1.35",  # Standard support
         "1.34",  # Standard support
         "1.33",  # Standard support
         "1.32",  # Standard support
-        "1.31",  # Standard support
+        "1.31",  # Extended support
         "1.30",  # Extended support
         "1.29",  # Extended support
-        "1.28",  # Extended support
-        "1.27",  # End of Extended Support (ended July 24, 2025)
-        "1.26",  # Approaching EOL
-        "1.25",  # Approaching EOL
+        "1.28",  # End of support
+        "1.27",  # End of support
+        "1.26",  # End of support
+        "1.25",  # End of support
         "1.24",  # End of support
         "1.23",  # End of support
         "1.22",  # End of support
