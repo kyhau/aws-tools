@@ -25,6 +25,8 @@ Jump to
 
 ## Protection and Security
 
+- [Adding HTTP security headers using Amazon CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/adding-http-security-headers-using-amazon-cloudfront/), AWS, 2026-02-23
+  - Summary: shows how to add common security headers (CSP, X-Frame-Options, HSTS, etc.) via CloudFront response headers policies, CloudFront Functions or Lambda@Edge; includes guidance on testing and incremental rollout.
 - [Accelerate and protect your websites using Amazon CloudFront and AWS WAF](https://aws.amazon.com/blogs/networking-and-content-delivery/accelerate-and-protect-your-websites-using-amazon-cloudfront-and-aws-waf/), AWS, 2023-09-12g
 
 
@@ -98,6 +100,8 @@ To take advantage of the perimeter protection layer built with CloudFront, AWS W
 
 ## Performance and HA
 
+- [Optimizing application performance: the strategic benefits of combining Amazon CloudFront with Application Load Balancers](https://aws.amazon.com/blogs/networking-and-content-delivery/optimizing-application-performance-the-strategic-benefits-of-combining-amazon-cloudfront-with-application-load-balancers/), AWS, 2026-02-06
+  - Summary: explains how pairing CloudFront with ALBs can boost throughput, reduce latency, and offload TLS, with guidance on architecture and configuration trade‑offs.
 - [Using latency-based routing with Amazon CloudFront for a multi-Region active-active architecture](https://aws.amazon.com/blogs/networking-and-content-delivery/latency-based-routing-leveraging-amazon-cloudfront-for-a-multi-region-active-active-architecture/), AWS, 2024-04-11
     1. CloudFront + Route 53
         - In order for the traffic to be encrypted in transit in a multi-Region setup, matching SSL/TLS certificates must be available in each Region where you deploy your application.
