@@ -1,5 +1,5 @@
 -r requirements.txt
-black~=24.8
+black~=26.3
 boto3~=1.28
 cdk-nag~=2.27
 flake8~=6.0
