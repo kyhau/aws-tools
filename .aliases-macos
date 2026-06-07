@@ -16,6 +16,8 @@ alias aws-apis-test='python3 ${REPO_HOME}/API/check_aws_apis.py'
 
 alias aws-athena-query-execution='python3 ${REPO_HOME}/Athena/athena_query_execution.py'
 
+alias aws-bedrock-list-models-au-us='python3 ${REPO_HOME}/Bedrock/list_all_bedrock_foundation_models_available.py'
+
 alias aws-canonical-user-id='aws s3api list-buckets --query Owner.ID --output text'
 
 alias aws-cloudformation-to-dot-to-image='python3 ${REPO_HOME}/CloudFormation/cfn_to_dot_to_image.py'
