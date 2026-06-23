@@ -167,6 +167,8 @@ alias sam-local-generate-event='sam local generate-event'
 alias sam-local-start-api='sam local start-api'
 alias sam-local-start-lambda='sam local start-lambda'
 
+alias update-aws-agent-toolkit-for-aws-skills='npx skills add aws/agent-toolkit-for-aws/skills'
+
 alias update-aws-amplify-cli='npm install -g @aws-amplify/cli'
 
 alias update-aws-cdk='. ${REPO_HOME}/CDK/install-cdk-v2.sh'
