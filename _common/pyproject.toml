@@ -51,7 +51,7 @@ pytest-cov = "~7.0"
 pytest-mock = "~3.15"
 
 [tool.poetry.group.dev.dependencies]
-black = "~26.3"
+black = "~26.10"
 flake8 = "~7.3"
 yamllint = "~1.35"
 
